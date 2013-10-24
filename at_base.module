@@ -97,3 +97,20 @@ function at_cache($options, $callback, $arguments = array()) {
   return $return;
 }
 
+/**
+ * @todo:
+ * Get modules that depends on at.module — found 
+ * `requirements[] = at_base` in .info file
+ * 
+ * @todo check module_implements_write_cache()
+ * @see system_list()
+ */
+function at_modules() {
+  $options = array('ttl' => '+ 1 year', 'bin' => 'cache_bootstrap', 'cache_id' => 'at_base:modules');
+  return at_cache($options, function() {
+    $modules = array();
+    foreach (system_list('modules') as $project) {
+    }
+    return $modules;
+  });
+}
