@@ -19,3 +19,81 @@
 function at_id($x) {
   return $x;
 }
+
+/**
+ * Helper function for quick cache get/set.
+ *
+ * @code
+ *   $nid = $vid = 1;
+ *
+ *   $options['ttl'] = '+ 15 minutes';
+ *   $options['cache_id'] = "node:{$nid}";
+ *   $options['file'] = '/path/to/file.php;
+ *   $options['reset'] = FALSE;
+ *
+ *   // Use case 1:
+ *   $data = at_cache($options, function() use ($nid, $vid) {
+ *     return node_load($nid, $vid);
+ *   });
+ *
+ *   // Use case 2:
+ *   $data = at_cache($options, 'node_load', array($nid, $vid));
+ *
+ * @endcode
+ *
+ * If GODEV constant is defined, at_cache() is by passed rebuild the cache if
+ * $_GET['nocache'] is not empty.
+ *
+ * @param  [type] $options
+ * @param  Closure|string $callback
+ * @param  array  $arguments
+ * @return mixed
+ * @see GoCacheTestCase
+ */
+function at_cache($options, $callback, $arguments = array()) {
+  // #####################
+  // Get/Build arguments
+  // #####################
+  $bin = !empty($options['bin']) ? $options['bin'] : 'cache';
+  $ttl = !empty($options['ttl']) ? $options['ttl'] : '+ 15 minutes';
+  $reset = !empty($options['reset']) ? $options['reset'] : FALSE;
+  $expire = strtotime($ttl);
+
+  // No cache_id, can not fetch, can not write, this function is useless.
+  if (empty($options['cache_id']) || !is_string($options['cache_id'])) {
+    throw new Exception('Please provide a valid cache ID');
+  }
+  $cache_id = $options['cache_id'];
+
+  // Allow dev to force rebuilding all caches on page
+  if (defined('GODEV') && !empty($_GET['nocache'])) {
+    $reset = TRUE;
+  }
+
+  // #####################
+  // Fetch the cached data
+  // #####################
+  if (!$reset) {
+    if ($cache = cache_get($cache_id, $bin)) {
+      return $cache->data;
+    }
+  }
+
+  // #####################
+  // Build cache data
+  // #####################
+  if (is_a($callback, 'Closure')) {
+    $return = $callback();
+  }
+  elseif (is_callable($callback)) {
+    $return = call_user_func_array($callback, $arguments);
+  }
+
+  // #####################
+  // Write the cache
+  // #####################
+  cache_set($cache_id, $return, $bin, $expire);
+
+  return $return;
+}
+
