@@ -121,7 +121,10 @@ class At_Base_Cache_TestCase extends DrupalWebTestCase {
   }
 }
 
-class At_Base_Modules_TestCase() extends DrupalUnitTestCase {
+/**
+ * at_modules() use cache.
+ */
+class At_Base_Modules_TestCase extends DrupalWebTestCase {
   public function getInfo() {
     return array(
       'name' => 'AT Base: at_modules()',
@@ -135,6 +138,6 @@ class At_Base_Modules_TestCase() extends DrupalUnitTestCase {
   }
 
   public function testAtModules() {
-    $this->assertTrue(in_array('atest_base'), at_modules());
+    $this->assertTrue(in_array('atest_base', at_modules()));
   }
 }
