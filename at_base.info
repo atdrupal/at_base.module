@@ -1,0 +1,4 @@
+name = AT Base
+version = 7.x-1.0-dev
+description = "Provide helper functions for at_* modules"
+core = 7.x
