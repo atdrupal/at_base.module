@@ -1,0 +1,23 @@
+<?php
+
+class At_Base_TestCase extends DrupalUnitTestCase {
+  public function getInfo() {
+    return array(
+      'name' => 'AT Base',
+      'description' => 'Make sure at_base.module is working correctly.',
+      'group' => 'Andy Truong',
+    );
+  }
+  
+  public function testAtId() {
+    $expected = 'Hello Andy Truong';
+    $actual = at_id(new At_Base_Test_Class())->hello('Andy Truong');
+    $this->assertEqual($expected, $actual);
+  }
+}
+
+class At_Base_Test_Class {
+  public function hello($name) {
+    return "Hello {$name}";
+  }
+}
