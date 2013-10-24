@@ -1,6 +1,10 @@
 <?php
 
 class At_Base_TestCase extends DrupalUnitTestCase {
+  public function setUp() {
+    parent::setUp('atest_base');
+  }
+
   public function getInfo() {
     return array(
       'name' => 'AT Base',
@@ -13,6 +17,10 @@ class At_Base_TestCase extends DrupalUnitTestCase {
     $expected = 'Hello Andy Truong';
     $actual = at_id(new At_Base_Test_Class())->hello('Andy Truong');
     $this->assertEqual($expected, $actual);
+  }
+  
+  public function testGetModules() {
+    $this->assertTrue(in_array('atest_base'), at_modules());
   }
 }
 
