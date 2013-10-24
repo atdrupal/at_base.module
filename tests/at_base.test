@@ -1,31 +1,140 @@
 <?php
 
-class At_Base_TestCase extends DrupalUnitTestCase {
+class At_Base_Id_TestCase extends DrupalUnitTestCase {
   public function setUp() {
     parent::setUp('atest_base');
   }
 
   public function getInfo() {
     return array(
-      'name' => 'AT Base',
-      'description' => 'Make sure at_base.module is working correctly.',
+      'name' => 'AT Base: at_id()',
+      'description' => 'Make sure at_id() function is working correctly.',
       'group' => 'Andy Truong',
     );
   }
-  
+
   public function testAtId() {
     $expected = 'Hello Andy Truong';
     $actual = at_id(new At_Base_Test_Class())->hello('Andy Truong');
     $this->assertEqual($expected, $actual);
   }
-  
-  public function testGetModules() {
-    $this->assertTrue(in_array('atest_base'), at_modules());
+}
+
+/**
+ * cache_get()/cache_set() does not work on unit test cases.
+ */
+class At_Base_Cache_TestCase extends DrupalWebTestCase {
+  public function getInfo() {
+    return array(
+      'name' => 'AT Cache',
+      'description' => "Make sure the at_cache() is working correctly.",
+      'group' => 'Andy Truong'
+    );
+  }
+
+  public function testClosure() {
+    $options = array(
+      'cache_id' => 'at_test:time:' . __FUNCTION__,
+      'ttl' => '+ 15 minutes',
+      'bin' => 'cache',
+      'reset' => TRUE,
+    );
+
+    // Init the value
+    $time_1 = at_cache($options, function () {
+      return time();
+    });
+    sleep(2);
+
+    // Call at_cache() again
+    $time_2 = at_cache(array('reset' => FALSE) + $options, function () {
+      return time();
+    });
+
+    // The value should be same — it's cached.
+    $this->assertEqual($time_1, $time_2);
+  }
+
+  public function testStringCallback() {
+    $options = array(
+      'cache_id' => 'at_test:time:' . __FUNCTION__,
+      'ttl' => '+ 15 minutes',
+      'bin' => 'cache',
+      'reset' => TRUE,
+    );
+
+    // Init the value
+    $time_1 = at_cache($options, 'time');
+    sleep(2);
+
+    // Call at_cache() again
+    $time_2 = at_cache(array('reset' => FALSE) + $options, 'time');
+
+    // The value should be same — it's cached.
+    $this->assertEqual($time_1, $time_2);
+  }
+
+  public function testStringCallbackWithArguments() {
+    $options = array(
+      'cache_id' => 'at_test:string:' . __FUNCTION__,
+      'ttl' => '+ 15 minutes',
+      'bin' => 'cache',
+      'reset' => TRUE,
+    );
+
+    // Init the value
+    $string_1 = at_cache($options, 'sprintf', array('Timestamp: %d', time()));
+    sleep(2);
+
+    // Call at_cache() again
+    $string_2 = at_cache(array('reset' => FALSE) + $options, 'sprintf', array('Timestamp: %d', time()));
+
+    // The value should be same — it's cached.
+    $this->assertEqual($string_1, $string_2);
+  }
+
+  public function testObjectCallback() {
+    $options = array(
+      'cache_id' => 'at_test:time:' . __FUNCTION__,
+      'ttl' => '+ 15 minutes',
+      'bin' => 'cache',
+      'reset' => TRUE,
+    );
+
+    // Init the value
+    $time_1 = at_cache($options, 'GoCacheTestCase::time');
+    sleep(2);
+
+    // Call at_cache() again
+    $time_2 = at_cache(array('reset' => FALSE) + $options, 'GoCacheTestCase::time');
+
+    // The value should be same — it's cached.
+    $this->assertEqual($time_1, $time_2);
+  }
+
+  /**
+   * Helper method for testObjectCallback().
+   * @return int
+   */
+  public function time() {
+    return time();
   }
 }
 
-class At_Base_Test_Class {
-  public function hello($name) {
-    return "Hello {$name}";
+class At_Base_Modules_TestCase() extends DrupalUnitTestCase {
+  public function getInfo() {
+    return array(
+      'name' => 'AT Base: at_modules()',
+      'description' => 'Make sure at_id() function is working correctly.',
+      'group' => 'Andy Truong',
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('atest_base');
+  }
+
+  public function testAtModules() {
+    $this->assertTrue(in_array('atest_base'), at_modules());
   }
 }

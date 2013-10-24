@@ -1,0 +1,7 @@
+<?php
+
+class At_Base_Test_Class {
+  public function hello($name) {
+    return "Hello {$name}";
+  }
+}
