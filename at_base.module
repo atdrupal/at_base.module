@@ -49,6 +49,7 @@ function at_id($x) {
  * @param  array  $arguments
  * @return mixed
  * @see GoCacheTestCase
+ * @todo   Note about AT_DEV constant
  */
 function at_cache($options, $callback, $arguments = array()) {
   // #####################
@@ -66,7 +67,7 @@ function at_cache($options, $callback, $arguments = array()) {
   $cache_id = $options['cache_id'];
 
   // Allow dev to force rebuilding all caches on page
-  if (defined('GODEV') && !empty($_GET['nocache'])) {
+  if (defined('AT_DEV') && !empty($_GET['nocache'])) {
     $reset = TRUE;
   }
 
@@ -99,17 +100,22 @@ function at_cache($options, $callback, $arguments = array()) {
 
 /**
  * @todo:
- * Get modules that depends on at.module — found 
+ * Get modules that depends on at.module — found
  * `requirements[] = at_base` in .info file
- * 
+ *
  * @todo check module_implements_write_cache()
  * @see system_list()
  */
 function at_modules() {
   $options = array('ttl' => '+ 1 year', 'bin' => 'cache_bootstrap', 'cache_id' => 'at_base:modules');
   return at_cache($options, function() {
-    $modules = array();
-    foreach (system_list('modules') as $project) {
+    $modules[] = 'at_base';
+    foreach (system_list('module_enabled') as $name => $project) {
+      if (isset($project->info['dependencies'])) {
+        if (in_array('at_base', $project->info['dependencies'])) {
+          $modules[] = $name;
+        }
+      }
     }
     return $modules;
   });
