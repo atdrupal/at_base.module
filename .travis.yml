@@ -25,4 +25,4 @@ before_script:
  - drush cc all
  - sleep 3
 
-script: drush test-run 'AT Autoloader'
+script: drush test-run 'AT Base'
