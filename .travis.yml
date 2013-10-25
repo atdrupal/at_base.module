@@ -21,7 +21,7 @@ before_script:
  - mv ../andytruong/at_base sites/all/modules/
  - ls -lah ./
  - drush si testing --db-url=mysql://root:@localhost/drupal --yes
- - drush en --yes simpletest at_autoload
+ - drush en --yes simpletest at_base
  - drush cc all
  - sleep 3
 

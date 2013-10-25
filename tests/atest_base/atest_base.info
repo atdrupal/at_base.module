@@ -3,4 +3,5 @@ description = Make sure at_base.module is working
 core = 7.x
 
 dependencies[] = at_base
+
 files[] = atest_base.module
