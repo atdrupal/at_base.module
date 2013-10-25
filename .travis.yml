@@ -1,0 +1,28 @@
+language: php
+php:
+  - 5.3
+  - 5.4
+
+mysql:
+  database: drupal
+  username: root
+  encoding: utf8
+
+before_script:
+ - cd ../..
+ - mysql -e 'create database drupal;'
+ - pear channel-discover pear.drush.org
+ - pear install drush/drush-5.8.0
+ - phpenv rehash
+ - drush dl --yes drupal
+ - cd drupal-*
+ - pwd
+ - ls -lah ../
+ - mv ../andytruong/at_base sites/all/modules/
+ - ls -lah ./
+ - drush si testing --db-url=mysql://root:@localhost/drupal --yes
+ - drush en --yes simpletest at_autoload
+ - drush cc all
+ - sleep 3
+
+script: drush test-run 'AT Autoloader'

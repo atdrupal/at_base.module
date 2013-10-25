@@ -9,7 +9,7 @@ class At_Base_Id_TestCase extends DrupalUnitTestCase {
     return array(
       'name' => 'AT Base: at_id()',
       'description' => 'Make sure at_id() function is working correctly.',
-      'group' => 'Andy Truong',
+      'group' => 'AT Base',
     );
   }
 
@@ -28,7 +28,7 @@ class At_Base_Cache_TestCase extends DrupalWebTestCase {
     return array(
       'name' => 'AT Cache',
       'description' => "Make sure the at_cache() is working correctly.",
-      'group' => 'Andy Truong'
+      'group' => 'AT Base'
     );
   }
 
@@ -129,7 +129,7 @@ class At_Base_Modules_TestCase extends DrupalWebTestCase {
     return array(
       'name' => 'AT Base: at_modules()',
       'description' => 'Make sure at_id() function is working correctly.',
-      'group' => 'Andy Truong',
+      'group' => 'AT Base',
     );
   }
 
