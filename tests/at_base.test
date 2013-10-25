@@ -102,11 +102,11 @@ class At_Base_Cache_TestCase extends DrupalWebTestCase {
     );
 
     // Init the value
-    $time_1 = at_cache($options, 'GoCacheTestCase::time');
+    $time_1 = at_cache($options, 'At_Base_Cache_TestCase::time');
     sleep(2);
 
     // Call at_cache() again
-    $time_2 = at_cache(array('reset' => FALSE) + $options, 'GoCacheTestCase::time');
+    $time_2 = at_cache(array('reset' => FALSE) + $options, 'At_Base_Cache_TestCase::time');
 
     // The value should be same — it's cached.
     $this->assertEqual($time_1, $time_2);
