@@ -89,6 +89,9 @@ function at_cache($options, $callback, $arguments = array()) {
   elseif (is_callable($callback)) {
     $return = call_user_func_array($callback, $arguments);
   }
+  else {
+    throw new Exception('Invalid callback');
+  }
 
   // #####################
   // Write the cache

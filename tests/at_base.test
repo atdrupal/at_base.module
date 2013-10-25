@@ -27,7 +27,7 @@ class At_Base_Cache_TestCase extends DrupalWebTestCase {
   public function getInfo() {
     return array(
       'name' => 'AT Cache',
-      'description' => "Make sure the at_cache() is working correctly.",
+      'description' => 'Make sure the at_cache() is working correctly.',
       'group' => 'AT Base'
     );
   }
