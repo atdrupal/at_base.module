@@ -1,6 +1,6 @@
 <?php
 
-class At_Base_Id_TestCase extends DrupalUnitTestCase {
+class At_Base_Id_TestCase extends DrupalWebTestCase {
   public function setUp() {
     parent::setUp('atest_base');
   }
@@ -116,7 +116,7 @@ class At_Base_Cache_TestCase extends DrupalWebTestCase {
    * Helper method for testObjectCallback().
    * @return int
    */
-  public function time() {
+  public static function time() {
     return time();
   }
 }
