@@ -109,13 +109,13 @@ function at_cache($options, $callback, $arguments = array()) {
  * @todo check module_implements_write_cache()
  * @see system_list()
  */
-function at_modules() {
-  $options = array('ttl' => '+ 1 year', 'bin' => 'cache_bootstrap', 'cache_id' => 'at_base:modules');
-  return at_cache($options, function() {
-    $modules[] = 'at_base';
+function at_modules($base_module = 'at_base') {
+  $options = array('ttl' => '+ 1 year', 'bin' => 'cache_bootstrap', 'cache_id' => "at_base:modules:{$base_module}");
+  return at_cache($options, function() use ($base_module) {
+    $modules[] = $base_module;
     foreach (system_list('module_enabled') as $name => $project) {
       if (isset($project->info['dependencies'])) {
-        if (in_array('at_base', $project->info['dependencies'])) {
+        if (in_array($base_module, $project->info['dependencies'])) {
           $modules[] = $name;
         }
       }
