@@ -11,7 +11,7 @@ Useful functions:
 
 1. at_id()
 
-  –
+  …
 
 2. at_cache()
 
@@ -40,3 +40,7 @@ Useful functions:
     }
 
     $data = at_cache(array('cache_id' => '…'), 'your_data_provider');
+
+3. at_modules()
+
+  …

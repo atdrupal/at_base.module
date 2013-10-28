@@ -1,0 +1,4 @@
+name = atest2_base
+core = 7.x
+
+dependencies[] = atest_base

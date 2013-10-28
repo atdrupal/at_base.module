@@ -134,10 +134,14 @@ class At_Base_Modules_TestCase extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp('atest_base');
+    parent::setUp('atest_base', 'atest2_base');
   }
 
   public function testAtModules() {
     $this->assertTrue(in_array('atest_base', at_modules()));
+  }
+
+  public function testAtestModules() {
+    $this->assertTrue(in_array('atest2_base', at_modules('atest_base')));
   }
 }
