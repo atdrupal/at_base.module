@@ -44,3 +44,7 @@ Useful functions:
 3. at_modules()
 
   …
+
+4. at_debug()
+
+  …

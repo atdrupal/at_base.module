@@ -123,3 +123,12 @@ function at_modules($base_module = 'at_base') {
     return $modules;
   });
 }
+
+/**
+ * Check is Drupal system on dev or not.
+ *
+ * @return boolean
+ */
+function at_debug() {
+  return defined('AT_DEBUG');
+}
