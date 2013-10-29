@@ -76,6 +76,7 @@ class Cache {
         return $cache->data;
       }
     }
+    return $this->fetch();
   }
 
   /**
@@ -85,7 +86,8 @@ class Cache {
    */
   public function fetch() {
     if (is_a($this->callback, 'Closure')) {
-      $return = $this->callback();
+      $return = $this->callback;
+      $return = $return();
     }
     elseif (is_callable($this->callback)) {
       $return = call_user_func_array($this->callback, $arguments);
@@ -105,7 +107,7 @@ class Cache {
    * @param  mixed $data
    */
   protected function write($data) {
-    if (cache_set($this->id, $data, $this->bin, strtotime($this->ttl))) {
+    if (FALSE !== cache_set($this->id, $data, $this->bin, strtotime($this->ttl))) {
       $this->removeAllTags();
       if ($this->tags) {
         foreach ($this->tags as $tag) {

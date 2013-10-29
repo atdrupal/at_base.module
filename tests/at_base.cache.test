@@ -100,3 +100,28 @@ class At_Base_Cache_TestCase extends DrupalWebTestCase {
     return time();
   }
 }
+
+class At_Base_Cache_Tag_TestCase extends DrupalWebTestCase {
+  public function getInfo() {
+    return array(
+      'name' => 'AT Cache',
+      'description' => 'Make sure the at_cache() is working correctly.',
+      'group' => 'AT Base'
+    );
+  }
+
+  public function testCacheTag() {
+    $o['id'] = 'atest_base:cache:tag:1';
+    $o['tags'] = array('at_base', 'atest');
+
+    $data_1 = at_cache($o, function(){ return 'Data #1'; });
+    $data_2 = at_cache($o, function(){ return 'This is not called'; });
+
+    // Delete items tagged with 'atest'
+    at_cache_flush_by_tags($o['tags']);
+
+    $data_3 = at_cache($o, function(){ return 'Data #3 — must be called.'; });
+
+    $this->assertNotEqual($data_1, $data_3);
+  }
+}
