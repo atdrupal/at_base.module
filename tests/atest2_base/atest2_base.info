@@ -1,4 +1,6 @@
 name = atest2_base
+package = Testing
 core = 7.x
+hidden = TRUE
 
 dependencies[] = atest_base
