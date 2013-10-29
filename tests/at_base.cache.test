@@ -12,6 +12,10 @@ class At_Base_Cache_TestCase extends DrupalWebTestCase {
     );
   }
 
+  public function setUp() {
+    parent::setUp('atest_base');
+  }
+
   public function testClosure() {
     $options = array(
       'cache_id' => 'at_test:time:' . __FUNCTION__,
@@ -108,6 +112,10 @@ class At_Base_Cache_Tag_TestCase extends DrupalWebTestCase {
       'description' => 'Make sure the at_cache() is working correctly.',
       'group' => 'AT Base'
     );
+  }
+
+  public function setUp() {
+    parent::setUp('atest_base');
   }
 
   public function testCacheTag() {
