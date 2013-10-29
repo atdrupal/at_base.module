@@ -1,6 +1,13 @@
 <?php
 
 /**
+ * Implements hook_flush_caches()
+ */
+function at_base_flush_caches() {
+  db_delete('at_base_cache_tag')->execute();
+}
+
+/**
  * Identity function, returns its argument unmodified.
  *
  * This is useful almost exclusively as a workaround to an oddity in the PHP
@@ -28,8 +35,11 @@ function at_id($x) {
  *
  *   $options['ttl'] = '+ 15 minutes';
  *   $options['cache_id'] = "node:{$nid}";
+ *   # Same to
+ *   $options['id'] = "node:{$nid}";
  *   $options['file'] = '/path/to/file.php;
  *   $options['reset'] = FALSE;
+ *   $options['tags'] = array('demo', 'testing');
  *
  *   // Use case 1:
  *   $data = at_cache($options, function() use ($nid, $vid) {
@@ -44,61 +54,34 @@ function at_id($x) {
  * If GODEV constant is defined, at_cache() is by passed rebuild the cache if
  * $_GET['nocache'] is not empty.
  *
- * @param  [type] $options
+ * @param  array $options
  * @param  Closure|string $callback
  * @param  array  $arguments
  * @return mixed
- * @see GoCacheTestCase
+ * @see    at_cache_flush_by_tag()
  * @todo   Note about AT_DEV constant
  */
 function at_cache($options, $callback, $arguments = array()) {
-  // #####################
-  // Get/Build arguments
-  // #####################
-  $bin = !empty($options['bin']) ? $options['bin'] : 'cache';
-  $ttl = !empty($options['ttl']) ? $options['ttl'] : '+ 15 minutes';
-  $reset = !empty($options['reset']) ? $options['reset'] : FALSE;
-  $expire = strtotime($ttl);
+  require_once dirname(__FILE__) . '/lib/Cache.php';
 
-  // No cache_id, can not fetch, can not write, this function is useless.
-  if (empty($options['cache_id']) || !is_string($options['cache_id'])) {
-    throw new Exception('Please provide a valid cache ID');
-  }
-  $cache_id = $options['cache_id'];
-
-  // Allow dev to force rebuilding all caches on page
-  if (defined('AT_DEV') && !empty($_GET['nocache'])) {
-    $reset = TRUE;
+  if (isset($options['cache_id'])) {
+    $options['id'] = $options['cache_id'];
   }
 
-  // #####################
-  // Fetch the cached data
-  // #####################
-  if (!$reset) {
-    if ($cache = cache_get($cache_id, $bin)) {
-      return $cache->data;
-    }
-  }
+  return at_id(new \Drupal\at_base\Cache($options))->get();
+}
 
-  // #####################
-  // Build cache data
-  // #####################
-  if (is_a($callback, 'Closure')) {
-    $return = $callback();
-  }
-  elseif (is_callable($callback)) {
-    $return = call_user_func_array($callback, $arguments);
-  }
-  else {
-    throw new Exception('Invalid callback: ' . print_r($callback, TRUE));
-  }
-
-  // #####################
-  // Write the cache
-  // #####################
-  cache_set($cache_id, $return, $bin, $expire);
-
-  return $return;
+/**
+ * Delete cached data by tags.
+ *
+ * @see at_cache()
+ * @param  array  $tags
+ */
+function at_cache_flush_by_tag($tags = array()) {
+  return db_delete('at_base_cache_tag')
+    ->condition('tag', $tags)
+    ->execute()
+  ;
 }
 
 /**

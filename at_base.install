@@ -1,0 +1,28 @@
+<?php
+/**
+ * @file at_base.install
+ */
+
+/**
+ * Implements hook_schema()
+ */
+function at_base_schema() {
+  $schema['at_base_cache_tag'] = array(
+    'description' => '',
+    'fields' => array(
+      'bin' => array('type' => 'varchar', 'length' => 255, 'not null' => TRUE),
+      'cid' => array('type' => 'varchar', 'length' => 255, 'not null' => TRUE),
+      'tag' => array('type' => 'varchar', 'length' => 255, 'not null' => TRUE),
+    ),
+    'primary key' => array('bin', 'cid', 'tag'),
+    'indexes' => array('tag' => array('tag')),
+  );
+  return $schema;
+}
+
+/**
+ * Install schema.
+ */
+function at_base_update_7001() {
+  drupal_install_schema('at_base');
+}
