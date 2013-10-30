@@ -40,6 +40,12 @@ class Cache {
    */
   private $callback;
 
+  /**
+   * Callback arguments.
+   * @var array
+   */
+  private $arguments;
+
   public function __construct($options, $callback, $arguments = array()) {
     $_keys = array(
       'bin' => 'cache',
@@ -53,6 +59,7 @@ class Cache {
     }
 
     $this->callback = $callback;
+    $this->arguments = $arguments;
 
     // No cache_id, can not fetch, can not write, this function is useless.
     if (empty($this->id) || !is_string($this->id)) {
@@ -85,12 +92,8 @@ class Cache {
    * @return mixed
    */
   public function fetch() {
-    if (is_a($this->callback, 'Closure')) {
-      $return = $this->callback;
-      $return = $return();
-    }
-    elseif (is_callable($this->callback)) {
-      $return = call_user_func_array($this->callback, $arguments);
+    if (is_callable($this->callback) || is_a($this->callback, 'Closure')) {
+      $return = call_user_func_array($this->callback, $this->arguments);
     }
     else {
       throw new \InvalidArgumentException('Invalid callback: ' . print_r($this->callback, TRUE));
