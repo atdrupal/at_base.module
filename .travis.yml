@@ -17,9 +17,13 @@ before_script:
  - drush dl --yes drupal
  - cd drupal-*
  - pwd
- - ls -lah ../
  - mv ../andytruong/at_base sites/all/modules/
- - ls -lah ./
+ - echo '#####################'
+ - echo 'Clone modules-dependencies'
+ - cd sites/all/modules
+ - git clone https://github.com/andytruong/at_autoload.git --branch=7.x-1.x
+ - cd ../../..
+ - echo '#####################'
  - drush si testing --db-url=mysql://root:@localhost/drupal --yes
  - drush en --yes simpletest at_base
  - drush cc all
