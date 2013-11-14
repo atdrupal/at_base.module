@@ -48,8 +48,8 @@ class At_Base_Modules_TestCase extends DrupalWebTestCase {
 class At_Base_Contant_Parser_TestCase extends DrupalWebTestCase {
   public function getInfo() {
     return array(
-      'name' => 'AT Base: \Drupal\at_base\Helper\ConstantParser',
-      'description' => 'Make sure \Drupal\at_base\Helper\ConstantParser class is working correctly.',
+      'name' => 'AT Base: Constant Parser',
+      'description' => 'Make sure Constant Parser class is working correctly.',
       'group' => 'AT Base',
     );
   }
