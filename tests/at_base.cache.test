@@ -108,7 +108,7 @@ class At_Base_Cache_TestCase extends DrupalWebTestCase {
 class At_Base_Cache_Tag_TestCase extends DrupalWebTestCase {
   public function getInfo() {
     return array(
-      'name' => 'AT Cache',
+      'name' => 'AT Cache Tags',
       'description' => 'Make sure the at_cache() is working correctly.',
       'group' => 'AT Base'
     );
