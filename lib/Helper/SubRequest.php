@@ -8,6 +8,7 @@ class SubRequest {
   public function __construct($path) {
     $this->path = $path;
     $this->original_path = $_GET['q'];
+    $_GET['q'] = $path;
   }
 
   public function __destruct() {
