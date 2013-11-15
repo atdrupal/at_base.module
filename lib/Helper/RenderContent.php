@@ -12,6 +12,11 @@ namespace Drupal\at_base\Helper;
  *  );
  *  return at_id(new \Drupal\at_base\Helper\RenderContent($data))->render();
  *
+ *  $data = array(
+ *    'controller' => array('\Drupal\atest_base\Controller\Sample', 'renderAction'),
+ *  );
+ *  return at_id(new \Drupal\at_base\Helper\RenderContent($data))->render();
+ *
  * @see  \Drupal\at_route\Controller\DefaultController
  * @see  \Drupal\at_theming\Hook\BlockView
  */
@@ -38,6 +43,12 @@ class RenderContent {
     if (isset($this->data['template_file'])) {
       return $this->renderTemplateFile();
     }
+
+    if (isset($this->data['controller'])) {
+      return $this->renderController();
+    }
+
+    throw new \Exception('Invalid data structure.');
   }
 
   private function renderTemplateString() {
@@ -58,6 +69,17 @@ class RenderContent {
       '#markup' => at_theming_render_template($this->data['template_file'], $this->data['variables']),
       '#attached' => $this->processAttachedAsset(),
     );
+  }
+
+  private function renderController() {
+    list($class, $action) = $this->data['controller'];
+
+    $return = array(
+      '#markup' => call_user_func(array(new $class(), $action)),
+      '#attached' => $this->processAttachedAsset(),
+    );
+
+    return $return;
   }
 
   private function processAttachedAsset() {
