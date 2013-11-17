@@ -103,8 +103,12 @@ function at_cache_flush_by_tags($tags = array()) {
  * @todo check module_implements_write_cache()
  * @see system_list()
  */
-function at_modules($base_module = 'at_base') {
-  $options = array('ttl' => '+ 1 year', 'bin' => 'cache_bootstrap', 'cache_id' => "at_base:modules:{$base_module}");
+function at_modules($base_module = 'at_base', $reset = FALSE) {
+  $options['ttl'] = '+ 1 year';
+  $options['bin'] = 'cache_bootstrap';
+  $options['cache_id'] = "at_base:modules:{$base_module}";
+  $options['reset'] = $reset;
+
   return at_cache($options, function() use ($base_module) {
     $modules[] = $base_module;
     foreach (system_list('module_enabled') as $name => $project) {
