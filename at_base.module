@@ -130,3 +130,12 @@ function at_modules($base_module = 'at_base', $reset = FALSE) {
 function at_debug() {
   return defined('AT_DEBUG');
 }
+
+/**
+ * Return if key|upercase/variable is not FALSE|NULL|0.
+ */
+function at_valid($key) {
+  $c = strtoupper($key);
+  if (defined($c)) return (boolean) constant($c);
+  return (boolean) variable_get($key, FALSE);
+}
