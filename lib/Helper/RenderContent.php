@@ -24,9 +24,11 @@ class RenderContent {
   private $data;
 
   public function __construct($data) {
-    if (isset($data['template'])) {
-      $data['template_file'] = $data['template'];
-      unset($data['template']);
+    if (!is_string($data)) {
+      if (isset($data['template'])) {
+        $data['template_file'] = $data['template'];
+        unset($data['template']);
+      }
     }
     $this->data = $data;
   }
