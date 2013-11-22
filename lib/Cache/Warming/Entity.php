@@ -25,7 +25,7 @@ class Entity {
     $this->entity        = $entity;
     $this->entity_type   = $entity_type;
     $this->event_name    = $event_name;
-    $this->entity_bundle = $entity->{$info['entity keys']['bundle']};
+    $this->entity_bundle = !empty($info['entity keys']['bundle']) ? $entity->{$info['entity keys']['bundle']} : '';
     $this->entity_id     = $entity->{$info['entity keys']['id']};
   }
 
