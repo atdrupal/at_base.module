@@ -25,7 +25,7 @@ before_script:
  - cd ../../..
  - echo '#####################'
  - drush si testing --db-url=mysql://root:@localhost/drupal --yes
- - drush en --yes simpletest at_base
+ - drush en --yes simpletest at_base atest_base
  - drush cc all
  - sleep 3
 
