@@ -18,7 +18,9 @@ class Entity {
       throw new \Exception('Missing module: at_config');
     }
 
-    $info = entity_get_info($entity_type);
+    if (!$info = entity_get_info($entity_type)) {
+      throw new \Exception('Invalid entity type: ' . $entity_type);
+    }
 
     $this->entity        = $entity;
     $this->entity_type   = $entity_type;
