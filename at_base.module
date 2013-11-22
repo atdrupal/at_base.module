@@ -1,11 +1,6 @@
 <?php
 
-/**
- * Implements hook_flush_caches()
- */
-function at_base_flush_caches() {
-  db_delete('at_base_cache_tag')->execute();
-}
+require_once dirname(__FILE__) . '/at_base.hooks.inc';
 
 /**
  * Identity function, returns its argument unmodified.
@@ -54,6 +49,8 @@ function at_id($x) {
  * If GODEV constant is defined, at_cache() is by passed rebuild the cache if
  * $_GET['nocache'] is not empty.
  *
+ * Tags can be flushed by config. See \Drupal\at_base\Cache\Warming\Entity.php
+ *
  * @param  array $options
  * @param  Closure|string $callback
  * @param  array  $arguments
@@ -79,6 +76,10 @@ function at_cache($options, $callback, $arguments = array()) {
  * @todo  AND/OR
  */
 function at_cache_flush_by_tags($tags = array()) {
+  if (empty($tags)) {
+    return;
+  }
+
   $items = db_select('at_base_cache_tag', 'atag')
             ->fields('atag', array('bin', 'cid'))
             ->condition('tag', $tags)
