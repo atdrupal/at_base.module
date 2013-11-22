@@ -4,3 +4,4 @@ core = 7.x
 hidden = TRUE
 
 dependencies[] = atest_base
+dependencies[] = at_config
