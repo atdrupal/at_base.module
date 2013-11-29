@@ -5,6 +5,8 @@ namespace Drupal\at_base\Helper;
 /**
  * Parse 'CONSTANT', 'CONSTANT_1 | CONSTANT_2', 'CONSTANT_1 & CONSTANT_2' to
  * real value.
+ *
+ * @see  \At_Base_Contant_Parser_TestCase::testAtConstantParser()
  */
 class ConstantParser {
   private $string;
