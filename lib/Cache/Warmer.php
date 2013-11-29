@@ -24,9 +24,11 @@ class Warmer {
     }
 
     $this->event_name = $event_name;
+
     if (!$config) {
-      $config = new WarmerConfig();
+      $config = new WarmerConfig($this->event_name);
     }
+
     $this->config = $config;
   }
 
