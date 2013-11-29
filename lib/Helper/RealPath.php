@@ -18,14 +18,14 @@ class RealPath {
     $real_path = $this->path;
 
     if (strpos($real_path, '%theme/') !== FALSE) {
-      $real_path = str_replace('%theme/', path_to_theme() . '/templates/', $real_path);
+      $real_path = str_replace('%theme/', path_to_theme() . '/', $real_path);
     }
 
     preg_match('/@([a-z_]+)/', $real_path, $matches);
     if (!empty($matches)) {
       $module = $matches[1];
       if ($module_path = drupal_get_path('module', $module)) {
-        $real_path = str_replace("@{$module}/", $module_path . '/templates/', $real_path);
+        $real_path = str_replace("@{$module}/", $module_path . '/', $real_path);
       }
     }
 
