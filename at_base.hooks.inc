@@ -1,6 +1,6 @@
 <?php
 
-use Drupal\at_base\Cache\Warming\Entity as EntityWarming;
+use Drupal\at_base\Cache\Warmer as CacheWarmer;
 
 /**
  * Implements hook_flush_caches()
@@ -13,33 +13,43 @@ function at_base_flush_caches() {
  * Implements hook_entity_insert()
  */
 function at_base_entity_update($entity, $type) {
-  at_id(new EntityWarming($entity, $type, 'entity_update'))->warm();
+  $warmer = new CacheWarmer('entity_update');
+  $warmer->setEntity($type, $entity);
+  $warmer->warm();
 }
 
 /**
  * Implements hook_entity_insert()
  */
 function at_base_entity_insert($entity, $type) {
-  at_id(new EntityWarming($entity, $type, 'entity_insert'))->warm();
+  $warmer = new CacheWarmer('entity_insert');
+  $warmer->setEntity($type, $entity);
+  $warmer->warm();
 }
 
 /**
  * Implements hook_entity_insert()
  */
 function at_base_entity_delete($entity, $type) {
-  at_id(new EntityWarming($entity, $type, 'entity_delete'))->warm();
+  $warmer = new CacheWarmer('entity_delete');
+  $warmer->setEntity($type, $entity);
+  $warmer->warm();
 }
 
 /**
  * Implements hook_user_login()
  */
 function at_base_user_login(&$edit, $account) {
-  at_id(new EntityWarming($account, 'user', 'user_login'))->warm();
+  $warmer = new CacheWarmer('user_login');
+  $warmer->setEntity('user', $account);
+  $warmer->warm();
 }
 
 /**
  * Implements hook_user_login()
  */
 function at_base_user_logout($account) {
-  at_id(new EntityWarming($account, 'user', 'user_logout'))->warm();
+  $warmer = new CacheWarmer('user_logout');
+  $warmer->setEntity('user', $account);
+  $warmer->warm();
 }
