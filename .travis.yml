@@ -9,35 +9,10 @@ mysql:
   encoding: utf8
 
 before_script:
- - cd ../..
- - mysql -e 'create database drupal;'
- - pear channel-discover pear.drush.org
- - pear install drush/drush-5.8.0
- - phpenv rehash
- - drush dl --yes drupal
- - cd drupal-*
- - pwd
- - mv ../andytruong/at_base sites/all/modules/
- - echo '#####################'
- - echo 'Clone required libraries'
- - echo '#####################'
- - mkdir -p sites/all/libraries
- - cd sites/all/libraries
- - composer require twig/twig:1.*
- - mv vendor/twig/twig ./
- - composer require mustangostang/spyc:0.5.*
- - mv vendor/mustangostang/spyc ./
- - rm -rf ./vendor composer.*
- - cd ../../..
- - echo '#####################'
- - echo 'Clone modules-dependencies'
- - cd sites/all/modules
- - git clone https://github.com/andytruong/at_autoload.git --branch=7.x-1.x
- - git clone https://github.com/andytruong/at_config.git --branch=7.x-1.x
- - git clone https://github.com/andytruong/at_theming.git --branch=7.x-1.x
- - cd ../../..
- - echo '#####################'
- - drush si testing --db-url=mysql://root:@localhost/drupal --yes
+ - export DRUPAL=`pwd`'/drupal/'
+ - export PHP=`which php`
+ - curl -sS https://gist.github.com/andytruong/8ab6499fc984d05f56bb/raw/at_test.bash | bash
+ - cd drupal
  - drush en --yes simpletest at_base atest_base
  - drush cc all
  - sleep 3
