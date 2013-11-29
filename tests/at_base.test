@@ -81,10 +81,10 @@ class At_Base_Contant_Parser_TestCase extends DrupalWebTestCase {
   }
 }
 
-class At_Base_Helper_TestCase extends DrupalWebTestCase {
+class At_Base_Helper_RealPath_TestCase extends DrupalWebTestCase {
   public function getInfo() {
     return array(
-      'name' => 'AT Base: Helpers',
+      'name' => 'AT Base: Helpers > RealPath',
       'description' => 'Make sure Helper classes are working correctly.',
       'group' => 'AT Base',
     );
@@ -98,5 +98,41 @@ class At_Base_Helper_TestCase extends DrupalWebTestCase {
     $expected = path_to_theme() . '/templates/page.home.html.twig';
     $actual = at_id(new \Drupal\at_base\Helper\RealPath('%theme/templates/page.home.html.twig'))->get();
     $this->assertEqual($expected, $actual);
+  }
+}
+
+class At_Base_Helper_RenderContent_TestCase extends DrupalWebTestCase {
+  public function getInfo() {
+    return array(
+      'name' => 'AT Base: Helpers > RenderContent',
+      'description' => 'Make sure Helper classes are working correctly.',
+      'group' => 'AT Base',
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('atest_theming');
+  }
+
+  public function testRenderContent() {
+    // Simple string
+    $expected = 'Hello Andy Truong';
+    $actual = at_id(new \Drupal\at_base\Helper\RenderContent($expected))->render();
+    $this->assertEqual($expected, $actual);
+
+    // Template string
+    $data['template_string'] = 'Hello {{ name }}';
+    $data['variables']['name'] = 'Andy Truong';
+    $output = at_id(new \Drupal\at_base\Helper\RenderContent($data))->render();
+    $output = $output['#markup'];
+    $this->assertEqual($expected, $actual);
+
+    // Template
+    $data['template'] = '@atest_theming/templates/hello.twig';
+    $data['variables']['name'] = 'Andy Truong';
+    $output = at_id(new \Drupal\at_base\Helper\RenderContent($data))->render();
+    $output = $output['#markup'];
+    $assert = strpos($output, $actual) !== FALSE;
+    $this->assertTrue($assert, "Found <strong>{$expected}</strong> in result.");
   }
 }

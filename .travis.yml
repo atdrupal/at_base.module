@@ -19,9 +19,21 @@ before_script:
  - pwd
  - mv ../andytruong/at_base sites/all/modules/
  - echo '#####################'
+ - echo 'Clone required libraries'
+ - echo '#####################'
+ - mkdir -p sites/all/libraries
+ - cd sites/all/libraries
+ - composer require twig/twig:1.*
+ - mv vendor/twig/twig ./
+ - composer require mustangostang/spyc:0.5.*
+ - mv vendor/mustangostang/spyc ./
+ - rm -rf ./vendor composer.*
+ - cd ../../..
+ - echo '#####################'
  - echo 'Clone modules-dependencies'
  - cd sites/all/modules
  - git clone https://github.com/andytruong/at_autoload.git --branch=7.x-1.x
+ - git clone https://github.com/andytruong/at_theming.git --branch=7.x-1.x
  - cd ../../..
  - echo '#####################'
  - drush si testing --db-url=mysql://root:@localhost/drupal --yes
