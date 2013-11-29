@@ -1,6 +1,10 @@
 <?php
 namespace Drupal\at_base\Helper;
 
+/**
+ * Usage:
+ *   at_id(new Drupal\at_base\Helper\SubRequest('atest_theming/users'))->request();
+ */
 class SubRequest {
   private $path;
   private $original_path;
