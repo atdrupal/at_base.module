@@ -1,5 +1,0 @@
-tags:
-  entity_insert: ['taxonomy', 'node:slider_item', 'node:%entity_id']
-  entity_update: ['taxonomy', 'node:slider_item', 'node:%entity_id']
-  entity_delete: ['taxonomy', 'node:slider_item', 'node:%entity_id']
-  user_login: ['views:user_recents:block_1', 'views:user_top']
