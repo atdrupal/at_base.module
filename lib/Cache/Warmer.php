@@ -78,7 +78,7 @@ class Warmer {
     module_load_include('inc', 'views', 'plugins/views_plugin_cache');
     foreach ($tags as $tag) {
       @list($module, $view_name, $display_id) = explode($tag);
-      if ($view = views_get_view($name)) {
+      if ($view = views_get_view($view_name)) {
         $display_id = $display_id ? $display_id : 'default';
         $display = isset($view->display[$display_id]) ? $view->display[$display_id] : $view->display['default'];
         $cache = new views_plugin_cache($view, $display);
