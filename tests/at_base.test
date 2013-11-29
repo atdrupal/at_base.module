@@ -80,3 +80,23 @@ class At_Base_Contant_Parser_TestCase extends DrupalWebTestCase {
     $this->assertEqual($expected, $actual);
   }
 }
+
+class At_Base_Helper_TestCase extends DrupalWebTestCase {
+  public function getInfo() {
+    return array(
+      'name' => 'AT Base: Helpers',
+      'description' => 'Make sure Helper classes are working correctly.',
+      'group' => 'AT Base',
+    );
+  }
+
+  public function setUp() {
+    parent::setUp('atest_base');
+  }
+
+  public function testRealPath() {
+    $expected = path_to_theme() . '/templates/page.home.html.twig';
+    $actual = at_id(new \Drupal\at_base\Helper\RealPath('%theme/templates/page.home.html.twig'))->get();
+    $this->assertEqual($expected, $actual);
+  }
+}
