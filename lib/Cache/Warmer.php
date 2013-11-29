@@ -70,6 +70,10 @@ class Warmer {
   }
 
   private function warmViews($tags) {
+    if (!module_exists('views')) {
+      return;
+    }
+
     views_include_handlers();
     module_load_include('inc', 'views', 'plugins/views_plugin_cache');
     foreach ($tags as $tag) {
