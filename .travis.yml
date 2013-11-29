@@ -33,6 +33,7 @@ before_script:
  - echo 'Clone modules-dependencies'
  - cd sites/all/modules
  - git clone https://github.com/andytruong/at_autoload.git --branch=7.x-1.x
+ - git clone https://github.com/andytruong/at_config.git --branch=7.x-1.x
  - git clone https://github.com/andytruong/at_theming.git --branch=7.x-1.x
  - cd ../../..
  - echo '#####################'
