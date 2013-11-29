@@ -19,6 +19,7 @@ namespace Drupal\at_base\Helper;
  *
  * @see  \Drupal\at_route\Controller\DefaultController
  * @see  \Drupal\at_theming\Hook\BlockView
+ * @see  \At_Base_Helper_RenderContent_TestCase::testRenderContent()
  */
 class RenderContent {
   private $data;

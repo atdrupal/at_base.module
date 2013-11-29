@@ -6,6 +6,8 @@ namespace Drupal\at_base\Helper;
  *
  *  %theme => /path/to/active_theme/
  *  @at_base => /path/to/at_base/
+ *
+ * @see \At_Base_Helper_RealPath_TestCase::testRealPath().
  */
 class RealPath {
   private $path;
