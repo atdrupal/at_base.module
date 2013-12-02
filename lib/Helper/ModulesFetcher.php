@@ -1,7 +1,10 @@
 <?php
 namespace Drupal\at_base\Helper;
 
-class ModuleFetcher {
+/**
+ * @see at_modules()
+ */
+class ModulesFetcher {
   private $base_module;
   private $config_file;
 
@@ -11,9 +14,13 @@ class ModuleFetcher {
   }
 
   public function fetch() {
-    $modules[] = $this->base_module;
+    $modules = array();
     foreach (system_list('module_enabled') as $module_name => $module_info) {
+      if ($this->validateModule($module_name, $module_info)) {
+        $modules[] = $module_name;
+      }
     }
+
     return $modules;
   }
 

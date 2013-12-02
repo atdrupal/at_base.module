@@ -154,11 +154,10 @@ function at_modules($base_module = 'at_base', $config_file = '', $reset = FALSE)
   $options['cache_id'] = "at_base:modules:{$base_module}:{$config_file}";
   $options['reset'] = $reset;
 
-  $return = at_cache($options, function() use ($base_module, $config_file) {
-    return at_id(new \Drupal\at_base\ModuleFetcher($base_module, $config_file))->fetch();
+  return at_cache($options, function() use ($base_module, $config_file) {
+    require_once dirname(__FILE__) . '/lib/Helper/ModulesFetcher.php';
+    return at_id(new \Drupal\at_base\Helper\ModulesFetcher($base_module, $config_file))->fetch();
   });
-
-  return array('at_base' => 'at_base') + $return;
 }
 
 /**
