@@ -28,6 +28,31 @@ Module that defines dependencies[] = at_base in info file, can autoload the clas
 /path/to/module/lib/Controller/PageX.php -> \Drupal\module_name\Controller\PageX
 ````
 
+Service Container
+=======
+
+Dependency help our code clean, testable…
+
+The Service Container in this module is built on Pimple.
+
+If we defined
+
+````yaml
+# /at_base/tests/atest_base/config/services.yml
+services:
+  atest_base.service_1:
+    class: 'Drupal\atest_base\Service_1'
+  atest_base.service_2:
+    class: 'Drupal\atest_base\Service_2'
+    arguments: ['@atest_base.service_1']
+````
+
+We can get instance of service_2:
+
+````php
+$service_2 = at_container('atest_base.service_2');
+````
+
 Useful functions:
 =======
 
@@ -35,7 +60,6 @@ Useful functions:
 2. at_cache()
 3. at_modules()
 4. at_debug()
-5. at_container()
 
 Config files:
 =======
