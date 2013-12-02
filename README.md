@@ -5,6 +5,17 @@ at_base
 
 Base module to provide helper functions for at_* modules.
 
+Install
+=====
+
+Requires:
+
+  - https://github.com/mustangostang/spyc.git v0.5.1
+  - https://github.com/fabpot/Pimple.git Version v1.1.0
+
+If you install the module with Drush, the libraries will be automatically
+downloaded.
+
 Autoload
 =====
 
