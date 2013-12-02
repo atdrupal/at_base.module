@@ -46,6 +46,16 @@ class At_Container {
 
     // Config Pimple
     $this->container[$service_name] = function($container) use ($definition) {
+      $definition['arguments'] = !empty($definition['arguments']) ? $definition['arguments'] : array();
+
+      // Make arguments are objects.
+      foreach (array_keys($definition['arguments']) as $k) {
+        if ('@' === substr($definition['arguments'][$k], 0, 1)) {
+          $a_service_name = substr($definition['arguments'][$k], 1);
+          $definition['arguments'][$k] = $container[$a_service_name];
+        }
+      }
+
       if (!empty($definition['factory_service'])) {
         $f = $container[$definition['factory_service']];
         return call_user_func_array(
