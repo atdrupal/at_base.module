@@ -76,6 +76,6 @@ function at_base_user_logout($account) {
  */
 function at_base_modules_enabled($modules) {
   // Refresh the cached-modules
-  at_modules('at_autoload', TRUE);
-  at_id(new \Drupal\at_autoload\CustomMapping())->rebuild();
+  at_modules('at_base', TRUE);
+  \Drupal\at_base\Autoloader::rebuildMapping();
 }

@@ -18,7 +18,7 @@ class Autoloader {
     if (!$this->apc) return;
     if ($this->reset) return;
 
-    $return = apc_fetch($this->cache_id)
+    $return = apc_fetch($this->cache_id);
     if (FALSE !== $return) {
       return $file;
     }
@@ -58,7 +58,7 @@ class Autoloader {
     $path = str_replace('\\', DIRECTORY_SEPARATOR, $this->class);
     $path = DRUPAL_ROOT . "/%s/lib/{$path}.php";
 
-    foreach (at_modules('at_base') as $module) {
+    foreach (array('at_base' => 'at_base') + at_modules('at_base') as $module) {
       if (strpos($path, "Drupal/{$module}/") !== FALSE) {
         $real_path = str_replace('Drupal' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR, '', $path);
         $file = sprintf($real_path, drupal_get_path('module', $module));
