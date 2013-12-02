@@ -6,3 +6,4 @@ package = Andy Truong
 
 files[] = tests/at_base.test
 files[] = tests/at_base.cache.test
+files[] = tests/at_base.autoload.test
