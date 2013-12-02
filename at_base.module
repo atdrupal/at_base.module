@@ -23,6 +23,13 @@ function at_id($x) {
 }
 
 /**
+ * Service container.
+ */
+function at_container($service_name) {
+  return at_id(new \Drupal\at_base\At_Container())->get($service_name);
+}
+
+/**
  * Helper function for quick cache get/set.
  *
  * @code
@@ -133,11 +140,4 @@ function at_valid($key) {
   $c = strtoupper($key);
   if (defined($c)) return (boolean) constant($c);
   return (boolean) variable_get($key, FALSE);
-}
-
-/**
- * Service container.
- */
-function at_container($service_name) {
-  return at_id(new \Drupal\at_base\At_Container())->get($service_name);
 }
