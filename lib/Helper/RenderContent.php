@@ -17,7 +17,7 @@ namespace Drupal\at_base\Helper;
  *  );
  *  return at_id(new \Drupal\at_base\Helper\RenderContent($data))->render();
  *
- * @see  \Drupal\at_route\Controller\DefaultController
+ * @see  \Drupal\at_base\Controller\DefaultController
  * @see  \Drupal\at_theming\Hook\BlockView
  * @see  \At_Base_Helper_RenderContent_TestCase::testRenderContent()
  */

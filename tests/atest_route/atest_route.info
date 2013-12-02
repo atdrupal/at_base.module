@@ -1,0 +1,7 @@
+name = ATest Route
+core = 7.x
+
+hidden = TRUE
+
+dependencies[] = at_base
+dependencies[] = at_theming

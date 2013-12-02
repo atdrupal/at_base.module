@@ -1,6 +1,19 @@
 <?php
 
-use Drupal\at_base\Cache\Warmer as CacheWarmer;
+use \Drupal\at_base\Cache\Warmer as CacheWarmer;
+use \Drupal\at_base\Route\Importer as RouteImporter;
+use \Drupal\at_base\Hook\Menu as HookMenu;
+
+/**
+ * Implements hook_menu()
+ */
+function at_base_menu() {
+  require_once dirname(__FILE__) . '/lib/Hook/Menu.php';
+  require_once dirname(__FILE__) . '/lib/Route/Importer.php';
+
+  return at_id(new HookMenu($importer = new RouteImporter()))
+          ->getMenuItems();
+}
 
 /**
  * Implements hook_flush_caches()
