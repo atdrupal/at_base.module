@@ -104,23 +104,17 @@ function at_cache_flush_by_tags($tags = array()) {
  * @todo check module_implements_write_cache()
  * @see system_list()
  */
-function at_modules($base_module = 'at_base', $reset = FALSE) {
+function at_modules($base_module = 'at_base', $config_file = '', $reset = FALSE) {
   $options['ttl'] = '+ 1 year';
   $options['bin'] = 'cache_bootstrap';
-  $options['cache_id'] = "at_base:modules:{$base_module}";
+  $options['cache_id'] = "at_base:modules:{$base_module}:{$config_file}";
   $options['reset'] = $reset;
 
-  return array('at_base' => 'at_base') + at_cache($options, function() use ($base_module) {
-    $modules[] = $base_module;
-    foreach (system_list('module_enabled') as $name => $project) {
-      if (isset($project->info['dependencies'])) {
-        if (in_array($base_module, $project->info['dependencies'])) {
-          $modules[] = $name;
-        }
-      }
-    }
-    return $modules;
+  $return = at_cache($options, function() use ($base_module, $config_file) {
+    return at_id(new \Drupal\at_base\ModuleFetcher($base_module, $config_file))->fetch();
   });
+
+  return array('at_base' => 'at_base') + $return;
 }
 
 /**
