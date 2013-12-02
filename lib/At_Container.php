@@ -19,6 +19,11 @@ class At_Container {
     }
   }
 
+  /**
+   * Get a service by name.
+   *
+   * @param string $service_name
+   */
   public function get($service_name) {
     if (empty($this->container[$service_name])) {
       $this->set($service_name);
@@ -27,6 +32,11 @@ class At_Container {
     return $this->container[$service_name];
   }
 
+  /**
+   * Main method for configure service in Pimple.
+   *
+   * @param string $service_name
+   */
   private function set($service_name) {
     // Get definition
     $definition = at_id(new Definition())->get('$service_name');
@@ -49,6 +59,9 @@ class At_Container {
     };
   }
 
+  /**
+   * A service depends on others, this method to resolve them.
+   */
   private function resolveDefinition($definition) {
     if (!empty($definition['arguments'])) {
       $this->resolveDependencies($definition['arguments']);
@@ -63,6 +76,11 @@ class At_Container {
     }
   }
 
+  /**
+   * Resolve array of dependencies.
+   *
+   * @see resolveDefinition()
+   */
   private function resolveDependencies($array) {
     foreach ($array as $item) {
       if (is_array($item)) $this->resolveDependencies($item);
