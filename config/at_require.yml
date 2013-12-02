@@ -1,4 +1,10 @@
 projects:
+  spyc:
+    type: library
+    download:
+      type: git
+      url: https://github.com/mustangostang/spyc.git
+      branch: 0.5.1
   pimple:
     type: library
     download:
