@@ -1,7 +1,7 @@
 <?php
 namespace Drupal\at_base;
 
-use Drupal\at_base\At_Container\Definition;
+use Drupal\at_base\Container\Definition;
 
 /**
  * @todo support tags
