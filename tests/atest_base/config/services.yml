@@ -1,11 +1,12 @@
 services:
   atest_base.service_1:
-    class: Drupal\atest_base\Service_1
-  database:
-    class: Drupal\Core\Database\Connection
-    factory_class: Drupal\Core\Database\Database
-    factory_method: getConnection
-    arguments: [default]
-  cache.backend.database:
-    class: Drupal\Core\Cache\DatabaseBackendFactory
-    arguments: ['@database']
+    class: 'Drupal\atest_base\Service_1'
+  atest_base.service_2:
+    class: 'Drupal\atest_base\Service_2'
+    arguments: ['@atest_base.service_1']
+  atest_base.factory_3:
+    class: 'Drupal\atest_base\Service_3_Factory'
+  atest_base.service_3:
+    class: 'Drupal\atest_base\Service_3'
+    factory_class: class: Drupal\atest_base\Service_3_Factory
+    factory_method: getService
