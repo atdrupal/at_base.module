@@ -28,6 +28,31 @@ Module that defines dependencies[] = at_base in info file, can autoload the clas
 /path/to/module/lib/Controller/PageX.php -> \Drupal\module_name\Controller\PageX
 ````
 
+Config — at_config()
+====
+
+Simple API to read config values from YAML files.
+
+If you have a yaml file like this (atest_config depends on at_base)
+
+````yaml
+# at_base/tests/atest_config/config/config.yml
+foo: bar
+````
+
+You can read foo value with this code:
+````php
+echo at_config('atest_config')->get('foo'); // bar
+````
+
+Yaml file can import data from other files:
+
+````yaml
+imports:
+  - { resource: to_be_imported.yml }
+foo: bar
+````
+
 Service Container
 =======
 
