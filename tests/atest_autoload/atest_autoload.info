@@ -6,6 +6,5 @@ core = 7.x
 hidden = TRUE
 
 dependencies[] = at_base
-dependencies[] = at_autoload
 
 psr4[Drupal\atest_autoload\Other\Prefix] = 'classes'

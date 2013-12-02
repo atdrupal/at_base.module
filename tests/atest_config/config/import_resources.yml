@@ -1,0 +1,6 @@
+imports:
+  - { resource: to_be_imported.yml }
+array_data:
+  a: A
+  b: B
+foo: bar

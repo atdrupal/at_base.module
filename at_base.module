@@ -1,5 +1,8 @@
 <?php
 
+use \Drupal\at_base\Config\Resolver as ConfigResolver;
+use \Drupal\at_base\Config\Config;
+
 require_once dirname(__FILE__) . '/lib/Autoloader.php';
 require_once dirname(__FILE__) . '/at_base.hooks.inc';
 
@@ -115,6 +118,26 @@ function at_cache_flush_by_tags($tags = array()) {
     ->condition('tag', $tags)
     ->execute()
   ;
+}
+
+/**
+ * Usage
+ *
+ * // Lookup at /path/to/my_module/config/config.yml > webmaster
+ * $webmaster_email = at_config('my_module')->get('webmaster');
+ *
+ * // Lookup at /path/to/my_module/config/templates.yml > email.notify
+ * $mail_notify_template = at_config('my_module', 'templates')->get('email.notify');
+ *
+ * @param  string  $module    Module name
+ * @param  string  $id        Config ID
+ * @param  boolean $refresh   Build new cache
+ * @return Config
+ * @todo   Will remove when at_di.module is ready.
+ */
+function at_config($module, $id = 'config', $refresh = FALSE) {
+  $resolver =  new ConfigResolver();
+  return new Config($module, $id, $resolver);
 }
 
 /**

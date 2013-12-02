@@ -1,0 +1,6 @@
+name = ATest Config
+description = "Fixture for at_config.module"
+version = 7.x-1.0-dev
+core = 7.x
+
+dependencies[] = at_base
