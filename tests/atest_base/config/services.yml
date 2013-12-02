@@ -8,5 +8,5 @@ services:
     class: 'Drupal\atest_base\Service_3_Factory'
   atest_base.service_3:
     class: 'Drupal\atest_base\Service_3'
-    factory_class: class: Drupal\atest_base\Service_3_Factory
+    factory_class: Drupal\atest_base\Service_3_Factory
     factory_method: getService

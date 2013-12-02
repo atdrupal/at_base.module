@@ -2,11 +2,20 @@
 namespace Drupal\at_base\At_Container;
 
 class Definition {
-  public function getDefinition($service_name) {
+  private $service_name;
+
+  public function __construct($service_name) {
+    $this->service_name = $service_name;
+  }
+
+  public function get() {
+    $that = $this;
+    $service_name = $this->service_name;
     $options = array('ttl' => '+ 1 year', 'cache_id' => "at_base:services:{$service_name}");
-    return at_cache($options, function() use ($service_name) {
-      $services = Drupal\at_base\At_Container::getDefinitions();
-      return $services[$service_name];
+
+    return at_cache($options, function() use ($that, $service_name) {
+      $services = $that->getDefinitions();
+      return isset($services[$service_name]) ? $services[$service_name] : FALSE;
     });
   }
 

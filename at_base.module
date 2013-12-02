@@ -43,7 +43,7 @@ function at_id($x) {
  * Service container.
  */
 function at_container($service_name) {
-  return at_id(new \Drupal\at_base\At_Container())->get($service_name);
+  return at_id(new \Drupal\at_base\Container())->get($service_name);
 }
 
 /**

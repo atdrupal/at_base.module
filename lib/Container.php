@@ -9,7 +9,7 @@ use Drupal\at_base\At_Container\Definition;
  *
  * @see at_container()
  */
-class At_Container {
+class Container {
   private static $container;
 
   public function __construct() {
@@ -39,10 +39,12 @@ class At_Container {
    */
   private function set($service_name) {
     // Get definition
-    $definition = at_id(new Definition())->get('$service_name');
+    if (!$definition = at_id(new Definition($service_name))->get()) {
+      throw new \Exception("Missing service: {$service_name}");
+    }
 
     // Resolve dependencies
-    $this->resolveDefinition();
+    $this->resolveDefinition($definition);
 
     // Config Pimple
     $this->container[$service_name] = function($container) use ($definition) {
@@ -59,12 +61,12 @@ class At_Container {
       if (!empty($definition['factory_service'])) {
         $f = $container[$definition['factory_service']];
         return call_user_func_array(
-          array($f, $definition['factory_method'])
-          $definition['arguments'] ? $definition['arguments'] : array()
+          array($f, $definition['factory_method']),
+          $definition['arguments']
         );
       }
 
-      $class = new ReflectionClass($definition['class']);
+      $class = new \ReflectionClass($definition['class']);
       return $class->newInstanceArgs($definition['arguments']);
     };
   }
