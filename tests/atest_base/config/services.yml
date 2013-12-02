@@ -1,0 +1,11 @@
+services:
+  atest_base.service_1:
+    class: Drupal\atest_base\Service_1
+  database:
+    class: Drupal\Core\Database\Connection
+    factory_class: Drupal\Core\Database\Database
+    factory_method: getConnection
+    arguments: [default]
+  cache.backend.database:
+    class: Drupal\Core\Cache\DatabaseBackendFactory
+    arguments: ['@database']

@@ -1,0 +1,7 @@
+projects:
+  pimple:
+    type: library
+    download:
+      type: git
+      url: https://github.com/fabpot/Pimple.git
+      revision: v1.1.0
