@@ -79,7 +79,7 @@ class Config {
     }
 
     if (!isset($this->config_data[$key])) {
-      throw new NotFoundException();
+      throw new NotFoundException("{$this->module}.{$this->id}#{$key}");
     }
 
     return $this->config_data[$key];
