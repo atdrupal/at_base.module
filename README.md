@@ -78,6 +78,30 @@ We can get instance of service_2:
 $service_2 = at_container('atest_base.service_2');
 ````
 
+Easy Routing
+=======
+
+Faster way to define menu item in Drupal 7:
+
+```yaml
+# %atest_route/config/route.yml
+routes:
+  atest_route/drupal:
+    title: Hello Drupal
+    page callback: atest_route_page_callback
+    page arguments: ['Andy Truong']
+    access arguments: ['access content']
+  atest_route/controller:
+    title: Hello
+    access arguments: ['access content']
+    controller: [\Drupal\atest_route\Controller\HelloController, helloAction, {name: 'Andy Truong'}]
+  atest_route/string_template:
+    title: String Template
+    access arguments: ['access content']
+    page callback: at_theming_render_string_template
+    page arguments: ['Hello {{ name }}', {name: Andy Truong}]
+```
+
 Useful functions:
 =======
 
