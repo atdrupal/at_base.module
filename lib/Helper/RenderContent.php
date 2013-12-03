@@ -65,7 +65,7 @@ class RenderContent {
 
   private function renderTemplateFile() {
     return array(
-      '#markup' => at_container('twig')->render($this->data['template_file'], $this->data['variables']),
+      '#markup' => at_container('twig')->render(at_id(new \Drupal\at_base\Helper\RealPath($this->data['template_file']))->get(), $this->data['variables']),
       '#attached' => $this->processAttachedAsset(),
     );
   }
