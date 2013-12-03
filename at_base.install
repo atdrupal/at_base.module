@@ -19,10 +19,3 @@ function at_base_schema() {
   );
   return $schema;
 }
-
-/**
- * Install schema.
- */
-function at_base_update_7001() {
-  drupal_install_schema('at_base');
-}
