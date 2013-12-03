@@ -6,7 +6,7 @@ class BlockView {
   private $key;
 
   public function __construct($delta) {
-    list($module, $key) = explode('___', $delta);
+    list($module, $key) = explode('|', $delta);
     $this->module = $module;
     $this->key = $key;
   }
