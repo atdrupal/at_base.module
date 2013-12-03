@@ -4,6 +4,9 @@ description = "Provide helper functions for at_* modules"
 core = 7.x
 package = Andy Truong
 
+dependencies[] = entity
+dependencies[] = views
+
 files[] = tests/at_base.test
 files[] = tests/at_base.cache.test
 files[] = tests/at_base.autoload.test
