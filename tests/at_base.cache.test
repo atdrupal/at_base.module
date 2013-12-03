@@ -6,7 +6,7 @@
 class At_Base_Cache_TestCase extends DrupalWebTestCase {
   public function getInfo() {
     return array(
-      'name' => 'AT Cache',
+      'name' => 'AT Base: Cache',
       'description' => 'Make sure the at_cache() is working correctly.',
       'group' => 'AT Base'
     );
@@ -108,7 +108,7 @@ class At_Base_Cache_TestCase extends DrupalWebTestCase {
 class At_Base_Cache_Tag_TestCase extends DrupalWebTestCase {
   public function getInfo() {
     return array(
-      'name' => 'AT Cache Tags',
+      'name' => 'AT Base: Cache Tags',
       'description' => 'Make sure the at_cache() is working correctly.',
       'group' => 'AT Base'
     );
@@ -133,6 +133,3 @@ class At_Base_Cache_Tag_TestCase extends DrupalWebTestCase {
     $this->assertNotEqual($data_1, $data_3);
   }
 }
-
-// class At_Base_Cache_Warming extends DrupalWebTestCase {
-// }
