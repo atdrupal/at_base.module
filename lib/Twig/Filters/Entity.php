@@ -2,6 +2,13 @@
 
 namespace Drupal\at_base\Twig\Filters;
 
+/**
+ * Handler for drupalEntity Twig filter.
+ *
+ * Usage:
+ *
+ *     {{ 'user:1' | drupalEntity }}
+ */
 class Entity {
 
   /**
