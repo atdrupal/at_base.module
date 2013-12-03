@@ -18,7 +18,7 @@ namespace Drupal\at_base\Helper;
  *  return at_id(new \Drupal\at_base\Helper\RenderContent($data))->render();
  *
  * @see  \Drupal\at_base\Controller\DefaultController
- * @see  \Drupal\at_theming\Hook\BlockView
+ * @see  \Drupal\at_base\Hook\BlockView
  * @see  \At_Base_Helper_RenderContent_TestCase::testRenderContent()
  */
 class RenderContent {
@@ -58,7 +58,7 @@ class RenderContent {
     $variables = !empty($this->data['variables']) ? $this->data['variables'] : array();
 
     return array(
-      '#markup' => at_theming_render_string_template($this->data['template_string'], $variables),
+      '#markup' => at_container('twig_string')->render($this->data['template_string'], $variables),
       '#attached' => $this->processAttachedAsset(),
     );
   }

@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * cache_get()/cache_set() does not work on unit test cases.
+ */
+class At_Twig_TestCase extends DrupalWebTestCase {
+  public function getInfo() {
+    return array(
+      'name' => 'AT Base: Twig Service',
+      'description' => 'Test Twig service',
+      'group' => 'AT Base'
+    );
+  }
+
+  public function setUp() {
+    parent::setUp();
+  }
+
+  public function testServiceContainer() {
+    $twig = at_container('twig');
+    $this->assertEquals('Twig_Environment', get_class($twig));
+  }
+
+  public function testDefaultFilters() {
+    $twig = at_container('twig');
+    $filters = $twig->getFilters();
+
+    foreach (array('render', 't', 'url', '_filter_autop') as $filter) {
+      $this->assertTrue(isset($filters[$filters]), "Found filter {$filter}");
+    }
+  }
+}
