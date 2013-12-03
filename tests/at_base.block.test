@@ -14,15 +14,13 @@ class At_Block_TestCase extends DrupalWebTestCase {
   }
 
   public function testRoutes() {
-    $twig = at_container('twig_string');
-
-    $block_1 = $twig->render("{{ 'at_base:atest_block|hi_s'  | drupalBlock }}");
-    $block_2 = $twig->render("{{ 'at_base:atest_block|hi_t'  | drupalBlock }}");
-    $block_3 = $twig->render("{{ 'at_base:atest_block|hi_ts' | drupalBlock }}");
+    $block_1 = at_container('twig_string')->render("{{ 'at_base:atest_block|hi_s'  | drupalBlock(TRUE) }}");
+    $block_2 = at_container('twig_string')->render("{{ 'at_base:atest_block|hi_t'  | drupalBlock(TRUE) }}");
+    $block_3 = at_container('twig_string')->render("{{ 'at_base:atest_block|hi_ts' | drupalBlock(TRUE) }}");
 
     $expected = 'Hello Andy Truong';
-    $this->assertEquals($expected, trim($block_1));
-    $this->assertEquals($expected, trim($block_2));
-    $this->assertEquals($expected, trim($block_3));
+    $this->assertEqual($expected, trim($block_1));
+    $this->assertEqual($expected, trim($block_2));
+    $this->assertEqual($expected, trim($block_3));
   }
 }
