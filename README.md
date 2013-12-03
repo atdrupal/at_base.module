@@ -21,7 +21,8 @@ Autoload
 
 Support PSR-4 autloading for Drupal 7 modules.
 
-Module that defines dependencies[] = at_base in info file, can autoload the classes:
+Module that defines dependencies[] = at_base in info file, can autoload the
+classes:
 
 ````
 /path/to/module/lib/Class.php -> \Drupal\module_name\Class
@@ -144,5 +145,6 @@ Config files:
 =======
 
 1. ./config/services.yml — Services
-2. ./config/at_require.yml — External libraries
 2. ./config/blocks.yml — Services
+3. ./config/routes.yml — Services
+4. ./config/require.yml — External libraries

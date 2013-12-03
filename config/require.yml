@@ -11,3 +11,9 @@ projects:
       type: git
       url: https://github.com/fabpot/Pimple.git
       revision: v1.1.0
+  twig:
+    type: library
+    download:
+      type: git
+      url: https://github.com/fabpot/Twig.git
+      branch: v1.14.2
