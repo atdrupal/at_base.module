@@ -4,8 +4,6 @@ services:
   atest_base.service_2:
     class: 'Drupal\atest_base\Service_2'
     arguments: ['@atest_base.service_1']
-  atest_base.factory_3:
-    class: 'Drupal\atest_base\Service_3_Factory'
   atest_base.service_3:
     class: 'Drupal\atest_base\Service_3'
     factory_class: Drupal\atest_base\Service_3_Factory

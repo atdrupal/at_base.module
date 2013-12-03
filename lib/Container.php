@@ -66,6 +66,14 @@ class Container {
         );
       }
 
+      if (!empty($definition['factory_class'])) {
+        $f = new $definition['factory_class'];
+        return call_user_func_array(
+          array($f, $definition['factory_method']),
+          $definition['arguments']
+        );
+      }
+
       $class = new \ReflectionClass($definition['class']);
       return $class->newInstanceArgs($definition['arguments']);
     };

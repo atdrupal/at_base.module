@@ -1,5 +1,5 @@
 <?php
-namespace Drupal\at_base\At_Container;
+namespace Drupal\at_base\Container;
 
 class Definition {
   private $service_name;
@@ -23,7 +23,7 @@ class Definition {
     $options = array('ttl' => '+ 1 year', 'cache_id' => 'at_base:services');
     return at_cache($options, function() {
       $services = array();
-      foreach (at_modules('at_base', 'services') as $module_name) {
+      foreach (array('at_base' => 'at_base') + at_modules('at_base', 'services') as $module_name) {
         $services += at_config($module_name, 'services')->get('services');
       }
       return $services;
