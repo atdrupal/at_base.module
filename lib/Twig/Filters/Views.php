@@ -50,7 +50,7 @@ class Views {
       module_load_include('inc', 'views', 'theme/theme');
       $vars['view'] = $view;
       template_preprocess_views_view($vars);
-      return at_theming_render_template($template_file, $vars);
+      return at_container('twig')->render($template_file, $vars);
     }
 
     return $view->preview($display_id, $args);

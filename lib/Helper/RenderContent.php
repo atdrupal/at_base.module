@@ -64,12 +64,8 @@ class RenderContent {
   }
 
   private function renderTemplateFile() {
-    if (!function_exists('at_theming_render_template')) {
-      throw new \Exception('Missing at_theming module');
-    }
-
     return array(
-      '#markup' => at_theming_render_template($this->data['template_file'], $this->data['variables']),
+      '#markup' => at_container('twig')->render($this->data['template_file'], $this->data['variables']),
       '#attached' => $this->processAttachedAsset(),
     );
   }
