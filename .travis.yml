@@ -11,9 +11,9 @@ mysql:
 before_script:
  - export DRUPAL=`pwd`'/drupal/'
  - export PHP=`which php`
- - curl -sS https://gist.github.com/andytruong/8ab6499fc984d05f56bb/raw/at_test.bash | bash
- - cd drupal
- - drush en --yes simpletest at_base atest_base
+ - curl -sS https://gist.github.com/andytruong/677b2ad8e907d9e6832c/raw/travis.bash | bash
+ - drush en -y simpletest at_base
+ - drush at_require at_base
  - drush cc all
  - sleep 3
 
