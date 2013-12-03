@@ -10,7 +10,7 @@ class At_Block_TestCase extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp('atest_route');
+    parent::setUp('atest_block');
   }
 
   public function testRoutes() {

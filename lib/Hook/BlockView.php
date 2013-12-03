@@ -13,6 +13,7 @@ class BlockView {
 
   public function view () {
     $info = $this->getInfo();
+
     return array(
       'subject' => at_id(new \Drupal\at_base\Helper\RenderContent($info['subject']))->render(),
       'content' => at_id(new \Drupal\at_base\Helper\RenderContent($info['content']))->render(),
