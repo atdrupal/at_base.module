@@ -9,12 +9,39 @@ mysql:
   encoding: utf8
 
 before_script:
- - export DRUPAL=`pwd`'/drupal/'
- - export PHP=`which php`
- - curl -sS https://gist.github.com/andytruong/677b2ad8e907d9e6832c/raw/travis.bash | bash
- - drush en -y simpletest at_base
- - drush at_require at_base
- - drush cc all
- - sleep 3
+  # ---------------------
+  # Variables
+  # ---------------------
+  - cd ../..
+  - export DRUPAL=`pwd`'/drupal/'
+  # ---------------------
+  # Setup DB
+  # ---------------------
+  - mysql -e 'create database drupal;'
+  - pear channel-discover pear.drush.org
+  # ---------------------
+  # Install Drush
+  # ---------------------
+  - pear install drush/drush-5.8.0
+  - phpenv rehash
+  # ---------------------
+  # Make & Install Drupal core
+  # ---------------------
+  - drush dl --yes drupal-7.24
+  - mv drupal-7.24 $DRUPAL
+  - cd $DRUPAL
+  - drush si testing --db-url=mysql://root:@localhost/drupal --account-mail='travis@mailnator.com' --yes
+  # ---------------------
+  # Prepare env for the module
+  # ---------------------
+  - mv ../andytruong/* sites/all/modules/
+  - drush vset --yes file_temporary_path /tmp
+  - drush en -y simpletest at_base
+  - drush at_require at_base
+  # ---------------------
+  # No cache data
+  # ---------------------
+  - drush cc all
+  - sleep 3
 
 script: drush test-run 'AT Base'
