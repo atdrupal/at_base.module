@@ -13,7 +13,7 @@ class Container {
   private static $container;
 
   public function __construct() {
-    if (!$container) {
+    if (!self::$container) {
       require_once DRUPAL_ROOT . '/sites/all/libraries/pimple/lib/Pimple.php';
       self::$container = new \Pimple();
     }
