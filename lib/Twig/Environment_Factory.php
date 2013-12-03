@@ -68,7 +68,7 @@ class Environment_Factory {
     $loader = new \Twig_Loader_Filesystem(DRUPAL_ROOT);
 
     // Add @module shortcuts
-    foreach (at_modules('at_theming') as $module_name) {
+    foreach (array('at_base' => 'at_base') + at_modules('at_base') as $module_name) {
       $dir = DRUPAL_ROOT . '/' . drupal_get_path('module', $module_name);
       if (is_dir($dir)) {
         $loader->addPath($dir, $module_name);
