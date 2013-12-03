@@ -1,0 +1,19 @@
+blocks:
+  hi_s:
+    info: 'Hello String'
+    subject: 'Hello String'
+    cache: DRUPAL_CACHE_PER_ROLE
+    content: 'Hello Andy Truong'
+  hi_t:
+    info: 'Hello template'
+    subject: 'Hello template'
+    cache: DRUPAL_CACHE_PER_PAGE
+    content:
+      template: '@atest_block/templates/block/hello_template.html.twig'
+      variables: {name: 'Andy Truong'}
+  hi_ts:
+    info: 'Hello Template String'
+    subject: 'Hello Template String'
+    content:
+      template_string: "Hello {{ name }}"
+      variables: {name: 'Andy Truong'}

@@ -98,8 +98,38 @@ routes:
   atest_route/string_template:
     title: String Template
     access arguments: ['access content']
-    page callback: at_theming_render_string_template
-    page arguments: ['Hello {{ name }}', {name: Andy Truong}]
+    template_string: 'Hello {{ name }}'
+    variables: {name: Andy Truong}
+```
+
+Easy Block
+=======
+
+Blocks can be defined in yaml config style:
+
+```yaml
+# %module_name/config/blocks.yml
+blocks:
+  hello_string:
+    info: 'Hello String'
+    subject: 'Hello String'
+    cache: DRUPAL_CACHE_PER_ROLE
+    content: 'Hello Andy Truong'
+  hello_template:
+    info: 'Hello template'
+    subject: 'Hello template'
+    cache: DRUPAL_CACHE_PER_PAGE
+    content:
+      template: '@module_name/templates/block/hello_template.html.twig'
+      variables: {name: 'Andy Truong'}
+  hello_template_string:
+    info: 'Hello Template String'
+    subject: 'Hello Template String'
+    content:
+      template_string: "{{ 'slider_front' | drupalView }}"
+      attached:
+        css: ['%theme/css/slider.css']
+        js: ['//cdnjs.cloudflare.com/ajax/libs/jquery.cycle/3.03/jquery.cycle.all.min.js']
 ```
 
 Useful functions:
@@ -115,3 +145,4 @@ Config files:
 
 1. ./config/services.yml — Services
 2. ./config/at_require.yml — External libraries
+2. ./config/blocks.yml — Services

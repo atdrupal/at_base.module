@@ -10,3 +10,5 @@ files[] = tests/at_base.autoload.test
 files[] = tests/at_base.config.test
 files[] = tests/at_base.service_container.test
 files[] = tests/at_base.route.test
+files[] = tests/at_base.block.test
+files[] = tests/at_base.twig.test
