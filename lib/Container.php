@@ -15,7 +15,7 @@ class Container {
   public function __construct() {
     if (!$container) {
       require_once DRUPAL_ROOT . '/sites/all/libraries/pimple/lib/Pimple.php';
-      $this->container = new \Pimple();
+      self::$container = new \Pimple();
     }
   }
 
@@ -25,11 +25,11 @@ class Container {
    * @param string $service_name
    */
   public function get($service_name) {
-    if (empty($this->container[$service_name])) {
+    if (empty(self::$container[$service_name])) {
       $this->set($service_name);
     }
 
-    return $this->container[$service_name];
+    return self::$container[$service_name];
   }
 
   /**
@@ -47,7 +47,7 @@ class Container {
     $this->resolveDefinition($definition);
 
     // Config Pimple
-    $this->container[$service_name] = function($container) use ($definition) {
+    self::$container[$service_name] = function($container) use ($definition) {
       $definition['arguments'] = !empty($definition['arguments']) ? $definition['arguments'] : array();
 
       // Make arguments are objects.
