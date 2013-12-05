@@ -130,6 +130,7 @@ class At_Base_Cache_Tag_TestCase extends DrupalWebTestCase {
 
     $data_3 = at_cache($o, function(){ return 'Data #3 — must be called.'; });
 
+    $this->assertEqual($data_1, $data_2);
     $this->assertNotEqual($data_1, $data_3);
   }
 }
