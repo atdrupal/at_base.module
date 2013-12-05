@@ -6,6 +6,10 @@ use \Drupal\at_base\Config\Config;
 require_once dirname(__FILE__) . '/lib/Autoloader.php';
 require_once dirname(__FILE__) . '/at_base.hooks.inc';
 
+if (!defined('DRUPAL_ROOT')) {
+  define('DRUPAL_ROOT', getcwd());
+}
+
 /**
  * Simple PSR-4 autoloader.
  *  /path/to/%module/Class.php -> \Drupal\%module\Class
