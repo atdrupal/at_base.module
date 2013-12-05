@@ -27,7 +27,7 @@ before_script:
   # ---------------------
   # Make & Install Drupal core
   # ---------------------
-  - drush dl --yes drupal-6.29
+  - drush dl -y drupal-6.29
   - mv drupal-6.29 $DRUPAL
   - cd $DRUPAL
   - drush si testing --db-url=mysql://root:@localhost/drupal --account-mail='travis@mailnator.com' --yes
@@ -35,7 +35,9 @@ before_script:
   # Prepare env for the module
   # ---------------------
   - mv ../andytruong/* sites/all/modules/
-  - drush vset --yes file_temporary_path /tmp
+  - drush dl -y simpletest-2.11
+  - patch -p0 < sites/all/modules/simpletest/D6-core-simpletest.patch
+  - drush vset -y file_temporary_path /tmp
   - drush en -y simpletest at_base
   - drush at_require at_base
   # ---------------------
