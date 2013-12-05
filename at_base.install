@@ -4,6 +4,20 @@
  */
 
 /**
+ * Implements hook_install()
+ */
+function at_base_install() {
+  drupal_install_schema('at_base');
+}
+
+/**
+ * Implements hook_uninstall()
+ */
+function at_base_uninstall() {
+  drupal_uninstall_schema('at_base');
+}
+
+/**
  * Implements hook_schema()
  */
 function at_base_schema() {
