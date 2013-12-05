@@ -127,14 +127,10 @@ class Cache {
    * @see   at_base_flush_caches()
    */
   public function addTag($tag) {
-    return db_insert('at_base_cache_tag')
-      ->fields(array(
-          'bin' => $this->bin,
-          'cid' => $this->id,
-          'tag' => $tag,
-      ))
-      ->execute()
-    ;
+    db_query(
+      "INSERT INTO {at_base_cache_tag} (bin, cid, tag) VALUES ('%s', '%s', '%s')",
+      $this->bin, $this->id, $tag
+    );
   }
 
   public function removeAllTags() {
