@@ -28,7 +28,7 @@ class Autoloader {
     if (!$this->apc) return;
 
     // apc_fetch return FALSE on failure, that's why we cast FALSE to 0.
-    apc_store($cid, $data ? $data : 0);
+    apc_store($this->cache_id, $data ? $data : 0);
   }
 
   public function getFile() {
