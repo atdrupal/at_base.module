@@ -82,15 +82,25 @@ class Autoloader {
     }
   }
 
+  private function fetchModuleInfo($module_name) {
+    $options = array('cache_id' => "at_base:moduleInfo:{$module_name}", 'ttl' => '+ 1 year');
+    return at_cache($options, function() use ($module_name) {
+      $file = drupal_get_path('module', $module_name) . '/' . $module_name . '.info';
+      return drupal_parse_info_file($file);
+    });
+  }
+
   /**
    * @see at_base_flush_caches()
    */
   public static function rebuildMapping() {
     $mapping = array();
 
-    foreach (system_list('module_enabled') as $module_name => $project) {
-      if (!empty($project->info['psr4'])) {
-        foreach ($project->info['psr4'] as $ns_prefix => $dir) {
+    foreach (module_list as $module_name) {
+      $project = $this->fetchModuleInfo($module_name);
+
+      if (!empty($project['psr4'])) {
+        foreach ($project['psr4'] as $ns_prefix => $dir) {
           $dir = drupal_get_path('module', $module_name) . '/' . $dir;
           $mapping[$ns_prefix] = $dir;
         }
