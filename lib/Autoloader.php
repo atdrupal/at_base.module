@@ -71,6 +71,9 @@ class Autoloader {
   }
 
   private function fetchMapping() {
+    $mapping = variable_get('at_autoload_mapping', array());
+    drush_print_r($mapping);
+
     foreach (variable_get('at_autoload_mapping', array()) as $ns_prefix => $dir) {
       if (0 === strpos($this->class, $ns_prefix)) {
         $cut_class = substr($this->class, strlen($ns_prefix) + 1);
@@ -96,8 +99,8 @@ class Autoloader {
   public static function rebuildMapping() {
     $mapping = array();
 
-    foreach (module_list as $module_name) {
-      $project = $this->fetchModuleInfo($module_name);
+    foreach (module_list() as $module_name) {
+      $project = self::fetchModuleInfo($module_name);
 
       if (!empty($project['psr4'])) {
         foreach ($project['psr4'] as $ns_prefix => $dir) {

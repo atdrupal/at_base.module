@@ -11,9 +11,13 @@ class At_Autoload_TestCase extends DrupalWebTestCase {
 
   protected function setUp() {
     parent::setUp('atest_autoload');
+
+    // Make sure the class mapping is updated
+    require_once dirname(dirname(__FILE__)) . '/lib/Autoloader.php';
+    \Drupal\at_base\Autoloader::rebuildMapping();
   }
 
-  public function testAutoloader() {
+  public function testUsage() {
     $this->assertTrue(class_exists('Drupal\atest_autoload\Hello'));
     $this->assertTrue(class_exists('Drupal\atest_autoload\Other\Prefix\Hi'));
   }
