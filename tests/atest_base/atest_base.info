@@ -1,7 +1,7 @@
 name = ATest Base
 description = Make sure at_base.module is working
 package = Testing
-core = 7.x
+core = 6.x
 hidden = TRUE
 
 dependencies[] = at_base

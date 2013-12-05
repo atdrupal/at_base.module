@@ -1,5 +1,5 @@
 name = ATest Route
-core = 7.x
+core = 6.x
 
 hidden = TRUE
 
