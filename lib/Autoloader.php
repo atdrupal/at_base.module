@@ -87,6 +87,7 @@ class Autoloader {
    */
   public static function rebuildMapping() {
     $mapping = array();
+
     foreach (system_list('module_enabled') as $module_name => $project) {
       if (!empty($project->info['psr4'])) {
         foreach ($project->info['psr4'] as $ns_prefix => $dir) {

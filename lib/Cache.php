@@ -138,11 +138,8 @@ class Cache {
   }
 
   public function removeAllTags() {
-    return db_delete('at_base_cache_tag')
-      ->condition('bin', $this->bin)
-      ->condition('cid', $this->id)
-      ->execute()
-    ;
+    $sql = "DELETE FROM {at_base_cache_tag} WHERE bin = '%s' AND cid = '%s'";
+    db_query($sql, $this->bin, $this->id);
   }
 
   /**
@@ -151,11 +148,7 @@ class Cache {
    * @param  string $tag
    */
   public function removeTag($tag) {
-    return db_delete('at_base_cache_tag')
-      ->condition('bin', $this->bin)
-      ->condition('cid', $this->id)
-      ->condition('tag', $tag)
-      ->execute()
-    ;
+    $sql = "DELETE FROM {at_base_cache_tag} WHERE bin = '%s' AND cid = '%s' AND tag = '%s'";
+    db_query($sql, $this->bin, $this->id, $tag);
   }
 }

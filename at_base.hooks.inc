@@ -23,7 +23,7 @@ function at_base_menu() {
  */
 function at_base_flush_caches() {
   // Flush tagged cache
-  db_delete('at_base_cache_tag')->execute();
+  db_query("DELETE FROM {at_base_cache_tag} WHERE 1");
 
   // Refresh the cached-modules
   at_modules('at_base', TRUE);

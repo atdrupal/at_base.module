@@ -104,20 +104,12 @@ function at_cache_flush_by_tags($tags = array()) {
     return;
   }
 
-  $items = db_select('at_base_cache_tag', 'atag')
-            ->fields('atag', array('bin', 'cid'))
-            ->condition('tag', $tags)
-            ->execute()
-            ->fetchAll();
-
-  foreach ($items as $item) {
+  $items = db_query("SELECT bin, cid FROM {at_base_cache_tag} WHERE tag = '%s'");
+  while ($item = db_fetch_object($items)) {
     cache_clear_all($item->cid, $item->bin);
   }
 
-  db_delete('at_base_cache_tag')
-    ->condition('tag', $tags)
-    ->execute()
-  ;
+  db_query("DELETE FROM {at_base_cache_tag} WHERE tag IN (". db_placeholders($tags, 'text') .")");
 }
 
 /**

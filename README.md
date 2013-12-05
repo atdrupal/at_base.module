@@ -1,7 +1,7 @@
 at_base
 =======
 
-[![Build Status](https://secure.travis-ci.org/andytruong/at_base.png?branch=7.x-2.x)](http://travis-ci.org/andytruong/at_base)
+[![Build Status](https://secure.travis-ci.org/andytruong/at_base.png?branch=6.x-2.x)](http://travis-ci.org/andytruong/at_base?branch=6.x-2.x)
 
 Base module to provide helper functions for at_* modules.
 
