@@ -72,7 +72,6 @@ class Autoloader {
 
   private function fetchMapping() {
     $mapping = variable_get('at_autoload_mapping', array());
-    drush_print_r($mapping);
 
     foreach (variable_get('at_autoload_mapping', array()) as $ns_prefix => $dir) {
       if (0 === strpos($this->class, $ns_prefix)) {
