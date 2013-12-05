@@ -27,8 +27,8 @@ before_script:
   # ---------------------
   # Make & Install Drupal core
   # ---------------------
-  - drush dl --yes drupal-7.24
-  - mv drupal-7.24 $DRUPAL
+  - drush dl --yes drupal-6.29
+  - mv drupal-6.29 $DRUPAL
   - cd $DRUPAL
   - drush si testing --db-url=mysql://root:@localhost/drupal --account-mail='travis@mailnator.com' --yes
   # ---------------------
