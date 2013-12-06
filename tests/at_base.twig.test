@@ -25,7 +25,7 @@ class At_Twig_TestCase extends DrupalWebTestCase {
     $twig = at_container('twig');
     $filters = $twig->getFilters();
 
-    foreach (array('render', 't', 'url', '_filter_autop', 'drupalBlock', 'drupalEntity', 'drupalView', 'at_config') as $filter) {
+    foreach (array('render', 't', 'url', '_filter_autop', 'drupalBlock', 'drupalView', 'at_config') as $filter) {
       $this->assertTrue(isset($filters[$filter]), "Found filter {$filter}");
     }
   }

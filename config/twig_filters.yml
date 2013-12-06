@@ -7,7 +7,6 @@ twig_filters:
 
   # Our family
   - [drupalBlock, [\Drupal\at_base\Twig\Filters\Block, render]]
-  - [drupalEntity, [\Drupal\at_base\Twig\Filters\Entity, render]]
   - [drupalView, [\Drupal\at_base\Twig\Filters\Views, render]]
 
   # {{ "%module:%id:%key" }}

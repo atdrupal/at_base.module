@@ -8,3 +8,5 @@ services:
     factory_class: '\Drupal\at_base\Twig\Environment_Factory'
     factory_method: getStringService
     arguments: ['@twig']
+  block_render:
+    class: '\Drupal\at_base\Service\Block_Render'
