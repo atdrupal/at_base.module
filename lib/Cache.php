@@ -28,6 +28,13 @@ class Cache {
   private $reset;
 
   /**
+   * Rebuild data if cached data is empty/false/null.
+   *
+   * @var boolean
+   */
+  private $allow_empty;
+
+  /**
    * Attached tags.
    *
    * @var array
@@ -52,6 +59,7 @@ class Cache {
       'id' => '',
       'ttl' => '+ 15 minutes',
       'reset' => FALSE,
+      'allow_empty' => TRUE,
       'tags' => array());
 
     foreach ($_keys as $k => $v) {
@@ -80,7 +88,12 @@ class Cache {
   public function get() {
     if (!$this->reset) {
       if ($cache = cache_get($this->id, $this->bin)) {
-        return $cache->data;
+        if (!empty($cache->data) {
+          return $cache->data;
+        }
+        elseif ($this->allow_empty) {
+          return $cache->data;
+        }
       }
     }
     return $this->fetch();
