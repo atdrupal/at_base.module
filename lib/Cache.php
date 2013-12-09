@@ -86,14 +86,12 @@ class Cache {
    * @return  mixed
    */
   public function get() {
-    if (!$this->reset) {
-      if ($cache = cache_get($this->id, $this->bin)) {
-        if (!empty($cache->data) {
-          return $cache->data;
-        }
-        elseif ($this->allow_empty) {
-          return $cache->data;
-        }
+    if (!$this->reset && $cache = cache_get($this->id, $this->bin)) {
+      if (!empty($cache->data)) {
+        return $cache->data;
+      }
+      elseif ($this->allow_empty) {
+        return $cache->data;
       }
     }
     return $this->fetch();
