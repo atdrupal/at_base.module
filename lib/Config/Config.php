@@ -41,7 +41,7 @@ class Config {
 
   public function setId($id) {
     if (!empty($this->config_data)) {
-      unset($this->config_data);
+      $this->config_data = NULL;
     }
 
     $this->id = $id;
@@ -53,7 +53,7 @@ class Config {
 
   public function setModule($module) {
     if (!empty($this->config_data)) {
-      unset($this->config_data);
+      $this->config_data = NULL;
     }
 
     if (!module_exists($module) && !drupal_get_path('module', $module)) {
