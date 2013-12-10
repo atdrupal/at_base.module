@@ -8,6 +8,10 @@ use \Drupal\at_base\Drush\Command\AtRequire as AtRequireCommand;
 use \Drupal\at_base\Drush\Command\AtRequireSpyc as AtRequireSpycCommand;
 use \Drupal\at_base\Drush\Command\AtRequire\DependencyFetcher;
 
+if (!class_exists('DrushMakeProject_Library') {
+  return;
+}
+
 /**
  * Implements hook_drush_command()
  */
