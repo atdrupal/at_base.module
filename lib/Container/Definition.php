@@ -9,17 +9,16 @@ class Definition {
   }
 
   public function get() {
-    $that = $this;
     $service_name = $this->service_name;
     $options = array('ttl' => '+ 1 year', 'cache_id' => "at_base:services:{$service_name}");
 
-    return at_cache($options, function() use ($that, $service_name) {
-      $services = $that->getDefinitions();
+    return at_cache($options, function() use ($service_name) {
+      $services = Definition::getAll();
       return isset($services[$service_name]) ? $services[$service_name] : FALSE;
     });
   }
 
-  public function getDefinitions() {
+  public static function getAll() {
     $options = array('ttl' => '+ 1 year', 'cache_id' => 'at_base:services');
     return at_cache($options, function() {
       $services = array();

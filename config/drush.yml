@@ -9,3 +9,11 @@ commands:
       drush at_require module_name: Download dependencies for specific module
     aliases: ['at-require', 'atr']
     bootstrap: DRUSH_BOOTSTRAP_FULL
+  at_service:
+    callback: drush_at_services
+    description: List all services
+    examples:
+      drush at_service: List all services
+      drush at_service server_name: View definition of service_name.
+    aliases: ['at-service', 'ats']
+    bootstrap: DRUSH_BOOTSTRAP_FULL
