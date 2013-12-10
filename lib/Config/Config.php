@@ -35,24 +35,27 @@ class Config {
     $this->resolver = $resolver;
   }
 
+  public function getId() {
+    return $this->id;
+  }
+
+  public function setId($id) {
+    unset($this->config_data);
+    $this->id = $id;
+  }
+
+  public function getModule() {
+    return $this->module;
+  }
+
   public function setModule($module) {
+    unset($this->config_data);
+
     if (!module_exists($module) && !drupal_get_path('module', $module)) {
       throw new \Exception("Invalid module: {$module}");
     }
 
     $this->module = $module;
-  }
-
-  public function setId($id) {
-    $this->id = $id;
-  }
-
-  public function getId() {
-    return $this->id;
-  }
-
-  public function getModule() {
-    return $this->module;
   }
 
   public function getPath() {
