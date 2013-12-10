@@ -79,6 +79,9 @@ function at_base_modules_enabled($modules) {
   // Refresh the cached-modules
   at_modules('at_base', TRUE);
   \Drupal\at_base\Autoloader::rebuildMapping();
+
+  // Rebuild module weight
+  at_id(new \Drupal\at_base\Helper\Module_Weight())->execute();
 }
 
 /**
