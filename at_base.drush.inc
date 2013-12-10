@@ -1,15 +1,7 @@
 <?php
 
-/**
- * @file ./drush/at_reqruire.inc
- */
-
-use \Drupal\at_base\Drush\Command\AtRequire as AtRequireCommand;
-use \Drupal\at_base\Drush\Command\AtRequireSpyc as AtRequireSpycCommand;
-use \Drupal\at_base\Drush\Command\AtRequire\DependencyFetcher;
-
-if (!class_exists('DrushMakeProject_Library') {
-  return;
+if (class_exists('DrushMakeProject_Library') {
+  require_once dirname(__FILE__) . '/drush/at_require.inc';
 }
 
 /**
@@ -30,52 +22,4 @@ function at_base_drush_command() {
     'bootstrap' => DRUSH_BOOTSTRAP_FULL,
   );
   return $commands;
-}
-
-class DrushMakeProject_AtRequire_Library extends \DrushMakeProject_Library {
-  /**
-   * Override default value of parent.
-   */
-  protected function generatePath() {
-   return parent::generatePath($base = FALSE);
-  }
-}
-
-/**
- * Callback for at_require command.
- */
-function drush_at_require($module = 'all') {
-  $command = new AtRequireCommand($module);
-  $command->execute();
-}
-
-/**
- * Implements drush_hook_COMMAND_pre_validate()
- */
-function drush_at_require_pm_enable_pre_validate($module) {
-  if (!is_file(DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php')) {
-    if (!function_exists('yaml_parse')) {
-      drush_at_require_spyc();
-    }
-  }
-
-  if (module_exists($module)) {
-    return;
-  }
-
-  drush_at_require($module);
-}
-
-function drush_at_require_spyc() {
-  $name = 'spyc';
-  $info = array(
-    'type' => 'library',
-    'download' => array(
-      'type' => 'git',
-      'url' => 'https://github.com/mustangostang/spyc.git',
-      'branch' => '0.5.1',
-    ),
-  );
-
-  at_id(new DependencyFetcher($name, $info))->fetch();
 }
