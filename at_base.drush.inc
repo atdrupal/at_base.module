@@ -4,6 +4,12 @@ use \Drupal\at_base\Helper\ConstantParser;
 require_once dirname(__FILE__) . '/at_base.module';
 require_once dirname(__FILE__) . '/drush/at_services.inc';
 
+function _drush_at_check_yml_reader() {
+  if (function_exists('yaml_parse')) return;
+  if (is_file(DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php')) return;
+  drush_at_require_spyc();
+}
+
 /**
  * Implements hook_drush_command()
  */
@@ -26,5 +32,9 @@ if (class_exists('DrushMakeProject_Library')) {
 else {
   function drush_at_require() {
     drush_print_r('at_require depends on make feature of Drush, which introduced in 5.x');
+  }
+
+  function drush_at_require_spyc() {
+    return drush_at_require();
   }
 }
