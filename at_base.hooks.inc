@@ -22,19 +22,7 @@ function at_base_menu() {
  * @tag autoload
  */
 function at_base_flush_caches() {
-  // Flush tagged cache
-  db_delete('at_base_cache_tag')->execute();
-
-  // Refresh the cached-modules
-  at_modules('at_base', TRUE);
-
-  // Rebuild the class mapping
-  \Drupal\at_base\Autoloader::rebuildMapping();
-
-  // Flush file-path caching
-  if (function_exists('apc_clear_cache')) {
-    apc_clear_cache('user');
-  }
+  at_id(new \Drupal\at_base\Hook\Flush_Cache())->execute();
 }
 
 /**
