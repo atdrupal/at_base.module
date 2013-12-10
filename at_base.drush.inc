@@ -16,16 +16,19 @@ function _drush_at_check_yml_reader() {
 function at_base_drush_command() {
   _drush_at_check_yml_reader();
 
-  foreach (array('at_base' => 'at_base') + at_modules('at_base', 'drush') as $module) {
-    foreach ($config = at_config($module, 'drush')->get('commands') as $command => $definition) {
-      if (!empty($definition['bootstrap'])) {
-        $definition['bootstrap'] = at_id(new ConstantParser($definition['bootstrap']))->parse();
+  return at_cache(array('cache_id' => 'atDrushCommands'), function() {
+    $modules = array('at_base' => 'at_base') + at_modules('at_base', 'drush');
+    foreach ($modules as $module) {
+      foreach ($config = at_config($module, 'drush')->get('commands') as $command => $definition) {
+        if (!empty($definition['bootstrap'])) {
+          $definition['bootstrap'] = at_id(new ConstantParser($definition['bootstrap']))->parse();
+        }
+        $commands[$command] = $definition;
       }
-      $commands[$command] = $definition;
     }
-  }
 
-  return $commands;
+    return $commands;
+  });
 }
 
 if (class_exists('DrushMakeProject_Library')) {
