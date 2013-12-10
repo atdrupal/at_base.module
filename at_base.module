@@ -137,8 +137,16 @@ function at_cache_flush_by_tags($tags = array()) {
  * @todo   Will remove when at_di.module is ready.
  */
 function at_config($module, $id = 'config', $refresh = FALSE) {
-  $resolver =  new ConfigResolver();
-  return new Config($module, $id, $resolver);
+  static $config;
+
+  if (!$config) {
+    $config = new \Drupal\at_base\Config\Config(new ConfigResolver);
+  }
+
+  $config->setModule($module);
+  $config->setId($id);
+
+  return $config;
 }
 
 /**
