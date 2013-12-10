@@ -58,6 +58,7 @@ function at_container($service_name) {
  *   $options['id'] = "node:{$nid}";
  *   $options['file'] = '/path/to/file.php;
  *   $options['reset'] = FALSE;
+ *   $options['allow_empty'] = TRUE;
  *   $options['tags'] = array('demo', 'testing');
  *
  *   // Use case 1:

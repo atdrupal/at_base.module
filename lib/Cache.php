@@ -15,10 +15,18 @@ class Cache {
   private $id;
 
   /**
-   * [$ttl description]
-   * @var [type]
+   * Time to live.
+   *
+   * @var string
    */
   private $ttl;
+
+  /**
+   * Rebuild data if cached data is empty/false/null.
+   *
+   * @var boolean
+   */
+  private $allow_empty;
 
   /**
    * Flag to rebuild cache data by pass.
@@ -36,12 +44,14 @@ class Cache {
 
   /**
    * Callable string or closure.
+   *
    * @var mixed
    */
   private $callback;
 
   /**
    * Callback arguments.
+   *
    * @var array
    */
   private $arguments;
@@ -78,10 +88,9 @@ class Cache {
    * @return  mixed
    */
   public function get() {
-    if (!$this->reset) {
-      if ($cache = cache_get($this->id, $this->bin)) {
-        return $cache->data;
-      }
+    if (!$this->reset && $cache = cache_get($this->id, $this->bin)) {
+      if (!empty($cache->data)) return $cache->data;
+      if ($this->allow_empty)   return $cache->data;
     }
     return $this->fetch();
   }
