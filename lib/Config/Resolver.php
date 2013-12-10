@@ -98,6 +98,10 @@ function at_config_read_yml($path) {
   }
 
   if (!is_file(DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php')) {
+    if (function_exists('drush_print_r')) {
+      drush_print_r(debug_backtrace());
+    }
+
     throw new \RuntimeException('Missing library: spyc');
   }
 
