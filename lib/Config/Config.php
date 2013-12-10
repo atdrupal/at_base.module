@@ -40,7 +40,7 @@ class Config {
   }
 
   public function setId($id) {
-    unset($this->config_data);
+    @unset($this->config_data);
     $this->id = $id;
   }
 
@@ -49,7 +49,7 @@ class Config {
   }
 
   public function setModule($module) {
-    unset($this->config_data);
+    @unset($this->config_data);
 
     if (!module_exists($module) && !drupal_get_path('module', $module)) {
       throw new \Exception("Invalid module: {$module}");
