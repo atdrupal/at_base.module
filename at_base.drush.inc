@@ -14,6 +14,8 @@ function _drush_at_check_yml_reader() {
  * Implements hook_drush_command()
  */
 function at_base_drush_command() {
+  _drush_at_check_yml_reader();
+
   foreach (array('at_base' => 'at_base') + at_modules('at_base', 'drush') as $module) {
     foreach ($config = at_config($module, 'drush')->get('commands') as $command => $definition) {
       if (!empty($definition['bootstrap'])) {
