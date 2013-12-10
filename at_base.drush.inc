@@ -1,22 +1,19 @@
 <?php
+use \Drupal\at_base\Helper\ConstantParser;
 
 /**
  * Implements hook_drush_command()
  */
 function at_base_drush_command() {
-  $commands['at_require'] = array(
-    'callback' => 'drush_at_require',
-    'description' => 'Help download all missing dependencies.',
-    'arguments' => array(
-      'module' => 'Download dependencies for specific module',
-    ),
-    'examples' => array(
-      'drush at_require' => 'Download dependencies for all modules',
-      'drush at_require module_name' => 'Download dependencies for specific module',
-    ),
-    'aliases' => array('at-require', 'atr'),
-    'bootstrap' => DRUSH_BOOTSTRAP_FULL,
-  );
+  foreach (array('at_base' => 'at_base') + at_modules('at_base', 'drush') as $module) {
+    foreach ($config = at_config($module, 'drush')->get('commands') as $command) {
+      if (!empty($command['bootstrap'])) {
+        $command['bootstrap'] = at_id(new ConstantParser($command['bootstrap']))->parse();
+      }
+      $commands[] = $command;
+    }
+  }
+
   return $commands;
 }
 

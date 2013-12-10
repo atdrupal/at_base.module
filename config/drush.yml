@@ -1,0 +1,11 @@
+commands:
+  at_require:
+    callback: drush_at_require
+    description: Help download all missing dependencies.
+    arguments:
+      module: Download dependencies for specific module
+    examples:
+      drush at_require: Download dependencies for all modules
+      drush at_require module_name: Download dependencies for specific module
+    aliases: ['at-require', 'atr']
+    bootstrap: DRUSH_BOOTSTRAP_FULL
