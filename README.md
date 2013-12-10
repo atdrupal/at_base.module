@@ -140,6 +140,7 @@ Useful functions:
 2. at_cache()
 3. at_modules()
 4. at_debug()
+5. at_timer()
 
 Config files:
 =======

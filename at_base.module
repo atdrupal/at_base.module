@@ -178,3 +178,22 @@ function at_valid($key) {
   if (defined($c)) return (boolean) constant($c);
   return (boolean) variable_get($key, FALSE);
 }
+
+/**
+ * Simpe function for benchmark.
+ *
+ * Usage:
+ *
+ *  $callback = function() { $config = at_container('config'); };
+ *  print_r(at_timer($callback, 1000));
+ *
+ * @param  Closure  $callback
+ * @param  integer $times
+ */
+function at_timer($callback, $times = 1) {
+  timer_start('at_timer');
+  for ($i = 1; $i <= $times; ++$i) {
+    $callback();
+  }
+  return timer_stop('at_timer');
+}
