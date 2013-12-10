@@ -16,27 +16,29 @@ class DrushMakeProject_AtRequire_Library extends \DrushMakeProject_Library {
   }
 }
 
+function _drush_at_require_check_yml_reader() {
+  if (function_exists('yaml_parse')) return;
+  if (is_file(DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php')) return;
+
+  drush_at_require_spyc();
+}
+
 /**
  * Callback for at_require command.
  */
 function drush_at_require($module = 'all') {
-  $command = new AtRequireCommand($module);
-  $command->execute();
+  _drush_at_require_check_yml_reader();
+  at_id(new AtRequireCommand($module))->execute();
 }
 
 /**
  * Implements drush_hook_COMMAND_pre_validate()
  */
 function drush_at_require_pm_enable_pre_validate($module) {
-  if (!is_file(DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php')) {
-    if (!function_exists('yaml_parse')) {
-      drush_at_require_spyc();
-    }
-  }
+  _drush_at_require_check_yml_reader();
 
-  if (module_exists($module)) {
-    return;
-  }
+  // Module was already processed, no need redo
+  if (module_exists($module)) return;
 
   drush_at_require($module);
 }
