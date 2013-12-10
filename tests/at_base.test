@@ -100,3 +100,26 @@ class At_Base_Helper_RealPath_TestCase extends DrupalWebTestCase {
     $this->assertEqual($expected, $actual);
   }
 }
+
+class At_Base_Module_Weight_TestCase extends DrupalWebTestCase {
+  public function setUp() {
+    parent::setUp('atest_base');
+  }
+
+  public function getInfo() {
+    return array(
+      'name' => 'AT Base: Module Weight',
+      'description' => 'Module weight can be updated correctly',
+      'group' => 'AT Base',
+    );
+  }
+
+  public function testWeight() {
+    at_base_flush_caches();
+
+    $query = "SELECT weight FROM {system} WHERE name = :name";
+    $weight = db_query($query, array(':name' => 'atest_base'))->fetchColumn();
+
+    $this->assertEqual(10, $weight);
+  }
+}

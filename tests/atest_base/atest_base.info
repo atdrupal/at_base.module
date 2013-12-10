@@ -7,3 +7,5 @@ hidden = TRUE
 dependencies[] = at_base
 
 files[] = atest_base.module
+
+weight = 10
