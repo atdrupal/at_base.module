@@ -29,15 +29,22 @@ class Config {
    */
   private $config_data;
 
-  public function __construct($module, $id = 'config', ResolverInterface $resolver) {
+  public function __construct(ResolverInterface $resolver) {
+    $this->id = 'config';
+    $resolver->setConfig($this);
+    $this->resolver = $resolver;
+  }
+
+  public function setModule($module) {
     if (!module_exists($module) && !drupal_get_path('module', $module)) {
       throw new \Exception("Invalid module: {$module}");
     }
 
     $this->module = $module;
+  }
+
+  public function setId($id) {
     $this->id = $id;
-    $resolver->setConfig($this);
-    $this->resolver = $resolver;
   }
 
   public function getId() {
