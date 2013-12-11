@@ -18,6 +18,7 @@ function at_base_drush_command() {
 
   return at_cache(array('cache_id' => 'atDrushCommands'), function() {
     $modules = array('at_base' => 'at_base') + at_modules('at_base', 'drush');
+
     foreach ($modules as $module) {
       foreach ($config = at_config($module, 'drush')->get('commands') as $command => $definition) {
         if (!empty($definition['bootstrap'])) {

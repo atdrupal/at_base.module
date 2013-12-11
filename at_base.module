@@ -93,6 +93,7 @@ function at_cache($options, $callback, $arguments = array()) {
 
   if (isset($options['cache_id'])) {
     $options['id'] = $options['cache_id'];
+    unset($options['cache_id']);
   }
 
   $cache->setOptions($options);
@@ -168,7 +169,7 @@ function at_config($module, $id = 'config', $refresh = FALSE) {
 function at_modules($base_module = 'at_base', $config_file = '', $reset = FALSE) {
   $options['ttl'] = '+ 1 year';
   $options['bin'] = 'cache_bootstrap';
-  $options['cache_id'] = "at_base:modules:{$base_module}:{$config_file}";
+  $options['cache_id'] = "at_modules:{$base_module}:{$config_file}";
   $options['reset'] = $reset;
 
   return at_cache($options, function() use ($base_module, $config_file) {

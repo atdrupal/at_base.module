@@ -97,6 +97,7 @@ class Cache {
       if (!empty($cache->data)) return $cache->data;
       if ($this->allow_empty)   return $cache->data;
     }
+
     return $this->fetch();
   }
 
