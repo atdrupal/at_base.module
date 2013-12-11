@@ -114,6 +114,12 @@ function at_cache_flush_by_tags($tags = array()) {
 
   foreach ($items as $item) {
     cache_clear_all($item->cid, $item->bin);
+
+    if (function_exists('apc_store')) {
+      if (apc_exists("{$item->bin}.{$item->cid}")) {
+        apc_delete("{$item->bin}.{$item->cid}");
+      }
+    }
   }
 
   db_delete('at_base_cache_tag')

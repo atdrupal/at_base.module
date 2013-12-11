@@ -123,6 +123,25 @@ class At_Base_Cache_TestCase extends DrupalWebTestCase {
     $this->assertNotEqual($time_1, $time_2);
   }
 
+  public function testAPCStorage() {
+    if (!function_exists('apc_fetch')) return;
+
+    $o = array(
+      'cache_id' => 'at_test:time:' . __FUNCTION__,
+      'ttl' => '+ 15 minutes',
+      'bin' => 'cache',
+      'apc' => TRUE,
+      'reset' => FALSE,
+    );
+
+    $time_0 = time();
+    $time_1 = at_cache($o, function () use ($time) { return $time; });
+    $time_2 = apc_fetch("{$o['bin']}.{$o['cache_id']}");
+
+    $this->assertEqual($time_0, $time_1);
+    $this->assertEqual($time_1, $time_2);
+  }
+
   /**
    * Helper method for testObjectCallback().
    * @return int

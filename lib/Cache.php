@@ -50,6 +50,13 @@ class Cache {
   private $callback;
 
   /**
+   * Flag to store cache data in apc.
+   *
+   * @var boolean
+   */
+  private $apc = FALSE;
+
+  /**
    * Callback arguments.
    *
    * @var array
@@ -61,6 +68,7 @@ class Cache {
       'bin' => 'cache',
       'id' => '',
       'ttl' => '+ 15 minutes',
+      'apc' => FALSE,
       'reset' => FALSE,
       'tags' => array());
 
@@ -76,6 +84,10 @@ class Cache {
       throw new \InvalidArgumentException('Please provide a valid cache ID');
     }
 
+    if ($this->apc && !function_exists('apc_store')) {
+      $this->apc = FALSE;
+    }
+
     // Allow dev to force rebuilding all caches on page
     if (defined('AT_DEV') && !empty($_GET['nocache'])) {
       $this->reset = TRUE;
@@ -88,12 +100,20 @@ class Cache {
    * @return  mixed
    */
   public function get() {
-    if (!$this->reset && $cache = cache_get($this->id, $this->bin)) {
+    if (!$this->reset && $cache = $this->getCache()) {
       if (!empty($cache->data)) return $cache->data;
       if ($this->allow_empty)   return $cache->data;
     }
 
     return $this->fetch();
+  }
+
+  private function getCache() {
+    if (!$this->apc) {
+      return cache_get($this->id, $this->bin);
+    }
+
+    return apc_fetch("{$this->bin}.{$this->id}");
   }
 
   /**
@@ -120,7 +140,15 @@ class Cache {
    * @param  mixed $data
    */
   protected function write($data) {
-    if (FALSE !== cache_set($this->id, $data, $this->bin, strtotime($this->ttl))) {
+    if ($this->apc) {
+      $result = apc_store("{$this->bin}.{$this->id}", $data, strtotime($this->ttl) - time());
+    }
+    else {
+      $result = cache_set($this->id, $data, $this->bin, strtotime($this->ttl));
+    }
+
+
+    if (FALSE !== $result) {
       $this->removeAllTags();
       if ($this->tags) {
         foreach ($this->tags as $tag) {
