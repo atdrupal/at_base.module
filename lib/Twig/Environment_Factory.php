@@ -22,13 +22,15 @@ class Environment_Factory {
   }
 
   public function getFileService($twig) {
-    $twig->setLoader($this->getFileLoader());
-    return $twig;
+    $service = clone $twig;
+    $service->setLoader($this->getFileLoader());
+    return $service;
   }
 
   public function getStringService($twig) {
-    $twig->setLoader(new \Twig_Loader_String());
-    return $twig;
+    $service = clone $twig;
+    $service->setLoader(new \Twig_Loader_String());
+    return $service;
   }
 
   private function fetchService() {
