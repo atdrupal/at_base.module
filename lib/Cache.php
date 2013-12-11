@@ -1,9 +1,6 @@
 <?php
 namespace Drupal\at_base;
 
-/**
- * Details for at_cache()
- */
 class Cache {
   /**
    * Cache bin
@@ -59,7 +56,7 @@ class Cache {
    */
   private $arguments;
 
-  public function setOptions($options = array()) {
+  public function __construct($options, $callback, $arguments = array()) {
     $_keys = array(
       'bin' => 'cache',
       'id' => '',
@@ -71,6 +68,9 @@ class Cache {
       $this->{$k} = isset($options[$k]) ? $options[$k] : $v;
     }
 
+    $this->callback = $callback;
+    $this->arguments = $arguments;
+
     // No cache_id, can not fetch, can not write, this function is useless.
     if (empty($this->id) || !is_string($this->id)) {
       throw new \InvalidArgumentException('Please provide a valid cache ID');
@@ -80,11 +80,6 @@ class Cache {
     if (defined('AT_DEV') && !empty($_GET['nocache'])) {
       $this->reset = TRUE;
     }
-  }
-
-  public function setCallback($callback, $arguments = array()) {
-    $this->callback = $callback;
-    $this->arguments = $arguments;
   }
 
   /**

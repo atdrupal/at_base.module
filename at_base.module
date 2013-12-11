@@ -84,22 +84,14 @@ function at_container($service_name) {
  * @todo   Note about AT_DEV constant
  */
 function at_cache($options, $callback, $arguments = array()) {
-  static $cache;
-
-  if (!$cache) {
-    require_once dirname(__FILE__) . '/lib/Cache.php';
-    $cache = new \Drupal\at_base\Cache();
-  }
+  require_once dirname(__FILE__) . '/lib/Cache.php';
 
   if (isset($options['cache_id'])) {
     $options['id'] = $options['cache_id'];
     unset($options['cache_id']);
   }
 
-  $cache->setOptions($options);
-  $cache->setCallback($callback, $arguments);
-
-  return $cache->get();
+  return at_id(new \Drupal\at_base\Cache($options, $callback, $arguments))->get();
 }
 
 /**
