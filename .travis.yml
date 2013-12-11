@@ -19,8 +19,6 @@ before_script:
   # ---------------------
   - mysql -e 'create database drupal;'
   - pear channel-discover pear.drush.org
-  # APC make things run faster
-  - echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   # ---------------------
   # Install Drush
   # ---------------------
