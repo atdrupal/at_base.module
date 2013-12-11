@@ -135,7 +135,7 @@ class At_Base_Cache_TestCase extends DrupalWebTestCase {
     );
 
     $time_0 = time();
-    $time_1 = at_cache($o, function () use ($time_0) { return $time_0; });
+    $time_1 = at_cache($o, function () use ($time) { return $time; });
     $time_2 = apc_fetch("{$o['bin']}.{$o['cache_id']}");
 
     $this->assertEqual($time_0, $time_1);
