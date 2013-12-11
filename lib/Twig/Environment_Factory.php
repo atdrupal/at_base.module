@@ -6,12 +6,7 @@ class Environment_Factory {
   private static $loader;
   private $options;
 
-  public function getStringService($twig) {
-    $twig->setLoader(new \Twig_Loader_String());
-    return $twig;
-  }
-
-  public function getService() {
+  public function getObject() {
     if (!self::$twig) {
       $this->options = array(
         'debug' => at_debug(),
@@ -23,9 +18,17 @@ class Environment_Factory {
       self::$twig = $this->fetchService();
     }
 
-    self::$twig->setLoader($this->getFileLoader());
-
     return self::$twig;
+  }
+
+  public function getFileService($twig) {
+    $twig->setLoader($this->getFileLoader());
+    return $twig;
+  }
+
+  public function getStringService($twig) {
+    $twig->setLoader(new \Twig_Loader_String());
+    return $twig;
   }
 
   private function fetchService() {
