@@ -46,6 +46,11 @@ class Container {
     // Resolve dependencies
     $this->resolveDefinition($definition);
 
+    // The service maybe defined in self::resolveDefinition()
+    if (isset(self::$container[$service_name])) {
+      return;
+    }
+
     // Config Pimple
     self::$container[$service_name] = function($container) use ($definition) {
       $definition['arguments'] = !empty($definition['arguments']) ? $definition['arguments'] : array();
