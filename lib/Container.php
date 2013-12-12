@@ -14,7 +14,7 @@ class Container {
 
   public function __construct() {
     if (!self::$container) {
-      require_once DRUPAL_ROOT . '/sites/all/libraries/pimple/lib/Pimple.php';
+      require_once at_library('pimple') . '/lib/Pimple.php';
       self::$container = new \Pimple();
     }
   }

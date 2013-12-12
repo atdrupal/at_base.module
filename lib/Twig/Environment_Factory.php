@@ -34,7 +34,7 @@ class Environment_Factory {
   }
 
   private function fetchService() {
-    require_once DRUPAL_ROOT . '/sites/all/libraries/twig/lib/Twig/Autoloader.php';
+    require_once at_library('twig') . '/lib/Twig/Autoloader.php';
 
     \Twig_Autoloader::register();
 
