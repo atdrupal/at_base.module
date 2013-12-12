@@ -178,9 +178,9 @@ function at_modules($base_module = 'at_base', $config_file = '', $reset = FALSE)
  * @return string
  */
 function at_library($name, $version = NULL) {
-  $paths = array('sites/all', conf_path());
+  $paths = array(conf_path(), 'sites/all');
   foreach ($paths as $path) {
-    $return = DRUPAL_ROOT . "/{$paths}/libraries/{$name}";
+    $return = DRUPAL_ROOT . "/{$path}/libraries/{$name}";
     if (!empty($version)) {
       $return .= "/{$version}";
     }
