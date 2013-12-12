@@ -171,6 +171,28 @@ function at_modules($base_module = 'at_base', $config_file = '', $reset = FALSE)
 }
 
 /**
+ * Generate path for library.
+ *
+ * @param  string $name
+ * @param  string $version
+ * @return string
+ */
+function at_library($name, $version = NULL) {
+  $paths = array('sites/all', conf_path());
+  foreach ($paths as $path) {
+    $return = DRUPAL_ROOT . "/{$paths}/libraries/{$name}";
+    if (!empty($version)) {
+      $return .= "/{$version}";
+    }
+
+    if (FALSE !== @fileowner($return)) {
+      return $return;
+    }
+  }
+  return FALSE;
+}
+
+/**
  * Check is Drupal system on dev or not.
  *
  * @return boolean
