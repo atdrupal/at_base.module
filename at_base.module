@@ -228,3 +228,55 @@ function at_timer($callback, $times = 1) {
   }
   return timer_stop('at_timer');
 }
+
+/**
+ * Wrapper for class based forms.
+ */
+function at_form($form, &$form_state) {
+  // Get the variables from arguments
+  $args       = func_get_args();
+  $form       = array_shift($args);
+  $form_state = array_shift($args);
+  $class      = array_shift($args);
+
+  // Build the form
+  $class = new \ReflectionClass($class);
+  $obj = $class->newInstanceArgs($args);
+  $obj->setForm($form);
+  $obj->setFormState($form_state);
+
+  $form = $obj->get();
+  $form['#at_form'] = array($class->getName(), $args);
+
+  return $form;
+}
+
+/**
+ * Wrapper for class based forms.
+ */
+function at_form_validate($form, &$form_state) {
+  // Build the form
+  list($class, $args) = $form['#at_form'];
+  $class = new \ReflectionClass($class);
+  $obj = $class->newInstanceArgs($args);
+  $obj->setForm($form);
+  $obj->setFormState($form_state);
+
+  // Do validate
+  $obj->validate();
+}
+
+/**
+ * Wrapper for class based forms.
+ */
+function at_form_submit($form, &$form_state) {
+  // Build the form
+  list($class, $args) = $form['#at_form'];
+  $class = new \ReflectionClass($class);
+  $obj = $class->newInstanceArgs($args);
+  $obj->setForm($form);
+  $obj->setFormState($form_state);
+
+  // Do validate
+  $obj->submit();
+}

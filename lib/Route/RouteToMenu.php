@@ -48,6 +48,7 @@ class RouteToMenu {
     if (!empty($this->menu_item['controller']))      $this->_prepareController();
     if (!empty($this->menu_item['template']))        $this->_prepareTemplateFile();
     if (!empty($this->menu_item['template_string'])) $this->_prepareTemplateString();
+    if (!empty($this->menu_item['form'])) $this->_prepareForm();
 
     return $this->menu_item;
   }
@@ -74,5 +75,12 @@ class RouteToMenu {
       !empty($this->menu_item['variables']) ? $this->menu_item['variables'] : array(),
       !empty($this->menu_item['attached']) ? $this->menu_item['attached'] : array(),
     );
+  }
+
+  private function _prepareForm() {
+    $this->menu_item['page callback'] = 'drupal_get_form';
+    $this->menu_item['page arguments'] = isset($this->menu_item['form arguments']) ? $this->menu_item['form arguments'] : array();
+    array_unshift($this->menu_item['page arguments'], $this->menu_item['form']);
+    array_unshift($this->menu_item['page arguments'], 'at_form');
   }
 }

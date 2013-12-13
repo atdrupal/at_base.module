@@ -58,3 +58,8 @@ routes:
         - misc/vertical-tabs.js
       library:
         - ['system', 'jquery.bbq']
+
+  atest_route/config:
+    access arguments: ['access content']
+    form: '\Drupal\at_base\Config\Admin_Form'
+    form arguments: [at_base, services, services]
