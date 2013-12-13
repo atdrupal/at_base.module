@@ -116,4 +116,8 @@ class Config {
   public function setAll($data) {
     $this->config_data = $data;
   }
+
+  public function write() {
+    $this->resolver->writeData($this->config_data);
+  }
 }

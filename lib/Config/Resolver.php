@@ -70,7 +70,7 @@ class Resolver implements ResolverInterface {
   }
 
   private function fetchFile($path) {
-    $return = at_config_read_yml($path);
+    $return = yaml_parse_file($path);
 
     if (empty($return['imports'])) {
       return $return;
@@ -95,30 +95,38 @@ class Resolver implements ResolverInterface {
 
     return $_return;
   }
+
+  public function writeData($data) {
+    $path = $this->getOverridePath(FALSE);
+    $data = yaml_emit($data);
+
+    @mkdir(dirname($path), 0777, TRUE);
+    $return = file_put_contents($path, $data);
+  }
 }
 
-/**
- * Read YAML file.
- *
- * @param  string $path Path to yaml file.
- * @return mixed
- */
-function at_config_read_yml($path) {
-  if (function_exists('yaml_parse')) {
-    return yaml_parse_file($path);
-  }
-
-  if (!is_file(DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php')) {
-    if (function_exists('drush_print_r')) {
-      drush_print_r(debug_backtrace());
+if (!function_exists('yaml_parse')) {
+  /**
+   * Read YAML file.
+   *
+   * @param  string $path Path to yaml file.
+   * @return mixed
+   */
+  function yaml_parse_file($path) {
+    if (!is_file(DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php')) {
+      throw new \RuntimeException('Missing library: spyc');
     }
 
-    throw new \RuntimeException('Missing library: spyc');
-  }
+    if (!function_exists('spyc_load_file')) {
+      require_once DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php';
+    }
 
-  if (!function_exists('spyc_load_file')) {
-    require_once DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php';
+    return spyc_load_file($path);
   }
+}
 
-  return spyc_load_file($path);
+if (!function_exists('yaml_emit')) {
+  function yaml_emit($data) {
+    return spyc_dump($data);
+  }
 }
