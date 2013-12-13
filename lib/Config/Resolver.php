@@ -44,7 +44,18 @@ class Resolver implements ResolverInterface {
    * [getOverridePath description]
    * @return [type] [description]
    */
-  public function getOverridePath() {
+  public function getOverridePath($check_exists = TRUE) {
+    $return = variable_get('file_private_path');
+    $return = dirname($return);
+    $return .= '/config';
+    $return .= '/' . $this->config->getModule();
+    $return .= '/' . $this->config->getId();
+    $return .= '.yml';
+    $return = DRUPAL_ROOT . '/' . $return;
+    if (!$check_exists) {
+      return $return;
+    }
+    return is_file($return) ? $return : FALSE;
   }
 
   /**
