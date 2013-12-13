@@ -98,10 +98,22 @@ class Config {
     return $this->config_data[$key];
   }
 
+  public function set($key, $data) {
+    if (!$this->config_data) {
+      $this->fetchData();
+    }
+
+    $this->config_data[$key] = $data;
+  }
+
   public function getAll() {
     if (!$this->config_data) {
       $this->fetchData();
     }
     return $this->config_data;
+  }
+
+  public function setAll($data) {
+    $this->config_data = $data;
   }
 }
