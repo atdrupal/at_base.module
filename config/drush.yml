@@ -17,3 +17,10 @@ commands:
       drush at_service server_name: View definition of service_name.
     aliases: ['at-service', 'ats']
     bootstrap: DRUSH_BOOTSTRAP_DRUPAL_FULL
+  'at_cache:clear':
+    callback: drush_at_cache_clear
+    description: Flush cache by tags
+    examples:
+      drush atcc at-config: Flush cached content tagged with at-config
+      drush atcc node user: Flush cached content tagged with node or user
+    aliases: ['atcc']

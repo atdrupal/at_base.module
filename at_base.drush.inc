@@ -3,6 +3,7 @@ use \Drupal\at_base\Helper\ConstantParser;
 
 require_once dirname(__FILE__) . '/at_base.module';
 require_once dirname(__FILE__) . '/drush/at_services.inc';
+require_once dirname(__FILE__) . '/drush/at_cache.inc';
 
 function _drush_at_check_yml_reader() {
   if (function_exists('yaml_parse')) return;
