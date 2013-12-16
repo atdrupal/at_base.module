@@ -102,14 +102,11 @@ class Cache {
    * @return mixed
    */
   public function fetch() {
-    if (is_callable($this->callback) || is_a($this->callback, 'Closure')) {
-      $return = call_user_func_array($this->callback, $this->arguments);
-    }
-    else {
+    if (!is_callable($this->callback)) {
       throw new \InvalidArgumentException('Invalid callback: ' . print_r($this->callback, TRUE));
     }
 
-    $this->write($return);
+    $this->write($return = call_user_func_array($this->callback, $this->arguments));
 
     return $return;
   }
