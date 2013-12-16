@@ -74,6 +74,7 @@ class Config {
     $resolver = $this->resolver;
     $options['cache_id'] = "ATConfig:{$this->module}:{$this->id}";
     $options['ttl'] = '+ 1 year';
+    $options['tags'] = array('at-config');
 
     $this->config_data = at_cache($options, function() use ($resolver) {
       return $resolver->fetchData();
