@@ -14,9 +14,9 @@ class At_Block_TestCase extends DrupalWebTestCase {
   }
 
   public function testRoutes() {
-    $block_1 = at_container('twig_string')->render("{{ 'at_base:atest_block|hi_s'  | drupalBlock(TRUE) }}");
-    $block_2 = at_container('twig_string')->render("{{ 'at_base:atest_block|hi_t'  | drupalBlock(TRUE) }}");
-    $block_3 = at_container('twig_string')->render("{{ 'at_base:atest_block|hi_ts' | drupalBlock(TRUE) }}");
+    $block_1 = \AT::twig_string()->render("{{ 'at_base:atest_block|hi_s'  | drupalBlock(TRUE) }}");
+    $block_2 = \AT::twig_string()->render("{{ 'at_base:atest_block|hi_t'  | drupalBlock(TRUE) }}");
+    $block_3 = \AT::twig_string()->render("{{ 'at_base:atest_block|hi_ts' | drupalBlock(TRUE) }}");
 
     $expected = 'Hello Andy Truong';
     $this->assertEqual($expected, trim($block_1));

@@ -53,13 +53,13 @@ class At_Twig_TestCase extends DrupalWebTestCase {
   }
 
   public function testTwigFilters() {
-    $output = at_container('twig_string')->render("{{ 'user:1' | drupalEntity }}");
+    $output = \AT::twig_string()->render("{{ 'user:1' | drupalEntity }}");
     $this->assertTrue(strpos($output, 'History'), 'Found text "History"');
     $this->assertTrue(strpos($output, 'Member for'), 'Found text: "Member for"');
   }
 
   public function testTwigStringLoader() {
-    $output = at_container('twig_string')->render('Hello {{ name }}', array('name' => 'Andy Truong'));
+    $output = \AT::twig_string()->render('Hello {{ name }}', array('name' => 'Andy Truong'));
     $this->assertEqual('Hello Andy Truong', $output, 'Template string is rendered correctly.');
   }
 }

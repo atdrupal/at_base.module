@@ -6,8 +6,6 @@ use Drupal\at_base\Container\Definition;
 /**
  * @todo support tags
  * @todo support calls
- *
- * @see at_container()
  */
 class Container {
   private static $container;
