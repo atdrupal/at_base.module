@@ -35,68 +35,59 @@ class RenderContent {
   }
 
   public function render() {
-    if (is_string($this->data)) {
-      return $this->data;
+    // Fetch content
+    if (is_string($this->data))                    return $this->data;
+    elseif (isset($this->data['template_string'])) $return = $this->renderTemplateString();
+    elseif (isset($this->data['template_file']))   $return = $this->renderTemplateFile();
+    elseif (isset($this->data['controller']))      $return = $this->renderController();
+    elseif (isset($this->data['form']))            $return = $this->renderForm();
+
+    // Invalid structure
+    if (empty($return)) throw new \Exception('Invalid data structure.');
+
+    // Attach assets
+    if (empty($this->data['attached'])) return $return;
+
+    if (is_string($return)) {
+      $return = array('#markup' => $return);
     }
 
-    if (isset($this->data['template_string'])) {
-      return $this->renderTemplateString();
-    }
-
-    if (isset($this->data['template_file'])) {
-      return $this->renderTemplateFile();
-    }
-
-    if (isset($this->data['controller'])) {
-      return $this->renderController();
-    }
-
-    throw new \Exception('Invalid data structure.');
-  }
-
-  private function renderTemplateString() {
-    $variables = !empty($this->data['variables']) ? $this->data['variables'] : array();
-
-    return array(
-      '#markup' => at_container('twig_string')->render($this->data['template_string'], $variables),
-      '#attached' => $this->processAttachedAsset(),
-    );
-  }
-
-  private function renderTemplateFile() {
-    return array(
-      '#markup' => at_container('twig')->render(at_id(new \Drupal\at_base\Helper\RealPath($this->data['template_file']))->get(), $this->data['variables']),
-      '#attached' => $this->processAttachedAsset(),
-    );
-  }
-
-  private function renderController() {
-    list($class, $action) = $this->data['controller'];
-
-    $return = array(
-      '#markup' => call_user_func(array(new $class(), $action)),
-      '#attached' => $this->processAttachedAsset(),
-    );
+    $return['#attached'] = isset($return['#attached'])
+                            ? array_merge_recursive($return['#attached'], $this->processAttachedAsset())
+                            : $this->processAttachedAsset();
 
     return $return;
   }
 
-  private function processAttachedAsset() {
-    if (empty($this->data['attached'])) return array();
+  private function renderTemplateString() {
+    $variables = !empty($this->data['variables']) ? $this->data['variables'] : array();
+    return \AT::twig_string()->render($this->data['template_string'], $variables);
+  }
 
+  private function renderTemplateFile() {
+    return \AT::twig()->render(at_id(new \Drupal\at_base\Helper\RealPath($this->data['template_file']))->get(), $this->data['variables']);
+  }
+
+  private function renderController() {
+    @list($class, $action, $arguments) = $this->data['controller'];
+    return call_user_func_array(array(new $class(), $action), !empty($arguments) ? $arguments : array());
+  }
+
+  private function renderForm() {
+    $args[] = 'at_form';
+    $args[] = $this->data['form'];
+    $args[] = isset($this->data['form arguments']) ? $this->data['form arguments'] : array();
+    return call_user_func_array('drupal_get_form', $args);
+  }
+
+  private function processAttachedAsset() {
     foreach (array_keys($this->data['attached']) as $type) {
       foreach ($this->data['attached'][$type] as $k => $item) {
         if (is_string($item)) {
-          $this->data['attached'][$type][$k] = $this->processAssetPath($item);
+          $this->data['attached'][$type][$k] = str_replace('%theme', path_to_theme(), $item);
         }
       }
     }
-
     return $this->data['attached'];
-  }
-
-  private function processAssetPath($path) {
-    $path = str_replace('%theme', path_to_theme(), $path);
-    return $path;
   }
 }

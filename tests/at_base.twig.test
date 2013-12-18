@@ -47,7 +47,6 @@ class At_Twig_TestCase extends DrupalWebTestCase {
     $data['template'] = '@atest_theming/templates/hello.twig';
     $data['variables']['name'] = 'Andy Truong';
     $output = at_id(new \Drupal\at_base\Helper\RenderContent($data))->render();
-    $output = $output['#markup'];
     $assert = strpos($output, $actual) !== FALSE;
     $this->assertTrue($assert, "Found <strong>{$expected}</strong> in result.");
   }

@@ -242,6 +242,7 @@ function at_form($form, &$form_state) {
   $form       = array_shift($args);
   $form_state = array_shift($args);
   $class      = array_shift($args);
+  $args       = reset($args);
 
   // Build the form
   $class = new \ReflectionClass($class);
@@ -283,4 +284,15 @@ function at_form_submit($form, &$form_state) {
 
   // Do validate
   $obj->submit();
+}
+
+/**
+ * Page callback for routes.
+ *
+ * @see \Drupal\at_base\Route\RouteToMenu
+ */
+function at_route() {
+  $args = func_get_args();
+  $route = array_pop($args);
+  return at_id(new \Drupal\at_base\Route\Controller())->setRoute($route)->execute();
 }

@@ -29,8 +29,8 @@ class At_Route_TestCase extends DrupalWebTestCase {
 
     # Test /atest_route/fancy_template/%user
     $response = at_id(new \Drupal\at_base\Helper\SubRequest('atest_route/fancy_template/1'))->request();
-    $this->assertTrue(strpos($response['#markup'], 'Foo: bar'));
-    $this->assertTrue(strpos($response['#markup'], 'User ID: 1'));
+    $this->assertTrue(strpos($response, 'Foo: bar'));
+    $this->assertTrue(strpos($response, 'User ID: 1'));
 
     # Test /atest_route/with_assets
     $response = at_id(new \Drupal\at_base\Helper\SubRequest('atest_route/with_assets'))->request();

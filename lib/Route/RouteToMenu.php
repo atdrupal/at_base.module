@@ -45,42 +45,16 @@ class RouteToMenu {
     if (!empty($this->menu_item['type']))    $this->menu_item['type']    = at_id(new ConstantParser($this->menu_item['type']))->parse();
 
     // Prepare magic properties
-    if (!empty($this->menu_item['controller']))      $this->_prepareController();
-    if (!empty($this->menu_item['template']))        $this->_prepareTemplateFile();
-    if (!empty($this->menu_item['template_string'])) $this->_prepareTemplateString();
-    if (!empty($this->menu_item['form'])) $this->_prepareForm();
+    $need_wrapper = FALSE;
+    $need_wrapper = $need_wrapper || !empty($this->menu_item['controller']);
+    $need_wrapper = $need_wrapper || !empty($this->menu_item['template']);
+    $need_wrapper = $need_wrapper || !empty($this->menu_item['template_string']);
+    $need_wrapper = $need_wrapper || !empty($this->menu_item['form']);
+    if ($need_wrapper) {
+      $this->menu_item['page arguments'][] = $this->menu_item;
+      $this->menu_item['page callback'] = 'at_route';
+    }
 
     return $this->menu_item;
-  }
-
-  private function _prepareController() {
-    $this->menu_item['page callback'] = '\Drupal\at_base\Controller\DefaultController::controllerAction';
-    $this->menu_item['page arguments'] = $this->menu_item['controller'];
-  }
-
-  private function _prepareTemplateFile() {
-    $this->menu_item['page callback'] = '\Drupal\at_base\Controller\DefaultController::templateFileAction';
-    $this->menu_item['page arguments'] = array(
-      'template'  => $this->menu_item['template'],
-      'variables' => !empty($this->menu_item['variables']) ? $this->menu_item['variables'] : array(),
-      'attached'  => !empty($this->menu_item['attached']) ? $this->menu_item['attached'] : array(),
-    );
-  }
-
-  private function _prepareTemplateString() {
-    $this->menu_item['page callback'] = '\Drupal\at_base\Controller\DefaultController::templateStringAction';
-    $this->menu_item['page arguments'] = array(
-      $this->menu_item['pattern'],
-      $this->menu_item['template_string'],
-      !empty($this->menu_item['variables']) ? $this->menu_item['variables'] : array(),
-      !empty($this->menu_item['attached']) ? $this->menu_item['attached'] : array(),
-    );
-  }
-
-  private function _prepareForm() {
-    $this->menu_item['page callback'] = 'drupal_get_form';
-    $this->menu_item['page arguments'] = isset($this->menu_item['form arguments']) ? $this->menu_item['form arguments'] : array();
-    array_unshift($this->menu_item['page arguments'], $this->menu_item['form']);
-    array_unshift($this->menu_item['page arguments'], 'at_form');
   }
 }
