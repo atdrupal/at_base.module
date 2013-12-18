@@ -216,18 +216,20 @@ function at_valid($key) {
  *
  * Usage:
  *
- *  $callback = function() { $config = at_container('config'); };
- *  print_r(at_timer($callback, 1000));
+ *  $callback = function() { $modules = at_modules('at_base'); };
+ *  print_r(at_timer($callback, 5000));
  *
- * @param  Closure  $callback
- * @param  integer $times
+ * @param  callable  $callback
+ * @param  integer   $times
  */
 function at_timer($callback, $times = 1) {
+  $memory = memory_get_usage();
   timer_start('at_timer');
   for ($i = 1; $i <= $times; ++$i) {
     $callback();
   }
-  return timer_stop('at_timer');
+  $return = timer_stop('at_timer');
+  return array('memory' => memory_get_usage() - $memory) + $return;
 }
 
 /**
