@@ -177,11 +177,11 @@ function at_modules($base_module = 'at_base', $config_file = '', $reset = FALSE)
  * @param  string $version
  * @return string
  */
-function at_library($name, $version = NULL) {
+function at_library($name, $version = 'default') {
   $paths = array(conf_path(), 'sites/all');
   foreach ($paths as $path) {
     $return = DRUPAL_ROOT . "/{$path}/libraries/{$name}";
-    if (!empty($version)) {
+    if ('default' !== $version) {
       $return .= "/{$version}";
     }
 
@@ -189,7 +189,8 @@ function at_library($name, $version = NULL) {
       return $return;
     }
   }
-  return FALSE;
+
+  throw new Exception("Missing library: {$name} (version {$version})");
 }
 
 /**
