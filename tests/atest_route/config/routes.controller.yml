@@ -1,0 +1,6 @@
+routes:
+  # controller property will override page callback and page arguments
+  atest_route/controller:
+    title: Hello
+    access arguments: ['access content']
+    controller: ['\Drupal\atest_route\Controller\HelloController', helloAction, {name: 'Andy Truong'}]

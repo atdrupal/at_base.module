@@ -1,0 +1,7 @@
+routes:
+  atest_route/template:
+    title: Magic template
+    access arguments: ['access content']
+    template: '@atest_route/templates/hello.html.twig'
+    variables:
+        name: Andy Truong

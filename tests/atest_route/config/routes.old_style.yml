@@ -1,0 +1,29 @@
+routes:
+  atest_route/drupal:
+    title: Hello
+    title callback: t
+    title arguments: []
+    description: 'Description for the page'
+    page callback: atest_route_page_callback
+    page arguments: ['Andy Truong']
+    access callback: user_access
+    access arguments: ['access content']
+    theme callback: trim # function_to_detect_theme_name
+    theme arguments: [seven]
+    file: atest_route.pages.inc
+    load arguments: []
+    weight: 0
+    menu_name: navigation
+    expanded: TRUE
+    context: MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE
+    # For local task menu items, the path of the task's parent item; defaults
+    # to the same path without the last component (e.g., the default parent
+    # for 'admin/people/create' is 'admin/people').
+    tab_parent: admin/people
+    # For local task menu items, the path of the closest non-tab item; same
+    # default as "tab_parent".
+    tab_root: admin/people
+    # Position of the block ('left' or 'right') on the system administration page for this item.
+    position: left
+    # MENU_NORMAL_ITEM # MENU_CALLBACK, MENU_SUGGESTED_ITEM, MENU_LOCAL_ACTION, MENU_LOCAL_TASK, MENU_DEFAULT_LOCAL_TASK
+    type: MENU_NORMAL_ITEM

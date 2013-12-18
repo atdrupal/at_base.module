@@ -1,0 +1,19 @@
+routes:
+
+  'atest_route/fancy_template/%user':
+    title: Fancy Template
+    access arguments: ['access content']
+    template_string: '- Foo: {{ foo }}<br />- User ID: {{ user.uid }}<br />'
+    variables: { foo: 'bar' }
+
+  atest_route/with_assets:
+    title: Route with attached assets
+    access arguments: ['access arguments']
+    template_string: 'Simple string'
+    attached:
+      css:
+        - misc/vertical-tabs.css
+      js:
+        - misc/vertical-tabs.js
+      library:
+        - ['system', 'jquery.bbq']
