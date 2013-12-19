@@ -8,7 +8,11 @@ use \Drupal\at_base\Hook\Menu as HookMenu;
  * Implements hook_init()
  */
 function at_base_init() {
-  \AT::setContainer(new \Drupal\at_base\Container());
+  try {
+    \AT::setContainer(new \Drupal\at_base\Container());
+  }
+  catch (\Exception $e) {
+  }
 }
 
 /**
