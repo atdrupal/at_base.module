@@ -40,7 +40,6 @@ class At_Twig_TestCase extends DrupalWebTestCase {
     $data['template_string'] = 'Hello {{ name }}';
     $data['variables']['name'] = 'Andy Truong';
     $output = at_id(new \Drupal\at_base\Helper\RenderContent($data))->render();
-    $output = $output['#markup'];
     $this->assertEqual($expected, $actual);
 
     // Template
