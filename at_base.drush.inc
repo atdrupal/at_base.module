@@ -7,7 +7,6 @@ if (function_exists('cache_get')) {
   require_once dirname(__FILE__) . '/at_base.module';
   require_once dirname(__FILE__) . '/drush/at_services.inc';
   require_once dirname(__FILE__) . '/drush/at_cache.inc';
-  require_once dirname(__FILE__) . '/drush/at_twig.inc';
 
   function _drush_at_check_yml_reader() {
     if (function_exists('yaml_parse')) return;
