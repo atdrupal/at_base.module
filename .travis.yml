@@ -30,7 +30,7 @@ before_script:
   - drush dl -y drupal-6.29
   - mv drupal-6.29 $DRUPAL
   - cd $DRUPAL
-  - drush si testing --db-url=mysql://root:@localhost/drupal --account-mail='travis@mailnator.com' --yes
+  - drush si --db-url=mysql://root:@localhost/drupal --account-mail='travis@mailnator.com' --yes
   # ---------------------
   # Prepare env for the module
   # ---------------------
