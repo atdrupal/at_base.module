@@ -84,7 +84,7 @@ class Autoloader {
     }
   }
 
-  private function fetchModuleInfo($module_name) {
+  private static function fetchModuleInfo($module_name) {
     $options = array('cache_id' => "at_base:moduleInfo:{$module_name}", 'ttl' => '+ 1 year');
     return at_cache($options, function() use ($module_name) {
       $file = drupal_get_path('module', $module_name) . '/' . $module_name . '.info';
