@@ -57,28 +57,17 @@ class RenderContent {
   private function renderTemplateString() {
     $variables = !empty($this->data['variables']) ? $this->data['variables'] : array();
 
-    return array(
-      '#markup' => at_container('twig_string')->render($this->data['template_string'], $variables),
-      '#attached' => $this->processAttachedAsset(),
-    );
+    return at_container('twig_string')->render($this->data['template_string'], $variables);
   }
 
   private function renderTemplateFile() {
-    return array(
-      '#markup' => at_container('twig')->render(at_id(new \Drupal\at_base\Helper\RealPath($this->data['template_file']))->get(), $this->data['variables']),
-      '#attached' => $this->processAttachedAsset(),
-    );
+    return at_container('twig')->render(at_id(new \Drupal\at_base\Helper\RealPath($this->data['template_file']))->get(), $this->data['variables']);
   }
 
   private function renderController() {
     list($class, $action) = $this->data['controller'];
 
-    $return = array(
-      '#markup' => call_user_func(array(new $class(), $action)),
-      '#attached' => $this->processAttachedAsset(),
-    );
-
-    return $return;
+    return call_user_func(array(new $class(), $action));
   }
 
   private function processAttachedAsset() {

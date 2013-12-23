@@ -21,7 +21,7 @@ function at_base_uninstall() {
  * Implements hook_schema()
  */
 function at_base_schema() {
-  $schema['at_base_cache_tag'] = 
+  $schema['at_base_cache_tag'] =
   $schema['cache_bootstrap'] = array(
     'description' => '',
     'fields' => array(

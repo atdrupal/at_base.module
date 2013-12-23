@@ -94,15 +94,14 @@ function at_base_modules_enabled($modules) {
 }
 
 /**
- * Implements hook_block_info()
+ * Implements hook_block()
  */
-function at_base_block_info() {
-  return at_id(new \Drupal\at_base\Hook\BlockInfo())->import();
-}
+function at_base_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+    case 'list':
+      return at_id(new \Drupal\at_base\Hook\BlockInfo())->import();
 
-/**
- * Implements hook_block_view
- */
-function at_base_block_view($delta) {
-  return at_id(new \Drupal\at_base\Hook\BlockView($delta))->view();
+    case 'view':
+      return at_id(new \Drupal\at_base\Hook\BlockView($delta))->view();
+  }
 }
