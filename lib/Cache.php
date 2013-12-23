@@ -122,8 +122,8 @@ class Cache {
    */
   protected function write($data) {
     if (FALSE !== cache_set($this->id, $data, $this->bin, strtotime($this->ttl))) {
-      $this->removeAllTags();
-      if ($this->tags) {
+      if (!empty($this->tags)) {
+        $this->removeAllTags();
         foreach ($this->tags as $tag) {
           $this->addTag($tag);
         }
