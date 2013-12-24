@@ -75,4 +75,22 @@ class At_Base_TestCase extends DrupalWebTestCase {
     $actual = at_id(new \Drupal\at_base\Helper\RealPath('%theme/templates/page.home.html.twig'))->get();
     $this->assertEqual($expected, $actual);
   }
+
+  /**
+   * Test for at_container().
+   */
+  public function testServiceContainer() {
+    // Simple service
+    $service_1 = at_container('atest_base.service_1');
+    $this->assertEqual('Drupal\atest_base\Service_1', get_class($service_1));
+
+    // Service depends on others
+    $service_2 = at_container('atest_base.service_2');
+    $this->assertEqual('Drupal\atest_base\Service_2', get_class($service_2));
+    $this->assertEqual('Drupal\atest_base\Service_1', get_class($service_2->getService1()));
+
+    // Service use factory
+    $service_3 = at_container('atest_base.service_3');
+    $this->assertEqual('Drupal\atest_base\Service_3', get_class($service_3));
+  }
 }
