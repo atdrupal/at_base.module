@@ -1,6 +1,5 @@
 language: php
 php:
-  - hhvm
   - 5.3
   - 5.4
 
