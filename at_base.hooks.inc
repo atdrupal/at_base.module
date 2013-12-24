@@ -5,17 +5,6 @@ use \Drupal\at_base\Route\Importer as RouteImporter;
 use \Drupal\at_base\Hook\Menu as HookMenu;
 
 /**
- * Implements hook_init()
- */
-function at_base_init() {
-  try {
-    \AT::setContainer(new \Drupal\at_base\Container());
-  }
-  catch (\Exception $e) {
-  }
-}
-
-/**
  * Implements hook_menu()
  */
 function at_base_menu() {

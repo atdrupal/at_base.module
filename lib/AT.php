@@ -3,11 +3,14 @@
 class AT {
   private static $container;
 
-  public static function setContainer($container) {
-    static::$container = $container;
-  }
-
+  /**
+   * Factory method to get container.
+   * @return \Drupal\at_base\Container
+   */
   public static function getContainer() {
+    if (!static::$container) {
+      static::$container = new \Drupal\at_base\Container();
+    }
     return static::$container;
   }
 
