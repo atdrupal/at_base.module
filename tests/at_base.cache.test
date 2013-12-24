@@ -13,7 +13,7 @@ class At_Base_Cache_TestCase extends DrupalWebTestCase {
   }
 
   public function setUp() {
-    parent::setUp('atest_base');
+    parent::setUp('at_base');
   }
 
   /**
