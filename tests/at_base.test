@@ -1,33 +1,10 @@
 <?php
 
-class At_Base_Id_TestCase extends DrupalWebTestCase {
-  public function setUp() {
-    parent::setUp('atest_base');
-  }
-
+class At_Base_TestCase extends DrupalWebTestCase {
   public function getInfo() {
     return array(
-      'name' => 'AT Base: at_id()',
-      'description' => 'Make sure at_id() function is working correctly.',
-      'group' => 'AT Base',
-    );
-  }
-
-  public function testAtId() {
-    $expected = 'Hello Andy Truong';
-    $actual = at_id(new At_Base_Test_Class())->hello('Andy Truong');
-    $this->assertEqual($expected, $actual);
-  }
-}
-
-/**
- * at_modules() use cache.
- */
-class At_Base_Modules_TestCase extends DrupalWebTestCase {
-  public function getInfo() {
-    return array(
-      'name' => 'AT Base: at_modules()',
-      'description' => 'Make sure at_id() function is working correctly.',
+      'name' => 'AT Base: Basic features',
+      'description' => 'Make sure basic features are working correctly.',
       'group' => 'AT Base',
     );
   }
@@ -36,28 +13,46 @@ class At_Base_Modules_TestCase extends DrupalWebTestCase {
     parent::setUp('atest_base', 'atest2_base');
   }
 
+  /**
+   * Test for at_id() function.
+   */
+  public function testAtId() {
+    $expected = 'Hello Andy Truong';
+    $actual = at_id(new At_Base_Test_Class())->hello('Andy Truong');
+    $this->assertEqual($expected, $actual);
+  }
+
+  /**
+   * Make sure at_modules() function is working correctly.
+   */
   public function testAtModules() {
     $this->assertTrue(in_array('atest_base', at_modules()));
-  }
-
-  public function testAtestModules() {
     $this->assertTrue(in_array('atest2_base', at_modules('atest_base')));
   }
-}
 
-class At_Base_Contant_Parser_TestCase extends DrupalWebTestCase {
-  public function getInfo() {
-    return array(
-      'name' => 'AT Base: Constant Parser',
-      'description' => 'Make sure Constant Parser class is working correctly.',
-      'group' => 'AT Base',
-    );
+  /**
+   * Module weight can be updated correctly
+   */
+  public function testWeight() {
+    at_base_flush_caches();
+
+    $query = "SELECT weight FROM {system} WHERE name = :name";
+    $weight = db_query($query, array(':name' => 'atest_base'))->fetchColumn();
+
+    $this->assertEqual(10, $weight);
   }
 
-  public function setUp() {
-    parent::setUp('atest_base');
+  /**
+   * Autoload feature
+   */
+  public function testAutoloader() {
+    $this->assertTrue(class_exists('Drupal\atest_base\Hello'));
+    $this->assertTrue(class_exists('Drupal\atest_base\Other\Prefix\Hi'));
   }
 
+  /**
+   * Test for \Drupal\at_base\Helper\ConstantParser class.
+   */
   public function testAtConstantParser() {
     $exp      = 'DRUPAL_ANONYMOUS_RID';
     $expected = 1;
@@ -79,47 +74,45 @@ class At_Base_Contant_Parser_TestCase extends DrupalWebTestCase {
     $actual   = at_id(new \Drupal\at_base\Helper\ConstantParser($exp))->parse();
     $this->assertEqual($expected, $actual);
   }
-}
 
-class At_Base_Helper_RealPath_TestCase extends DrupalWebTestCase {
-  public function getInfo() {
-    return array(
-      'name' => 'AT Base: Helpers > RealPath',
-      'description' => 'Make sure Helper classes are working correctly.',
-      'group' => 'AT Base',
-    );
-  }
-
-  public function setUp() {
-    parent::setUp('atest_base');
-  }
-
+  /**
+   * Test for \Drupal\at_base\Helper\RealPath class
+   */
   public function testRealPath() {
     $expected = path_to_theme() . '/templates/page.home.html.twig';
     $actual = at_id(new \Drupal\at_base\Helper\RealPath('%theme/templates/page.home.html.twig'))->get();
     $this->assertEqual($expected, $actual);
   }
-}
 
-class At_Base_Module_Weight_TestCase extends DrupalWebTestCase {
-  public function setUp() {
-    parent::setUp('atest_base');
+  /**
+   * Test for at_container().
+   */
+  public function testServiceContainer() {
+    // Simple service
+    $service_1 = at_container('atest_base.service_1');
+    $this->assertEqual('Drupal\atest_base\Service_1', get_class($service_1));
+
+    // Service depends on others
+    $service_2 = at_container('atest_base.service_2');
+    $this->assertEqual('Drupal\atest_base\Service_2', get_class($service_2));
+    $this->assertEqual('Drupal\atest_base\Service_1', get_class($service_2->getService1()));
+
+    // Service use factory
+    $service_3 = at_container('atest_base.service_3');
+    $this->assertEqual('Drupal\atest_base\Service_3', get_class($service_3));
   }
 
-  public function getInfo() {
-    return array(
-      'name' => 'AT Base: Module Weight',
-      'description' => 'Module weight can be updated correctly',
-      'group' => 'AT Base',
-    );
-  }
+  /**
+   * Test easy block definition.
+   */
+  public function testEasyBlocks() {
+    $block_1 = \AT::twig_string()->render("{{ 'at_base:atest_base|hi_s'  | drupalBlock(TRUE) }}");
+    $block_2 = \AT::twig_string()->render("{{ 'at_base:atest_base|hi_t'  | drupalBlock(TRUE) }}");
+    $block_3 = \AT::twig_string()->render("{{ 'at_base:atest_base|hi_ts' | drupalBlock(TRUE) }}");
 
-  public function testWeight() {
-    at_base_flush_caches();
-
-    $query = "SELECT weight FROM {system} WHERE name = :name";
-    $weight = db_query($query, array(':name' => 'atest_base'))->fetchColumn();
-
-    $this->assertEqual(10, $weight);
+    $expected = 'Hello Andy Truong';
+    $this->assertEqual($expected, trim($block_1));
+    $this->assertEqual($expected, trim($block_2));
+    $this->assertEqual($expected, trim($block_3));
   }
 }
