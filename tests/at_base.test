@@ -43,6 +43,14 @@ class At_Base_TestCase extends DrupalWebTestCase {
   }
 
   /**
+   * Autoload feature
+   */
+  public function testAutoloader() {
+    $this->assertTrue(class_exists('Drupal\atest_autoload\Hello'));
+    $this->assertTrue(class_exists('Drupal\atest_autoload\Other\Prefix\Hi'));
+  }
+
+  /**
    * Test for \Drupal\at_base\Helper\ConstantParser class.
    */
   public function testAtConstantParser() {
