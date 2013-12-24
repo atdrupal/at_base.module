@@ -1,14 +1,23 @@
 services:
+  container:
+    class: '\Drupal\at_base\Container'
+    factory_class: 'AT'
+    factory_method: getContainer
+
+  # ---------------------
   # Theming services
+  # ---------------------
   twig.core:
     class: '\Twig_Environment'
     factory_class: '\Drupal\at_base\Twig\Environment_Factory'
     factory_method: getObject
+
   twig:
     class: '\Twig_Environment'
     factory_class: '\Drupal\at_base\Twig\Environment_Factory'
     factory_method: getFileService
     arguments: ['@twig.core']
+
   twig_string:
     class: '\Twig_Environment'
     factory_class: '\Drupal\at_base\Twig\Environment_Factory'
