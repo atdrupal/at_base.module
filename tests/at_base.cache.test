@@ -16,36 +16,36 @@ class At_Base_Cache_TestCase extends DrupalWebTestCase {
     parent::setUp('atest_base');
   }
 
-  public function testClosure() {
-    $options = array(
-      'cache_id' => 'at_test:time:' . __FUNCTION__,
-      'ttl' => '+ 15 minutes',
-      'bin' => 'cache',
-      'reset' => TRUE,
-    );
+  /**
+   * Helper method for testObjectCallback().
+   * @return int
+   */
+  public static function time() {
+    return time();
+  }
+
+  public function testCacheUsages() {
+    $cache_options = array('bin' => 'cache', 'reset' => FALSE, 'ttl' => '+ 15 minutes');
+
+    // ---------------------
+    // Closure
+    // ---------------------
+    $options = array('id' => 'at_test:time:closure', 'reset' => TRUE) + $cache_options;
 
     // Init the value
-    $time_1 = at_cache($options, function () {
-      return time();
-    });
+    $time_1 = at_cache($options, function () { return time(); });
     sleep(2);
 
     // Call at_cache() again
-    $time_2 = at_cache(array('reset' => FALSE) + $options, function () {
-      return time();
-    });
+    $time_2 = at_cache(array('reset' => FALSE) + $options, function () { return time(); });
 
     // The value should be same — it's cached.
     $this->assertEqual($time_1, $time_2);
-  }
 
-  public function testStringCallback() {
-    $options = array(
-      'cache_id' => 'at_test:time:' . __FUNCTION__,
-      'ttl' => '+ 15 minutes',
-      'bin' => 'cache',
-      'reset' => TRUE,
-    );
+    // ---------------------
+    // String
+    // ---------------------
+    $options = array('id' => 'at_test:time:string', 'reset' => TRUE) + $cache_options;
 
     // Init the value
     $time_1 = at_cache($options, 'time');
@@ -56,15 +56,11 @@ class At_Base_Cache_TestCase extends DrupalWebTestCase {
 
     // The value should be same — it's cached.
     $this->assertEqual($time_1, $time_2);
-  }
 
-  public function testStringCallbackWithArguments() {
-    $options = array(
-      'cache_id' => 'at_test:string:' . __FUNCTION__,
-      'ttl' => '+ 15 minutes',
-      'bin' => 'cache',
-      'reset' => TRUE,
-    );
+    // ---------------------
+    // Callback with arguments
+    // ---------------------
+    $options = array('id' => 'at_test:string:arguments', 'reset' => TRUE) + $cache_options;
 
     // Init the value
     $string_1 = at_cache($options, 'sprintf', array('Timestamp: %d', time()));
@@ -75,15 +71,11 @@ class At_Base_Cache_TestCase extends DrupalWebTestCase {
 
     // The value should be same — it's cached.
     $this->assertEqual($string_1, $string_2);
-  }
 
-  public function testObjectCallback() {
-    $options = array(
-      'cache_id' => 'at_test:time:' . __FUNCTION__,
-      'ttl' => '+ 15 minutes',
-      'bin' => 'cache',
-      'reset' => TRUE,
-    );
+    // ---------------------
+    // Static method
+    // ---------------------
+    $options = array('id' => 'at_test:time:', 'reset' => TRUE) + $cache_options;
 
     // Init the value
     $time_1 = at_cache($options, 'At_Base_Cache_TestCase::time');
@@ -94,68 +86,37 @@ class At_Base_Cache_TestCase extends DrupalWebTestCase {
 
     // The value should be same — it's cached.
     $this->assertEqual($time_1, $time_2);
-  }
 
-  public function testAllowEmpty() {
-    $options = array(
-      'cache_id' => 'at_test:time:' . __FUNCTION__,
-      'ttl' => '+ 15 minutes',
-      'bin' => 'cache',
-      'reset' => TRUE,
-      'allow_empty' => FALSE,
-    );
+    // ---------------------
+    // Allow empty
+    // ---------------------
+    $options = array('id' => 'at_test:time:allowEmpty', 'reset' => TRUE, 'allow_empty' => FALSE) + $cache_options;
 
     // Init the value
     $time_1 = at_cache($options, 'At_Base_Cache_TestCase::time');
     sleep(2);
 
     // Change cached-data to empty string
-    cache_set(
-      $options['cache_id'],
-      '',
-      $options['bin'],
-      strtotime($options['ttl']));
+    cache_set($options['id'], '', $options['bin'], strtotime($options['ttl']));
 
     // Call at_cache() again
     $time_2 = at_cache(array('reset' => FALSE) + $options, 'At_Base_Cache_TestCase::time');
 
     // The value should not be same
     $this->assertNotEqual($time_1, $time_2);
-  }
 
-  /**
-   * Helper method for testObjectCallback().
-   * @return int
-   */
-  public static function time() {
-    return time();
-  }
-}
+    // ---------------------
+    // Cache tagging
+    // ---------------------
+    $options = array('id' => 'atest_base:cache:tag:1', 'tags' => array('at_base', 'atest')) + $cache_options;
 
-class At_Base_Cache_Tag_TestCase extends DrupalWebTestCase {
-  public function getInfo() {
-    return array(
-      'name' => 'AT Base: Cache Tags',
-      'description' => 'Make sure the at_cache() is working correctly.',
-      'group' => 'AT Base'
-    );
-  }
-
-  public function setUp() {
-    parent::setUp('atest_base');
-  }
-
-  public function testCacheTag() {
-    $o['id'] = 'atest_base:cache:tag:1';
-    $o['tags'] = array('at_base', 'atest');
-
-    $data_1 = at_cache($o, function(){ return 'Data #1'; });
-    $data_2 = at_cache($o, function(){ return 'This is not called'; });
+    $data_1 = at_cache($options, function(){ return 'Data #1'; });
+    $data_2 = at_cache($options, function(){ return 'This is not called'; });
 
     // Delete items tagged with 'atest'
-    at_cache_flush_by_tags($o['tags']);
+    at_cache_flush_by_tags($options['tags']);
 
-    $data_3 = at_cache($o, function(){ return 'Data #3 — must be called.'; });
+    $data_3 = at_cache($options, function(){ return 'Data #3 — must be called.'; });
 
     $this->assertNotEqual($data_1, $data_3);
   }
