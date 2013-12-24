@@ -3,8 +3,8 @@
 class At_Base_TestCase extends DrupalWebTestCase {
   public function getInfo() {
     return array(
-      'name' => 'AT Base: at_id()',
-      'description' => 'Make sure at_id() function is working correctly.',
+      'name' => 'AT Base: Basic features',
+      'description' => 'Make sure basic features are working correctly.',
       'group' => 'AT Base',
     );
   }
@@ -92,5 +92,19 @@ class At_Base_TestCase extends DrupalWebTestCase {
     // Service use factory
     $service_3 = at_container('atest_base.service_3');
     $this->assertEqual('Drupal\atest_base\Service_3', get_class($service_3));
+  }
+
+  /**
+   * Test easy block definition.
+   */
+  public function testEasyBlocks() {
+    $block_1 = \AT::twig_string()->render("{{ 'at_base:atest_base|hi_s'  | drupalBlock(TRUE) }}");
+    $block_2 = \AT::twig_string()->render("{{ 'at_base:atest_base|hi_t'  | drupalBlock(TRUE) }}");
+    $block_3 = \AT::twig_string()->render("{{ 'at_base:atest_base|hi_ts' | drupalBlock(TRUE) }}");
+
+    $expected = 'Hello Andy Truong';
+    $this->assertEqual($expected, trim($block_1));
+    $this->assertEqual($expected, trim($block_2));
+    $this->assertEqual($expected, trim($block_3));
   }
 }

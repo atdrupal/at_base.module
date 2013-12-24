@@ -9,7 +9,7 @@ blocks:
     subject: 'Hello template'
     cache: DRUPAL_CACHE_PER_PAGE
     content:
-      template: '@atest_block/templates/block/hello_template.html.twig'
+      template: '@atest_base/templates/block/hello_template.html.twig'
       variables: {name: 'Andy Truong'}
   hi_ts:
     info: 'Hello Template String'
