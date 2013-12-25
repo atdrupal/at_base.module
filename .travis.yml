@@ -47,6 +47,5 @@ before_script:
   # No cache data
   # ---------------------
   - drush cc all
-  - sleep 3
 
 script: drush test-run 'AT Base'
