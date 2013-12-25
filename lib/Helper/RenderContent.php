@@ -65,7 +65,10 @@ class RenderContent {
   }
 
   private function renderTemplateFile() {
-    return \AT::twig()->render(at_id(new \Drupal\at_base\Helper\RealPath($this->data['template_file']))->get(), $this->data['variables']);
+    return \AT::twig()->render(
+      at_container('helper.real_path')->get($this->data['template_file']),
+      $this->data['variables']
+    );
   }
 
   private function renderController() {
