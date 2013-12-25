@@ -13,9 +13,14 @@ class BlockInfo {
   private function importResource($module) {
     $info = array();
     foreach (at_config($module, 'blocks')->get('blocks') as $k => $block) {
+      $cache = DRUPAL_CACHE_PER_ROLE;
+      if (!empty($block['cache'])) {
+        $cache = at_container('expression_engine')->evaluate($block['cache']);
+      }
+
       $info["{$module}|{$k}"] = array(
-        'info' => !empty($block['info']) ? $block['info'] : $k,
-        'cache' => !empty($block['cache']) ? constant($block['cache']) : DRUPAL_CACHE_PER_ROLE,
+        'info' => empty($block['info']) ? $k : $block['info'],
+        'cache' => $cache,
       );
     }
     return $info;
