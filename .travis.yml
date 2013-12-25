@@ -2,6 +2,13 @@ language: php
 php:
   - 5.3
   - 5.4
+  - 5.5
+  - hhvm
+
+matrix:
+  allow_failures:
+    - php: 5.5
+    - php: hhvm
 
 mysql:
   database: drupal
@@ -31,7 +38,7 @@ before_script:
   # Download the codebase
   # ---------------------
   - wget https://github.com/andytruong/atest_profile/archive/master.zip
-  - unzip master
+  - unzip -qq master
   - mv atest_profile-master $DRUPAL
   - cd $DRUPAL
   - drush si testing --db-url=mysql://root:@localhost/drupal --account-mail='travis@mailnator.com' --yes
@@ -48,4 +55,4 @@ before_script:
   # ---------------------
   - drush cc all
 
-script: drush test-run 'AT Base'
+script: drush test-run --dirty 'AT Base'
