@@ -46,8 +46,8 @@ class At_Base_TestCase extends DrupalWebTestCase {
    * Autoload feature
    */
   public function testAutoloader() {
-    $this->assertTrue(class_exists('Drupal\atest_base\Hello'));
-    $this->assertTrue(class_exists('Drupal\atest_base\Other\Prefix\Hi'));
+    $this->assertTrue(class_exists('Drupal\at_base\Drush\Command\AtRequire'));
+    $this->assertTrue(class_exists('Drupal\at_base\Container'));
   }
 
   /**

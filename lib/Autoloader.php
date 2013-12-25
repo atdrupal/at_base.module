@@ -1,105 +1,81 @@
 <?php
 namespace Drupal\at_base;
 
+/**
+ * Modified version of SplClassLoader (https://gist.github.com/jwage/221634)
+ *
+ * SplClassLoader implementation that implements the technical interoperability
+ * standards for PHP 5.3 namespaces and class names.
+ *
+ * http://groups.google.com/group/php-standards/web/final-proposal
+ *
+ *     // Example which loads classes for the Doctrine Common package in the
+ *     // Doctrine\Common namespace.
+ *     $classLoader = new SplClassLoader('Doctrine\Common', '/path/to/doctrine');
+ *     $classLoader->register();
+ *
+ * @author Jonathan H. Wage <jonwage@gmail.com>
+ * @author Roman S. Borschel <roman@code-factory.org>
+ * @author Matthew Weier O'Phinney <matthew@zend.com>
+ * @author Kris Wallsmith <kris.wallsmith@gmail.com>
+ * @author Fabien Potencier <fabien.potencier@symfony-project.org>
+ */
 class Autoloader {
-  private $class;
-  private $reset;
-  private $apc;
-  private $cache_id;
+  private $_fileExtension = '.php';
+  private $_namespace = 'Drupal';
+  private $_includePath;
+  private $_namespaceSeparator = '\\';
 
-  public function __construct($class, $reset = FALSE) {
-    $this->class = $class;
-    $this->reset = $reset;
-    $this->apc = function_exists('apc_store');
-    $this->cache_id = "at_autoload:{$class}";
+  public function __construct($ns = 'Drupal', $includePath = NULL) {
+      $this->_namespace = $ns;
+      $this->_includePath = $includePath ? $includePath : DRUPAL_ROOT;
   }
 
-  private function cacheGet() {
-    if (!$this->apc) return;
-    if ($this->reset) return;
-
-    $return = apc_fetch($this->cache_id);
-    if (FALSE !== $return) {
-      return $file;
-    }
+  public function register() {
+    spl_autoload_register(array($this, $this->_namespace === 'Drupal' ? 'loadDrupalClass' : 'loadClass'));
   }
 
-  private function cacheSet($data) {
-    if (!$this->apc) return;
-
-    // apc_fetch return FALSE on failure, that's why we cast FALSE to 0.
-    apc_store($this->cache_id, $data ? $data : 0);
-  }
-
-  public function getFile() {
-    if ($file = $this->cacheGet()) {
-      return $file;
-    }
-
-    if ($file = $this->fetchFile()) {
-      $this->cacheSet($file);
-      return $file;
-    }
-  }
-
-  private function fetchFile() {
-    if ($file = $this->fetchStatic()) {
-      return $file;
-    }
-
-    if ($file = $this->fetchMapping()) {
-      return $file;
-    }
-
-    return FALSE;
-  }
-
-  private function fetchStatic() {
-    $path = str_replace('\\', DIRECTORY_SEPARATOR, $this->class);
-    $path = DRUPAL_ROOT . "/%s/lib/{$path}.php";
-
-    foreach (array('at_base' => 'at_base') + at_modules('at_base') as $module) {
-      if (strpos($path, "Drupal/{$module}/") !== FALSE) {
-        $real_path = str_replace('Drupal' . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR, '', $path);
-        $file = sprintf($real_path, drupal_get_path('module', $module));
-
-        if (file_exists($file)) {
-          return $file;
-        }
+  /**
+   * Loads the given class or interface.
+   *
+   * @param string $className The name of the class to load.
+   * @return void
+   */
+  public function loadClass($className) {
+    if (null === $this->_namespace || $this->_namespace.$this->_namespaceSeparator === substr($className, 0, strlen($this->_namespace.$this->_namespaceSeparator))) {
+      $fileName = '';
+      $namespace = '';
+      if (false !== ($lastNsPos = strripos($className, $this->_namespaceSeparator))) {
+        $namespace = substr($className, 0, $lastNsPos);
+        $className = substr($className, $lastNsPos + 1);
+        $fileName = str_replace($this->_namespaceSeparator, DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
       }
-    }
-  }
-
-  private function fetchMapping() {
-    foreach (variable_get('at_autoload_mapping', array()) as $ns_prefix => $dir) {
-      if (0 === strpos($this->class, $ns_prefix)) {
-        $cut_class = substr($this->class, strlen($ns_prefix) + 1);
-        $file  = DRUPAL_ROOT . DIRECTORY_SEPARATOR . $dir . DIRECTORY_SEPARATOR;
-        $file .= str_replace('\\', DIRECTORY_SEPARATOR, $cut_class);
-        $file .= '.php';
-        return $file;
-      }
+      $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . $this->_fileExtension;
+      require ($this->_includePath !== null ? $this->_includePath . DIRECTORY_SEPARATOR : '') . $fileName;
     }
   }
 
   /**
-   * @see at_base_flush_caches()
+   * Method to load Drupal classes
    */
-  public static function rebuildMapping() {
-    $mapping = array();
-    foreach (system_list('module_enabled') as $module_name => $project) {
-      if (!empty($project->info['psr4'])) {
-        foreach ($project->info['psr4'] as $ns_prefix => $dir) {
-          $dir = drupal_get_path('module', $module_name) . '/' . $dir;
-          $mapping[$ns_prefix] = $dir;
-        }
-      }
-    }
+  public function loadDrupalClass($className) {
+    $do_load = null === $this->_namespace;
+    $do_load = $do_load || $this->_namespace.$this->_namespaceSeparator === substr($className, 0, strlen($this->_namespace.$this->_namespaceSeparator));
+    if (!$do_load) return;
 
-    if (!empty($mapping)) {
-      variable_set('at_autoload_mapping', $mapping);
-    }
+    // Find module name from the class
+    $secondNamespaceSeparator = strpos($className, $this->_namespaceSeparator, 7);
+    $module = substr($className, 7, $secondNamespaceSeparator - 7);
 
-    return $mapping;
+    // Remove Drupal\%module from class name
+    $className = substr($className, $secondNamespaceSeparator + 1);
+    $className = str_replace($this->_namespaceSeparator, DIRECTORY_SEPARATOR, $className);
+
+    // Build file path
+    // path = _includePath + _pathToModule + _namespaces + class + _extension
+    $fileName  = $this->_includePath . DIRECTORY_SEPARATOR . drupal_get_path('module', $module) . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR;
+    $fileName .= $className . $this->_fileExtension;
+
+    require $fileName;
   }
 }
