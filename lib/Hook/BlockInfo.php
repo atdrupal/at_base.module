@@ -15,7 +15,7 @@ class BlockInfo {
     foreach (at_config($module, 'blocks')->get('blocks') as $k => $block) {
       $cache = DRUPAL_CACHE_PER_ROLE;
       if (!empty($block['cache'])) {
-        $cache = at_container('expression_engine')->evaluate($block['cache']);
+        $cache = at_container('expression_language')->evaluate($block['cache']);
       }
 
       $info["{$module}|{$k}"] = array(
