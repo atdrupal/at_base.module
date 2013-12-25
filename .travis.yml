@@ -48,4 +48,4 @@ before_script:
   # ---------------------
   - drush cc all
 
-script: drush test-run 'AT Base'
+script: drush test-run --dirty 'AT Base'
