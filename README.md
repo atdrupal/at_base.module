@@ -5,15 +5,19 @@ at_base
 
 Base module to provide helper functions for at_* modules.
 
-Install
-=====
+### Install
 
-Requires:
+    drush dl at_base
+    drush atr at_base
+
+### Requirements:
+
+  If you do have drush installed on your machine. You can download these libraries
+  manually, then at them to ./sites/all/libraries.
 
   - https://github.com/mustangostang/spyc.git v0.5.1
   - https://github.com/fabpot/Pimple.git Version v1.1.0
-
-If you install the module with Drush, the libraries will be automatically downloaded.
+  - https://github.com/symfony/expression-language v2.4.0
 
 ### Features
 
@@ -23,5 +27,5 @@ If you install the module with Drush, the libraries will be automatically downlo
 - [Easy Routing](https://github.com/andytruong/at_base/wiki/7.x-2.x-easy-routing)
 - [Easy Block](https://github.com/andytruong/at_base/wiki/7.x-2.x-easy-routing)
 - [Useful functions](https://github.com/andytruong/at_base/wiki/7.x-2.x-functions)
-- drush atrequire
+- drush at-require
 - …
