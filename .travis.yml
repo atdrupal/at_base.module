@@ -38,7 +38,7 @@ before_script:
   # Download the codebase
   # ---------------------
   - wget https://github.com/andytruong/atest_profile/archive/master.zip
-  - unzip master
+  - unzip -p master
   - mv atest_profile-master $DRUPAL
   - cd $DRUPAL
   - drush si testing --db-url=mysql://root:@localhost/drupal --account-mail='travis@mailnator.com' --yes
