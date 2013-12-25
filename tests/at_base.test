@@ -120,6 +120,6 @@ class At_Base_TestCase extends DrupalWebTestCase {
    * Test ExpressionLanguage.
    */
   public function testExpressionLanguage() {
-    $this->assertEqual('Symfony\Component\ExpressionLanguage\ExpressionLanguage', at_container('expression_language'));
+    $this->assertEqual('Symfony\Component\ExpressionLanguage\ExpressionLanguage', get_class(at_container('expression_language')));
   }
 }
