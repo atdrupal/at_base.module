@@ -19,7 +19,7 @@ class Definition {
   }
 
   public static function getAll() {
-    $options = array('ttl' => '+ 1 year', 'cache_id' => 'at_base:services');
+    $options = array('ttl' => '+ 1 year', 'id' => 'at_base:services');
     return at_cache($options, function() {
       $services = array();
       foreach (array('at_base' => 'at_base') + at_modules('at_base', 'services') as $module_name) {

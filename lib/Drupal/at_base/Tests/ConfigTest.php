@@ -1,6 +1,11 @@
 <?php
+namespace Drupal\at_base\Tests;
 
-class At_Config_TestCase extends DrupalWebTestCase {
+/**
+ * Test me:
+ *  drush test-run 'Drupal\at_base\Tests\ConfigTest'
+ */
+class ConfigTest extends \DrupalWebTestCase {
   public function getInfo() {
     return array(
       'name' => 'AT Base: Config',
@@ -30,7 +35,7 @@ class At_Config_TestCase extends DrupalWebTestCase {
 
     // Test not found exception
     try {
-      $not_there = at_config('atest_config')->get('not_there');
+      $not_there = @at_config('atest_config')->get('not_there');
       $this->assertTrue('No exception thrown');
     }
     catch (Drupal\at_base\Config\NotFoundException $e) {

@@ -1,9 +1,13 @@
 <?php
+namespace Drupal\at_base\Tests;
 
 /**
  * cache_get()/cache_set() does not work on unit test cases.
+ *
+ * Test me:
+ *  drush test-run 'Drupal\at_base\Tests\CacheTest'
  */
-class At_Base_Cache_TestCase extends DrupalWebTestCase {
+class CacheTest extends \DrupalWebTestCase {
   public function getInfo() {
     return array(
       'name' => 'AT Base: Cache',
@@ -78,11 +82,11 @@ class At_Base_Cache_TestCase extends DrupalWebTestCase {
     $options = array('id' => 'at_test:time:', 'reset' => TRUE) + $cache_options;
 
     // Init the value
-    $time_1 = at_cache($options, 'At_Base_Cache_TestCase::time');
+    $time_1 = at_cache($options, '\Drupal\at_base\Tests\CacheTest::time');
     sleep(2);
 
     // Call at_cache() again
-    $time_2 = at_cache(array('reset' => FALSE) + $options, 'At_Base_Cache_TestCase::time');
+    $time_2 = at_cache(array('reset' => FALSE) + $options, '\Drupal\at_base\Tests\CacheTest::time');
 
     // The value should be same — it's cached.
     $this->assertEqual($time_1, $time_2);
@@ -93,14 +97,14 @@ class At_Base_Cache_TestCase extends DrupalWebTestCase {
     $options = array('id' => 'at_test:time:allowEmpty', 'reset' => TRUE, 'allow_empty' => FALSE) + $cache_options;
 
     // Init the value
-    $time_1 = at_cache($options, 'At_Base_Cache_TestCase::time');
+    $time_1 = at_cache($options, '\Drupal\at_base\Tests\CacheTest::time');
     sleep(2);
 
     // Change cached-data to empty string
     cache_set($options['id'], '', $options['bin'], strtotime($options['ttl']));
 
     // Call at_cache() again
-    $time_2 = at_cache(array('reset' => FALSE) + $options, 'At_Base_Cache_TestCase::time');
+    $time_2 = at_cache(array('reset' => FALSE) + $options, '\Drupal\at_base\Tests\CacheTest::time');
 
     // The value should not be same
     $this->assertNotEqual($time_1, $time_2);
