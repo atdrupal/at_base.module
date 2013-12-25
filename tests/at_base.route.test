@@ -10,6 +10,7 @@ class At_Route_TestCase extends DrupalWebTestCase {
   }
 
   public function setUp() {
+    $this->profile = 'testing';
     parent::setUp('atest_route');
   }
 
