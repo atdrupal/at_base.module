@@ -1,24 +1,13 @@
 <?php
 
+use \Drupal\at_base\Autoloader;
 use \Drupal\at_base\Config\Resolver as ConfigResolver;
 use \Drupal\at_base\Config\Config;
 
 require_once dirname(__FILE__) . '/lib/AT.php';
-require_once dirname(__FILE__) . '/lib/Autoloader.php';
 require_once dirname(__FILE__) . '/at_base.hooks.inc';
-
-/**
- * Simple PSR-4 autoloader.
- *  /path/to/%module/Class.php -> \Drupal\%module\Class
- */
-spl_autoload_register(function($class) {
-  // Only Drupal namespace
-  if ($supported = strpos($class, 'Drupal\\') !== FALSE) {
-    if ($file = at_id(new \Drupal\at_base\Autoloader($class))->getFile()) {
-      require_once $file;
-    }
-  }
-});
+require_once dirname(__FILE__) . '/lib/Autoloader.php';
+at_id(new Autoloader())->register();
 
 /**
  * Identity function, returns its argument unmodified.

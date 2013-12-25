@@ -9,7 +9,6 @@ class Flush_Cache {
     $this->flushAPCData();
     $this->flushTaggedCacheData();
     $this->refreshCachedModules();
-    $this->refreshAutoloaderMapping();
     $this->fixModuleWeight();
   }
 
@@ -25,10 +24,6 @@ class Flush_Cache {
 
   private function refreshCachedModules() {
     at_modules('at_base', TRUE);
-  }
-
-  private function refreshAutoloaderMapping() {
-    \Drupal\at_base\Autoloader::rebuildMapping();
   }
 
   private function fixModuleWeight() {

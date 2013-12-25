@@ -4,8 +4,6 @@ package = Testing
 core = 7.x
 hidden = TRUE
 
-psr4[Drupal\atest_base\Other\Prefix] = 'classes'
-
 dependencies[] = at_base
 
 files[] = atest_base.module
