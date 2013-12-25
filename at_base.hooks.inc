@@ -80,7 +80,7 @@ function at_base_modules_enabled($modules) {
   at_modules('at_base', TRUE);
 
   // Rebuild module weight
-  at_id(new \Drupal\at_base\Helper\Module_Weight())->execute();
+  at_id(new Drupal\at_base\Hook\Flush_Cache())->fixModuleWeight();
 }
 
 /**
