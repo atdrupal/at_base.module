@@ -35,7 +35,7 @@ class ConfigTest extends \DrupalWebTestCase {
 
     // Test not found exception
     try {
-      $not_there = at_config('atest_config')->get('not_there');
+      $not_there = @at_config('atest_config')->get('not_there');
       $this->assertTrue('No exception thrown');
     }
     catch (Drupal\at_base\Config\NotFoundException $e) {
