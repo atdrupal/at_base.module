@@ -32,7 +32,7 @@ before_script:
   # ---------------------
   - wget https://github.com/andytruong/atest_profile/archive/master.zip
   - unzip master
-  - mv atest_profile $DRUPAL
+  - mv atest_profile-master $DRUPAL
   - cd $DRUPAL
   - drush si testing --db-url=mysql://root:@localhost/drupal --account-mail='travis@mailnator.com' --yes
   - mv ../andytruong/* sites/all/modules/
