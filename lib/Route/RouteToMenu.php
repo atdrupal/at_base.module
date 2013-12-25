@@ -2,8 +2,6 @@
 
 namespace Drupal\at_base\Route;
 
-use \Drupal\at_base\Helper\ConstantParser;
-
 class RouteToMenu {
   /**
    * @var string
@@ -41,8 +39,8 @@ class RouteToMenu {
     );
 
     // Parse constants
-    if (!empty($this->menu_item['context'])) $this->menu_item['context'] = at_id(new ConstantParser($this->menu_item['context']))->parse();
-    if (!empty($this->menu_item['type']))    $this->menu_item['type']    = at_id(new ConstantParser($this->menu_item['type']))->parse();
+    if (!empty($this->menu_item['context'])) at_container('expression_language')->evaluate($this->menu_item['context']);
+    if (!empty($this->menu_item['type'])) at_container('expression_language')->evaluate($this->menu_item['type']);
 
     // Prepare magic properties
     $need_wrapper = FALSE;

@@ -1,5 +1,4 @@
 <?php
-use \Drupal\at_base\Helper\ConstantParser;
 
 // At install/Update processes, we do not have cache_* funtions
 // which break at-base functions.
@@ -26,7 +25,7 @@ if (function_exists('cache_get')) {
       foreach ($modules as $module) {
         foreach ($config = at_config($module, 'drush')->get('commands') as $command => $definition) {
           if (!empty($definition['bootstrap'])) {
-            $definition['bootstrap'] = at_id(new ConstantParser($definition['bootstrap']))->parse();
+            $definition['bootstrap'] = at_container('expression_language')->evaluate($definition['bootstrap']);
           }
           $commands[$command] = $definition;
         }

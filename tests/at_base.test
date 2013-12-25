@@ -51,31 +51,6 @@ class At_Base_TestCase extends DrupalWebTestCase {
   }
 
   /**
-   * Test for \Drupal\at_base\Helper\ConstantParser class.
-   */
-  public function testAtConstantParser() {
-    $exp      = 'DRUPAL_ANONYMOUS_RID';
-    $expected = 1;
-    $actual   = at_id(new \Drupal\at_base\Helper\ConstantParser($exp))->parse();
-    $this->assertEqual($expected, $actual);
-
-    $exp      = 'DRUPAL_AUTHENTICATED_RID';
-    $expected = 2;
-    $actual   = at_id(new \Drupal\at_base\Helper\ConstantParser($exp))->parse();
-    $this->assertEqual($expected, $actual);
-
-    $exp      = 'DRUPAL_ANONYMOUS_RID | DRUPAL_AUTHENTICATED_RID';
-    $expected = 3;
-    $actual   = at_id(new \Drupal\at_base\Helper\ConstantParser($exp))->parse();
-    $this->assertEqual($expected, $actual);
-
-    $exp      = 'DRUPAL_ANONYMOUS_RID & DRUPAL_AUTHENTICATED_RID';
-    $expected = 0;
-    $actual   = at_id(new \Drupal\at_base\Helper\ConstantParser($exp))->parse();
-    $this->assertEqual($expected, $actual);
-  }
-
-  /**
    * Test for \Drupal\at_base\Helper\RealPath class
    */
   public function testRealPath() {
@@ -120,6 +95,12 @@ class At_Base_TestCase extends DrupalWebTestCase {
    * Test ExpressionLanguage.
    */
   public function testExpressionLanguage() {
-    $this->assertEqual('Symfony\Component\ExpressionLanguage\ExpressionLanguage', get_class(at_container('expression_language')));
+    $expected = 'Symfony\Component\ExpressionLanguage\ExpressionLanguage';
+    $actual = get_class(at_container('expression_language'));
+    $this->assertEqual($expected, $actual);
+
+    $expected = 3;
+    $actual = at_container('expression_language')->evaluate("constant('MENU_CONTEXT_PAGE') | constant('MENU_CONTEXT_INLINE')");
+    $this->assertEqual($expected, $actual);
   }
 }
