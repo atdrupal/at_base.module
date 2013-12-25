@@ -8,7 +8,7 @@ commands:
       drush at_require: Download dependencies for all modules
       drush at_require module_name: Download dependencies for specific module
     aliases: ['at-require', 'atr']
-    bootstrap: DRUSH_BOOTSTRAP_DRUPAL_FULL
+    bootstrap: constant('DRUSH_BOOTSTRAP_DRUPAL_FULL')
   at_service:
     callback: drush_at_services
     description: List all services
@@ -16,7 +16,7 @@ commands:
       drush at_service: List all services
       drush at_service server_name: View definition of service_name.
     aliases: ['at-service', 'ats']
-    bootstrap: DRUSH_BOOTSTRAP_DRUPAL_FULL
+    bootstrap: constant('DRUSH_BOOTSTRAP_DRUPAL_FULL')
   'at_cache:clear':
     callback: drush_at_cache_clear
     description: Flush cache by tags

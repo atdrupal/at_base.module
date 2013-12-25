@@ -5,6 +5,14 @@ services:
     factory_method: getContainer
 
   # ---------------------
+  # Config
+  # ---------------------
+  expression_language:
+    class: 'Symfony\Component\ExpressionLanguage\ExpressionLanguage'
+    factory_class: 'AT'
+    factory_method: getExpressionLanguage
+
+  # ---------------------
   # Theming services
   # ---------------------
   twig.core:

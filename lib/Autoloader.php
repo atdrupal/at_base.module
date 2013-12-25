@@ -43,10 +43,10 @@ class Autoloader {
    */
   public function loadClass($className) {
     if (null === $this->_namespace || $this->_namespace.$this->_namespaceSeparator === substr($className, 0, strlen($this->_namespace.$this->_namespaceSeparator))) {
-      $fileName = '';
-      $namespace = '';
+      $fileName = $namespace = '';
       if (false !== ($lastNsPos = strripos($className, $this->_namespaceSeparator))) {
         $namespace = substr($className, 0, $lastNsPos);
+        $namespace = substr($namespace, strlen($this->_namespace) + 1);
         $className = substr($className, $lastNsPos + 1);
         $fileName = str_replace($this->_namespaceSeparator, DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
       }
