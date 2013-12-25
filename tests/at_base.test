@@ -115,4 +115,11 @@ class At_Base_TestCase extends DrupalWebTestCase {
     $this->assertEqual($expected, trim($block_2));
     $this->assertEqual($expected, trim($block_3));
   }
+
+  /**
+   * Test ExpressionLanguage.
+   */
+  public function testExpressionLanguage() {
+    $this->assertEqual('Symfony\Component\ExpressionLanguage\ExpressionLanguage', at_container('expression_language'));
+  }
 }
