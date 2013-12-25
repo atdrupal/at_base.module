@@ -63,6 +63,9 @@ class Autoloader {
     $do_load = $do_load || $this->_namespace.$this->_namespaceSeparator === substr($className, 0, strlen($this->_namespace.$this->_namespaceSeparator));
     if (!$do_load) return;
 
+    // No PSR-0
+    if (FALSE !== strpos($className, $this->_namespaceSeparator . 'Tests' . $this->_namespaceSeparator)) return;
+
     // Find module name from the class
     $secondNamespaceSeparator = strpos($className, $this->_namespaceSeparator, 7);
     $module = substr($className, 7, $secondNamespaceSeparator - 7);
