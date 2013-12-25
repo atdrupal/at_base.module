@@ -1,9 +1,13 @@
 <?php
+namespace Drupal\at_base\Tests;
 
 /**
  * cache_get()/cache_set() does not work on unit test cases.
+ *
+ * Test me:
+ *  drush test-run 'Drupal\at_base\Tests\CacheTest'
  */
-class At_Base_Cache_TestCase extends DrupalWebTestCase {
+class CacheTest extends \DrupalWebTestCase {
   public function getInfo() {
     return array(
       'name' => 'AT Base: Cache',

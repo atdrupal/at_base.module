@@ -1,6 +1,11 @@
 <?php
+namespace Drupal\at_base\Tests;
 
-class At_Config_TestCase extends DrupalWebTestCase {
+/**
+ * Test me:
+ *  drush test-run 'Drupal\at_base\Tests\ConfigTest'
+ */
+class ConfigTest extends \DrupalWebTestCase {
   public function getInfo() {
     return array(
       'name' => 'AT Base: Config',
