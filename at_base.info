@@ -4,6 +4,7 @@ description = "Provide helper functions for at_* modules"
 core = 7.x
 package = Andy Truong
 
+dependencies[] = block
 dependencies[] = entity
 dependencies[] = views
 

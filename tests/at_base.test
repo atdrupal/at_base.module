@@ -10,6 +10,7 @@ class At_Base_TestCase extends DrupalWebTestCase {
   }
 
   public function setUp() {
+    $this->profile = 'testing';
     parent::setUp('atest_base', 'atest2_base');
   }
 
