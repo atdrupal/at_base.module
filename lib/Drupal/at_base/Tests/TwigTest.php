@@ -1,9 +1,11 @@
 <?php
 
+namespace Drupal\at_base\Tests;
+
 /**
  * cache_get()/cache_set() does not work on unit test cases.
  */
-class At_Twig_TestCase extends DrupalWebTestCase {
+class TwigTest extends \DrupalWebTestCase {
   public function getInfo() {
     return array(
       'name' => 'AT Base: Twig Service',

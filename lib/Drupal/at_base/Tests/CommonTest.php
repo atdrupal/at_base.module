@@ -1,6 +1,11 @@
 <?php
 
-class At_Base_TestCase extends DrupalWebTestCase {
+namespace Drupal\at_base\Tests;
+
+/**
+ * …
+ */
+class CommonTest extends \DrupalWebTestCase {
   public function getInfo() {
     return array(
       'name' => 'AT Base: Basic features',
@@ -19,7 +24,7 @@ class At_Base_TestCase extends DrupalWebTestCase {
    */
   public function testAtId() {
     $expected = 'Hello Andy Truong';
-    $actual = at_id(new At_Base_Test_Class())->hello('Andy Truong');
+    $actual = at_id(new \At_Base_Test_Class())->hello('Andy Truong');
     $this->assertEqual($expected, $actual);
   }
 
