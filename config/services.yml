@@ -35,5 +35,11 @@ services:
   # ---------------------
   # Helpers
   # ---------------------
+  helper.content_render:
+    class: 'Drupal\at_base\Helper\Content_Render'
+
+  helper.real_path:
+    class: 'Drupal\at_base\Helper\Real_Path'
+
   helper.timer:
     class: 'Drupal\at_base\Helper\Timer'

@@ -56,7 +56,7 @@ class At_Base_TestCase extends DrupalWebTestCase {
    */
   public function testRealPath() {
     $expected = path_to_theme() . '/templates/page.home.html.twig';
-    $actual = at_id(new \Drupal\at_base\Helper\RealPath('%theme/templates/page.home.html.twig'))->get();
+    $actual = at_container('helper.real_path')->get('%theme/templates/page.home.html.twig');
     $this->assertEqual($expected, $actual);
   }
 
