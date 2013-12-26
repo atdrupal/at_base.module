@@ -60,17 +60,7 @@ if (function_exists('cache_get')) {
  */
 function at_base_drush_cache_clear(&$type) {
   if (function_exists('drush_at_config_cache_clear')) {
-    $type['at_config'] = 'drush_at_config_cache_clear';
-  }
-}
-
-/**
- * Implements hook_drush_cache_clear().
- * 
- * @param array $type
- */
-function at_base_drush_cache_clear(&$type) {
-  if (function_exists('drush_at_config_cache_clear')) {
+    // Add "at_config" into drush cc command
     $type['at_config'] = 'drush_at_config_cache_clear';
   }
 }

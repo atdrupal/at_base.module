@@ -10,6 +10,7 @@ function drush_at_cache_clear() {
  */
 function drush_at_config_cache_clear() {
   if (function_exists('at_cache_flush_by_tags')) {
+    // Clear all caches have "at-config" tag.
     at_cache_flush_by_tags(array('at-config'));
   }
 }
