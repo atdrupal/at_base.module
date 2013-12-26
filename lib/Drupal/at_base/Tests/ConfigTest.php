@@ -1,6 +1,8 @@
 <?php
 
-class At_Config_TestCase extends DrupalWebTestCase {
+namespace Drupal\at_base\Tests;
+
+class ConfigTest extends \DrupalWebTestCase {
   public function getInfo() {
     return array(
       'name' => 'AT Base: Config',
@@ -34,7 +36,7 @@ class At_Config_TestCase extends DrupalWebTestCase {
       $not_there = at_config('atest_config')->get('not_there');
       $this->assertTrue('No exception thrown');
     }
-    catch (Drupal\at_base\Config\NotFoundException $e) {
+    catch (\Drupal\at_base\Config\NotFoundException $e) {
       $this->assertTrue('Throw NotFoundException if config item is not configured.');
     }
 

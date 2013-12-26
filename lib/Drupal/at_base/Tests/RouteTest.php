@@ -1,6 +1,11 @@
 <?php
 
-class At_Route_TestCase extends DrupalWebTestCase {
+namespace Drupal\at_base\Tests;
+
+/**
+ * …
+ */
+class RouteTest extends \DrupalWebTestCase {
   public function getInfo() {
     return array(
       'name' => 'AT Base: Route',
