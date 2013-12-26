@@ -55,7 +55,40 @@ class Content_Render {
     return $this->data;
   }
 
+  private function getCacheId() {
+    $o       = $this->data['cache'];
+    $o['id'] = isset($o['id']) ? $o['id'] : '';
+
+    $cid_parts[] = $o['id'];
+    $cid_parts = array_merge($cid_parts, drupal_render_cid_parts($o['type']));
+
+    return implode(':', $cid_parts);
+  }
+
   public function render() {
-    return $this->getEngine()->render();
+    if (empty($this->data['cache'])) {
+      return $this->getEngine()->render();
+    }
+
+    $cacheable = !count(module_implements('node_grants')) && ($_SERVER['REQUEST_METHOD'] == 'GET' || $_SERVER['REQUEST_METHOD'] == 'HEAD');
+    if (!$cacheable) {
+      return $this->getEngine()->render();
+    }
+
+    $o = $this->data['cache'];
+
+    if (!empty($o['type'])) {
+      switch ($o['type']) {
+        case DRUPAL_CACHE_CUSTOM:
+        case DRUPAL_NO_CACHE:
+          return $this->getEngine()->render();
+
+        default:
+          $o['id'] = $this->getCacheId();
+          break;
+      }
+    }
+
+    return at_cache($o, array($this->getEngine(), 'render'));
   }
 }

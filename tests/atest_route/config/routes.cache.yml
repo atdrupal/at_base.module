@@ -1,0 +1,12 @@
+routes:
+  'atest_route/cache/%user':
+    title: Route supports caching
+    access arguments: ['access arguments']
+    template_string: '{{ "now"|date("m/d/Y h:m:s") }}'
+    cache:
+      # DRUPAL_CACHE_CUSTOM, DRUPAL_CACHE_GLOBAL, DRUPAL_CACHE_PER_PAGE,
+      # DRUPAL_CACHE_PER_ROLE, DRUPAL_CACHE_PER_USER, DRUPAL_NO_CACHE
+      type: constant('DRUPAL_CACHE_GLOBAL')
+      bin: cache
+      ttl: + 15 minutes
+      tags: ['at_test']

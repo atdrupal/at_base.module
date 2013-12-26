@@ -20,6 +20,11 @@ class Controller {
       }
     }
 
+    // Prepair the cache ID
+    if (!empty($this->route['cache']) && empty($this->route['cache']['id'])) {
+      $this->route['cache']['id'] = 'atroute:' . $item['tab_root_href'];
+    }
+
     return at_container('helper.content_render')->setData($this->route)->render();
   }
 }

@@ -4,3 +4,4 @@ imports:
   - { resource: routes.template.yml }
   - { resource: routes.template_string.yml }
   - { resource: routes.form.yml }
+  - { resource: routes.cache.yml }

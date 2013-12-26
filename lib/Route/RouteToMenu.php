@@ -39,8 +39,9 @@ class RouteToMenu {
     );
 
     // Parse constants
-    if (!empty($this->menu_item['context'])) $this->menu_item['context'] = at_container('expression_language')->evaluate($this->menu_item['context']);
-    if (!empty($this->menu_item['type']))    $this->menu_item['type']    = at_container('expression_language')->evaluate($this->menu_item['type']);
+    if (!empty($this->menu_item['context']))       $this->menu_item['context'] = at_container('expression_language')->evaluate($this->menu_item['context']);
+    if (!empty($this->menu_item['type']))          $this->menu_item['type']    = at_container('expression_language')->evaluate($this->menu_item['type']);
+    if (!empty($this->menu_item['cache']['type'])) $this->menu_item['cache']['type'] = at_container('expression_language')->evaluate($this->menu_item['cache']['type']);
 
     // Prepare magic properties
     $need_wrapper = FALSE;
