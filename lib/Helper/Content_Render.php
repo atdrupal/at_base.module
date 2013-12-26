@@ -20,7 +20,7 @@ namespace Drupal\at_base\Helper;
  *
  * @see  \Drupal\at_base\Controller\DefaultController
  * @see  \Drupal\at_base\Hook\BlockView
- * @see  \At_Base_Helper_ContentRender_TestCase::testContentRender()
+ * @see  \At_Twig_TestCase::testContentRender()
  */
 class Content_Render {
   private $data;
