@@ -19,6 +19,7 @@ class Controller {
         $this->route['variables'][$part] = $item['map'][$i];
       }
     }
-    return at_id(new \Drupal\at_base\Helper\RenderContent($this->route))->render();
+
+    return at_container('helper.content_render')->setData($this->route)->render();
   }
 }
