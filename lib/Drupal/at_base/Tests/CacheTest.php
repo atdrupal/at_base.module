@@ -30,80 +30,25 @@ class CacheTest extends \DrupalWebTestCase {
   public function testCacheUsages() {
     $cache_options = array('bin' => 'cache', 'reset' => FALSE, 'ttl' => '+ 15 minutes');
 
-    // ---------------------
-    // Closure
-    // ---------------------
-    $options = array('id' => 'at_test:time:closure', 'reset' => TRUE) + $cache_options;
+    $callbacks['closure']    = array(function () { return time(); }, array());
+    $callbacks['string']     = array('time', array());
+    $callbacks['object']     = array(array($this, 'time'), array());
+    $callbacks['static']     = array('\Drupal\at_base\Tests\CacheTest::time', array());
+    $callbacks['arguments']  = array('sprintf', array('Timestamp: %d', time()));
+    foreach ($callbacks as $type => $callback) {
+      list($callback, $arguments) = $callback;
+      $options = array('id' => "at_test:time:{$type}", 'reset' => TRUE) + $cache_options;
 
-    // Init the value
-    $time_1 = at_cache($options, function () { return time(); });
-    sleep(2);
+      // Init the value
+      $output_1 = at_cache($options, $callback, $arguments);
+      sleep(2);
 
-    // Call at_cache() again
-    $time_2 = at_cache(array('reset' => FALSE) + $options, function () { return time(); });
+      // Call at_cache() again
+      $output_2 = at_cache(array('reset' => FALSE) + $options, $callback, $arguments);
 
-    // The value should be same — it's cached.
-    $this->assertEqual($time_1, $time_2);
-
-    // ---------------------
-    // String
-    // ---------------------
-    $options = array('id' => 'at_test:time:string', 'reset' => TRUE) + $cache_options;
-
-    // Init the value
-    $time_1 = at_cache($options, 'time');
-    sleep(2);
-
-    // Call at_cache() again
-    $time_2 = at_cache(array('reset' => FALSE) + $options, 'time');
-
-    // The value should be same — it's cached.
-    $this->assertEqual($time_1, $time_2);
-
-    // ---------------------
-    // Object
-    // ---------------------
-    $options = array('id' => 'at_test:time:object', 'reset' => TRUE) + $cache_options;
-
-    // Init the value
-    $time_1 = at_cache($options, array($this, 'time'));
-    sleep(2);
-
-    // Call at_cache() again
-    $time_2 = at_cache(array('reset' => FALSE) + $options, array($this, 'time'));
-
-    // The value should be same — it's cached.
-    $this->assertEqual($time_1, $time_2);
-
-    // ---------------------
-    // Callback with arguments
-    // ---------------------
-    $options = array('id' => 'at_test:string:arguments', 'reset' => TRUE) + $cache_options;
-
-    // Init the value
-    $string_1 = at_cache($options, 'sprintf', array('Timestamp: %d', time()));
-    sleep(2);
-
-    // Call at_cache() again
-    $string_2 = at_cache(array('reset' => FALSE) + $options, 'sprintf', array('Timestamp: %d', time()));
-
-    // The value should be same — it's cached.
-    $this->assertEqual($string_1, $string_2);
-
-    // ---------------------
-    // Static method
-    // ---------------------
-    $options = array('id' => 'at_test:time:', 'reset' => TRUE) + $cache_options;
-
-    // Init the value
-    $time_1 = at_cache($options, '\Drupal\at_base\Tests\CacheTest::time');
-    sleep(2);
-
-    // Call at_cache() again
-    $time_2 = at_cache(array('reset' => FALSE) + $options, '\Drupal\at_base\Tests\CacheTest::time');
-
-    // The value should be same — it's cached.
-    $this->assertEqual($time_1, $time_2);
+      // The value should be same — it's cached.
+      $this->assertEqual($output_1, $output_2);
+    }
 
     // ---------------------
     // Allow empty
