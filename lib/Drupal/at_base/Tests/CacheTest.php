@@ -61,6 +61,21 @@ class CacheTest extends \DrupalWebTestCase {
     $this->assertEqual($time_1, $time_2);
 
     // ---------------------
+    // Object
+    // ---------------------
+    $options = array('id' => 'at_test:time:object', 'reset' => TRUE) + $cache_options;
+
+    // Init the value
+    $time_1 = at_cache($options, array($this, 'time'));
+    sleep(2);
+
+    // Call at_cache() again
+    $time_2 = at_cache(array('reset' => FALSE) + $options, array($this, 'time'));
+
+    // The value should be same — it's cached.
+    $this->assertEqual($time_1, $time_2);
+
+    // ---------------------
     // Callback with arguments
     // ---------------------
     $options = array('id' => 'at_test:string:arguments', 'reset' => TRUE) + $cache_options;
