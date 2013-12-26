@@ -195,10 +195,11 @@ function at_debug() {
 /**
  * Return if key|upercase/variable is not FALSE|NULL|0.
  */
-function at_valid($key) {
+function at_valid($key, $get_value = FALSE) {
   $c = strtoupper($key);
-  if (defined($c)) return (boolean) constant($c);
-  return (boolean) variable_get($key, FALSE);
+  if (defined($c)) $return = constant($c);
+  else $return = variable_get($key, FALSE);
+  return $get_value ? $return : (boolean)($return);
 }
 
 /**
