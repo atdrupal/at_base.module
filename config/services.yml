@@ -40,3 +40,6 @@ services:
 
   helper.real_path:
     class: 'Drupal\at_base\Helper\Real_Path'
+
+  helper.timer:
+    class: 'Drupal\at_base\Helper\Timer'
