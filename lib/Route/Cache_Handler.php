@@ -51,7 +51,9 @@ class Cache_Handler implements CacheHandler_Interface {
     }
 
     // Tell the proxy does not cache this page
-    $GLOBALS['conf']['cache'] = 0;
+    if (user_is_anonymous()) {
+      $GLOBALS['conf']['cache'] = 0;
+    }
 
     return at_cache($o, $this->callback);
   }
