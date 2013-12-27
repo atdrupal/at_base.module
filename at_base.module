@@ -141,11 +141,9 @@ function at_config($module, $id = 'config', $refresh = FALSE) {
 }
 
 /**
- * @todo:
  * Get modules that depends on at.module — found
  * `requirements[] = at_base` in .info file
  *
- * @todo check module_implements_write_cache()
  * @see system_list()
  */
 function at_modules($base_module = 'at_base', $config_file = '', $reset = FALSE) {
