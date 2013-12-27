@@ -20,6 +20,19 @@ class Controller {
       }
     }
 
-    return at_container('helper.content_render')->setData($this->route)->render();
+    // Get render service
+    $render = at_container('helper.content_render');
+
+    // User want cache the page
+    if (!empty($this->route['cache'])) {
+      $render->setCacheHandler(new Cache_Handler());
+
+      // Prepair the cache ID
+      if (empty($this->route['cache']['id'])) {
+        $this->route['cache']['id'] = 'atroute:' . $item['tab_root_href'];
+      }
+    }
+
+    return $render->setData($this->route)->render();
   }
 }
