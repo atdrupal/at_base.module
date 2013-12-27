@@ -3,7 +3,9 @@ namespace Drupal\at_base\Helper;
 
 /**
  * Usage:
+ * @code
  *   at_id(new Drupal\at_base\Helper\SubRequest('atest_theming/users'))->request();
+ * @code
  */
 class SubRequest {
   private $path;

@@ -4,8 +4,10 @@ namespace Drupal\at_base\Helper;
 /**
  * Tool to replace tokens with real values:
  *
+ * @code
  *  %theme => /path/to/active_theme/
  *  @at_base => /path/to/at_base/
+ * @code
  *
  * @see \At_Base_TestCase::testRealPath()
  */

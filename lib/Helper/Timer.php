@@ -6,22 +6,24 @@ namespace Drupal\at_base\Helper;
  *
  * Usage:
  *
- *    $timer = at_container('helper.timer');
+ * @code
+ *   $timer = at_container('helper.timer');
  *
- *    // Set the callback — code to be benchmarked
- *    $timer->setCallback(function() { $modules = at_modules('at_base'); });
+ *   // Set the callback — code to be benchmarked
+ *   $timer->setCallback(function() { $modules = at_modules('at_base'); });
  *
- *    // Run it 10 times
- *    $timer->setTimes(10);
+ *   // Run it 10 times
+ *   $timer->setTimes(10);
  *
- *    // Profile the callback with xhprof
- *    // If we defined $conf['at_xhprof_domain'] and $conf['at_xhprof_root'] in
- *    // settings.php, then we just need callback setXProfConfig with empty array
- *    // $timer->setXProfConfig()
- *    $timer->setXProfConfig(array('domain' => 'http://xhprof.example.com/', 'root' => '/var/www/'));
+ *   // Profile the callback with xhprof
+ *   // If we defined $conf['at_xhprof_domain'] and $conf['at_xhprof_root'] in
+ *   // settings.php, then we just need callback setXProfConfig with empty array
+ *   // $timer->setXProfConfig()
+ *   $timer->setXProfConfig(array('domain' => 'http://xhprof.example.com/', 'root' => '/var/www/'));
  *
- *    // Now, start benchmarking
- *    $data = $timer->run();
+ *   // Now, start benchmarking
+ *   $data = $timer->run();
+ * @code
  */
 class Timer {
   private $callback;

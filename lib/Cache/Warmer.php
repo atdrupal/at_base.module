@@ -7,10 +7,11 @@ namespace Drupal\at_base\Cache;
  *
  * Usage
  *
+ * @code
  *   $warmer = new CacheWarmer('user_login');
  *   $warmer->setEntity('user', $account);
  *   $warmer->warm();
- *
+ * @code
  */
 class Warmer {
   private $entity;
