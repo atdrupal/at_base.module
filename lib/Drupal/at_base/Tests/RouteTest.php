@@ -57,5 +57,11 @@ class RouteTest extends \DrupalWebTestCase {
     # ---------------------
     # Support caching
     # ---------------------
+    // bit of hack, more sure the route is cachable
+    $_SERVER['REQUEST_METHOD'] = 'GET';
+    $response_0 = trim(at_id(new \Drupal\at_base\Helper\SubRequest('atest_route/cache/1'))->request());
+    sleep(1);
+    $response_1 = trim(at_id(new \Drupal\at_base\Helper\SubRequest('atest_route/cache/1'))->request());
+    $this->assertEqual($response_0, $response_1);
   }
 }

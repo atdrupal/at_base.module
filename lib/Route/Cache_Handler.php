@@ -33,7 +33,7 @@ class Cache_Handler implements CacheHandler_Interface {
   public function render() {
     $cacheable = !count(module_implements('node_grants')) && ($_SERVER['REQUEST_METHOD'] == 'GET' || $_SERVER['REQUEST_METHOD'] == 'HEAD');
     if (!$cacheable) {
-      return $this->getEngine()->render();
+      return call_user_func($this->callback);
     }
 
     $o = &$this->options;
