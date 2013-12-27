@@ -2,6 +2,8 @@
 
 namespace Drupal\at_base\Helper;
 
+use Drupal\at_base\Helper\Content_Render\CacheHandler_Interface;
+
 /**
  * Helper class for rendering data:
  *
@@ -23,8 +25,22 @@ namespace Drupal\at_base\Helper;
  * @see  \At_Twig_TestCase::testContentRender()
  */
 class Content_Render {
+  /**
+   * Data to be rendered.
+   *
+   * @var array
+   */
   private $data;
+
+  /**
+   * Render engine (String, Template, Template String, Form, …)
+   */
   private $engine;
+
+  /**
+   * @var CacheHandler_Interface
+   */
+  private $cache_handler;
 
   /**
    * Get render engine.
@@ -55,40 +71,27 @@ class Content_Render {
     return $this->data;
   }
 
-  private function getCacheId() {
-    $o       = $this->data['cache'];
-    $o['id'] = isset($o['id']) ? $o['id'] : '';
+  public function setCacheHandler(CacheHandler_Interface $cache_handler) {
+    $this->cache_handler = $cache_handler;
+    return $this;
+  }
 
-    $cid_parts[] = $o['id'];
-    $cid_parts = array_merge($cid_parts, drupal_render_cid_parts($o['type']));
-
-    return implode(':', $cid_parts);
+  public function getCacheHandler() {
+    return $this->cache_handler;
   }
 
   public function render() {
-    if (empty($this->data['cache'])) {
+    $no_cache = !empty($this->data['cache']) && is_null($this->cache_handler);
+    $no_cache = $no_cache || empty($this->data['cache']);
+    if ($no_cache) {
       return $this->getEngine()->render();
     }
 
-    $cacheable = !count(module_implements('node_grants')) && ($_SERVER['REQUEST_METHOD'] == 'GET' || $_SERVER['REQUEST_METHOD'] == 'HEAD');
-    if (!$cacheable) {
-      return $this->getEngine()->render();
-    }
-
-    $o = $this->data['cache'];
-
-    if (!empty($o['type'])) {
-      switch ($o['type']) {
-        case DRUPAL_CACHE_CUSTOM:
-        case DRUPAL_NO_CACHE:
-          return $this->getEngine()->render();
-
-        default:
-          $o['id'] = $this->getCacheId();
-          break;
-      }
-    }
-
-    return at_cache($o, array($this->getEngine(), 'render'));
+    return $this
+      ->getCacheHandler()
+      ->setOptions($this->data['cache'])
+      ->setCallback(array($this->getEngine(), 'render'))
+      ->render()
+    ;
   }
 }
