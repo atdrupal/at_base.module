@@ -1,7 +1,7 @@
 routes:
   'atest_route/cache/%user':
     title: Route supports caching
-    access arguments: ['access arguments']
+    access arguments: ['access content']
     template_string: >
       <strong>Username:</strong> {{ user.name }}.
       <strong>Time:</strong> {{ "now"|date("m/d/Y h:m:s") }}
@@ -15,7 +15,7 @@ routes:
 
   'user/%user/atest':
     title: Local Task
-    access arguments: ['access arguments']
+    access arguments: ['access content']
     template_string: >
       <strong>Username:</strong> {{ user.name }}.
       <strong>Time:</strong> {{ "now"|date("m/d/Y h:m:s") }}
