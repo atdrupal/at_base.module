@@ -24,3 +24,9 @@ commands:
       drush atcc at-config: Flush cached content tagged with at-config
       drush atcc node user: Flush cached content tagged with node or user
     aliases: ['atcc']
+  'twig:doc':
+    callback: drush_at_twig_doc
+    description: 'Lists twig functions, filters, globals and tests present in the current project'
+    examples:
+      'drush twig:doc': Display all Twig functions/filters
+      'drush twig:doc drupalView': View details of drupalView filter.
