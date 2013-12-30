@@ -1,9 +1,11 @@
 <?php
 
+namespace Drupal\at_base\Tests;
+
 /**
  * cache_get()/cache_set() does not work on unit test cases.
  */
-class At_Twig_TestCase extends DrupalWebTestCase {
+class TwigTest extends \DrupalWebTestCase {
   public function getInfo() {
     return array(
       'name' => 'AT Base: Twig Service',
@@ -13,6 +15,7 @@ class At_Twig_TestCase extends DrupalWebTestCase {
   }
 
   public function setUp() {
+    $this->profile = 'testing';
     parent::setUp('at_base');
   }
 
@@ -30,22 +33,24 @@ class At_Twig_TestCase extends DrupalWebTestCase {
     }
   }
 
-  public function testRenderContent() {
+  public function testContentRender() {
+    $render = at_container('helper.content_render');
+
     // Simple string
     $expected = 'Hello Andy Truong';
-    $actual = at_id(new \Drupal\at_base\Helper\RenderContent($expected))->render();
+    $actual = $render->setData($expected)->render();
     $this->assertEqual($expected, $actual);
 
     // Template string
     $data['template_string'] = 'Hello {{ name }}';
     $data['variables']['name'] = 'Andy Truong';
-    $output = at_id(new \Drupal\at_base\Helper\RenderContent($data))->render();
+    $output = $render->setData($data)->render();
     $this->assertEqual($expected, $actual);
 
     // Template
     $data['template'] = '@atest_theming/templates/hello.twig';
     $data['variables']['name'] = 'Andy Truong';
-    $output = at_id(new \Drupal\at_base\Helper\RenderContent($data))->render();
+    $output = $render->setData($data)->render();
     $assert = strpos($output, $actual) !== FALSE;
     $this->assertTrue($assert, "Found <strong>{$expected}</strong> in result.");
   }

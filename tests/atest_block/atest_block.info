@@ -1,7 +1,0 @@
-name = ATest Block
-description = Test module for Easy Block feature
-package = Testing
-core = 7.x
-hidden = TRUE
-
-dependencies[] = at_base

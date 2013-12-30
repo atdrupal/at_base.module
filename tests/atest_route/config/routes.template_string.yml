@@ -8,7 +8,7 @@ routes:
 
   atest_route/with_assets:
     title: Route with attached assets
-    access arguments: ['access arguments']
+    access arguments: ['access content']
     template_string: 'Simple string'
     attached:
       css:

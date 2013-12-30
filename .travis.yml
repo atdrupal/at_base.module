@@ -2,6 +2,13 @@ language: php
 php:
   - 5.3
   - 5.4
+  - 5.5
+  - hhvm
+
+matrix:
+  allow_failures:
+    - php: 5.5
+    - php: hhvm
 
 mysql:
   database: drupal
@@ -14,34 +21,38 @@ before_script:
   # ---------------------
   - cd ../..
   - export DRUPAL=`pwd`'/drupal/'
+
   # ---------------------
   # Setup DB
   # ---------------------
   - mysql -e 'create database drupal;'
   - pear channel-discover pear.drush.org
+
   # ---------------------
   # Install Drush
   # ---------------------
   - pear install drush/drush-5.8.0
   - phpenv rehash
+
   # ---------------------
-  # Make & Install Drupal core
+  # Download the codebase
   # ---------------------
-  - drush dl --yes drupal-7.24
-  - mv drupal-7.24 $DRUPAL
+  - wget https://github.com/andytruong/atest_profile/archive/master.zip
+  - unzip -qq master
+  - mv atest_profile-master $DRUPAL
   - cd $DRUPAL
   - drush si testing --db-url=mysql://root:@localhost/drupal --account-mail='travis@mailnator.com' --yes
+  - mv ../andytruong/* sites/all/modules/
+
   # ---------------------
   # Prepare env for the module
   # ---------------------
-  - mv ../andytruong/* sites/all/modules/
   - drush vset --yes file_temporary_path /tmp
   - drush en -y simpletest at_base
-  - drush at_require at_base
+
   # ---------------------
   # No cache data
   # ---------------------
   - drush cc all
-  - sleep 3
 
-script: drush test-run 'AT Base'
+script: drush test-run --dirty 'AT Base'

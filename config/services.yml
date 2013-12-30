@@ -1,16 +1,45 @@
 services:
+  container:
+    class: '\Drupal\at_base\Container'
+    factory_class: 'AT'
+    factory_method: getContainer
+
+  # ---------------------
+  # Config
+  # ---------------------
+  expression_language:
+    class: 'Symfony\Component\ExpressionLanguage\ExpressionLanguage'
+    factory_class: 'AT'
+    factory_method: getExpressionLanguage
+
+  # ---------------------
   # Theming services
+  # ---------------------
   twig.core:
     class: '\Twig_Environment'
     factory_class: '\Drupal\at_base\Twig\Environment_Factory'
     factory_method: getObject
+
   twig:
     class: '\Twig_Environment'
     factory_class: '\Drupal\at_base\Twig\Environment_Factory'
     factory_method: getFileService
     arguments: ['@twig.core']
+
   twig_string:
     class: '\Twig_Environment'
     factory_class: '\Drupal\at_base\Twig\Environment_Factory'
     factory_method: getStringService
     arguments: ['@twig.core']
+
+  # ---------------------
+  # Helpers
+  # ---------------------
+  helper.content_render:
+    class: 'Drupal\at_base\Helper\Content_Render'
+
+  helper.real_path:
+    class: 'Drupal\at_base\Helper\Real_Path'
+
+  helper.timer:
+    class: 'Drupal\at_base\Helper\Timer'

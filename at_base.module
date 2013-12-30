@@ -1,24 +1,13 @@
 <?php
 
+use \Drupal\at_base\Autoloader;
 use \Drupal\at_base\Config\Resolver as ConfigResolver;
 use \Drupal\at_base\Config\Config;
 
 require_once dirname(__FILE__) . '/lib/AT.php';
-require_once dirname(__FILE__) . '/lib/Autoloader.php';
 require_once dirname(__FILE__) . '/at_base.hooks.inc';
-
-/**
- * Simple PSR-4 autoloader.
- *  /path/to/%module/Class.php -> \Drupal\%module\Class
- */
-spl_autoload_register(function($class) {
-  // Only Drupal namespace
-  if ($supported = strpos($class, 'Drupal\\') !== FALSE) {
-    if ($file = at_id(new \Drupal\at_base\Autoloader($class))->getFile()) {
-      require_once $file;
-    }
-  }
-});
+require_once dirname(__FILE__) . '/lib/Autoloader.php';
+at_id(new Autoloader())->register();
 
 /**
  * Identity function, returns its argument unmodified.
@@ -152,11 +141,9 @@ function at_config($module, $id = 'config', $refresh = FALSE) {
 }
 
 /**
- * @todo:
  * Get modules that depends on at.module — found
  * `requirements[] = at_base` in .info file
  *
- * @todo check module_implements_write_cache()
  * @see system_list()
  */
 function at_modules($base_module = 'at_base', $config_file = '', $reset = FALSE) {
@@ -206,31 +193,11 @@ function at_debug() {
 /**
  * Return if key|upercase/variable is not FALSE|NULL|0.
  */
-function at_valid($key) {
+function at_valid($key, $get_value = FALSE) {
   $c = strtoupper($key);
-  if (defined($c)) return (boolean) constant($c);
-  return (boolean) variable_get($key, FALSE);
-}
-
-/**
- * Simpe function for benchmark.
- *
- * Usage:
- *
- *  $callback = function() { $modules = at_modules('at_base'); };
- *  print_r(at_timer($callback, 5000));
- *
- * @param  callable  $callback
- * @param  integer   $times
- */
-function at_timer($callback, $times = 1) {
-  $memory = memory_get_usage();
-  timer_start('at_timer');
-  for ($i = 1; $i <= $times; ++$i) {
-    $callback();
-  }
-  $return = timer_stop('at_timer');
-  return array('memory' => memory_get_usage() - $memory) + $return;
+  if (defined($c)) $return = constant($c);
+  else $return = variable_get($key, FALSE);
+  return $get_value ? $return : (boolean)($return);
 }
 
 /**

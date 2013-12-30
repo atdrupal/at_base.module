@@ -4,14 +4,6 @@ description = "Provide helper functions for at_* modules"
 core = 7.x
 package = Andy Truong
 
+dependencies[] = block
 dependencies[] = entity
 dependencies[] = views
-
-files[] = tests/at_base.test
-files[] = tests/at_base.cache.test
-files[] = tests/at_base.autoload.test
-files[] = tests/at_base.config.test
-files[] = tests/at_base.service_container.test
-files[] = tests/at_base.route.test
-files[] = tests/at_base.block.test
-files[] = tests/at_base.twig.test

@@ -4,20 +4,16 @@ namespace Drupal\at_base\Helper;
 /**
  * Tool to replace tokens with real values:
  *
+ * @code
  *  %theme => /path/to/active_theme/
  *  @at_base => /path/to/at_base/
+ * @code
  *
- * @see \At_Base_Helper_RealPath_TestCase::testRealPath().
+ * @see \At_Base_TestCase::testRealPath()
  */
-class RealPath {
-  private $path;
-
-  public function __construct($path) {
-    $this->path = $path;
-  }
-
-  public function get() {
-    $real_path = $this->path;
+class Real_Path {
+  public function get($path) {
+    $real_path = $path;
 
     if (strpos($real_path, '%theme/') !== FALSE) {
       $real_path = str_replace('%theme/', path_to_theme() . '/', $real_path);
