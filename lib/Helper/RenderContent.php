@@ -65,6 +65,7 @@ class RenderContent {
   }
 
   private function renderTemplateFile() {
+    $this->data['variables'] = is_array($this->data['variables']) ? $this->data['variables'] : array();
     return \AT::twig()->render(at_id(new \Drupal\at_base\Helper\RealPath($this->data['template_file']))->get(), $this->data['variables']);
   }
 
