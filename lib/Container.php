@@ -35,9 +35,9 @@ class Container {
    * @param string $tag
    *   Tag name.
    */
-  public function findTaggedServices($tag) {
+  public function findTaggedServices($tags = array(), $operator = 'and') {
     $services = array();
-    $definitions = Definition::findByTag($tag);
+    $definitions = Definition::findByTags($tags, $operator);
 
     foreach ($definitions as $service_name => $definition) {
       if (empty(self::$container[$service_name])) {
