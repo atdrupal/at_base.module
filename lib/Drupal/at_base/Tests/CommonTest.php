@@ -109,4 +109,18 @@ class CommonTest extends \DrupalWebTestCase {
     $actual = at_container('expression_language')->evaluate("constant('MENU_CONTEXT_PAGE') | constant('MENU_CONTEXT_INLINE')");
     $this->assertEqual($expected, $actual);
   }
+
+  /**
+   * Test Tagged Service.
+   */
+  public function testTaggedService() {
+    // Find services has tag 'foo'.
+    $exected = array('Drupal\atest_base\Service_1', 'Drupal\atest_base\Service_2');
+    $actual = array();
+    $services = at_id(new \Drupal\at_base\Container())->findTaggedServices(array('foo'));
+    foreach ($services as $service_name => $service) {
+      $actual = get_class($service);
+    }
+    $this->assertEqual($expected, $actual);
+  }
 }

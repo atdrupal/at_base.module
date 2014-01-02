@@ -59,7 +59,7 @@ class Definition {
 
     // The tags are sorted, so hash value is the same if the tags are shuffled.
     $hash_tags = md5(implode('', $tags));
-    $options = array('ttl' => '+ 1 year', 'cache_id' => 'at_base:tagged_services:{$hash_tags}{$operator}');
+    $options = array('ttl' => '+ 1 year', 'cache_id' => 'at_base:tagged_services:{$hash_tags}:{$operator}');
 
     return at_cache($options, function() use ($tags, $operator) {
       $services = array();
