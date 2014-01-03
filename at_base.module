@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file at_base.module
+ *
+ * Include custom functions.
+ */
 
 use \Drupal\at_base\Autoloader;
 use \Drupal\at_base\Config\Resolver as ConfigResolver;
