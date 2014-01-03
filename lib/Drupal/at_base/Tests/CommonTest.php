@@ -164,6 +164,15 @@ class CommonTest extends \DrupalWebTestCase {
     }
     $this->assertEqual($expected, $actual);
 
+    // Find services has an existent tag 'foo' or an un-existent tag 'baz'.
+    $expected = array('Drupal\atest_base\Tagged_Service_1', 'Drupal\atest_base\Tagged_Service_2');
+    $actual = array();
+    $services = at_id(new \Drupal\at_base\Container())->findTaggedServices(array('foo', 'baz'), 'or');
+    foreach ($services as $service_name => $service) {
+      $actual[] = get_class($service);
+    }
+    $this->assertEqual($expected, $actual);
+
     // @todo -Need to work out the behaviour when we pass empty array to tags,
     // with custom operator ('and' and 'or').
 //    $expected = array();
