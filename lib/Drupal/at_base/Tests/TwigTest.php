@@ -6,7 +6,7 @@ namespace Drupal\at_base\Tests;
  * cache_get()/cache_set() does not work on unit test cases.
  */
 class TwigTest extends \DrupalWebTestCase {
-  public function getInfo() {
+  public static function getInfo() {
     return array(
       'name' => 'AT Base: Twig Service',
       'description' => 'Test Twig service',
