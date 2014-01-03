@@ -33,8 +33,7 @@ class ModulesFetcher {
 
     // Config file is available
     $file = DRUPAL_ROOT . '/' . drupal_get_path('module', $module_name) . '/config/'. $this->config_file .'.yml';
-    if (is_file($file)) return TRUE;
 
-    return FALSE;
+    return is_file($file);
   }
 }
