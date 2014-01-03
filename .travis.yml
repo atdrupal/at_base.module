@@ -41,7 +41,7 @@ before_script:
   - unzip -qq master
   - mv atest_profile-master $DRUPAL
   - cd $DRUPAL
-  - php -d sendmail_path=/dev/null `which drush` si testing --db-url=mysql://root:@localhost/drupal --account-mail='travis@mailnator.com' --yes
+  - drush si testing --db-url=mysql://root:@localhost/drupal --yes
   - mv ../andytruong/* sites/all/modules/
 
   # ---------------------
