@@ -53,6 +53,7 @@ class Views {
       return \AT::twig()->render($template_file, $vars);
     }
 
+    $view->pre_execute();
     return $view->preview($display_id, $args);
   }
 
