@@ -43,7 +43,6 @@ class RouteToMenu {
     if (!empty($this->menu_item['type']))          $this->menu_item['type']    = at_container('expression_language')->evaluate($this->menu_item['type']);
     if (!empty($this->menu_item['cache']['type'])) $this->menu_item['cache']['type'] = at_container('expression_language')->evaluate($this->menu_item['cache']['type']);
 
-    // @todo: Params converter does not work for this case yet
     if (!empty($this->menu_item['page callback'])) {
       $this->menu_item['callback'] = $this->menu_item['page callback'];
       $this->menu_item['arguments'] = $this->menu_item['page arguments'] ? $this->menu_item['page arguments'] : array();
