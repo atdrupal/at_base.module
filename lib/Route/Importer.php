@@ -18,7 +18,7 @@ class Importer {
   }
 
   public function import() {
-    $data = at_config($this->module, 'routes')->get('routes');
+    $data = at_config($this->module, 'routes', $refresh = TRUE)->get('routes');
 
     foreach ($data as $route_name => $route_data) {
       if ($item = at_id(new RouteToMenu($this->module, $route_name, $route_data))->convert()) {
