@@ -35,26 +35,26 @@ class Views {
       $view->set_arguments($args);
     }
 
-    if ($template_file = self::findTemplate($name, $display_id)) {
-      // Many tags rendered by views, we get rid of them
-      if (!empty($view->display[$display_id]->display_options['fields'])) {
-        foreach (array_keys($view->display[$display_id]->display_options['fields']) as $k) {
-          $view->display[$display_id]->display_options['fields'][$k]['element_default_classes'] = 0;
-          $view->display[$display_id]->display_options['fields'][$k]['element_type'] = 0;
-        }
-      }
-
+    if (!$template_file = self::findTemplate($name, $display_id)) {
       $view->pre_execute();
-      $view->execute();
+      return $view->preview($display_id, $args);
+    }
 
-      module_load_include('inc', 'views', 'theme/theme');
-      $vars['view'] = $view;
-      template_preprocess_views_view($vars);
-      return \AT::twig()->render($template_file, $vars);
+    // Many tags rendered by views, we get rid of them
+    if (!empty($view->display[$display_id]->display_options['fields'])) {
+      foreach (array_keys($view->display[$display_id]->display_options['fields']) as $k) {
+        $view->display[$display_id]->display_options['fields'][$k]['element_default_classes'] = 0;
+        $view->display[$display_id]->display_options['fields'][$k]['element_type'] = 0;
+      }
     }
 
     $view->pre_execute();
-    return $view->preview($display_id, $args);
+    $view->execute();
+
+    module_load_include('inc', 'views', 'theme/theme');
+    $vars['view'] = $view;
+    template_preprocess_views_view($vars);
+    return \AT::twig()->render($template_file, $vars);
   }
 
   /**
