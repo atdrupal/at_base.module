@@ -52,7 +52,7 @@ class Content_Render {
     elseif (isset($this->data['template_string'])) $engine = 'Drupal\at_base\Helper\Content_Render\TemplateString_Engine';
     elseif (isset($this->data['template']))        $engine = 'Drupal\at_base\Helper\Content_Render\TemplateFile_Engine';
     elseif (isset($this->data['controller']))      $engine = 'Drupal\at_base\Helper\Content_Render\Controller_Engine';
-    elseif (isset($this->data['callback']))        $engine = 'Drupal\at_base\Helper\Content_Render\Callback_Engine';
+    elseif (isset($this->data['function']))        $engine = 'Drupal\at_base\Helper\Content_Render\Function_Engine';
     elseif (isset($this->data['form']))            $engine = 'Drupal\at_base\Helper\Content_Render\Form_Engine';
 
     if (!empty($engine)) {

@@ -3,8 +3,8 @@ routes:
   'atest_route/drupal/%user':
     title: User
     access arguments: ['access content']
-    page callback: user_view
-    page arguments: [1]
+    page callback: atest_route_user_view_callback
+    page arguments: ['Andy Truong', 2]
 
   atest_route/drupal:
     title: Hello

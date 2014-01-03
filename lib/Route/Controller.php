@@ -17,6 +17,14 @@ class Controller {
       if (strpos($part, '%') === 0) {
         $part = substr($part, 1);
         $this->route['variables'][$part] = $item['map'][$i];
+
+        if (!empty($this->route['page arguments'])) {
+          foreach ($this->route['page arguments'] as $k => $v) {
+            if (is_numeric($v) && $v == $i) {
+              $this->route['page arguments'][$k] = $item['map'][$i];
+            }
+          }
+        }
       }
     }
 
@@ -31,6 +39,11 @@ class Controller {
       if (empty($this->route['cache']['id'])) {
         $this->route['cache']['id'] = 'atroute:' . $item['tab_root_href'];
       }
+    }
+
+    if (!empty($this->route['function'])) {
+      $this->route['arguments'] = $this->route['page arguments'];
+      unset($this->route['page arguments']);
     }
 
     return $render->setData($this->route)->render();
