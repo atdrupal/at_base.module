@@ -1,4 +1,11 @@
 routes:
+  # @todo: Test me
+  'atest_route/drupal/%user':
+    title: User
+    access arguments: ['access content']
+    page callback: user_view
+    page arguments: [1]
+
   atest_route/drupal:
     title: Hello
     title callback: t
