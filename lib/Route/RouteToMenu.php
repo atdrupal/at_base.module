@@ -43,16 +43,12 @@ class RouteToMenu {
     if (!empty($this->menu_item['type']))          $this->menu_item['type']    = at_container('expression_language')->evaluate($this->menu_item['type']);
     if (!empty($this->menu_item['cache']['type'])) $this->menu_item['cache']['type'] = at_container('expression_language')->evaluate($this->menu_item['cache']['type']);
 
-    // Prepare magic properties
-    $need_wrapper = FALSE;
-    $need_wrapper = $need_wrapper || !empty($this->menu_item['controller']);
-    $need_wrapper = $need_wrapper || !empty($this->menu_item['template']);
-    $need_wrapper = $need_wrapper || !empty($this->menu_item['template_string']);
-    $need_wrapper = $need_wrapper || !empty($this->menu_item['form']);
-    if ($need_wrapper) {
-      $this->menu_item['page arguments'][] = $this->menu_item;
-      $this->menu_item['page callback'] = 'at_route';
+    if (!empty($this->menu_item['page callback'])) {
+      $this->menu_item['function'] = $this->menu_item['page callback'];
     }
+
+    $this->menu_item['page callback'] = 'at_route';
+    $this->menu_item['page arguments'][] = $this->menu_item;
 
     return $this->menu_item;
   }

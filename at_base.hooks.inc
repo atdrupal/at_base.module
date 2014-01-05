@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file at_base.hooks.inc
+ *
+ * Drupal hook implementations.
+ */
 
 use \Drupal\at_base\Cache\Warmer as CacheWarmer;
 use \Drupal\at_base\Route\Importer as RouteImporter;
