@@ -117,7 +117,7 @@ class CommonTest extends \DrupalWebTestCase {
     // Test find services has an existent tag 'foo'.
     $expected = array('Drupal\atest_base\Tagged_Service_1', 'Drupal\atest_base\Tagged_Service_2');
     $actual = array();
-    $services = at_id(new \Drupal\at_base\Container())->findTaggedServices(array('foo'));
+    $services = \AT::getContainer()->findTaggedServices(array('foo'));
     foreach ($services as $service_name => $service) {
       $actual[] = get_class($service);
     }
@@ -126,7 +126,7 @@ class CommonTest extends \DrupalWebTestCase {
     // Test find services has an existent tag 'bar' and an un-existent tag 'baz'.
     $expected = array();
     $actual = array();
-    $services = at_id(new \Drupal\at_base\Container())->findTaggedServices(array('bar', 'baz'));
+    $services = \AT::getContainer()->findTaggedServices(array('bar', 'baz'));
     foreach ($services as $service_name => $service) {
       $actual[] = get_class($service);
     }
@@ -134,13 +134,13 @@ class CommonTest extends \DrupalWebTestCase {
 
     // Test find services has an un-existent tag 'baz'.
     $expected = array();
-    $services = at_id(new \Drupal\at_base\Container())->findTaggedServices(array('baz'));
+    $services = \AT::getContainer()->findTaggedServices(array('baz'));
     $this->assertEqual($expected, $services);
 
     // Find services has two existent tags 'foo' and 'bar'.
     $expected = array('Drupal\atest_base\Tagged_Service_1');
     $actual = array();
-    $services = at_id(new \Drupal\at_base\Container())->findTaggedServices(array('foo', 'bar'));
+    $services = \AT::getContainer()->findTaggedServices(array('foo', 'bar'));
     foreach ($services as $service_name => $service) {
       $actual[] = get_class($service);
     }
@@ -149,7 +149,7 @@ class CommonTest extends \DrupalWebTestCase {
     // Find services has two existent tags 'bar' and 'foo'.
     $expected = array('Drupal\atest_base\Tagged_Service_1');
     $actual = array();
-    $services = at_id(new \Drupal\at_base\Container())->findTaggedServices(array('bar', 'foo'));
+    $services = \AT::getContainer()->findTaggedServices(array('bar', 'foo'));
     foreach ($services as $service_name => $service) {
       $actual[] = get_class($service);
     }
@@ -158,7 +158,7 @@ class CommonTest extends \DrupalWebTestCase {
     // Find services has two existent tags 'foo' or 'bar'.
     $expected = array('Drupal\atest_base\Tagged_Service_1', 'Drupal\atest_base\Tagged_Service_2', 'Drupal\atest_base\Tagged_Service_3');
     $actual = array();
-    $services = at_id(new \Drupal\at_base\Container())->findTaggedServices(array('foo', 'bar'), 'or');
+    $services = \AT::getContainer()->findTaggedServices(array('foo', 'bar'), 'or');
     foreach ($services as $service_name => $service) {
       $actual[] = get_class($service);
     }
@@ -167,7 +167,7 @@ class CommonTest extends \DrupalWebTestCase {
     // Find services has an existent tag 'foo' or an un-existent tag 'baz'.
     $expected = array('Drupal\atest_base\Tagged_Service_1', 'Drupal\atest_base\Tagged_Service_2');
     $actual = array();
-    $services = at_id(new \Drupal\at_base\Container())->findTaggedServices(array('foo', 'baz'), 'or');
+    $services = \AT::getContainer()->findTaggedServices(array('foo', 'baz'), 'or');
     foreach ($services as $service_name => $service) {
       $actual[] = get_class($service);
     }
@@ -176,7 +176,7 @@ class CommonTest extends \DrupalWebTestCase {
     // @todo -Need to work out the behaviour when we pass empty array to tags,
     // with custom operator ('and' and 'or').
 //    $expected = array();
-//    $actual = at_id(new \Drupal\at_base\Container())->findTaggedServices();
+//    $actual = \AT::getContainer()->findTaggedServices();
 //    $this->assertEqual($expected, $actual);
   }
 }
