@@ -1,6 +1,10 @@
 <?php
 
 class At_Base_Test_Class {
+  public function __invoke() {}
+
+  public function foo() {}
+
   public function hello($name) {
     return "Hello {$name}";
   }
