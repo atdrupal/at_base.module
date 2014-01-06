@@ -16,7 +16,7 @@ class TwigTest extends \DrupalWebTestCase {
 
   public function setUp() {
     $this->profile = 'testing';
-    parent::setUp('at_base');
+    parent::setUp('atest_base', 'atest2_base');
   }
 
   public function testServiceContainer() {
@@ -64,6 +64,25 @@ class TwigTest extends \DrupalWebTestCase {
   public function testTwigStringLoader() {
     $output = \AT::twig_string()->render('Hello {{ name }}', array('name' => 'Andy Truong'));
     $this->assertEqual('Hello Andy Truong', $output, 'Template string is rendered correctly.');
+  }
+
+  public function testCacheFilter() {
+    $string_1  = "{% set options = { cache_id: 'atestTwigCache:1' } %}";
+    $string_1 .= "\n {{ 'atest_base.service_1:hello' | cache(options) }}";
+    $string_2  = "{% set options = { cache_id: 'atestTwigCache:2' } %}";
+    $string_2 .= "\n {{ 'At_Base_Test_Class::hello' | cache(options) }}";
+    $string_3  = "{% set options = { cache_id: 'atestTwigCache:3' } %}";
+    $string_3 .= "\n {{ 'atest_base_hello' | cache(options) }}";
+    $string_4  = "{% set options  = { cache_id: 'atestTwigCache:4' } %}";
+    $string_4 .= "\n {% set callback = { callback: 'atest_base_hello', arguments: ['Andy Truong'] } %}";
+    $string_4 .= "\n {{ callback | cache(options) }}";
+    for ($i = 1; $i <= 4; $i++) {
+      $expected = 'Hello Andy Truong';
+      $actual = "string_{$i}";
+      $actual = at_container('twig_string')->render($$actual);
+      $actual = trim($actual);
+      $this->assertEqual($expected, $actual);
+    }
   }
 }
 

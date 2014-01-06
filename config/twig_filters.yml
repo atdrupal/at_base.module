@@ -10,6 +10,7 @@ twig_filters:
 
   # {{ "%module:%id:%key" }}
   - [at_config, [\Drupal\at_base\Twig\Filters\ATConfig, render]]
+  - [cache, [\Drupal\at_base\Twig\Filters\Cache_Filter, render]]
 
   # Contributed modules
   - [kpr, kpr]
