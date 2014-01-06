@@ -109,4 +109,46 @@ class CommonTest extends \DrupalWebTestCase {
     $actual = at_container('expression_language')->evaluate("constant('MENU_CONTEXT_PAGE') | constant('MENU_CONTEXT_INLINE')");
     $this->assertEqual($expected, $actual);
   }
+
+  public function testControllerRevoler() {
+    $resolver = at_container('controller.resolver');
+
+    // Case 1: array
+    $obj = new \At_Base_Test_Class();
+    $definition = array($obj, 'foo');
+    $exptected = array($obj, 'foo');
+    $actual = $resolver->getControllerFromDefinition($definition);
+    $this->assertEqual($exptected, $actual);
+
+    // Case 2: $foo::__invoke()
+    $definition = $obj;
+    $exptected = $obj;
+    $actual = $resolver->getControllerFromDefinition($definition);
+    $this->assertEqual($exptected, $actual);
+
+    // Case 3: class::method
+    $definition = 'At_Base_Test_Class::foo';
+    $exptected = array('At_Base_Test_Class', 'foo');
+    $actual = $resolver->getControllerFromDefinition($definition);
+    $this->assertEqual($exptected, $actual);
+
+    // Case 4: Twig template
+    $definition = "{{ 'Hello ' ~ 'Andy Truong' }}";
+    $exptected = 'Hello Andy Truong';
+    $actual = $resolver->getControllerFromDefinition($definition);
+    $actual = trim(call_user_func($actual));
+    $this->assertEqual($exptected, $actual);
+
+    // Case 5: Simple function
+    $definition = 'time';
+    $exptected = 'time';
+    $actual = $resolver->getControllerFromDefinition($definition);
+    $this->assertEqual($exptected, $actual);
+
+    // Case 6: Simple class with __invoke magic method
+    $definition = 'At_Base_Test_Class';
+    $exptected = 'At_Base_Test_Class';
+    $actual = $resolver->getControllerFromDefinition($definition);
+    $this->assertEqual($exptected, get_class($actual));
+  }
 }
