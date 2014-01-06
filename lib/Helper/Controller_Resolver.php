@@ -1,8 +1,21 @@
 <?php
 namespace Drupal\at_base\Helper;
 
+/**
+ * controller_resolver service.
+ *
+ * Get controller from definition.
+ *
+ * Definition can be:
+ *  - name of function.
+ *  - name of class
+ *  - pair of object, method
+ *  - Twig string
+ *
+ * @see Drupal\at_base\Tests\CommonTest::testControllerRevoler()
+ */
 class Controller_Resolver {
-  public function getControllerFromDefinition($definition) {
+  public function get($definition) {
     // definition: [Foo, bar] or $foo with magic method __invoke
     if (is_array($definition) || (is_object($definition) && method_exists($definition, '__invoke'))) {
       return $definition;

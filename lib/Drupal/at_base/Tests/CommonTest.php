@@ -3,7 +3,7 @@
 namespace Drupal\at_base\Tests;
 
 /**
- * …
+ * Test cases for basic/simple features.
  */
 class CommonTest extends \DrupalWebTestCase {
   public function getInfo() {
@@ -117,38 +117,38 @@ class CommonTest extends \DrupalWebTestCase {
     $obj = new \At_Base_Test_Class();
     $definition = array($obj, 'foo');
     $exptected = array($obj, 'foo');
-    $actual = $resolver->getControllerFromDefinition($definition);
+    $actual = $resolver->get($definition);
     $this->assertEqual($exptected, $actual);
 
     // Case 2: $foo::__invoke()
     $definition = $obj;
     $exptected = $obj;
-    $actual = $resolver->getControllerFromDefinition($definition);
+    $actual = $resolver->get($definition);
     $this->assertEqual($exptected, $actual);
 
     // Case 3: class::method
     $definition = 'At_Base_Test_Class::foo';
     $exptected = array('At_Base_Test_Class', 'foo');
-    $actual = $resolver->getControllerFromDefinition($definition);
+    $actual = $resolver->get($definition);
     $this->assertEqual($exptected, $actual);
 
     // Case 4: Twig template
     $definition = "{{ 'Hello ' ~ 'Andy Truong' }}";
     $exptected = 'Hello Andy Truong';
-    $actual = $resolver->getControllerFromDefinition($definition);
+    $actual = $resolver->get($definition);
     $actual = trim(call_user_func($actual));
     $this->assertEqual($exptected, $actual);
 
     // Case 5: Simple function
     $definition = 'time';
     $exptected = 'time';
-    $actual = $resolver->getControllerFromDefinition($definition);
+    $actual = $resolver->get($definition);
     $this->assertEqual($exptected, $actual);
 
     // Case 6: Simple class with __invoke magic method
     $definition = 'At_Base_Test_Class';
     $exptected = 'At_Base_Test_Class';
-    $actual = $resolver->getControllerFromDefinition($definition);
+    $actual = $resolver->get($definition);
     $this->assertEqual($exptected, get_class($actual));
   }
 }
