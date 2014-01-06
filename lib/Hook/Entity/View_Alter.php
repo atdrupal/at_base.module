@@ -6,15 +6,17 @@ namespace Drupal\at_base\Hook\Entity;
  *
  * To use this, in YOURMODULE, implements hook_entity_view_alter():
  *
+ * @code
  * function YOURMODULE_entity_view_alter(&$build, $entity_type) {
  *   at_id(new \Drupal\at_base\Hook\Entity\View_Alter($build, $entity_type))
  *     ->execute();
  * }
+ * @code
  *
- * Define templates to be used:
+ * Configure entity template to be used:
  *
- * YOURMODULE/config/entity_template.yml
- *
+ * @code
+ * # YOURMODULE/config/entity_template.yml
  * entity_templates:
  *   node:
  *     article:
@@ -23,6 +25,7 @@ namespace Drupal\at_base\Hook\Entity;
  *         attached:
  *           css:
  *             - @YOURMODULE/misc/css/entity.node.full.css
+ * @code
  *
  * The configuration is cached, we need flush cache every time entity template
  * config file get updated.
