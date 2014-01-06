@@ -25,6 +25,14 @@ class Controller {
             }
           }
         }
+
+        if (!empty($this->route['controller'][2])) {
+          foreach ($this->route['controller'][2] as $k => $v) {
+            if (is_numeric($v) && $v == $i) {
+              $this->route['controller'][2][$k] = $item['map'][$i];
+            }
+          }
+        }
       }
     }
 
