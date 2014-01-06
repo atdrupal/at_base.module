@@ -70,7 +70,7 @@ class TwigTest extends \DrupalWebTestCase {
     $string_1  = "{% set options = { cache_id: 'atestTwigCache:1' } %}";
     $string_1 .= "\n {{ 'atest_base.service_1:hello' | cache(options) }}";
     $string_2  = "{% set options = { cache_id: 'atestTwigCache:2' } %}";
-    $string_2 .= "\n {{ 'At_Base_Test_Class::hello' | cache(options) }}";
+    $string_2 .= "\n {{ 'At_Base_Test_Class::helloStatic' | cache(options) }}";
     $string_3  = "{% set options = { cache_id: 'atestTwigCache:3' } %}";
     $string_3 .= "\n {{ 'atest_base_hello' | cache(options) }}";
     $string_4  = "{% set options  = { cache_id: 'atestTwigCache:4' } %}";
