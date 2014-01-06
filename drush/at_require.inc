@@ -21,6 +21,7 @@ class DrushMakeProject_AtRequire_Library extends \DrushMakeProject_Library {
  */
 function drush_at_require($module = 'all') {
   _drush_at_check_yml_reader();
+
   at_id(new AtRequireCommand($module))->execute();
 }
 
@@ -48,4 +49,14 @@ function drush_at_require_spyc() {
   );
 
   at_id(new DependencyFetcher($name, $info))->fetch();
+
+
+  foreach (at_config('at_base', 'require')->get('projects') as $name => $info) {
+    try {
+      at_library($name);
+    }
+    catch (\Exception $e) {
+      at_id(new DependencyFetcher($name, $info))->fetch();
+    }
+  }
 }
