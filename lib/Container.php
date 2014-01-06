@@ -4,7 +4,6 @@ namespace Drupal\at_base;
 use Drupal\at_base\Container\Definition;
 
 /**
- * @todo support tags
  * @todo support calls
  */
 class Container {
@@ -31,14 +30,39 @@ class Container {
   }
 
   /**
+   * Find services by tag.
+   *
+   * @param string $tag
+   *   Tag name.
+   */
+  public function findTaggedServices($tags = array(), $operator = 'and') {
+    $services = array();
+    $definitions = Definition::findByTags($tags, $operator);
+
+    foreach ($definitions as $service_name => $definition) {
+      if (empty(self::$container[$service_name])) {
+        $this->set($service_name, $definition);
+      }
+
+      $services[$service_name] = self::$container[$service_name];
+    }
+
+    return $services;
+  }
+
+  /**
    * Main method for configure service in Pimple.
    *
    * @param string $service_name
+   * @param array $definition
+   *   Defined definition.
    */
-  private function set($service_name) {
-    // Get definition
-    if (!$definition = at_id(new Definition($service_name))->get()) {
-      throw new \Exception("Missing service: {$service_name}");
+  private function set($service_name, $definition = array()) {
+    if (empty($definition)) {
+      // Get definition
+      if (!$definition = at_id(new Definition($service_name))->get()) {
+        throw new \Exception("Missing service: {$service_name}");
+      }
     }
 
     // Resolve dependencies

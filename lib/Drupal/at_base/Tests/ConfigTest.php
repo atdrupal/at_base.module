@@ -3,7 +3,7 @@
 namespace Drupal\at_base\Tests;
 
 class ConfigTest extends \DrupalWebTestCase {
-  public function getInfo() {
+  public static function getInfo() {
     return array(
       'name' => 'AT Base: Config',
       'description' => 'Make sure the at_config() is working correctly.',

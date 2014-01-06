@@ -8,3 +8,19 @@ services:
     class: 'Drupal\atest_base\Service_3'
     factory_class: Drupal\atest_base\Service_3_Factory
     factory_method: getService
+  atest_base.tagged_service_1:
+    class: 'Drupal\atest_base\Tagged_Service_1'
+    tags:
+      - foo
+      - bar
+  atest_base.tagged_service_2:
+    class: 'Drupal\atest_base\Tagged_Service_2'
+    tags:
+      - foo
+  atest_base.tagged_service_3:
+    class: 'Drupal\atest_base\Tagged_Service_3'
+    tags:
+      - bar
+  atest_base.tagged_service_4:
+    class: 'Drupal\atest_base\Tagged_Service_4'
+    tags: []
