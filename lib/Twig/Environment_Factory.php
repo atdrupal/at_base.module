@@ -51,9 +51,9 @@ class Environment_Factory {
     }
 
     // Functions
-    $twig->addFunction(new \Twig_SimpleFunction('element_children', function($v) {
-      return element_children($v);
-    }));
+    foreach (self::getFunctions() as $function) {
+      $twig->addFunction($function);
+    }
 
     return $twig;
   }
@@ -87,6 +87,13 @@ class Environment_Factory {
     $options['cache_id'] = 'at_theming:twig:filters';
     return at_cache($options, function(){
       return at_id(new \Drupal\at_base\Twig\Filters())->get();
+    });
+  }
+
+  private function getFunctions() {
+    $options['cache_id'] = 'at_theming:twig:functions';
+    return at_cache($options, function(){
+      return at_id(new \Drupal\at_base\Twig\Functions())->get();
     });
   }
 }
