@@ -76,6 +76,7 @@ function at_container($service_name) {
  * @param  array  $arguments
  * @return mixed
  * @see    at_cache_flush_by_tag()
+ * @see    https://github.com/andytruong/at_base/wiki/7.x-2.x-cache-warming
  * @todo   Note about AT_DEV constant
  */
 function at_cache($options, $callback, $arguments = array()) {
