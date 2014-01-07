@@ -1,0 +1,24 @@
+<div class="{{ classes_array|join }}">
+
+  <pre><code>
+    More: {{context|keys}}
+  </code></pre>
+
+  <pre><code>
+    {{ header|json_encode }}
+  </code></pre>
+
+  {% for item in view.result %}
+    <pre><code>
+      {{ item|json_encode }}
+    </code></pre>
+  {% endfor %}
+
+  <pre><code>
+    {{ footer|json_encode }}
+  </code></pre>
+</div>
+
+<h3>Variables</h3>
+
+{{ attribute(get_defined_vars(), 'context')|kpr }}
