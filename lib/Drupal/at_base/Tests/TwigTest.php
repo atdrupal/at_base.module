@@ -59,6 +59,13 @@ class TwigTest extends \DrupalWebTestCase {
     $output = \AT::twig_string()->render("{{ 'user:1' | drupalEntity }}");
     $this->assertTrue(strpos($output, 'History'), 'Found text "History"');
     $this->assertTrue(strpos($output, 'Member for'), 'Found text: "Member for"');
+
+    $output  = "{% set o = { template: '@atest_base/templates/entity/user.html.twig' } %}";
+    $output .= "{{ 'user:1' | drupalEntity(o) }}";
+    $output  = \AT::twig_string()->render($output);
+    $this->assertTrue(strpos($output, 'History'), 'Found text "History"');
+    $this->assertTrue(strpos($output, 'Member for'), 'Found text: "Member for"');
+    $this->assertTrue(strpos($output, '@atest_base/templates/entity/user.html.twig'), 'Found text: path to template');
   }
 
   public function testTwigStringLoader() {

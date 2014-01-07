@@ -10,13 +10,13 @@ namespace Drupal\at_base\Twig\Filters;
  *     {{ 'user:1' | drupalEntity }}
  */
 class Entity {
-
   /**
    * Callback for drupalEntity filter.
    *
-   * @param  string  $string       %entity_type:%id:%view_mode
+   * @param  string  $string  %entity_type:%id:%view_mode
+   * @param  array   $options
    */
-  public static function render($string) {
+  public static function render($string, $options = array()) {
     $string = explode(':', $string);
     if (2 !== count($string)) {
       return '<!-- Wrong param -->';
@@ -32,11 +32,14 @@ class Entity {
 
     $entity = reset($entity);
 
-    if (!function_exists('entity_view')) {
-      throw new \Exception('Missing module: entity');
+    $build = entity_view($entity_type, array($entity), $view_mode);
+
+    if (!empty($options['template'])) {
+      $path = at_container('helper.real_path')->get($options['template']);
+      return at_container('twig')
+                ->render($path, array('build' => $build[$entity_type][$entity_id]));
     }
 
-    $output = entity_view($entity_type, array($entity), $view_mode);
-    return render($output);
+    return render($build);
   }
 }
