@@ -1,3 +1,4 @@
 twig_functions:
   - element_children
   - node_load
+  - get_defined_vars
