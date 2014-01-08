@@ -1,0 +1,7 @@
+routes:
+  at/twig:
+    title: Twig Form
+    # Permisison defined by devel.module
+    access arguments: ['execute php code']
+    form: '\Drupal\at_base\Controller\TwigFormController'
+    form arguments: []

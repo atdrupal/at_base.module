@@ -101,3 +101,10 @@ function at_base_block_info() {
 function at_base_block_view($delta) {
   return at_id(new \Drupal\at_base\Hook\BlockView($delta))->view();
 }
+
+/**
+ * Implements hook_admin_paths()
+ */
+function at_base_admin_paths() {
+  return array('at/twig' => TRUE);
+}
