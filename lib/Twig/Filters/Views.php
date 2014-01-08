@@ -94,6 +94,10 @@ class Views {
     array_shift($args); // $name
     if (count($args)) {
       $a1 = array_shift($args); // $display_id
+
+      if (is_array($a1)) {
+        $display_id = isset($a1['display_id']) ? $a1['display_id'] : 'default';
+      }
     }
 
     try {
