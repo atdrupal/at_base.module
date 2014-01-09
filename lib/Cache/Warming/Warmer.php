@@ -55,6 +55,7 @@ class Warmer {
 
   public function setContext($context) {
     $this->context = $context;
+    return $this;
   }
 
   /**
