@@ -44,6 +44,7 @@ class Warmer {
 
   public function setEventName($event_name) {
     $this->event_name = $event_name;
+    $this->tag_discover->setEventName($event_name);
     return $this;
   }
 
