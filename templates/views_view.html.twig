@@ -1,3 +1,9 @@
+{#
+  Extends this template to render your template faster
+
+  {% extends '@at_base/templates/views_view.html.twig' %}
+#}
+
 <div class="{% block classes classes_array|join(' ') %}">
   {% block title title_prefix ~ title ~ title_suffix %}
   {% block header header %}
@@ -23,4 +29,5 @@
   {% block feed_icon '<div class="feed-icon">' ~ feed_icon ~ '</div>' %}
 </div>
 
+{# Extends this block to print debug info #}
 {% block debug '' %}
