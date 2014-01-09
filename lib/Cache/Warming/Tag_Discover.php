@@ -4,7 +4,7 @@ namespace Drupal\at_base\Cache\Warming;
 class Tag_Discover {
   private $event_name;
 
-  public function __construct($event_name) {
+  public function setEventName($event_name) {
     $this->event_name = $event_name;
   }
 
