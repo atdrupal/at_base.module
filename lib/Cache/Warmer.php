@@ -20,10 +20,6 @@ class Warmer {
   private $config;
 
   public function __construct($event_name, $config = NULL) {
-    if (!function_exists('at_config')) {
-      throw new \Exception('Missing module: at_config');
-    }
-
     $this->event_name = $event_name;
 
     if (!$config) {
