@@ -1,5 +1,7 @@
 twig_filters:
+  # ---------------------
   # Core
+  # ---------------------
   - [render, render]
   - [t, t]
   - [url, url]
@@ -8,11 +10,15 @@ twig_filters:
   - [drupalEntity, [\Drupal\at_base\Twig\Filters\Entity, render]]
   - [drupalView, [\Drupal\at_base\Twig\Filters\Views, render]]
 
-  # {{ "%module:%id:%key" }}
-  - [at_config, [\Drupal\at_base\Twig\Filters\ATConfig, render]]
-  - [cache, [\Drupal\at_base\Twig\Filters\Cache_Filter, render]]
-
+  # ---------------------
   # Contributed modules
+  # ---------------------
   - [kpr, kpr]
   - [dsm, dsm]
-  - [_filter_autop, _filter_autop]
+
+  # ---------------------
+  # at_base module
+  # ---------------------
+  # {{ "%module:%id:%key"|at_config }}
+  - [at_config, [\Drupal\at_base\Twig\Filters\ATConfig, render]]
+  - [cache, [\Drupal\at_base\Twig\Filters\Cache_Filter, render]]
