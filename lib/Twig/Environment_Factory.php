@@ -1,6 +1,8 @@
 <?php
 namespace Drupal\at_base\Twig;
 
+use Drupal\at_base\Twig\Cache_TokenParser;
+
 class Environment_Factory {
   private static $twig;
   private static $loader;
@@ -16,6 +18,7 @@ class Environment_Factory {
       );
 
       self::$twig = $this->fetchService();
+      self::$twig->addTokenParser(new Cache_TokenParser());
     }
 
     return self::$twig;

@@ -93,6 +93,50 @@ class TwigTest extends \DrupalWebTestCase {
   }
 }
 
+// class Twig_Tests_ParserTest extends PHPUnit_Framework_TestCase { # extends Twig_Test_NodeTestCase
+//   public function testCacheTag() {
+//     $cache_options = new Twig_Node(array(
+//         new Twig_Node_Print(new Twig_Node_Expression_Name('cache_options', 1), 1),
+//       ), array(), 1
+//     );
+
+//     $callback = new Twig_Node(array(
+//         new Twig_Node_Print(new Twig_Node_Expression_Name('foo', 1), 1)
+//       ), array(), 1
+//     );
+
+//     $node = new Twig_Node_Cache($cache_options, $callback, 1, 'cache');
+//     $this->assertEquals($cache_options, $node->getNode('cache_options'));
+//     $this->assertEquals($callback, $node->getNode('callback'));
+//   }
+
+//   public function testParse() {
+//     $twig = new Twig_Environment(new Twig_Loader_String(), array(
+//       'autoescape' => false,
+//       'optimizations' => 0,
+//     ));
+
+//     $twig->addTokenParser(new Twig_TokenParser_Cache());
+
+//     $template  = "{% cache({id: 'myID'}) %}";
+//     $template .= "Hello Andy Truong";
+//     $template .= "{% endcache %}";
+
+//     // $template  = "{% if true %}";
+//     // $template .= "Hello Andy Truong";
+//     // $template .= "{% endif %}";
+
+//     $node = $twig->parse($twig->tokenize($template));
+
+//     print_r(array(
+//       $twig->compile($node)
+//       // $node
+//         // ->getNode('body')
+//         // ->compile($twig->getCompiler())
+//     ));
+//   }
+// }
+
 // class At_Base_Cache_Views_Warmer extends DrupalWebTestCase {
 //   public function getInfo() {
 //     return array(
