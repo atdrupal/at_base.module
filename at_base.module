@@ -95,26 +95,11 @@ function at_cache($options, $callback, $arguments = array()) {
  *
  * @see at_cache()
  * @param  array  $tags
- * @todo  AND/OR
  */
 function at_cache_flush_by_tags($tags = array()) {
-  if (empty($tags)) {
-    return;
-  }
-
-  $items = db_select('at_base_cache_tag', 'atag')
-            ->fields('atag', array('bin', 'cid'))
-            ->condition('tag', $tags)
-            ->execute()
-            ->fetchAll();
-
-  foreach ($items as $item) {
-    cache_clear_all($item->cid, $item->bin);
-  }
-
-  db_delete('at_base_cache_tag')
-    ->condition('tag', $tags)
-    ->execute()
+  at_container('cache.tag_flusher')
+    ->setTags($tags)
+    ->flush()
   ;
 }
 
