@@ -5,7 +5,6 @@
  * Drupal hook implementations.
  */
 
-use \Drupal\at_base\Cache\Warmer as CacheWarmer;
 use \Drupal\at_base\Route\Importer as RouteImporter;
 use \Drupal\at_base\Hook\Menu as HookMenu;
 
@@ -28,51 +27,6 @@ function at_base_menu() {
  */
 function at_base_flush_caches() {
   at_id(new \Drupal\at_base\Hook\Flush_Cache())->execute();
-}
-
-/**
- * Implements hook_entity_insert()
- */
-function at_base_entity_update($entity, $type) {
-  $warmer = new CacheWarmer('entity_update');
-  $warmer->setEntity($type, $entity);
-  $warmer->warm();
-}
-
-/**
- * Implements hook_entity_insert()
- */
-function at_base_entity_insert($entity, $type) {
-  $warmer = new CacheWarmer('entity_insert');
-  $warmer->setEntity($type, $entity);
-  $warmer->warm();
-}
-
-/**
- * Implements hook_entity_insert()
- */
-function at_base_entity_delete($entity, $type) {
-  $warmer = new CacheWarmer('entity_delete');
-  $warmer->setEntity($type, $entity);
-  $warmer->warm();
-}
-
-/**
- * Implements hook_user_login()
- */
-function at_base_user_login(&$edit, $account) {
-  $warmer = new CacheWarmer('user_login');
-  $warmer->setEntity('user', $account);
-  $warmer->warm();
-}
-
-/**
- * Implements hook_user_login()
- */
-function at_base_user_logout($account) {
-  $warmer = new CacheWarmer('user_logout');
-  $warmer->setEntity('user', $account);
-  $warmer->warm();
 }
 
 /**
@@ -107,4 +61,63 @@ function at_base_block_view($delta) {
  */
 function at_base_admin_paths() {
   return array('at/twig' => TRUE);
+}
+
+###############################################################
+# Cache warming
+###############################################################
+
+/**
+ * Implements hook_entity_insert()
+ */
+function at_base_entity_update($entity, $type) {
+  at_container('cache.warmer')
+    ->setEventName('entity_update')
+    ->setContext(array('entity_type' => $type, 'entity' => $entity))
+    ->warm()
+  ;
+}
+
+/**
+ * Implements hook_entity_insert()
+ */
+function at_base_entity_insert($entity, $type) {
+  at_container('cache.warmer')
+    ->setEventName('entity_insert')
+    ->setContext(array('entity_type' => $type, 'entity' => $entity))
+    ->warm()
+  ;
+}
+
+/**
+ * Implements hook_entity_insert()
+ */
+function at_base_entity_delete($entity, $type) {
+  at_container('cache.warmer')
+    ->setEventName('entity_delete')
+    ->setContext(array('entity_type' => $type, 'entity' => $entity))
+    ->warm()
+  ;
+}
+
+/**
+ * Implements hook_user_login()
+ */
+function at_base_user_login(&$edit, $account) {
+  at_container('cache.warmer')
+    ->setEventName('user_login')
+    ->setContext(array('entity_type' => 'user', 'entity' => $account))
+    ->warm()
+  ;
+}
+
+/**
+ * Implements hook_user_login()
+ */
+function at_base_user_logout($account) {
+  at_container('cache.warmer')
+    ->setEventName('user_logout')
+    ->setContext(array('entity_type' => 'user', 'entity' => $account))
+    ->warm()
+  ;
 }

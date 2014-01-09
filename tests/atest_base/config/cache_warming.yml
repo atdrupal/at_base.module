@@ -1,0 +1,2 @@
+tags:
+  entity_update: ['t1', '%entity_type:%entity_bundle:%entity_id', 'view:atest_theming_user:default']
