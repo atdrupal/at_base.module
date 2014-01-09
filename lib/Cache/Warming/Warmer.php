@@ -2,10 +2,6 @@
 
 namespace Drupal\at_base\Cache\Warming;
 
-use Drupal\at_base\Cache\Warming\Warmer\Entity_Warmer;
-use Drupal\at_base\Cache\Warming\Warmer\View_Warmer;
-use Drupal\at_base\Cache\Warming\Warmer\Simple_Warmer;
-
 /**
  * @todo  Think about sub-processes.
  *
@@ -41,8 +37,9 @@ class Warmer {
 
     // @todo: Use tagged services
     $this->warmers = array(
-      'entity' => new Entity_Warmer(),
-      'view'   => new View_Warmer(),
+      'entity' => at_container('cache.warmer.entity'),
+      'view'   => at_container('cache.warmer.view'),
+      'simple' => at_container('cache.warmer.simple'),
     );
   }
 
