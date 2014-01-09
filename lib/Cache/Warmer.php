@@ -19,8 +19,16 @@ class Warmer {
   private $event_name;
   private $config;
 
-  public function __construct($event_name, $config = NULL) {
-    $this->event_name = $event_name;
+  /**
+   * A process can start sub-process. This flag will avoid infinitive master
+   * processes.
+   *
+   * @var boolean
+   */
+  private $is_sub_process = FALSE;
+
+  public function __construct($event_name, $config = NULL, $is_sub_process = FALSE) {
+    $this->is_sub_process = $is_sub_process;
 
     if (!$config) {
       $config = new WarmerConfig($this->event_name);
