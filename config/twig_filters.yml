@@ -4,10 +4,17 @@ twig_filters:
   # ---------------------
   - [render, render]
   - [t, t]
+  # Example: {{ 'user/1'|url }}
   - [url, url]
   - [_filter_autop, _filter_autop]
+  # Example: {{ 'system:powered-by'|drupalBlock }}
   - [drupalBlock, [\Drupal\at_base\Twig\Filters\Block, render]]
   - [drupalEntity, [\Drupal\at_base\Twig\Filters\Entity, render]]
+  # Example 1: {{ 'viewName'|drupalView }}
+  # Example 2: {{ 'viewName'|drupalView('default') }}
+  # Example 3: {{ 'viewName'|drupalView('default', arg1, arg2, arg3) }}
+  # Example 4: {{ 'viewName'|drupalView({template: '@at_base/templates/views_view.html.twig'}) }}
+  # Example 5: {{ 'viewName'|drupalView({template: '...', display_id: 'default', arguments: [arg1, arg2, arg3]}) }}
   - [drupalView, [\Drupal\at_base\Twig\Filters\Views, render]]
 
   # ---------------------
@@ -19,6 +26,6 @@ twig_filters:
   # ---------------------
   # at_base module
   # ---------------------
-  # {{ "%module:%id:%key"|at_config }}
+  # Example: {{ "%module:%id:%key"|at_config }}
   - [at_config, [\Drupal\at_base\Twig\Filters\ATConfig, render]]
   - [cache, [\Drupal\at_base\Twig\Filters\Cache_Filter, render]]
