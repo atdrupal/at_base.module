@@ -1,5 +1,5 @@
 <?php
-namespace Drupal\at_base\Cache;
+namespace Drupal\at_base\Cache\Warmer;
 
 class WarmerConfig {
   private $event_name;
