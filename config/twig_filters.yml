@@ -6,9 +6,11 @@ twig_filters:
   - [t, t]
   # Example: {{ 'user/1'|url }}
   - [url, url]
+  # Example: {{ 'This is my string'|_filter_autop }}
   - [_filter_autop, _filter_autop]
   # Example: {{ 'system:powered-by'|drupalBlock }}
   - [drupalBlock, [\Drupal\at_base\Twig\Filters\Block, render]]
+  # Example: {{ 'user:1'|drupalEntity }}
   - [drupalEntity, [\Drupal\at_base\Twig\Filters\Entity, render]]
   # Example 1: {{ 'viewName'|drupalView }}
   # Example 2: {{ 'viewName'|drupalView('default') }}
@@ -20,7 +22,9 @@ twig_filters:
   # ---------------------
   # Contributed modules
   # ---------------------
+  # Example: {{ variable|kpr }}
   - [kpr, kpr]
+  # Example: {{ variable|dsm }}
   - [dsm, dsm]
 
   # ---------------------
