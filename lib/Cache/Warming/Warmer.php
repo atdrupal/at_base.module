@@ -62,10 +62,10 @@ class Warmer {
    * Wrapper function to warm cached-tags & views.
    */
   public function warm() {
-    foreach ($tag_discover->tags() as $tag) {
+    foreach ($this->tag_discover->tags() as $tag) {
       foreach ($this->warmers as $warmer) {
         if (TRUE === $warmer->validateTag($tag)) {
-          $warmer->warm($tag, $context);
+          $warmer->warm($tag, $this->context);
         }
       }
     }

@@ -42,8 +42,8 @@ class Entity_Warmer {
     $this->entity_info   = $info;
     $this->entity_type   = $context['entity_type'];
     $this->entity        = $context['entity'];
-    $this->entity_bundle = !empty($info['entity keys']['bundle']) ? $entity->{$info['entity keys']['bundle']} : '';
-    $this->entity_id     = $entity->{$info['entity keys']['id']};
+    $this->entity_bundle = !empty($info['entity keys']['bundle']) ? $this->entity->{$info['entity keys']['bundle']} : '';
+    $this->entity_id     = $this->entity->{$info['entity keys']['id']};
   }
 
   private function getTagFind() {
@@ -60,6 +60,7 @@ class Entity_Warmer {
   public function warm($tag, $context = array()) {
     $this->setEntityInfoFromContext($context);
     $tag = str_replace($this->getTagFind(), $this->getTagReplace(), $tag);
+
     $this->tag_flusher
       ->addTag($tag)
       ->flush();
