@@ -1,9 +1,9 @@
 at_base
 =======
 
-[![Build Status](https://secure.travis-ci.org/andytruong/at_base.png?branch=7.x-2.x)](http://travis-ci.org/andytruong/at_base)
+Provide some more API for developer to work with Drupal (7).
 
-Base module to provide helper functions for at_* modules.
+[![Build Status](https://secure.travis-ci.org/andytruong/at_base.png?branch=7.x-2.x)](http://travis-ci.org/andytruong/at_base)
 
 ### Install
 
