@@ -40,6 +40,13 @@ services:
     arguments: ['@twig_string']
 
   # ---------------------
+  # Cache
+  # ---------------------
+  cache.tag_flusher:
+    class: 'Drupal\at_base\Cache\Warming\Tag_Flusher'
+
+
+  # ---------------------
   # Helpers
   # ---------------------
   helper.content_render:
