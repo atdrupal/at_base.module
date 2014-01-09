@@ -10,13 +10,20 @@ namespace Drupal\at_base\Cache\Warming;
 class Tag_Flusher {
   private $tag = array();
 
+  public function resetTags() {
+    $this->tags = array();
+    return $this;
+  }
+
   public function setTags($tags) {
     $this->tags = $tags;
     return $this;
   }
 
   public function addTag($tag) {
-    $this->tags[] = $tags;
+    if (!in_array($tag, $this->tags)) {
+      $this->tags[] = $tag;
+    }
     return $this;
   }
 

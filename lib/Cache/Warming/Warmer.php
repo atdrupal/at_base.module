@@ -19,6 +19,7 @@ namespace Drupal\at_base\Cache\Warming;
  */
 class Warmer {
   private $tag_discover;
+  private $tag_flusher;
   private $warmers;
   private $context;
   private $event_name;
@@ -31,8 +32,9 @@ class Warmer {
    */
   private $is_sub_process = FALSE;
 
-  public function __construct($tag_discover) {
+  public function __construct($tag_discover, $tag_flusher) {
     $this->tag_discover = $tag_discover;
+    $this->tag_flusher = $tag_flusher;
 
     // @todo: Use tagged services
     $this->warmers = array(
@@ -62,12 +64,18 @@ class Warmer {
    * Wrapper function to warm cached-tags & views.
    */
   public function warm() {
+    $this->tag_flusher->resetTags();
+
     foreach ($this->tag_discover->tags() as $tag) {
       foreach ($this->warmers as $warmer) {
         if (TRUE === $warmer->validateTag($tag)) {
-          $warmer->warm($tag, $this->context);
+          if ($tag = $warmer->processTag($tag, $this->context)) {
+            $this->tag_flusher->addTag($tag);
+          }
         }
       }
     }
+
+    $this->tag_flusher->flush();
   }
 }

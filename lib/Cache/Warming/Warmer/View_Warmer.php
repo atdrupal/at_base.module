@@ -2,11 +2,7 @@
 namespace Drupal\at_base\Cache\Warming\Warmer;
 
 class View_Warmer {
-  private $tag_flusher;
-
-  public function __construct($tag_flusher) {
-    $this->tag_flusher = $tag_flusher;
-
+  public function __construct() {
     views_include_handlers();
     module_load_include('inc', 'views', 'plugins/views_plugin_cache');
   }
@@ -15,7 +11,7 @@ class View_Warmer {
     return 0 === strpos($tag, 'view:') || 0 === strpos($tag, 'views:');
   }
 
-  private function warm($tag, $context) {
+  public function processTag($tag, $context) {
     @list($module, $view_name, $display_id) = explode(':', $tag);
 
     if ($view = views_get_view($view_name)) {

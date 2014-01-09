@@ -50,19 +50,16 @@ services:
 
   cache.warmer:
     class: 'Drupal\at_base\Cache\Warming\Warmer'
-    arguments: ['@cache.tag_discover']
+    arguments: ['@cache.tag_discover', '@cache.tag_flusher']
 
   cache.warmer.simple:
     class: 'Drupal\at_base\Cache\Warming\Warmer\Simple_Warmer'
-    arguments: ['@cache.tag_flusher']
 
   cache.warmer.entity:
     class: 'Drupal\at_base\Cache\Warming\Warmer\Entity_Warmer'
-    arguments: ['@cache.tag_flusher']
 
   cache.warmer.view:
     class: 'Drupal\at_base\Cache\Warming\Warmer\View_Warmer'
-    arguments: ['@cache.tag_flusher']
 
   # ---------------------
   # Helpers
