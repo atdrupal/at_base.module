@@ -25,6 +25,9 @@ class Definition {
       foreach (array('at_base' => 'at_base') + at_modules('at_base', 'services') as $module_name) {
         $services += at_config($module_name, 'services')->get('services');
       }
+
+      drupal_alter('at_base_services', $services);
+
       return $services;
     });
   }
