@@ -1,7 +1,7 @@
 <?php
-namespace Drupal\at_base\Cache\Warmer;
+namespace Drupal\at_base\Cache\Warming;
 
-class WarmerConfig {
+class Tag_Discover {
   private $event_name;
 
   public function __construct($event_name) {
