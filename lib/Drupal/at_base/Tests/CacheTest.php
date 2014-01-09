@@ -27,6 +27,9 @@ class CacheTest extends \DrupalWebTestCase {
     return time();
   }
 
+  /**
+   * Test cache function.
+   */
   public function testCacheUsages() {
     $cache_options = array('bin' => 'cache', 'reset' => FALSE, 'ttl' => '+ 15 minutes');
 
@@ -82,5 +85,20 @@ class CacheTest extends \DrupalWebTestCase {
     $data_3 = at_cache($options, function(){ return 'Data #3 — must be called.'; });
 
     $this->assertNotEqual($data_1, $data_3);
+  }
+
+  /**
+   * @todo Test when we can fake the service.
+   */
+  public function testCacheWarming() {
+    // Fake the cache.tag_flusher service
+
+    // Warmer > Simple
+
+    // Warmer > Entity
+
+    // Warmer > Views
+
+    // Warmer service
   }
 }
