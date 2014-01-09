@@ -22,7 +22,6 @@ class Warmer {
   private $warmers;
   private $context;
   private $event_name;
-  private $is_sub_process = FALSE;
 
   /**
    * A process can start sub-process. This flag will avoid infinitive master
