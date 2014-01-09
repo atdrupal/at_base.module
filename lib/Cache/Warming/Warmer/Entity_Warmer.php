@@ -2,6 +2,7 @@
 namespace Drupal\at_base\Cache\Warming\Warmer;
 
 class Entity_Warmer {
+  private $tag_flusher;
   private $entity_info;
   private $entity_type;
   private $entity;
@@ -9,9 +10,13 @@ class Entity_Warmer {
   private $entity_id;
   private $tokens = array( '%entity_type', '%type', '%entity_bundle', '%bundle', '%entity_id', '%id');
 
+  public function __construct($tag_flusher) {
+    $this->tag_flusher = $tag_flusher;
+  }
+
   public function validateTag($tag) {
     foreach ($this->tokens as $token) {
-      if (FALSE !== strpos($tag, $token) {
+      if (FALSE !== strpos($tag, $token)) {
         return TRUE;
       }
     }
@@ -55,6 +60,8 @@ class Entity_Warmer {
   public function warm($tag, $context = array()) {
     $this->setEntityInfoFromContext($context);
     $tag = str_replace($this->getTagFind(), $this->getTagReplace(), $tag);
-    at_cache_flush_by_tags(array($tag));
+    $this->tag_flusher
+      ->addTag($tag)
+      ->flush();
   }
 }

@@ -2,7 +2,11 @@
 namespace Drupal\at_base\Cache\Warming\Warmer;
 
 class View_Warmer {
-  public function __construct() {
+  private $tag_flusher;
+
+  public function __construct($tag_flusher) {
+    $this->tag_flusher = $tag_flusher;
+
     views_include_handlers();
     module_load_include('inc', 'views', 'plugins/views_plugin_cache');
   }
