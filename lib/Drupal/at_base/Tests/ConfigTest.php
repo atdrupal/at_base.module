@@ -47,4 +47,10 @@ class ConfigTest extends \DrupalWebTestCase {
     $this->assertEqual('A',   $array_data['a']);
     $this->assertEqual('CCC', $array_data['c']);
   }
+
+  public function testConfigFetcher() {
+    $config_fetcher = at_container('helper.config_fetcher');
+    $items = $config_fetcher->getAll('at_base', 'services', 'services', TRUE);
+    $this->assertTrue(isset($items['twig']));
+  }
 }

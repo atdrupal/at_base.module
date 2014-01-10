@@ -2,6 +2,7 @@
 namespace Drupal\at_base;
 
 use Drupal\at_base\Container\Definition;
+use Drupal\at_base\Helper\Config_Fetcher;
 
 /**
  * @todo support tags
@@ -13,7 +14,10 @@ class Container {
   public function __construct() {
     if (!self::$container) {
       require_once at_library('pimple') . '/lib/Pimple.php';
-      self::$container = new \Pimple();
+
+      self::$container = new \Pimple(array(
+        'helper.config_fetcher' => function() { return new Config_Fetcher(); },
+      ));
     }
   }
 
