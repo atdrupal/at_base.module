@@ -13,10 +13,11 @@ interface Relationship_Warmer_Interface {
   /**
    * Get related entities from parent entity.
    *
-   * @param  mixed $entity
+   * @param  string $entity_type
+   * @param  mixed  $entity
    * @return array  Array of related entities.
    */
-  public function getRelatedEntities($entity) {
+  public function getRelatedEntities($entity_type, $entity_type, $entity) {
   }
 
   /**

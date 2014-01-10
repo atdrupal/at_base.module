@@ -14,7 +14,7 @@ class User_Warmer implements Relationship_Warmer_Interface {
   /**
    * @inheritdoc
    */
-  public function getRelatedEntities($entity) {
+  public function getRelatedEntities($entity_type, $entity) {
   }
 
   /**
