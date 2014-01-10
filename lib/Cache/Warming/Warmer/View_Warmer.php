@@ -1,7 +1,7 @@
 <?php
 namespace Drupal\at_base\Cache\Warming\Warmer;
 
-class View_Warmer {
+class View_Warmer implements Warmer_Interface {
   public function __construct() {
     views_include_handlers();
     module_load_include('inc', 'views', 'plugins/views_plugin_cache');
