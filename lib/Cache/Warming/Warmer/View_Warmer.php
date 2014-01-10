@@ -7,10 +7,16 @@ class View_Warmer implements Warmer_Interface {
     module_load_include('inc', 'views', 'plugins/views_plugin_cache');
   }
 
+  /**
+   * @inheritdoc
+   */
   public function validateTag($tag) {
     return 0 === strpos($tag, 'view:') || 0 === strpos($tag, 'views:');
   }
 
+  /**
+   * @inheritdoc
+   */
   public function processTag($tag, $context) {
     @list($module, $view_name, $display_id) = explode(':', $tag);
 
