@@ -57,6 +57,6 @@ class ConfigTest extends \DrupalWebTestCase {
 
     // Get specific item
     $item = $config_fetcher->getItem('at_base', 'services', 'services', 'twig', TRUE);
-    $this->assertEqual('@twig.core', $items['arguments'][0]);
+    $this->assertEqual('@twig.core', $item['arguments'][0]);
   }
 }
