@@ -1,0 +1,25 @@
+services:
+  cache.tag_flusher:
+    class: 'Drupal\at_base\Cache\Warming\Tag_Flusher'
+
+  cache.tag_discover:
+    class: 'Drupal\at_base\Cache\Warming\Tag_Discover'
+
+  cache.warmer:
+    class: 'Drupal\at_base\Cache\Warming\Warmer'
+    arguments: ['@cache.tag_discover', '@cache.tag_flusher']
+
+  cache.warmer.simple:
+    class: 'Drupal\at_base\Cache\Warming\Warmer\Simple_Warmer'
+    tags:
+      - { name: 'cache.warmer', weight: 100 }
+
+  cache.warmer.entity:
+    class: 'Drupal\at_base\Cache\Warming\Warmer\Entity_Warmer'
+    tags:
+      - { name: 'cache.warmer' }
+
+  cache.warmer.view:
+    class: 'Drupal\at_base\Cache\Warming\Warmer\View_Warmer'
+    tags:
+      - { name: 'cache.warmer' }
