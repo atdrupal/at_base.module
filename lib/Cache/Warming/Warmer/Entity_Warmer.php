@@ -9,9 +9,9 @@ class Entity_Warmer implements Warmer_Interface {
   private $entity_id;
   private $tokens = array('%entity_type', '%type', '%entity_bundle', '%bundle', '%entity_id', '%id');
 
-  public function __construct() {
-  }
-
+  /**
+   * @inheritdoc
+   */
   public function validateTag($tag) {
     foreach ($this->tokens as $token) {
       if (FALSE !== strpos($tag, $token)) {
@@ -55,6 +55,9 @@ class Entity_Warmer implements Warmer_Interface {
     return array($type, $type, $bundle, $bundle, $id, $id, $id);
   }
 
+  /**
+   * @inheritdoc
+   */
   public function processTag($tag, $context = array()) {
     $this->setEntityInfoFromContext($context);
 
