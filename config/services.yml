@@ -54,12 +54,18 @@ services:
 
   cache.warmer.simple:
     class: 'Drupal\at_base\Cache\Warming\Warmer\Simple_Warmer'
+    tags:
+      - { name: 'cache.warmer', weight: 100 }
 
   cache.warmer.entity:
     class: 'Drupal\at_base\Cache\Warming\Warmer\Entity_Warmer'
+    tags:
+      - { name: 'cache.warmer' }
 
   cache.warmer.view:
     class: 'Drupal\at_base\Cache\Warming\Warmer\View_Warmer'
+    tags:
+      - { name: 'cache.warmer' }
 
   # ---------------------
   # Helpers
