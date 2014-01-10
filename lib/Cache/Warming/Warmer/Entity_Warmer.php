@@ -54,6 +54,15 @@ class Entity_Warmer {
 
   public function processTag($tag, $context = array()) {
     $this->setEntityInfoFromContext($context);
-    return str_replace($this->getTagFind(), $this->getTagReplace(), $tag);
+
+    $tag = str_replace($this->getTagFind(), $this->getTagReplace(), $tag);
+
+    $relationship_warmers = at_container('container')->find('cache.warmer.entity.relationships', 'service');
+    foreach ($relationship_warmers as $relationship_warmer) {
+      if ($relationship_warmer->validateTag($tag)) {
+      }
+    }
+
+    return $tag;
   }
 }

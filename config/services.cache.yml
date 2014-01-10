@@ -23,3 +23,31 @@ services:
     class: 'Drupal\at_base\Cache\Warming\Warmer\View_Warmer'
     tags:
       - { name: 'cache.warmer' }
+
+  # ---------------------
+  # Warmers > Entity > Relationship
+  # ---------------------
+  cache.warmer.entity.relationship.file:
+    class: 'Drupal\at_base\Cache\Warming\Warmer\Entity_Warmer\Relationship\File_Warmer'
+    tags:
+      - { name: 'cache.warmer.entity.relationships' }
+
+  cache.warmer.entity.relationship.user:
+    class: 'Drupal\at_base\Cache\Warming\Warmer\Entity_Warmer\Relationship\User_Warmer'
+    tags:
+      - { name: 'cache.warmer.entity.relationships' }
+
+  cache.warmer.entity.relationship.taxonomy-term:
+    class: 'Drupal\at_base\Cache\Warming\Warmer\Entity_Warmer\Relationship\Taxonomy_Term_Warmer'
+    tags:
+      - { name: 'cache.warmer.entity.relationships' }
+
+  cache.warmer.entity.relationship.entity_reference:
+    class: 'Drupal\at_base\Cache\Warming\Warmer\Entity_Warmer\Relationship\Entity_Reference_Warmer'
+    tags:
+      - { name: 'cache.warmer.entity.relationships' }
+
+  cache.warmer.entity.relationship.relation:
+    class: 'Drupal\at_base\Cache\Warming\Warmer\Entity_Warmer\Relationship\Relation_Warmer'
+    tags:
+      - { name: 'cache.warmer.entity.relationships' }
