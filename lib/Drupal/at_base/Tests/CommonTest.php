@@ -83,6 +83,25 @@ class CommonTest extends \DrupalWebTestCase {
     $this->assertEqual('Drupal\atest_base\Service_3', get_class($service_3));
   }
 
+  public function testTaggedServices() {
+    // Simple
+    $expected = array('atest_base.service_1', 'atest_base.service_2', 'atest_base.service_3');
+    $actual = at_container('container')->find('atest1');
+    $this->assertEqual($expected, $actual);
+
+    // With weight
+    $expected = array('atest_base.service_3', 'atest_base.service_2', 'atest_base.service_1');
+    $actual = at_container('container')->find('atest2');
+    $this->assertEqual(implode(', ', $expected), implode(', ', $actual));
+
+    // Return services instead of services name
+    foreach (at_container('container')->find('atest1', $return = 'service') as $name => $service) {
+      $expected = get_class(at_container($name));
+      $actual = get_class($service);
+      $this->assertEqual($expected, $actual);
+    }
+  }
+
   /**
    * Test easy block definition.
    */
@@ -116,39 +135,39 @@ class CommonTest extends \DrupalWebTestCase {
     // Case 1: array
     $obj = new \At_Base_Test_Class();
     $definition = array($obj, 'foo');
-    $exptected = array($obj, 'foo');
+    $expected = array($obj, 'foo');
     $actual = $resolver->get($definition);
-    $this->assertEqual($exptected, $actual);
+    $this->assertEqual($expected, $actual);
 
     // Case 2: $foo::__invoke()
     $definition = $obj;
-    $exptected = $obj;
+    $expected = $obj;
     $actual = $resolver->get($definition);
-    $this->assertEqual($exptected, $actual);
+    $this->assertEqual($expected, $actual);
 
     // Case 3: class::method
     $definition = 'At_Base_Test_Class::foo';
-    $exptected = array('At_Base_Test_Class', 'foo');
+    $expected = array('At_Base_Test_Class', 'foo');
     $actual = $resolver->get($definition);
-    $this->assertEqual($exptected, $actual);
+    $this->assertEqual($expected, $actual);
 
     // Case 4: Twig template
     $definition = "{{ 'Hello ' ~ 'Andy Truong' }}";
-    $exptected = 'Hello Andy Truong';
+    $expected = 'Hello Andy Truong';
     $actual = $resolver->get($definition);
     $actual = trim(call_user_func($actual));
-    $this->assertEqual($exptected, $actual);
+    $this->assertEqual($expected, $actual);
 
     // Case 5: Simple function
     $definition = 'time';
-    $exptected = 'time';
+    $expected = 'time';
     $actual = $resolver->get($definition);
-    $this->assertEqual($exptected, $actual);
+    $this->assertEqual($expected, $actual);
 
     // Case 6: Simple class with __invoke magic method
     $definition = 'At_Base_Test_Class';
-    $exptected = 'At_Base_Test_Class';
+    $expected = 'At_Base_Test_Class';
     $actual = $resolver->get($definition);
-    $this->assertEqual($exptected, get_class($actual));
+    $this->assertEqual($expected, get_class($actual));
   }
 }

@@ -1,10 +1,19 @@
 services:
   atest_base.service_1:
     class: 'Drupal\atest_base\Service_1'
+    tags:
+      - { name: atest1 }
+      - { name: atest2, weight: 10 }
   atest_base.service_2:
     class: 'Drupal\atest_base\Service_2'
     arguments: ['@atest_base.service_1']
+    tags:
+      - { name: atest1 }
+      - { name: atest2, weight: 0 }
   atest_base.service_3:
     class: 'Drupal\atest_base\Service_3'
     factory_class: Drupal\atest_base\Service_3_Factory
     factory_method: getService
+    tags:
+      - { name: atest1 }
+      - { name: atest2, weight: -10 }

@@ -40,6 +40,27 @@ class Container {
   }
 
   /**
+   * Find services by tag
+   *
+   * @param  string  $tag
+   */
+  public function find($tag, $return = 'service_name') {
+    $defs = self::$c['service.resolver']->findDefinitions($tag);
+
+    if ($return === 'service_name') {
+      return $defs;
+    }
+    elseif ($return === 'service') {
+      foreach ($defs as $k => $name) {
+        unset($defs[$k]);
+        $defs[$name] = $this->get($name);
+      }
+    }
+
+    return $defs;
+  }
+
+  /**
    * Main method for configure service in Pimple.
    *
    * @param string $name

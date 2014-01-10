@@ -19,6 +19,40 @@ class Service_Resolver {
     return $this->resolve($def);
   }
 
+  public function findDefinitions($tag) {
+    $o = array('id' => "ATTaggedService:{$tag}", 'ttl' => '+ 1 year', 'reset' => 1);
+
+    return at_cache($o, function() use ($tag) {
+      $tagged_defs = array();
+      $weight_sort = FALSE;
+
+      $defs = at_container('helper.config_fetcher')->getItems('at_base', 'services', 'services', TRUE);
+      foreach ($defs as $name => $def) {
+        if (empty($def['tags'])) {
+          continue;
+        }
+
+        foreach ($def['tags'] as $_tag) {
+          if ($tag === $_tag['name']) {
+            $tagged_defs[] = $name;
+
+            if (isset($_tag['weight'])) {
+              $weight_sort = TRUE;
+            }
+
+            break;
+          }
+        }
+      }
+
+      if ($weight_sort) {
+        uasort($tagged_defs, 'drupal_sort_weight');
+      }
+
+      return $tagged_defs;
+    });
+  }
+
   private function resolve($def) {
     // A service depends on others, this method to resolve them.
     foreach (array('arguments', 'calls') as $k) {
