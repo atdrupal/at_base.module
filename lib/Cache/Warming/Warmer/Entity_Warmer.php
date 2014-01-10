@@ -1,13 +1,16 @@
 <?php
 namespace Drupal\at_base\Cache\Warming\Warmer;
 
-class Entity_Warmer {
+class Entity_Warmer implements Warmer_Interface {
   private $entity_info;
   private $entity_type;
   private $entity;
   private $entity_bundle;
   private $entity_id;
-  private $tokens = array( '%entity_type', '%type', '%entity_bundle', '%bundle', '%entity_id', '%id');
+  private $tokens = array('%entity_type', '%type', '%entity_bundle', '%bundle', '%entity_id', '%id');
+
+  public function __construct() {
+  }
 
   public function validateTag($tag) {
     foreach ($this->tokens as $token) {
@@ -55,11 +58,14 @@ class Entity_Warmer {
   public function processTag($tag, $context = array()) {
     $this->setEntityInfoFromContext($context);
 
+    // Replace entity's tokens with real values
     $tag = str_replace($this->getTagFind(), $this->getTagReplace(), $tag);
 
+    // Warm relationship entities
     $relationship_warmers = at_container('container')->find('cache.warmer.entity.relationships', 'service');
     foreach ($relationship_warmers as $relationship_warmer) {
       if ($relationship_warmer->validateTag($tag)) {
+        $relationship_warmer->processTag($tag, $entity_warmer);
       }
     }
 
