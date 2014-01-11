@@ -5,6 +5,7 @@ use Drupal\at_base\Container\Definition;
 use Drupal\at_base\Container\Service_Resolver;
 use Drupal\at_base\Helper\Config_Fetcher;
 use Drupal\at_base\Helper\Wrapper\Database as DB_Wrapper;
+use Drupal\at_base\Helper\Wrapper\Cache as Cache_Wrapper;
 
 /**
  * Service Container/Locator.
@@ -24,6 +25,7 @@ class Container {
         'service.resolver' => function() { return new Service_Resolver(); },
         'helper.config_fetcher' => function() { return new Config_Fetcher(); },
         'wrapper.db' => function() { return new DB_Wrapper(); },
+        'wrapper.cache' => function() { return new Cache_Wrapper(); },
       ));
     }
   }

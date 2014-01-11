@@ -88,7 +88,7 @@ class Cache {
    * @return  mixed
    */
   public function get() {
-    if (!$this->reset && $cache = cache_get($this->id, $this->bin)) {
+    if (!$this->reset && $cache = at_container('wrapper.cache')->get($this->id, $this->bin)) {
       if (!empty($cache->data)) return $cache->data;
       if ($this->allow_empty)   return $cache->data;
     }
@@ -117,7 +117,7 @@ class Cache {
    * @param  mixed $data
    */
   protected function write($data) {
-    if (FALSE !== cache_set($this->id, $data, $this->bin, strtotime($this->ttl))) {
+    if (FALSE !== at_container('wrapper.cache')->set($this->id, $data, $this->bin, strtotime($this->ttl))) {
       if (!empty($this->tags)) {
         $this->removeAllTags();
         foreach ($this->tags as $tag) {

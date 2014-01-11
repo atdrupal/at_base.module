@@ -63,7 +63,7 @@ class CacheTest extends \DrupalWebTestCase {
     sleep(2);
 
     // Change cached-data to empty string
-    cache_set($options['id'], '', $options['bin'], strtotime($options['ttl']));
+    at_container('wrapper.cache')->set($options['id'], '', $options['bin'], strtotime($options['ttl']));
 
     // Call at_cache() again
     $time_2 = at_cache(array('reset' => FALSE) + $options, '\Drupal\at_base\Tests\CacheTest::time');
