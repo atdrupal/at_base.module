@@ -26,6 +26,20 @@ abstract class UnitTestCase extends \DrupalUnitTestCase {
     $this->container->register('wrapper.db',    function() { return new \Drupal\at_base\Helper\Test\Database(); });
     $this->container->register('wrapper.cache', function() { return new \Drupal\at_base\Helper\Test\Cache(); });
 
+    // Make our autoloader run first — drush_print_r(spl_autoload_functions());
+    spl_autoload_unregister('drupal_autoload_class');
+    spl_autoload_unregister('drupal_autoload_interface');
+    at_id(new \Drupal\at_base\Autoloader())->register(FALSE, TRUE);
+
+    // at_modules() > system_list() > need db, fake it!
+    $cids[] = "at_modules:at_base:services";
+    $cids[] = "at_modules:at_base:twig_filters";
+    $cids[] = "at_modules:at_base:twig_functions";
+    $data = array('at_base');
+    foreach ($cids as $cid) {
+      at_container('wrapper.cache')->set($cid, $data, 'cache_bootstrap');
+    }
+
     parent::setUp('at_base');
   }
 }
