@@ -170,4 +170,23 @@ class CommonTest extends \DrupalWebTestCase {
     $actual = $resolver->get($definition);
     $this->assertEqual($expected, get_class($actual));
   }
+
+  public function testCacheTagging() {
+    $cache_options = array('bin' => 'cache', 'reset' => FALSE, 'ttl' => '+ 15 minutes');
+
+    // ---------------------
+    // Cache tagging
+    // ---------------------
+    $options = array('id' => 'atest_base:cache:tag:1', 'tags' => array('at_base', 'atest')) + $cache_options;
+
+    $data_1 = at_cache($options, function(){ return 'Data #1'; });
+    $data_2 = at_cache($options, function(){ return 'This is not called'; });
+
+    // Delete items tagged with 'atest'
+    at_cache_flush_by_tags($options['tags']);
+
+    $data_3 = at_cache($options, function(){ return 'Data #3 — must be called.'; });
+
+    $this->assertNotEqual($data_1, $data_3);
+  }
 }
