@@ -32,7 +32,7 @@ class Tag_Flusher {
       return;
     }
 
-    $items = at_container('db')->select('at_base_cache_tag', 'atag')
+    $items = at_container('wrapper.db')->select('at_base_cache_tag', 'atag')
               ->fields('atag', array('bin', 'cid'))
               ->condition('tag', $this->tags)
               ->execute()
@@ -42,7 +42,7 @@ class Tag_Flusher {
       cache_clear_all($item->cid, $item->bin);
     }
 
-    at_container('db')->delete('at_base_cache_tag')
+    at_container('wrapper.db')->delete('at_base_cache_tag')
       ->condition('tag', $this->tags)
       ->execute()
     ;

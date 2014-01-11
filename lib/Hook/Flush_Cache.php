@@ -13,7 +13,7 @@ class Flush_Cache {
   }
 
   private function flushTaggedCacheData() {
-    at_container('db')->delete('at_base_cache_tag')->execute();
+    at_container('wrapper.db')->delete('at_base_cache_tag')->execute();
   }
 
   private function flushAPCData() {

@@ -1,5 +1,5 @@
 <?php
-namespace Drupal\at_base;
+namespace Drupal\at_base\Helper\Wrapper;
 
 class Database {
   public function select($table, $alias = NULL, array $options = array()) {
