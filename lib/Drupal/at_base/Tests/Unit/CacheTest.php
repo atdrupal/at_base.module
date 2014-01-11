@@ -4,9 +4,6 @@ namespace Drupal\at_base\Tests\Unit;
 
 use Drupal\at_base\Helper\Test\UnitTestCase;
 
-/**
- * cache_get()/cache_set() does not work on unit test cases.
- */
 class CacheTest extends UnitTestCase {
   public function getInfo() {
     return array('name' => 'AT Unit: Cache') + parent::getInfo();
@@ -37,7 +34,7 @@ class CacheTest extends UnitTestCase {
     $callbacks['closure']    = array(function () { return time(); }, array());
     $callbacks['string']     = array('time', array());
     $callbacks['object']     = array(array($this, 'time'), array());
-    $callbacks['static']     = array('\Drupal\at_base\Tests\CacheTest::time', array());
+    $callbacks['static']     = array(__CLASS__ . '::time', array());
     $callbacks['arguments']  = array('sprintf', array('Timestamp: %d', time()));
     foreach ($callbacks as $type => $callback) {
       list($callback, $arguments) = $callback;
@@ -60,7 +57,7 @@ class CacheTest extends UnitTestCase {
     $options = array('id' => 'at_test:time:allowEmpty', 'reset' => TRUE, 'allow_empty' => FALSE) + $options;
 
     // Init the value
-    $time_1 = at_cache($options, '\Drupal\at_base\Tests\CacheTest::time');
+    $time_1 = at_cache($options, __CLASS__ . '::time');
     sleep(1);
 
     // Change cached-data to empty string
