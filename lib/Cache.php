@@ -134,7 +134,7 @@ class Cache {
    * @see   at_base_flush_caches()
    */
   public function addTag($tag) {
-    return db_insert('at_base_cache_tag')
+    return at_container('db')->insert('at_base_cache_tag')
       ->fields(array(
           'bin' => $this->bin,
           'cid' => $this->id,
@@ -145,7 +145,7 @@ class Cache {
   }
 
   public function removeAllTags() {
-    return db_delete('at_base_cache_tag')
+    return at_container('db')->delete('at_base_cache_tag')
       ->condition('bin', $this->bin)
       ->condition('cid', $this->id)
       ->execute()
@@ -158,7 +158,7 @@ class Cache {
    * @param  string $tag
    */
   public function removeTag($tag) {
-    return db_delete('at_base_cache_tag')
+    return at_container('db')->delete('at_base_cache_tag')
       ->condition('bin', $this->bin)
       ->condition('cid', $this->id)
       ->condition('tag', $tag)

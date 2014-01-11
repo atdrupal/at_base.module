@@ -22,6 +22,7 @@ class Container {
         'container' => $this,
         'service.resolver' => function() { return new Service_Resolver(); },
         'helper.config_fetcher' => function() { return new Config_Fetcher(); },
+        'db' => function() { return new Database(); },
       ));
     }
   }
