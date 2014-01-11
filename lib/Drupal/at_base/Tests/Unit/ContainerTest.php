@@ -24,6 +24,9 @@ class ContainerTest extends UnitTestCase {
     // Service depends on others
     $service_3 = at_container('twig_string');
     $this->assertEqual('Twig_Environment', get_class($service_3));
+
+    $service_4 = at_container('twig');
+    $this->assertEqual('Twig_Environment', get_class($service_4));
   }
 
   public function testTaggedServices() {
