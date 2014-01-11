@@ -23,9 +23,9 @@ class CacheTest extends UnitTestCase {
     // Make sure the cache wrapper is faked correctly
     $this->assertEqual('Drupal\at_base\Helper\Test\Cache', get_class($wrapper));
 
-    // Save 1 then get 1
-    $wrapper->set(__FUNCTION__, 1);
-    $this->assertEqual(1, $wrapper->get(__FUNCTION__));
+    // Save __FUNCTION__ then get __FUNCTION__
+    $wrapper->set(__FUNCTION__, __CLASS__);
+    $this->assertEqual(__CLASS__, $wrapper->get(__FUNCTION__)->data);
   }
 
   public function testAtCache() {
