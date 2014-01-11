@@ -15,7 +15,7 @@ abstract class UnitTestCase extends \DrupalUnitTestCase {
     return array(
       'name' => 'AT Unit',
       'description' => 'Make sure the at_cache() is working correctly.',
-      'group' => 'AT Base'
+      'group' => 'AT Unit'
     );
   }
 
