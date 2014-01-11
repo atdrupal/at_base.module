@@ -13,7 +13,27 @@ class ConfigTest extends \DrupalWebTestCase {
 
   public function setUp() {
     $this->profile = 'testing';
-    parent::setUp('atest_config');
+    parent::setUp('atest_config', 'atest_base', 'atest2_base');
+  }
+
+  /**
+   * Make sure at_modules() function is working correctly.
+   */
+  public function testAtModules() {
+    $this->assertTrue(in_array('atest_base', at_modules()));
+    $this->assertTrue(in_array('atest2_base', at_modules('atest_base')));
+  }
+
+  /**
+   * Module weight can be updated correctly
+   */
+  public function testWeight() {
+    at_base_flush_caches();
+
+    $query = "SELECT weight FROM {system} WHERE name = :name";
+    $weight = db_query($query, array(':name' => 'atest_base'))->fetchColumn();
+
+    $this->assertEqual(10, $weight);
   }
 
   public function testConfigGet() {
@@ -46,5 +66,17 @@ class ConfigTest extends \DrupalWebTestCase {
     $array_data = $config->get('array_data');
     $this->assertEqual('A',   $array_data['a']);
     $this->assertEqual('CCC', $array_data['c']);
+  }
+
+  public function testConfigFetcher() {
+    $config_fetcher = at_container('helper.config_fetcher');
+
+    // Get all
+    $items = $config_fetcher->getItems('at_base', 'services', 'services', TRUE);
+    $this->assertTrue(isset($items['twig']));
+
+    // Get specific item
+    $item = $config_fetcher->getItem('at_base', 'services', 'services', 'twig', TRUE);
+    $this->assertEqual('@twig.core', $item['arguments'][0]);
   }
 }

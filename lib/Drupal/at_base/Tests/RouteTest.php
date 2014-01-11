@@ -3,7 +3,7 @@
 namespace Drupal\at_base\Tests;
 
 /**
- * …
+ * Test cases for routing feature.
  */
 class RouteTest extends \DrupalWebTestCase {
   public function getInfo() {
@@ -16,7 +16,49 @@ class RouteTest extends \DrupalWebTestCase {
 
   public function setUp() {
     $this->profile = 'testing';
-    parent::setUp('atest_route');
+    parent::setUp('atest_base', 'atest_route');
+  }
+
+  public function testControllerRevoler() {
+    $resolver = at_container('controller.resolver');
+
+    // Case 1: array
+    $obj = new \At_Base_Test_Class();
+    $definition = array($obj, 'foo');
+    $expected = array($obj, 'foo');
+    $actual = $resolver->get($definition);
+    $this->assertEqual($expected, $actual);
+
+    // Case 2: $foo::__invoke()
+    $definition = $obj;
+    $expected = $obj;
+    $actual = $resolver->get($definition);
+    $this->assertEqual($expected, $actual);
+
+    // Case 3: class::method
+    $definition = 'At_Base_Test_Class::foo';
+    $expected = array('At_Base_Test_Class', 'foo');
+    $actual = $resolver->get($definition);
+    $this->assertEqual($expected, $actual);
+
+    // Case 4: Twig template
+    $definition = "{{ 'Hello ' ~ 'Andy Truong' }}";
+    $expected = 'Hello Andy Truong';
+    $actual = $resolver->get($definition);
+    $actual = trim(call_user_func($actual));
+    $this->assertEqual($expected, $actual);
+
+    // Case 5: Simple function
+    $definition = 'time';
+    $expected = 'time';
+    $actual = $resolver->get($definition);
+    $this->assertEqual($expected, $actual);
+
+    // Case 6: Simple class with __invoke magic method
+    $definition = 'At_Base_Test_Class';
+    $expected = 'At_Base_Test_Class';
+    $actual = $resolver->get($definition);
+    $this->assertEqual($expected, get_class($actual));
   }
 
   public function testRoutes() {

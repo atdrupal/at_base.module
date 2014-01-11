@@ -1,3 +1,6 @@
+imports:
+  - { resource: services.cache.yml }
+
 services:
   container:
     class: '\Drupal\at_base\Container'
