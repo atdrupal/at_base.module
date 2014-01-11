@@ -20,15 +20,6 @@ class CommonTest extends \DrupalWebTestCase {
   }
 
   /**
-   * Test for at_id() function.
-   */
-  public function testAtId() {
-    $expected = 'Hello Andy Truong';
-    $actual = at_id(new \At_Base_Test_Class())->hello('Andy Truong');
-    $this->assertEqual($expected, $actual);
-  }
-
-  /**
    * Make sure at_modules() function is working correctly.
    */
   public function testAtModules() {
@@ -49,23 +40,6 @@ class CommonTest extends \DrupalWebTestCase {
   }
 
   /**
-   * Autoload feature
-   */
-  public function testAutoloader() {
-    $this->assertTrue(class_exists('Drupal\at_base\Drush\Command\AtRequire'));
-    $this->assertTrue(class_exists('Drupal\at_base\Container'));
-  }
-
-  /**
-   * Test for \Drupal\at_base\Helper\RealPath class
-   */
-  public function testRealPath() {
-    $expected = path_to_theme() . '/templates/page.home.html.twig';
-    $actual = at_container('helper.real_path')->get('%theme/templates/page.home.html.twig');
-    $this->assertEqual($expected, $actual);
-  }
-
-  /**
    * Test easy block definition.
    */
   public function testEasyBlocks() {
@@ -77,19 +51,6 @@ class CommonTest extends \DrupalWebTestCase {
     $this->assertEqual($expected, trim($block_1));
     $this->assertEqual($expected, trim($block_2));
     $this->assertEqual($expected, trim($block_3));
-  }
-
-  /**
-   * Test ExpressionLanguage.
-   */
-  public function testExpressionLanguage() {
-    $expected = 'Symfony\Component\ExpressionLanguage\ExpressionLanguage';
-    $actual = get_class(at_container('expression_language'));
-    $this->assertEqual($expected, $actual);
-
-    $expected = 3;
-    $actual = at_container('expression_language')->evaluate("constant('MENU_CONTEXT_PAGE') | constant('MENU_CONTEXT_INLINE')");
-    $this->assertEqual($expected, $actual);
   }
 
   public function testControllerRevoler() {
