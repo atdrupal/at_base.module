@@ -31,8 +31,12 @@ class Autoloader {
       $this->_includePath = $includePath ? $includePath : DRUPAL_ROOT;
   }
 
-  public function register() {
-    spl_autoload_register(array($this, $this->_namespace === 'Drupal' ? 'loadDrupalClass' : 'loadClass'));
+  public function register($throw = FALSE, $prepend = FALSE) {
+    spl_autoload_register(
+      array($this, $this->_namespace === 'Drupal' ? 'loadDrupalClass' : 'loadClass'),
+      $throw,
+      $prepend
+    );
   }
 
   /**
