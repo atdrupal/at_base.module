@@ -70,6 +70,41 @@ class CacheTest extends UnitTestCase {
     $this->assertNotEqual($time_1, $time_2);
   }
 
+  public function testCacheTagging() {
+    $o = array('bin' => 'cache', 'reset' => FALSE, 'ttl' => '+ 15 minutes');
+    $o = array('id' => 'atest_base:cache:tag:1', 'tags' => array('at_base', 'atest')) + $o;
+
+    // ---------------------------------------------------------------
+    // Tag must be written when cache with tag(s)
+    // ---------------------------------------------------------------
+    at_cache($o, function(){ return 'Data #1'; });
+
+    $db_log = at_container('wrapper.db')->getLog();
+    $tag1_row = array('bin' => 'cache', 'cid' => $o['id'], 'tag' => $o['tags'][0]);
+    $tag2_row = array('bin' => 'cache', 'cid' => $o['id'], 'tag' => $o['tags'][1]);
+
+    $this->assertEqual($tag1_row, $db_log['insert']['at_base_cache_tag']['fields'][0][0]);
+    $this->assertEqual($tag2_row, $db_log['insert']['at_base_cache_tag']['fields'][1][0]);
+
+    $db_log = at_container('wrapper.db')->resetLog();
+
+    // ---------------------
+    // Tag must be deleted
+    // ---------------------
+    // Delete items tagged with 'atest'
+    at_container('cache.tag_flusher')->setTags($o['tags'])->flush();
+
+    $db_log = at_container('wrapper.db')->getLog();
+    $con = array('tag', $o['tags']);
+    foreach ($db_log['delete']['at_base_cache_tag']['condition'] as $_con) {
+      if ('tag' === $_con[0]) {
+        $this->assertEqual($con, $_con);
+        return;
+      }
+    }
+    $this->assertTrue(FALSE, 'No delete query on tags found');
+  }
+
   /**
    * @todo Test when we can fake the service.
    */

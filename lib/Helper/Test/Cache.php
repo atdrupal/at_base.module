@@ -21,4 +21,13 @@ class Cache {
       'serialized' => !is_string($data) && !is_numeric($data),
     );
   }
+
+  public function clearAll($cid = NULL, $bin = NULL, $wildcard = FALSE) {
+    if ($wildcard) {
+      unset(self::$data[$bin]);
+    }
+    else {
+      unset(self::$data[$bin][$cid]);
+    }
+  }
 }

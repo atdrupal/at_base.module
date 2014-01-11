@@ -13,7 +13,7 @@ class ConfigTest extends \DrupalWebTestCase {
 
   public function setUp() {
     $this->profile = 'testing';
-    parent::setUp('atest_config');
+    parent::setUp('atest_config', 'atest_base', 'atest2_base');
   }
 
   /**

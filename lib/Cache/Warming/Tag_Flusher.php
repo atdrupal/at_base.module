@@ -39,7 +39,7 @@ class Tag_Flusher {
               ->fetchAll();
 
     foreach ($items as $item) {
-      cache_clear_all($item->cid, $item->bin);
+      at_container('wrapper.cache')->clearAll($item->cid, $item->bin);
     }
 
     at_container('wrapper.db')->delete('at_base_cache_tag')
