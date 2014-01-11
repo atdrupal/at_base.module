@@ -62,16 +62,17 @@ class Process {
 		$obj = new $class();
 		/* check class exist method */
 		if ( !method_exists($obj, $method))
-			throw new \Exception('Class hasn\'t method '.$method);
+			throw new \Exception('Class "'.$class.'" hasn\'t method "'.$method.'"');
 	  }else
-		throw new \Exception('Class does not exist');
+		throw new \Exception('Class "'.$class.'" does not exist');
 		
 	  if (empty($args) && !empty($this->data['arguments'])) {
         $args = $this->data['arguments'];
       }
-	
+	  
       return call_user_func_array(
-        array($obj, $method),$this->getControllerArguments($args, $obj)
+        array($obj, $method),
+		$this->getControllerArguments($args, $obj)
       );
     }
   }
@@ -81,6 +82,9 @@ class Process {
     if (empty($args) && method_exists($obj, 'getVariables')) {
       $args = $obj->getVariables();
     }
+	
+	if (!is_array($args))
+		throw new \Exception('This variable "'.$args.'" must be a array');
     return $args;
   }
 
