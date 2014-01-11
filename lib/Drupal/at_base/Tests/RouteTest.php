@@ -3,7 +3,7 @@
 namespace Drupal\at_base\Tests;
 
 /**
- * …
+ * Test cases for routing feature.
  */
 class RouteTest extends \DrupalWebTestCase {
   public function getInfo() {
