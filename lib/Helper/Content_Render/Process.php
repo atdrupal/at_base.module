@@ -25,17 +25,16 @@ class Process {
   }
 
   public function execute() {
-    !empty($this->caller) && $this->caller->callBefore();
-
+	!empty($this->caller) && $this->caller->callBefore();
+	
     foreach (get_class_methods(get_class($this)) as $method) {
       if ('process' === substr($method, 0, 7)) {
-        $return = $this->{$method}();
+		$return = $this->{$method}();
         if (!is_null($return)) {
           return $return;
         }
       }
     }
-
     throw new \Exception('Unsupported data structure.');
   }
 
@@ -57,15 +56,22 @@ class Process {
   private function processController() {
     if (isset($this->data['controller'])) {
       @list($class, $method, $args) = $this->data['controller'];
-      $obj = new $class();
-
-      if (empty($args) && !empty($this->data['arguments'])) {
+	  
+	  /* check class exist */
+	  if (class_exists($class)) {
+		$obj = new $class();
+		/* check class exist method */
+		if ( !method_exists($obj, $method))
+			throw new \Exception('Class hasn\'t method '.$method);
+	  }else
+		throw new \Exception('Class does not exist');
+		
+	  if (empty($args) && !empty($this->data['arguments'])) {
         $args = $this->data['arguments'];
       }
-
+	
       return call_user_func_array(
-        array($obj, $method),
-        $this->getControllerArguments($args, $obj)
+        array($obj, $method),$this->getControllerArguments($args, $obj)
       );
     }
   }
