@@ -2,7 +2,7 @@
 namespace Drupal\at_base\Helper\Test;
 
 class Database {
-  public function __call(\string $name , array $arguments) {
+  public function __call($name, $arguments) {
     return $this;
   }
 
