@@ -19,40 +19,6 @@ class CommonTest extends \DrupalWebTestCase {
     parent::setUp('atest_base', 'atest2_base');
   }
 
-  /**
-   * Make sure at_modules() function is working correctly.
-   */
-  public function testAtModules() {
-    $this->assertTrue(in_array('atest_base', at_modules()));
-    $this->assertTrue(in_array('atest2_base', at_modules('atest_base')));
-  }
-
-  /**
-   * Module weight can be updated correctly
-   */
-  public function testWeight() {
-    at_base_flush_caches();
-
-    $query = "SELECT weight FROM {system} WHERE name = :name";
-    $weight = db_query($query, array(':name' => 'atest_base'))->fetchColumn();
-
-    $this->assertEqual(10, $weight);
-  }
-
-  /**
-   * Test easy block definition.
-   */
-  public function testEasyBlocks() {
-    $block_1 = \AT::twig_string()->render("{{ 'at_base:atest_base|hi_s'  | drupalBlock(TRUE) }}");
-    $block_2 = \AT::twig_string()->render("{{ 'at_base:atest_base|hi_t'  | drupalBlock(TRUE) }}");
-    $block_3 = \AT::twig_string()->render("{{ 'at_base:atest_base|hi_ts' | drupalBlock(TRUE) }}");
-
-    $expected = 'Hello Andy Truong';
-    $this->assertEqual($expected, trim($block_1));
-    $this->assertEqual($expected, trim($block_2));
-    $this->assertEqual($expected, trim($block_3));
-  }
-
   public function testCacheTagging() {
     $cache_options = array('bin' => 'cache', 'reset' => FALSE, 'ttl' => '+ 15 minutes');
 

@@ -91,6 +91,20 @@ class TwigTest extends \DrupalWebTestCase {
       $this->assertEqual($expected, $actual);
     }
   }
+
+  /**
+   * Test easy block definition.
+   */
+  public function testEasyBlocks() {
+    $block_1 = \AT::twig_string()->render("{{ 'at_base:atest_base|hi_s'  | drupalBlock(TRUE) }}");
+    $block_2 = \AT::twig_string()->render("{{ 'at_base:atest_base|hi_t'  | drupalBlock(TRUE) }}");
+    $block_3 = \AT::twig_string()->render("{{ 'at_base:atest_base|hi_ts' | drupalBlock(TRUE) }}");
+
+    $expected = 'Hello Andy Truong';
+    $this->assertEqual($expected, trim($block_1));
+    $this->assertEqual($expected, trim($block_2));
+    $this->assertEqual($expected, trim($block_3));
+  }
 }
 
 // class At_Base_Cache_Views_Warmer extends DrupalWebTestCase {

@@ -16,7 +16,7 @@ class RouteTest extends \DrupalWebTestCase {
 
   public function setUp() {
     $this->profile = 'testing';
-    parent::setUp('atest_route');
+    parent::setUp('atest_base', 'atest_route');
   }
 
   public function testControllerRevoler() {
