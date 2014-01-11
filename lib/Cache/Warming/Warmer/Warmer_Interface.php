@@ -20,5 +20,5 @@ interface Warmer_Interface {
    *
    * @param  string $tag
    */
-  public function processTag($tag);
+  public function processTag($tag, $context = array());
 }

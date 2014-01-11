@@ -11,7 +11,7 @@ class View_Warmer implements Warmer_Interface {
     return 0 === strpos($tag, 'view:') || 0 === strpos($tag, 'views:');
   }
 
-  public function processTag($tag, $context) {
+  public function processTag($tag, $context = array()) {
     @list($module, $view_name, $display_id) = explode(':', $tag);
 
     if ($view = views_get_view($view_name)) {
@@ -23,10 +23,21 @@ class View_Warmer implements Warmer_Interface {
   }
 }
 
-class views_plugin_cache extends \views_plugin_cache {
-  public function __construct($view, $display) {
-    $this->view = $view;
-    $this->display = $display;
-    $this->set_default_options();
+if (class_exists('views_plugin_cache')) {
+  class views_plugin_cache extends \views_plugin_cache {
+    public function __construct($view, $display) {
+      $this->view = $view;
+      $this->display = $display;
+      $this->set_default_options();
+    }
+  }
+}
+else {
+  class views_plugin_cache {
+    public function __construct($view, $display) {
+      $this->view = $view;
+      $this->display = $display;
+      $this->set_default_options();
+    }
   }
 }
