@@ -71,8 +71,33 @@ class Container {
    * @param string $name
    */
   public function set($name) {
-    if (empty(self::$c[$name])) {
-      self::$c[$name] = self::$c['service.resolver']->getCallback($name);
+    if (!isset(self::$c[$name])) {
+      $this->register($name, self::$c['service.resolver']->getCallback($name));
     }
+  }
+
+  /**
+   * Unregister the service.
+   *
+   * @param string $name
+   * @param callable $callback
+   */
+  public function register($name, $callback) {
+    if (!isset(self::$c[$name])) {
+      self::$c[$name] = $callback;
+    }
+    else {
+      $this->unregister($name);
+      self::$c[$name] = $callback;
+    }
+  }
+
+  /**
+   * Unregister the service.
+   *
+   * @param string $name
+   */
+  public function unregister($name) {
+    unset(self::$c[$name]);
   }
 }
