@@ -41,6 +41,8 @@ class Process {
   private function processFunction() {
     if (isset($this->data['function'])) {
       $func = $this->data['function'];
+			if (!function_exists($func))
+				throw new \Exception('Function "'.$func.'" does not exist.');
       return call_user_func_array($func, $this->args);
     }
   }
@@ -59,21 +61,21 @@ class Process {
 	  
 	  /* check class exist */
 	  if (class_exists($class)) {
-		$obj = new $class();
+			$obj = new $class();
 		/* check class exist method */
-		if ( !method_exists($obj, $method))
-			throw new \Exception('Class "'.$class.'" hasn\'t method "'.$method.'"');
+			if ( !method_exists($obj, $method))
+				throw new \Exception('Class "'.$class.'" hasn\'t method "'.$method.'"');
 	  }else
-		throw new \Exception('Class "'.$class.'" does not exist');
+			throw new \Exception('Class "'.$class.'" does not exist');
 		
 	  if (empty($args) && !empty($this->data['arguments'])) {
         $args = $this->data['arguments'];
-      }
+		}
 	  
-      return call_user_func_array(
-        array($obj, $method),
-		$this->getControllerArguments($args, $obj)
-      );
+			return call_user_func_array(
+				array($obj, $method),
+				$this->getControllerArguments($args, $obj)
+			);
     }
   }
 
@@ -82,9 +84,8 @@ class Process {
     if (empty($args) && method_exists($obj, 'getVariables')) {
       $args = $obj->getVariables();
     }
-	
-	if (!is_array($args))
-		throw new \Exception('This variable "'.$args.'" must be a array');
+		if (!is_array($args))
+			throw new \Exception('This variable "'.$args.'" must be a array');
     return $args;
   }
 
@@ -130,4 +131,7 @@ class Process {
       return at_container('twig_string')->render($tpl, $this->args);
     }
   }
+}
+function atest_base_hello($name = 'Andy Truong') {
+  return "Hello {$name}";
 }

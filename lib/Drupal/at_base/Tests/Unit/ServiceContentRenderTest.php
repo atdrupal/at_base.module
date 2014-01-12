@@ -26,8 +26,9 @@ class ServiceContentRenderTest extends UnitTestCase {
   }
 
   public function testStaticMethod() {
-    $output = $this->render->render(array('function' => '\At_Base_Test_Class::helloStatic'));
-    $this->assertEqual('Hello Andy Truong', $output);
+		$name = 'xxxx';
+    $output = $this->render->render(array('controller' => array('At_Base_Test_Class','hello', array($name))));
+    $this->assertEqual('Hello '.$name, $output);
   }
 
   public function testTemplateString() {
@@ -75,3 +76,5 @@ class ServiceContentRenderTest extends UnitTestCase {
     $this->assertEqual($expected, $this->render->render($data));
   }
 }
+
+
