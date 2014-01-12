@@ -86,7 +86,7 @@ class CacheTest extends UnitTestCase {
     $this->assertEqual($tag1_row, $db_log['insert']['at_base_cache_tag']['fields'][0][0]);
     $this->assertEqual($tag2_row, $db_log['insert']['at_base_cache_tag']['fields'][1][0]);
 
-    $db_log = at_container('wrapper.db')->resetLog();
+    at_container('wrapper.db')->resetLog();
 
     // ---------------------
     // Tag must be deleted

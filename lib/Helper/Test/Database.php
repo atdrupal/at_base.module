@@ -34,7 +34,14 @@ class Database {
     return $this;
   }
 
-  public function getLog() {
+  public function getLog($method = NULL, $table = NULL) {
+    if (!empty($method) && isset(self::$log[$method])) {
+      if (!empty($table) && isset(self::$log[$method][$table])) {
+        return self::$log[$method][$table];
+      }
+      return self::$log[$method];
+    }
+
     return self::$log;
   }
 

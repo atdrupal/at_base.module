@@ -52,4 +52,19 @@ class ConfigTest extends UnitTestCase {
     $item = $config_fetcher->getItem('at_base', 'services', 'services', 'twig', TRUE);
     $this->assertEqual('@twig.core', $item['arguments'][0]);
   }
+
+  /**
+   * Module weight can be updated correctly
+   */
+  public function testWeight() {
+    at_container('wrapper.db')->resetLog();
+    at_id(new \Drupal\at_base\Hook\Flush_Cache())->resolveModuleWeight('atest_base', 10);
+    $db_log = at_container('wrapper.db')->getLog('update', 'system');
+
+    $expected['condition'] = array('name', 'atest_base');
+    $expected['fields'] = array('weight' => 10);
+
+    $this->assertTrue(in_array($expected['condition'], $db_log['condition']));
+    $this->assertTrue(in_array($expected['fields'], $db_log['fields'][0]));
+  }
 }

@@ -30,14 +30,21 @@ class Flush_Cache {
    * Update module's weight value in system table.
    */
   public function fixModuleWeight() {
-    foreach (system_list('module_enabled') as $module_name => $project) {
-      if (!empty($project->info['weight'])) {
-        $weight = $project->info['weight'];
-        if (is_numeric($weight)) {
-          $sql = "UPDATE {system} SET weight = :weight WHERE name = :name";
-          db_query($sql, array(':weight' => $weight, ':name' => $module_name));
-        }
+    foreach (system_list('module_enabled') as $module_name => $module_info) {
+      if (isset($module_info->info['weight'])) {
+        $this->resolveModuleWeight($module_name, $module_info->info['weight']);
       }
+    }
+  }
+
+  public function resolveModuleWeight($module_name, $weight) {
+    if (is_numeric($weight)) {
+      at_container('wrapper.db')
+        ->update('system')
+        ->condition('name', $module_name)
+        ->fields(array('weight' => $weight))
+        ->execute()
+      ;
     }
   }
 }
