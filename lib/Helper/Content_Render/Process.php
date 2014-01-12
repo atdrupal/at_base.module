@@ -59,18 +59,18 @@ class Process {
     if (isset($this->data['controller'])) {
       @list($class, $method, $args) = $this->data['controller'];
 	  
-	  /* check class exist */
-	  if (class_exists($class)) {
-			$obj = new $class();
-		/* check class exist method */
-			if ( !method_exists($obj, $method))
-				throw new \Exception('Class "'.$class.'" hasn\'t method "'.$method.'"');
-	  }else
-			throw new \Exception('Class "'.$class.'" does not exist');
-		
-	  if (empty($args) && !empty($this->data['arguments'])) {
-        $args = $this->data['arguments'];
-		}
+			/* check class exist */
+			if (class_exists($class)) {
+				$obj = new $class();
+				/* check class exist method */
+				if ( !method_exists($obj, $method))
+					throw new \Exception('Class "'.$class.'" hasn\'t method "'.$method.'"');
+			}else
+				throw new \Exception('Class "'.$class.'" does not exist');
+			
+			if (empty($args) && !empty($this->data['arguments'])) {
+				$args = $this->data['arguments'];
+			}
 	  
 			return call_user_func_array(
 				array($obj, $method),
