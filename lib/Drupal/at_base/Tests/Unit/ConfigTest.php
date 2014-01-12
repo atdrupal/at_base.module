@@ -2,13 +2,17 @@
 
 namespace Drupal\at_base\Tests\Unit;
 
-use Drupal\at_base\Helper\Test\UnitTestCase;
+use \Drupal\at_base\Helper\Test\UnitTestCase;
+use \Drupal\at_base\Helper\ModulesFetcher;
 
 class ConfigTest extends UnitTestCase {
   public function getInfo() {
     return array('name' => 'AT Unit: Config') + parent::getInfo();
   }
 
+  /**
+   * Test case for at_config() function.
+   */
   public function testConfigGet() {
     // Test getPath(), case #1
     $expected_path = DRUPAL_ROOT . '/' . drupal_get_path('module', 'atest_config') . '/config/config.yml';
@@ -41,6 +45,9 @@ class ConfigTest extends UnitTestCase {
     $this->assertEqual('CCC', $array_data['c']);
   }
 
+  /**
+   * Test for service: helper.config_fetcher
+   */
   public function testConfigFetcher() {
     $config_fetcher = at_container('helper.config_fetcher');
 
@@ -66,5 +73,36 @@ class ConfigTest extends UnitTestCase {
 
     $this->assertTrue(in_array($expected['condition'], $db_log['condition']));
     $this->assertTrue(in_array($expected['fields'], $db_log['fields'][0]));
+  }
+
+  /**
+   * Make sure at_modules() function is working correctly.
+   */
+  public function testAtModules() {
+    // Just check with two modules
+    foreach (array('at_base', 'atest_base') as $module_name) {
+      $enabled_modules[$module_name] = drupal_get_path('module', $module_name) . '/'. $module_name .'.info';
+      $enabled_modules[$module_name] = file_get_contents($enabled_modules[$module_name]);
+      $enabled_modules[$module_name] = drupal_parse_info_format($enabled_modules[$module_name]);
+      $enabled_modules[$module_name] = (object)array(
+        'name' => $module_name,
+        'stauts' => 1,
+        'info' => $enabled_modules[$module_name],
+      );
+    }
+
+    // Case 1: Do not need other modules has any config file.
+    $expected = array('atest_base');
+    $actual = at_id(new ModulesFetcher('at_base', $config_file = ''))->fetch($enabled_modules);
+    $this->assertEqual($expected, $actual);
+
+    // Case 2: The modules have to have a specific config file
+    $expected = array('atest_base');
+    $actual = at_id(new ModulesFetcher('at_base', $config_file = 'services'))->fetch($enabled_modules);
+    $this->assertEqual($expected, $actual);
+
+    $expected = array();
+    $actual = at_id(new ModulesFetcher('at_base', $config_file = 'un_real_config_file'))->fetch($enabled_modules);
+    $this->assertEqual($expected, $actual);
   }
 }
