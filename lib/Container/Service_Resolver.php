@@ -12,7 +12,8 @@ class Service_Resolver {
    * Get service definition in configuration files.
    */
   private function getDefinition($service_name) {
-    $def = at_container('helper.config_fetcher')->getItem('at_base', 'services', 'services', $service_name, TRUE);
+    $def = at_container('helper.config_fetcher')
+            ->getItem('at_base', 'services', 'services', $service_name, TRUE);
     if (is_null($def)) {
       throw new \Exception("Missing service: {$service_name}");
     }
