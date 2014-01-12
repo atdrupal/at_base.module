@@ -21,15 +21,18 @@ class ServiceContentRenderTest extends UnitTestCase {
   }
 
   public function testFunction() {
-    $name = 'xxx';
-    $output = $this->render->render(array('function' => 'atest_base_hello','arguments' => array($name)));
-    $this->assertEqual('Hello '.$name, $output);
+    $output = $this->render->render(array('function' => 'atest_base_hello'));
+    $this->assertEqual('Hello Andy Truong', $output);
   }
 
   public function testStaticMethod() {
-    $name = 'xxx';
-    $output = $this->render->render(array('controller' => array('At_Base_Test_Class','hello', array($name))));
-    $this->assertEqual('Hello '.$name, $output);
+    $output = $this->render->render(array('function' => '\At_Base_Test_Class::helloStatic'));
+    $this->assertEqual('Hello Andy Truong', $output);
+  }
+  
+  public function testController() {
+    $output = $this->render->render(array('controller' => array('At_Base_Test_Class', 'hello', array('Andy Truong'))));
+    $this->assertEqual('Hello Andy Truong', $output);
   }
 
   public function testTemplateString() {

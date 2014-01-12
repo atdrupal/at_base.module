@@ -25,7 +25,7 @@ class Process {
   }
 
   public function execute() {
-  !empty($this->caller) && $this->caller->callBefore();
+    !empty($this->caller) && $this->caller->callBefore();
 
     foreach (get_class_methods(get_class($this)) as $method) {
       if ('process' === substr($method, 0, 7)) {
@@ -41,8 +41,10 @@ class Process {
   private function processFunction() {
     if (isset($this->data['function'])) {
       $func = $this->data['function'];
-      if (!function_exists($func))
+      if (!function_exists($func)) {
         throw new \Exception('Function "'.$func.'" does not exist.');
+      }
+      
       return call_user_func_array($func, $this->args);
     }
   }
@@ -59,14 +61,15 @@ class Process {
     if (isset($this->data['controller'])) {
       @list($class, $method, $args) = $this->data['controller'];
   
-      /* check class exist */
       if (class_exists($class)) {
         $obj = new $class();
-        /* check class exist method */
-        if ( !method_exists($obj, $method))
+        if ( !method_exists($obj, $method)) {
           throw new \Exception('Class "'.$class.'" hasn\'t method "'.$method.'"');
-      }else
-        throw new \Exception('Class "'.$class.'" does not exist');
+        }
+      }
+      else {
+        throw new \Exception('Class "'.$class.'" does not exist.');
+      }
       
       if (empty($args) && !empty($this->data['arguments'])) {
         $args = $this->data['arguments'];
@@ -85,8 +88,10 @@ class Process {
     if (empty($args) && method_exists($obj, 'getVariables')) {
       $args = $obj->getVariables();
     }
-    if (!is_array($args))
-      throw new \Exception('This variable "'.$args.'" must be a array');
+    if (!is_array($args)) {
+      throw new \Exception('This variable "'.$args.'" must be a array.');
+    }
+    
     return $args;
   }
 
