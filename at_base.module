@@ -8,6 +8,8 @@
 use \Drupal\at_base\Autoloader;
 use \Drupal\at_base\Config\Resolver as ConfigResolver;
 use \Drupal\at_base\Config\Config;
+use \Drupal\at_base\Cache;
+use \Drupal\at_base\Helper\ModulesFetcher;
 
 require_once dirname(__FILE__) . '/lib/AT.php';
 require_once dirname(__FILE__) . '/at_base.hooks.inc';
@@ -80,14 +82,12 @@ function at_container($service_name) {
  * @todo   Note about AT_DEV constant
  */
 function at_cache($options, $callback, $arguments = array()) {
-  require_once dirname(__FILE__) . '/lib/Cache.php';
-
   if (isset($options['cache_id'])) {
     $options['id'] = $options['cache_id'];
     unset($options['cache_id']);
   }
 
-  return at_id(new \Drupal\at_base\Cache($options, $callback, $arguments))->get();
+  return at_id(new Cache($options, $callback, $arguments))->get();
 }
 
 /**
@@ -138,14 +138,13 @@ function at_config($module, $id = 'config', $refresh = FALSE) {
  * @see system_list()
  */
 function at_modules($base_module = 'at_base', $config_file = '', $reset = FALSE) {
-  $options['ttl'] = '+ 1 year';
-  $options['bin'] = 'cache_bootstrap';
-  $options['cache_id'] = "at_modules:{$base_module}:{$config_file}";
-  $options['reset'] = $reset;
+  $o['ttl'] = '+ 1 year';
+  $o['bin'] = 'cache_bootstrap';
+  $o['id']  = "at_modules:{$base_module}:{$config_file}";
+  $o['reset'] = $reset;
 
-  return at_cache($options, function() use ($base_module, $config_file) {
-    require_once dirname(__FILE__) . '/lib/Helper/ModulesFetcher.php';
-    return at_id(new \Drupal\at_base\Helper\ModulesFetcher($base_module, $config_file))->fetch();
+  return at_cache($o, function() use ($base_module, $config_file) {
+    return at_id(new ModulesFetcher($base_module, $config_file))->fetch();
   });
 }
 
