@@ -31,9 +31,20 @@ class ServiceContentRenderTest extends UnitTestCase {
   }
   
   public function testController() {
-    $output = $this->render->render(array('controller' => array('At_Base_Test_Class', 'hello', array('Andy Truong'))));
+    $data = array('controller' => array('At_Base_Test_Class', 'hello', array('Andy Truong')));
+    $output = $this->render->render($data);
     $this->assertEqual('Hello Andy Truong', $output);
   }
+  
+  public function testConditions() {
+    $data = array(
+      'controller' => array('At_Base_Test_Class', 'hello', array('Andy Truong')),
+      'conditions' => array('is_numeric', array('x'))
+    );
+    $output = $this->render->render($data);
+    $this->assertEqual(null, $output);
+  }
+  
 
   public function testTemplateString() {
     $data = array();

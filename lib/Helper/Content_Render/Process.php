@@ -62,21 +62,12 @@ class Process {
   private function processController() {
     if (isset($this->data['controller'])) {
       @list($class, $method, $args) = $this->data['controller'];
-  
-      if (class_exists($class)) {
-        $obj = new $class();
-        if ( !method_exists($obj, $method)) {
-          throw new \Exception('Class "'.$class.'" hasn\'t method "'.$method.'"');
-        }
-      }
-      else {
-        throw new \Exception('Class "'.$class.'" does not exist.');
-      }
-      
+      $obj = new $class();
+
       if (empty($args) && !empty($this->data['arguments'])) {
         $args = $this->data['arguments'];
       }
-    
+
       return call_user_func_array(
         array($obj, $method),
         $this->getControllerArguments($args, $obj)
@@ -84,16 +75,11 @@ class Process {
     }
   }
 
-  
   private function getControllerArguments($args, $obj) {
     $args = !empty($args) ? $args : array();
     if (empty($args) && method_exists($obj, 'getVariables')) {
       $args = $obj->getVariables();
     }
-    if (!is_array($args)) {
-      throw new \Exception('This variable "'.$args.'" must be a array.');
-    }
-    
     return $args;
   }
 
