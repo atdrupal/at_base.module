@@ -26,16 +26,18 @@ class Process {
 
   public function execute() {
     !empty($this->caller) && $this->caller->callBefore();
-
-    foreach (get_class_methods(get_class($this)) as $method) {
-      if ('process' === substr($method, 0, 7)) {
-        $return = $this->{$method}();
-        if (!is_null($return)) {
-          return $return;
+    
+    if ($this->conditions()){
+      foreach (get_class_methods(get_class($this)) as $method) {
+        if ('process' === substr($method, 0, 7)) {
+          $return = $this->{$method}();
+          if (!is_null($return)) {
+            return $return;
+          }
         }
       }
+      throw new \Exception('Unsupported data structure.');
     }
-    throw new \Exception('Unsupported data structure.');
   }
 
   private function processFunction() {
@@ -137,4 +139,39 @@ class Process {
       return at_container('twig_string')->render($tpl, $this->args);
     }
   }
+  
+  private function conditions() {
+    $conditions = isset($this->data['conditions']) 
+                    ? $this->data['conditions'] 
+                    : array();
+    $return = true;
+    
+    $numArgs = count($conditions);
+    if ($numArgs > 0) {
+      switch ($numArgs) {
+        case 1:
+          $func = $conditions[0];
+          if (call_user_func_array($func) === false) {
+              $return = false;
+          }
+          break;
+        case 2:
+          @list($func, $args) = $conditions;
+          if (call_user_func_array($func, $args) === false) {
+              $return = false;
+          }
+          break;
+        case 3:
+          @list($class, $method, $args) = $condition;
+          if (call_user_func_array(array($class, $method) === false)) {
+              $return = false;
+          }
+          break;
+        default:
+          break;
+      }
+    }
+    return $return;
+  }
+  
 }
