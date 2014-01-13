@@ -137,7 +137,7 @@ class Process {
       switch ($numArgs) {
         case 1:
           $func = $conditions[0];
-          if (call_user_func_array($func) === false) {
+          if (call_user_func_array($func, array()) === false) {
               $return = false;
           }
           break;
@@ -148,8 +148,8 @@ class Process {
           }
           break;
         case 3:
-          @list($class, $method, $args) = $condition;
-          if (call_user_func_array(array($class, $method) === false)) {
+          @list($class, $method, $args) = $conditions;
+          if (call_user_func_array(array($class, $method), $args) === false) {
               $return = false;
           }
           break;
