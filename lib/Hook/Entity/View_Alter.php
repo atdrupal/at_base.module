@@ -47,39 +47,48 @@ class View_Alter {
 
   public function execute() {
     if ($config = $this->getConfig()) {
-      $data['variables'] = isset($data['variables']) ? $data['variables'] : array();
-      $data['variables'] += array('build' => $build);
+      $config['variables'] = isset($config['variables']) ? $config['variables'] : array();
+      $config['variables'] += array('build' => $this->build);
       $this->build = array(
         '#entity_type' => $this->entity_type,
         '#bundle' => $this->bundle,
         '#view_mode' => $this->view_mode,
         '#language' => $this->build['#language'],
         '#contextual_links ' => !empty($this->build['#contextual_links']) ? $this->build['#contextual_links'] : NULL,
-        'at_base' => at_container('helper.content_render')->setData($data)->render(),
+        'at_base' => at_container('helper.content_render')->setData($config)->render(),
         '#build' => $this->build,
       );
     }
   }
 
+  /**
+   * Get cached render configuration for context.
+   */
   public function getConfig() {
-    $o['cache_id'] = "at_theming:entity_template:{$this->entity_type}:{$this->bundle}:{$this->view_mode}";
+    $o['id'] = "at_theming:entity_template:{$this->entity_type}:{$this->bundle}:{$this->view_mode}";
     $o['ttl'] = '+ 1 year';
-    return at_cache($o, function() use ($entity_type, $bundle, $view_mode) {
-      foreach (at_modules('at_base', 'entity_template') as $module) {
-        $config = at_config($module, 'entity_template')->get('entity_templates');
-        if (!isset($config[$entity_type])) continue;
+    return at_cache($o, array($this, 'fetchConfig'));
+  }
 
-        $config = $config[$entity_type];
+  /**
+   * Get cached render configuration for context.
+   */
+  public function fetchConfig() {
+    foreach (at_modules('at_base', 'entity_template') as $module) {
+      $config = at_config($module, 'entity_template')->get('entity_templates');
+      if (!isset($config[$this->entity_type])) continue;
 
-        if (isset($config[$bundle]))    $config = $config[$bundle];
-        elseif (isset($config['all']))  $config = $config['all'];
-        else                            continue;
+      $config = $config[$this->entity_type];
 
-        if (isset($config[$view_mode])) $config = $config[$view_mode];
-        elseif (isset($config['all']))  $config = $config['all'];
-        else                            continue;
-        return $config;
-      }
-    });
+      if (isset($config[$this->bundle]))    $config = $config[$this->bundle];
+      elseif (isset($config['all']))        $config = $config['all'];
+      else continue;
+
+      if (isset($config[$this->view_mode])) $config = $config[$this->view_mode];
+      elseif (isset($config['all']))  $config = $config['all'];
+      else continue;
+
+      return $config;
+    }
   }
 }
