@@ -45,7 +45,7 @@ class Content_Render {
   /**
    * Get render engine.
    *
-   * @todo  Remove hardcode -- Let other module can define custom engine.
+   * @todo  Remove hardcode -- Let other module can define custom engine (tagged services)
    */
   private function getEngine() {
     if     (is_string($this->data))                $engine = 'Drupal\at_base\Helper\Content_Render\String_Engine';
