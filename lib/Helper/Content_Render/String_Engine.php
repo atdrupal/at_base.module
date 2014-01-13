@@ -23,9 +23,11 @@ class String_Engine {
     }
 
     // Attach assets
-    $return['#attached'] = isset($return['#attached'])
-      ? array_merge_recursive($return['#attached'], $this->processAttachedAsset())
-      : $this->processAttachedAsset();
+    if ($attached = $this->processAttachedAsset()) {
+      $return['#attached'] = isset($return['#attached'])
+        ? array_merge_recursive($return['#attached'], $this->processAttachedAsset())
+        : $this->processAttachedAsset();
+    }
 
     return $return;
   }
@@ -35,6 +37,10 @@ class String_Engine {
   }
 
   protected function processAttachedAsset() {
+    if (!is_array($this->data)) {
+      return array();
+    }
+
     foreach (array_keys($this->data['attached']) as $type) {
       foreach ($this->data['attached'][$type] as $k => $item) {
         if (is_string($item)) {
@@ -42,6 +48,7 @@ class String_Engine {
         }
       }
     }
+
     return $this->data['attached'];
   }
 }
