@@ -54,6 +54,6 @@ class Controller {
       unset($this->route['page arguments']);
     }
 
-    return $render->setData($this->route)->build();
+    return $render->setData($this->route)->render();
   }
 }

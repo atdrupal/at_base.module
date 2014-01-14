@@ -21,26 +21,6 @@ class SubRequest {
     $_GET['q'] = $this->original_path;
   }
 
-  private function getItem() {
-    return menu_get_item($this->path);
-  }
-
-  public function build() {
-    if (!$item = $this->getItem()) {
-      throw new \Exception('Page not found: '. $this->path);
-    }
-
-    if (empty($item['access'])) {
-      throw new \Exception('Access denied: '. $this->path);
-    }
-
-    if ($item['include_file']) {
-      require_once DRUPAL_ROOT . '/' . $item['include_file'];
-    }
-
-    return call_user_func_array($item['page_callback'], $item['page_arguments']);
-  }
-
   public function request() {
     return menu_execute_active_handler($this->path, $deliver = FALSE);
   }
