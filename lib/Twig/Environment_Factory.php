@@ -45,6 +45,9 @@ class Environment_Factory {
       $twig->addExtension(new \Twig_Extension_Debug());
     }
 
+    // Globals
+    $twig->addGlobal('user', $GLOBALS['user']);
+
     // Filters
     foreach (self::getFilters() as $filter) {
       $twig->addFilter($filter);
