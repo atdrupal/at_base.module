@@ -18,20 +18,23 @@ class String_Engine {
   public function render() {
     $return = $this->process();
 
-    if (empty($this->data['attached'])) {
-      return $return;
-    }
-
     // Attach assets
-    $return['#attached'] = isset($return['#attached'])
-      ? array_merge_recursive($return['#attached'], $this->processAttachedAsset())
-      : $this->processAttachedAsset();
+    if (is_array($this->data) && !empty($this->data['attached'])) {
+      $return = is_array($return) ?: array('#markup' => $return);
+
+      if (isset($return['#attached'])) {
+        $return['#attached'] = array_merge_recursive($return['#attached'], $this->processAttachedAsset());
+      }
+      else {
+        $return['#attached'] = $this->processAttachedAsset();
+      }
+    }
 
     return $return;
   }
 
   protected function process() {
-    return array('#markup' => $this->data);
+    return $this->data;
   }
 
   protected function processAttachedAsset() {
