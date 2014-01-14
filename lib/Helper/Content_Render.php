@@ -97,7 +97,6 @@ class Content_Render {
   }
 
   public function render() {
-    $build = $this->build();
-    return render($build);
+    return render($this->build());
   }
 }
