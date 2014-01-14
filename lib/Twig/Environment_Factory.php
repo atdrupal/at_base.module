@@ -40,22 +40,10 @@ class Environment_Factory {
 
     $twig = new \Twig_Environment(NULL, $this->options);
 
-    // Extension
+    $twig->addExtension(new \Drupal\at_base\Twig\Extension());
+
     if (at_debug()) {
       $twig->addExtension(new \Twig_Extension_Debug());
-    }
-
-    // Globals
-    $twig->addGlobal('user', $GLOBALS['user']);
-
-    // Filters
-    foreach (self::getFilters() as $filter) {
-      $twig->addFilter($filter);
-    }
-
-    // Functions
-    foreach (self::getFunctions() as $function) {
-      $twig->addFunction($function);
     }
 
     return $twig;
@@ -84,19 +72,5 @@ class Environment_Factory {
     }
 
     return $loader;
-  }
-
-  private function getFilters() {
-    $options['cache_id'] = 'at_theming:twig:filters';
-    return at_cache($options, function(){
-      return at_id(new \Drupal\at_base\Twig\Filters())->get();
-    });
-  }
-
-  private function getFunctions() {
-    $options['cache_id'] = 'at_theming:twig:functions';
-    return at_cache($options, function(){
-      return at_id(new \Drupal\at_base\Twig\Functions())->get();
-    });
   }
 }
