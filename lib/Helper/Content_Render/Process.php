@@ -147,7 +147,8 @@ class Process {
         break;
       case 3:
         @list($class, $method, $args) = $conditions;
-        if (call_user_func_array(array($class, $method), $args) === false) {
+        $obj = new $class();
+        if (call_user_func_array(array($obj, $method), $args) === false) {
             $return = false;
         }
         break;
