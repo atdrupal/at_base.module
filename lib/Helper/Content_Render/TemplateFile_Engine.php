@@ -13,7 +13,10 @@ class TemplateFile_Engine extends String_Engine {
     }
     elseif (is_array($template)) {
       foreach ($template as $tpl) {
-        return $this->processTemplate(at_container('helper.real_path')->get($tpl));
+        $file = at_container('helper.real_path')->get($tpl);
+        if (is_file($file)) {
+          return $this->processTemplate($file);
+        }
       }
     }
   }
