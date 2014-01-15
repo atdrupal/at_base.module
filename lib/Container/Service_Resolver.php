@@ -21,7 +21,7 @@ class Service_Resolver {
   }
 
   public function findDefinitions($tag) {
-    $o = array('id' => "ATTaggedService:{$tag}", 'ttl' => '+ 1 year', 'reset' => 1);
+    $o = array('id' => "ATTaggedService:{$tag}", 'ttl' => '+ 1 year');
 
     return at_cache($o, function() use ($tag) {
       $tagged_defs = array();

@@ -43,28 +43,6 @@ services:
     arguments: ['@twig_string']
 
   # ---------------------
-  # Cache
-  # ---------------------
-  cache.tag_flusher:
-    class: 'Drupal\at_base\Cache\Warming\Tag_Flusher'
-
-  cache.tag_discover:
-    class: 'Drupal\at_base\Cache\Warming\Tag_Discover'
-
-  cache.warmer:
-    class: 'Drupal\at_base\Cache\Warming\Warmer'
-    arguments: ['@cache.tag_discover', '@cache.tag_flusher']
-
-  cache.warmer.simple:
-    class: 'Drupal\at_base\Cache\Warming\Warmer\Simple_Warmer'
-
-  cache.warmer.entity:
-    class: 'Drupal\at_base\Cache\Warming\Warmer\Entity_Warmer'
-
-  cache.warmer.view:
-    class: 'Drupal\at_base\Cache\Warming\Warmer\View_Warmer'
-
-  # ---------------------
   # Helpers
   # ---------------------
   helper.content_render:
