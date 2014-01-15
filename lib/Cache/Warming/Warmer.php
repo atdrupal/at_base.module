@@ -35,6 +35,7 @@ class Warmer {
   public function __construct($tag_discover, $tag_flusher) {
     $this->tag_discover = $tag_discover;
     $this->tag_flusher = $tag_flusher;
+
     $this->warmers = at_container('container')->find('cache.warmer', 'service');
   }
 
