@@ -5,3 +5,13 @@ routes:
     template: '@atest_route/templates/hello.html.twig'
     variables:
         name: Andy Truong
+
+  # Multiple template allow theme to override the template
+  atest_route/multiple-template:
+    title: Magic template
+    access arguments: ['access content']
+    template:
+      - '@atest_route/templates/hello.html.twig'
+      - '@atest_route/templates/unreal-template.html.twig'
+    variables:
+        name: Andy Truong

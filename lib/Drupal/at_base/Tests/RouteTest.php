@@ -40,6 +40,13 @@ class RouteTest extends \DrupalWebTestCase {
     $this->assertEqual('Hello Andy Truong', $output);
 
     # ---------------------
+    # Test /atest_route/multiple-template
+    # ---------------------
+    $output = menu_execute_active_handler('atest_route/multiple-template', FALSE);
+    $output = trim(render($output));
+    $this->assertEqual('Hello Andy Truong', $output);
+
+    # ---------------------
     # Test /atest_route/fancy_template/%user
     # ---------------------
     $response = at_id(new \Drupal\at_base\Helper\SubRequest('atest_route/fancy_template/1'))->request();
