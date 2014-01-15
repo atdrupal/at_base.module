@@ -45,9 +45,6 @@ class Process {
   private function processFunction() {
     if (isset($this->data['function'])) {
       $func = $this->data['function'];
-      if (!function_exists($func)) {
-        throw new \Exception('Function "'.$func.'" does not exist.');
-      }
       
       return call_user_func_array($func, $this->args);
     }
