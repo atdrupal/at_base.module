@@ -51,7 +51,7 @@ before_script:
   # Prepare env for the module
   # ---------------------
   - drush vset --yes file_temporary_path /tmp
-  - drush en -y simpletest at_base atest_base
+  - drush en -y simpletest at_base atest_base atest_conditions
 
   # ---------------------
   # No cache data

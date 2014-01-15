@@ -57,7 +57,7 @@ class ServiceContentRenderTest extends UnitTestCase {
   
   public function testConditionsData2_2() {
     $data = array(
-      'conditions' => array('At_Base_Test_Class', 'getBool', array(false)),
+      'conditions' => array('At_Condittions_Class', 'getBool', array(false)),
       'template' => '@atest_base/templates/block/hello_template.html.twig',
       'variables' => array('name' => 'Andy Truong')
     );
@@ -67,7 +67,7 @@ class ServiceContentRenderTest extends UnitTestCase {
   
   public function testConditionsData3() {
     $data = array(
-      'conditions' => array('atest_base_bool'),
+      'conditions' => array('atest_conditions_bool'),
       'function' => 'atest_base_hello'
     );
     $output = $this->render->render($data);
