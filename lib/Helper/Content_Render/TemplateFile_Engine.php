@@ -2,11 +2,24 @@
 
 namespace Drupal\at_base\Helper\Content_Render;
 
+/**
+ * @todo  Test case for template as array.
+ */
 class TemplateFile_Engine extends String_Engine {
   public function process() {
-    return \AT::twig()->render(
-      at_container('helper.real_path')->get($this->data['template']),
-      $this->data['variables'] ? $this->data['variables'] : array()
-    );
+    $template = $this->data['template'];
+    if (is_string($template)) {
+      return $this->processTemplate(at_container('helper.real_path')->get($template));
+    }
+    elseif (is_array($template)) {
+      foreach ($template as $tpl) {
+        return $this->processTemplate(at_container('helper.real_path')->get($tpl));
+      }
+    }
+  }
+
+  private function processTemplate($template) {
+    $variables = $this->data['variables'] ? $this->data['variables'] : array();
+    return at_container('twig')->render($template, $variables);
   }
 }
