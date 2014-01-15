@@ -38,7 +38,7 @@ class ServiceContentRenderTest extends UnitTestCase {
   
   public function testConditionsData1() {
     $data = array(
-      'conditions' => array('atest_base_bool'),
+      'conditions' => array('atest_conditions_bool'),
       'content' => 'Hello Andy Truong'
     );
     $output = $this->render->render($data);
