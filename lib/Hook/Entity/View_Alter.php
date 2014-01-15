@@ -21,7 +21,10 @@ namespace Drupal\at_base\Hook\Entity;
  *   node:
  *     article:
  *       full:
- *         template: @YOURMODULE/templates/node/article-full.html.twig
+ *         template:
+ *           - '%theme/templates/node/article-full.html.twig'
+ *           - '@YOURMODULE/templates/node/article-full.html.twig'
+ *           - '@YOURMODULE/template/%entiy_type/%bundle-%view_mode.html.twig'
  *         attached:
  *           css:
  *             - @YOURMODULE/misc/css/entity.node.full.css
@@ -31,31 +34,62 @@ namespace Drupal\at_base\Hook\Entity;
  * config file get updated.
  *
  * @todo  Test me
+ * @todo  Update wiki
  */
 class View_Alter {
-  private $build;
-  private $entity_type;
-  private $bundle;
-  private $view_mode;
+  protected $build;
+  protected $entity_type;
+  protected $bundle;
+  protected $id;
+  protected $view_mode;
 
   public function __construct(&$build, $entity_type) {
+    $info = entity_get_info($entity_type);
     $this->build = &$build;
     $this->entity_type = $entity_type;
     $this->bundle = $build['#bundle'];
+    $this->id = $build['#' . $entity_type]->{$info['entity keys']['id']};
     $this->view_mode = $build['#view_mode'];
   }
 
-  public function execute() {
+  protected function resolveTokens($template) {
+    if (is_array($template)) {
+      foreach ($template as $i => $_template) {
+        $template[$i] = $this->resolveTokens($_template);
+      }
+      return $template;
+    }
+
+    return str_replace(
+      array('%entity_type', '%entity_bundle', '%bundle', '%entity_id', '%id', '%mode', '%view_mode'),
+      array($this->entity_type, $this->bundle, $this->bundle, $this->id, $this->id, $this->view_mode, $this->view_mode),
+      $template
+    );
+  }
+
+  protected function build () {
     if ($config = $this->getConfig()) {
-      $config['variables'] = isset($config['variables']) ? $config['variables'] : array();
+      $config['variables']  = isset($config['variables']) ? $config['variables'] : array();
       $config['variables'] += array('build' => $this->build);
+
+      // Support token in template
+      if (!empty($config['template'])) {
+        $config['template'] = $this->resolveTokens($config['template']);
+      }
+
+      return at_container('helper.content_render')->setData($config)->render();
+    }
+  }
+
+  public function execute() {
+    if ($build = $this->build()) {
       $this->build = array(
         '#entity_type' => $this->entity_type,
         '#bundle' => $this->bundle,
         '#view_mode' => $this->view_mode,
         '#language' => $this->build['#language'],
         '#contextual_links ' => !empty($this->build['#contextual_links']) ? $this->build['#contextual_links'] : NULL,
-        'at_base' => at_container('helper.content_render')->setData($config)->render(),
+        'at_base' => $build,
         '#build' => $this->build,
       );
     }
