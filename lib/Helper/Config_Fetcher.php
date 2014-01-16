@@ -5,7 +5,7 @@ namespace Drupal\at_base\Helper;
  * Usage:
  *
  *  at_container('helper.config_fetcher')
- *    ->getAll('at_base', 'services', 'services', TRUE)
+ *    ->getItems('at_base', 'services', 'services', TRUE)
  *  ;
  *
  * @todo  Remove duplication code — at_modules('at_base', …)

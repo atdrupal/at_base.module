@@ -11,13 +11,31 @@ class Extension extends \Twig_Extension {
 
   function getFilters() {
     return at_cache(array('id' => 'at:twig:fts'), function() {
-      return at_id(new Twig_Filters())->get();
+      $filters = array();
+
+      $fs = at_container('helper.config_fetcher')->getItems('at_base', 'twig_filters', 'twig_filters', TRUE);
+      foreach ($fs as $f) {
+        $valid = is_string($f[1]) && function_exists($f[1]);
+        $valid = $valid || is_string($f[1][0]) && class_exists($f[1][0]);
+        if ($valid) {
+          $filters[] = new \Twig_SimpleFilter($f[0], $f[1]);
+        }
+      }
+
+      return $filters;
     });
   }
 
   function getFunctions() {
     return at_cache(array('id' => 'at:twig:fns'), function() {
-      return at_id(new Twig_Functions())->get();
+      $functions = array();
+
+      $fns = at_container('helper.config_fetcher')->getItems('at_base', 'twig_functions', 'twig_functions', TRUE);
+      foreach ($fns as $fn) {
+        $functions[] = new \Twig_SimpleFunction($fn, $fn);
+      }
+
+      return $functions;
     });
   }
 
