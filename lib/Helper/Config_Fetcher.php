@@ -8,7 +8,9 @@ namespace Drupal\at_base\Helper;
  *    ->getItems('at_base', 'services', 'services', TRUE)
  *  ;
  *
+ * @todo  Test me
  * @todo  Remove duplication code — at_modules('at_base', …)
+ * @todo  Support expression_language:evaluate() — check \Drupal\at_base\Hook\BlockInfo
  */
 class Config_Fetcher {
   public function getItems($module, $id, $key, $include_at_base = FALSE, $reset = FALSE) {
