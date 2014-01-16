@@ -6,7 +6,6 @@
  */
 
 use \Drupal\at_base\Autoloader;
-use \Drupal\at_base\Config\Resolver as ConfigResolver;
 use \Drupal\at_base\Config\Config;
 use \Drupal\at_base\Cache;
 use \Drupal\at_base\Helper\ModulesFetcher;
@@ -114,20 +113,12 @@ function at_cache_flush_by_tags($tags = array()) {
  * @param  string  $module    Module name
  * @param  string  $id        Config ID
  * @param  boolean $refresh   Build new cache
- * @return Config
- * @todo   Will remove when at_di.module is ready.
+ * @return Drupal\at_base\Config\Config
  */
 function at_config($module, $id = 'config', $refresh = FALSE) {
-  static $config;
-
-  if (!$config) {
-    $config = new \Drupal\at_base\Config\Config(new ConfigResolver);
-  }
-
-  $config->setModule($module);
-  $config->setId($id);
-
-  return $config;
+  return at_container('config')
+    ->setModule($module)
+    ->setId($id);
 }
 
 /**

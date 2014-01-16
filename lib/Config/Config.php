@@ -45,6 +45,8 @@ class Config {
     }
 
     $this->id = $id;
+
+    return $this;
   }
 
   public function getModule() {
@@ -61,6 +63,8 @@ class Config {
     }
 
     $this->module = $module;
+
+    return $this;
   }
 
   public function getPath() {
