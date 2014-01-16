@@ -109,17 +109,31 @@ class View_Alter {
   public function fetchConfig() {
     foreach (at_modules('at_base', 'entity_template') as $module) {
       $config = at_config($module, 'entity_template')->get('entity_templates');
-      if (!isset($config[$this->entity_type])) continue;
+      if (!isset($config[$this->entity_type])) {
+        continue;
+      }
 
       $config = $config[$this->entity_type];
 
-      if (isset($config[$this->bundle]))    $config = $config[$this->bundle];
-      elseif (isset($config['all']))        $config = $config['all'];
-      else continue;
+      if (isset($config[$this->bundle])) {
+        $config = $config[$this->bundle];
+      }
+      elseif (isset($config['all'])) {
+        $config = $config['all'];
+      }
+      else {
+        continue;
+      }
 
-      if (isset($config[$this->view_mode])) $config = $config[$this->view_mode];
-      elseif (isset($config['all']))  $config = $config['all'];
-      else continue;
+      if (isset($config[$this->view_mode])) {
+        $config = $config[$this->view_mode];
+      }
+      elseif (isset($config['all'])) {
+        $config = $config['all'];
+      }
+      else {
+        continue;
+      }
 
       return $config;
     }
