@@ -10,17 +10,13 @@ class DependencyFetcher {
     $this->info = $info;
   }
 
-  public function fetch() {
-    return $this->fetchWithConfirmation();
-  }
-
   /**
    * Fetch dependency, if it's existing:
    *   0. Cancel
    *   1. Update
    *   2. Download in site directory
    */
-  private function fetchWithConfirmation() {
+  public function fetch() {
     if ($contrib_destination = $this->getContribDestination()) {
       $this->_fetchDependency($contrib_destination);
     }

@@ -20,8 +20,6 @@ class DrushMakeProject_AtRequire_Library extends \DrushMakeProject_Library {
  * Callback for at_require command.
  */
 function drush_at_require($module = 'all') {
-  _drush_at_check_yml_reader();
-
   at_id(new AtRequireCommand($module))->execute();
 }
 
@@ -32,12 +30,17 @@ function drush_at_require_pm_enable_pre_validate($module) {
   _drush_at_check_yml_reader();
 
   // Module was already processed, no need redo
-  if (module_exists($module)) return;
-
-  drush_at_require($module);
+  if (!module_exists($module)) {
+    drush_at_require($module);
+  }
 }
 
-function drush_at_require_spyc() {
+# ---------------------
+# Hack to download required depedencies
+# ---------------------
+
+// YAML reader must be available
+if (!function_exists('yaml_parse') && !is_file(DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php')) {
   $name = 'spyc';
   $info = array(
     'type' => 'library',
@@ -49,14 +52,23 @@ function drush_at_require_spyc() {
   );
 
   at_id(new DependencyFetcher($name, $info))->fetch();
+}
 
+// Required projects must be available
+$fn = 'yaml_parse';
+if (!function_exists('yaml_parse')) {
+  require_once DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php';
+  $fn = 'spyc_load_file';
+}
 
-  foreach (at_config('at_base', 'require')->get('projects') as $name => $info) {
-    try {
-      at_library($name);
-    }
-    catch (\Exception $e) {
-      at_id(new DependencyFetcher($name, $info))->fetch();
-    }
+$projects = drupal_get_path('module', 'at_base') . '/config/require.yml';
+$projects = $fn($projects);
+unset($projects['spyc']);
+foreach ($projects['projects'] as $name => $info) {
+  try {
+    at_library($name);
+  }
+  catch (\Exception $e) {
+    at_id(new DependencyFetcher($name, $info))->fetch();
   }
 }
