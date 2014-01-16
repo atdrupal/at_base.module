@@ -12,7 +12,6 @@ use Drupal\at_base\Config\Config;
 /**
  * Service Container/Locator.
  *
- * @todo support tags
  * @todo support calls
  */
 class Container {
