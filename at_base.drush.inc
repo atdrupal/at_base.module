@@ -4,16 +4,13 @@ require_once dirname(__FILE__) . '/at_base.module';
 require_once dirname(__FILE__) . '/drush/at_services.inc';
 require_once dirname(__FILE__) . '/drush/at_cache.inc';
 
-// At install/Update processes, we do not have cache_* funtions
-// which break at-base functions.
-if (function_exists('cache_get')) {
-  if (class_exists('DrushMakeProject_Library')) {
-    require_once dirname(__FILE__) . '/drush/at_require.inc';
-  }
-  else {
-    function drush_at_require() {
-      drush_print_r('at_require depends on make feature of Drush, which introduced in 5.x');
-    }
+if (class_exists('DrushMakeProject_Library')) {
+  require_once dirname(__FILE__) . '/drush/at_require.inc';
+}
+else {
+  function drush_at_require() {
+    $msg = 'at_require depends on make feature of Drush, which introduced in 5.x';
+    drush_print_r($msg);
   }
 }
 
