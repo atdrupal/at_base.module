@@ -11,6 +11,8 @@ use Drupal\at_base\Config\Config;
 
 /**
  * Service Container/Locator.
+ *
+ * @see  https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container
  */
 class Container {
   private static $c;
@@ -47,7 +49,7 @@ class Container {
    * Find services by tag
    *
    * @param  string  $tag
-   * @todo   Document me.
+   * @return array
    */
   public function find($tag, $return = 'service_name') {
     $defs = self::$c['service.resolver']->findDefinitions($tag);
