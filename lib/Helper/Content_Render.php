@@ -33,35 +33,9 @@ class Content_Render {
   private $data;
 
   /**
-   * Render engine (String, Template, Template String, Form, …)
-   */
-  private $engine;
-
-  /**
    * @var CacheHandler_Interface
    */
   private $cache_handler;
-
-  /**
-   * Get render engine.
-   *
-   * @todo  Remove hardcode -- Let other module can define custom engine (tagged services)
-   */
-  private function getEngine() {
-    if     (is_string($this->data))                $engine = 'Drupal\at_base\Helper\Content_Render\String_Engine';
-    elseif (isset($this->data['template_string'])) $engine = 'Drupal\at_base\Helper\Content_Render\TemplateString_Engine';
-    elseif (isset($this->data['template']))        $engine = 'Drupal\at_base\Helper\Content_Render\TemplateFile_Engine';
-    elseif (isset($this->data['controller']))      $engine = 'Drupal\at_base\Helper\Content_Render\Controller_Engine';
-    elseif (isset($this->data['function']))        $engine = 'Drupal\at_base\Helper\Content_Render\Function_Engine';
-    elseif (isset($this->data['form']))            $engine = 'Drupal\at_base\Helper\Content_Render\Form_Engine';
-
-    if (!empty($engine)) {
-      return $this->engine = new $engine($this);
-    }
-
-    // Invalid structure
-    throw new \Exception('Invalid data structure.');
-  }
 
   public function setData($data) {
     $this->data = $data;
@@ -85,14 +59,106 @@ class Content_Render {
     $no_cache = !empty($this->data['cache']) && is_null($this->cache_handler);
     $no_cache = $no_cache || empty($this->data['cache']);
     if ($no_cache) {
-      return $this->getEngine()->render();
+      return $this->build();
     }
 
     return $this
       ->getCacheHandler()
       ->setOptions($this->data['cache'])
-      ->setCallback(array($this->getEngine(), 'render'))
+      ->setCallback(array($this, 'build'))
       ->render()
     ;
+  }
+
+  public function build() {
+    if (is_string($this->data)) {
+      return $this->data;
+    }
+
+    $return = $this->process();
+
+    // Attach assets
+    if (is_array($this->data) && !empty($this->data['attached'])) {
+      $return = is_array($return) ?: array('#markup' => $return);
+
+      if (isset($return['#attached'])) {
+        $return['#attached'] = array_merge_recursive($return['#attached'], $this->buildAttached());
+      }
+      else {
+        $return['#attached'] = $this->buildAttached();
+      }
+    }
+
+    return $return;
+  }
+
+  public function process() {
+    if (isset($this->data['function'])) {
+      return $this->processFunction();
+    }
+
+    if (isset($this->data['controller'])) {
+      return $this->processController();
+    }
+
+    if (isset($this->data['template']) || isset($this->data['template_file'])) {
+      return $this->processTemplate();
+    }
+
+    if (isset($this->data['template_string'])) {
+      return $this->processTemplateString();
+    }
+  }
+
+  public function processFunction() {
+    $func = $this->data['function'];
+    $args = $this->getVariables();
+    return call_user_func_array($func, $args);
+  }
+
+  public function processController() {
+    @list($class, $method, $args) = $this->data['controller'];
+    return call_user_func_array(array(new $class(), $method), !empty($args) ? $args : array());
+  }
+
+  /**
+   * @todo  Test case for template as array.
+   */
+  public function processTemplate() {
+    $template = $this->data['template'];
+    if (is_string($template)) {
+      $template = at_container('helper.real_path')->get($template);
+      return at_container('twig')->render($template, $this->getVariables());
+    }
+
+    if (is_array($template)) {
+      foreach ($template as $tpl) {
+        $file = at_container('helper.real_path')->get($tpl);
+        if (is_file($file)) {
+          return at_container('twig')->render($file, $this->getVariables());
+        }
+      }
+    }
+  }
+
+  public function processTemplateString() {
+    return at_container('twig_string')->render($this->data['template_string'], $this->getVariables());
+  }
+
+  public function getVariables() {
+    return isset($this->data['arguments']) ? $this->data['arguments'] : (
+      isset($this->data['variables']) ? $this->data['variables'] : array()
+    );
+  }
+
+  protected function buildAttached() {
+    foreach (array_keys($this->data['attached']) as $type) {
+      foreach ($this->data['attached'][$type] as $k => $item) {
+        if (is_string($item)) {
+          $this->data['attached'][$type][$k] = at_container('helper.real_path')->get($item);
+        }
+      }
+    }
+    return $this->data['attached'];
   }
 }

@@ -47,7 +47,7 @@ class TwigTest extends UnitTestCase {
     $this->assertEqual($expected, $actual);
 
     // Template
-    $data['template'] = '@atest_theming/templates/hello.twig';
+    $data['template'] = '@atest_base/templates/block/hello_template.html.twig';
     $data['variables']['name'] = 'Andy Truong';
     $output = $render->setData($data)->render();
     $assert = strpos($output, $actual) !== FALSE;
