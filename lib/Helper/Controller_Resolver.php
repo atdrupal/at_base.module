@@ -16,8 +16,13 @@ namespace Drupal\at_base\Helper;
  */
 class Controller_Resolver {
   public function get($definition) {
-    // definition: [Foo, bar] or $foo with magic method __invoke
-    if (is_array($definition) || (is_object($definition) && method_exists($definition, '__invoke'))) {
+    // definition: [Foo, bar]
+    if (is_array($definition) && 2 === count($definition)) {
+      return $definition;
+    }
+
+    // $foo with magic method __invoke
+    if (is_object($definition) && method_exists($definition, '__invoke')) {
       return $definition;
     }
 

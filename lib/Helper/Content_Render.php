@@ -157,11 +157,11 @@ class Content_Render {
   }
 
   private function getVariables() {
-    $v = array();
-
     if (isset($this->data['arguments'])) {
-      $v = $this->data['arguments'];
+      return $this->data['arguments'];
     }
+
+    $v = array();
 
     if (isset($this->data['variables'])) {
       $v = $this->data['variables'];
@@ -171,8 +171,8 @@ class Content_Render {
     if (!empty($v)) {
       $dyn = is_string($v);
       $dyn = $dyn || (($k = array_keys($v)) && is_numeric($k[0]));
-      if ($dyn) {
-        $v = call_user_func(at_container('controller.resolver')->get($v));
+      if ($dyn && $callback = at_container('controller.resolver')->get($v)) {
+        $v = call_user_func($callback);
       }
     }
 
