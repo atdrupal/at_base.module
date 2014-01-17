@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\at_base\Tests;
+namespace Drupal\at_base\Tests\Web;
 
 /**
  * cache_get()/cache_set() does not work on unit test cases.

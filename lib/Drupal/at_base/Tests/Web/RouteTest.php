@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\at_base\Tests;
+namespace Drupal\at_base\Tests\Web;
 
 /**
  * Test cases for routing feature.
