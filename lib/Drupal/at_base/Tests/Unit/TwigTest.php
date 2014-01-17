@@ -32,28 +32,6 @@ class TwigTest extends UnitTestCase {
     $this->assertEqual('Hello Andy Truong', $output, 'Template string is rendered correctly.');
   }
 
-  public function testContentRender() {
-    $render = at_container('helper.content_render');
-
-    // Simple string
-    $expected = 'Hello Andy Truong';
-    $actual = $render->setData($expected)->render();
-    $this->assertEqual($expected, $actual);
-
-    // Template string
-    $data['template_string'] = 'Hello {{ name }}';
-    $data['variables']['name'] = 'Andy Truong';
-    $output = $render->setData($data)->render();
-    $this->assertEqual($expected, $actual);
-
-    // Template
-    $data['template'] = '@atest_base/templates/block/hello_template.html.twig';
-    $data['variables']['name'] = 'Andy Truong';
-    $output = $render->setData($data)->render();
-    $assert = strpos($output, $actual) !== FALSE;
-    $this->assertTrue($assert, "Found <strong>{$expected}</strong> in result.");
-  }
-
   public function testCacheFilter() {
     $string_1  = "{% set options = { cache_id: 'atestTwigCache:1' } %}";
     $string_1 .= "\n {{ 'atest_base.service_1:hello' | cache(options) }}";

@@ -122,7 +122,14 @@ class Content_Render {
 
   public function processController() {
     @list($class, $method, $args) = $this->data['controller'];
-    return call_user_func_array(array(new $class(), $method), !empty($args) ? $args : array());
+    $obj = new $class();
+    $args = !empty($args) ? $args : array();
+    if (empty($args)) {
+      if (method_exists($obj, 'getVariables')) {
+        $args = $obj->getVariables();
+      }
+    }
+    return call_user_func_array(array($obj, $method), $args);
   }
 
   /**
@@ -149,10 +156,32 @@ class Content_Render {
     return at_container('twig_string')->render($this->data['template_string'], $this->getVariables());
   }
 
-  public function getVariables() {
-    return isset($this->data['arguments']) ? $this->data['arguments'] : (
-      isset($this->data['variables']) ? $this->data['variables'] : array()
-    );
+  private function getVariables() {
+    $v = array();
+
+    if (isset($this->data['arguments'])) {
+      $v = $this->data['arguments'];
+    }
+
+    if (isset($this->data['variables'])) {
+      $v = $this->data['variables'];
+    }
+
+    // Dynamic variables
+    if (!empty($v)) {
+      $dyn = is_string($v);
+      $dyn = $dyn || (($k = array_keys($v)) && is_numeric($k[0]));
+      if ($dyn) {
+        $v = call_user_func(at_container('controller.resolver')->get($v));
+      }
+    }
+
+    if (!empty($v) && ($k = array_keys($v)) && is_numeric($k[0])) {
+      $msg  = 'Expected keyed-array for $variables.';
+      throw new \Exception($msg);
+    }
+
+    return $v;
   }
 
   protected function buildAttached() {
