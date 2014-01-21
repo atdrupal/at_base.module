@@ -90,7 +90,7 @@ class CacheTest extends UnitTestCase {
     // $id,$ttl,$bin
     $output = at_cache("$id,$ttl,$bin", 'time');
     $cached = $this->cache->get($id, $bin)->data;
-    $this->assertEqual($cached, $cached);
+    $this->assertEqual($cached, $output);
   }
 
   public function testAtCacheAllowEmpty() {

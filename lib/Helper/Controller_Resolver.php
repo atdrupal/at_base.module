@@ -52,7 +52,8 @@ class Controller_Resolver {
     if (method_exists($definition, '__invoke')) {
       return new $definition;
     }
-    elseif (function_exists($definition)) {
+
+    if (function_exists($definition)) {
       return $definition;
     }
   }

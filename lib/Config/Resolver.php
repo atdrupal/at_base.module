@@ -16,15 +16,16 @@ class Resolver implements ResolverInterface {
    * @return [type] [description]
    */
   public function getPath() {
-    if ($path = $this->getOverridePath($this->config->getId(), $this->config->getModule())) {
+    if ($path = $this->getOverridePath()) {
       return $path;
     }
-    return $this->getOriginalPath($this->config->getId(), $this->config->getModule());
+    return $this->getOriginalPath();
   }
 
   /**
-   * [getOriginalPath description]
-   * @return [type] [description]
+   *
+   *
+   * @return string|boolean
    */
   public function getOriginalPath() {
     $config_id = $this->config->getId();
@@ -41,8 +42,8 @@ class Resolver implements ResolverInterface {
   }
 
   /**
-   * [getOverridePath description]
-   * @return [type] [description]
+   *
+   * @return string|boolean
    */
   public function getOverridePath($check_exists = TRUE) {
     $return = variable_get('file_private_path');
@@ -101,7 +102,7 @@ class Resolver implements ResolverInterface {
     $data = yaml_emit($data);
 
     @mkdir(dirname($path), 0777, TRUE);
-    $return = file_put_contents($path, $data);
+    return file_put_contents($path, $data);
   }
 }
 
