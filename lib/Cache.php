@@ -89,8 +89,9 @@ class Cache {
    */
   public function get() {
     if (!$this->reset && $cache = at_container('wrapper.cache')->get($this->id, $this->bin)) {
-      if (!empty($cache->data)) return $cache->data;
-      if ($this->allow_empty)   return $cache->data;
+      if (!empty($cache->data) || $this->allow_empty) {
+        return $cache->data;
+      }
     }
 
     return $this->fetch();
