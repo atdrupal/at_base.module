@@ -62,6 +62,37 @@ class CacheTest extends UnitTestCase {
     }
   }
 
+  public function testStringOptions() {
+    $id = 'atestStringOptions';
+    $bin = 'cache';
+    $ttl = '';
+
+    // $id
+    $output = at_cache("$id", 'time');
+    $cached = $this->cache->get($id, $bin)->data;
+    $this->assertEqual($cached, $output);
+
+    // $id,$ttl
+    $output = at_cache("$id,$ttl", 'time');
+    $cached = $this->cache->get($id, $bin)->data;
+    $this->assertEqual($cached, $output);
+
+    // $id,~,$bin
+    $output = at_cache("$id,~,$bin", 'time');
+    $cached = $this->cache->get($id, $bin)->data;
+    $this->assertEqual($cached, $output);
+
+    // $id,~,~
+    $output = at_cache("$id,~,~", 'time');
+    $cached = $this->cache->get($id, $bin)->data;
+    $this->assertEqual($cached, $output);
+
+    // $id,$ttl,$bin
+    $output = at_cache("$id,$ttl,$bin", 'time');
+    $cached = $this->cache->get($id, $bin)->data;
+    $this->assertEqual($cached, $cached);
+  }
+
   public function testAtCacheAllowEmpty() {
     $options = array('bin' => 'cache', 'reset' => FALSE, 'ttl' => '+ 15 minutes');
     $options = array('id' => 'at_test:time:allowEmpty', 'reset' => TRUE, 'allow_empty' => FALSE) + $options;

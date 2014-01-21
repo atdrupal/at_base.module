@@ -72,7 +72,7 @@ function at_container($service_name) {
  *
  * Tags can be flushed by config. See \Drupal\at_base\Cache\Warming\Entity.php
  *
- * @param  array $options
+ * @param  array|string $options
  * @param  Closure|string $callback
  * @param  array  $arguments
  * @return mixed
@@ -80,6 +80,21 @@ function at_container($service_name) {
  * @see    https://github.com/andytruong/at_base/wiki/7.x-2.x-cache-warming
  */
 function at_cache($options, $callback, $arguments = array()) {
+  // User prefer string as cache options
+  // Style: $id OR $id,$ttl OR $id,~,$bin OR $id,~,~ OR $id,$ttl,$bin
+  if (is_string($options)) {
+    @list($id, $ttl, $bin) = explode(',', $options);
+
+    $options = array(
+      'id' => $id,
+      'ttl' => is_null($ttl) ? NULL : ('~' === $ttl ? NULL : $ttl),
+      'bin' => is_null($bin) ? NULL : ('~' === $bin ? NULL : $bin),
+    );
+
+    if (!is_null($ttl) && '~' === $ttl) {
+    }
+  }
+
   if (isset($options['cache_id'])) {
     $options['id'] = $options['cache_id'];
     unset($options['cache_id']);
