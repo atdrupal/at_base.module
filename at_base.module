@@ -79,7 +79,7 @@ function at_container($service_name) {
  * @see    at_cache_flush_by_tag()
  * @see    https://github.com/andytruong/at_base/wiki/7.x-2.x-cache-warming
  */
-function at_cache($options, $callback, $arguments = array()) {
+function at_cache($options, $callback = NULL, $arguments = array()) {
   // User prefer string as cache options
   // Style: $id OR $id,$ttl OR $id,~,$bin OR $id,~,~ OR $id,$ttl,$bin
   if (is_string($options)) {
@@ -95,6 +95,12 @@ function at_cache($options, $callback, $arguments = array()) {
   if (isset($options['cache_id'])) {
     $options['id'] = $options['cache_id'];
     unset($options['cache_id']);
+  }
+
+  foreach (array('callback', 'options') as $k) {
+    if (is_null($kk) && isset($options[$k])) {
+      $kk = $options[$k];
+    }
   }
 
   return at_id(new Cache($options, $callback, $arguments))->get();
