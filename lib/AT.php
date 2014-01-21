@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class for type hint.
+ */
 class AT {
   private static $container;
 
@@ -41,3 +44,4 @@ class AT {
     return $engine;
   }
 }
+
