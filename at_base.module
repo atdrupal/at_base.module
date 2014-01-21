@@ -98,7 +98,7 @@ function at_cache($options, $callback = NULL, $arguments = array()) {
   }
 
   foreach (array('callback', 'options') as $k) {
-    if (is_null($kk) && isset($options[$k])) {
+    if (!empty($kk) && isset($options[$k])) {
       $kk = $options[$k];
     }
   }
