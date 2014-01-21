@@ -90,9 +90,6 @@ function at_cache($options, $callback, $arguments = array()) {
       'ttl' => is_null($ttl) ? NULL : ('~' === $ttl ? NULL : $ttl),
       'bin' => is_null($bin) ? NULL : ('~' === $bin ? NULL : $bin),
     );
-
-    if (!is_null($ttl) && '~' === $ttl) {
-    }
   }
 
   if (isset($options['cache_id'])) {
