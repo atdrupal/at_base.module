@@ -3,10 +3,22 @@
 namespace Drupal\at_base\Tests\Unit;
 
 use Drupal\at_base\Helper\Test\UnitTestCase;
+use Drupal\at_base\Helper\Test\Cache;
 
 class CacheTest extends UnitTestCase {
+  /**
+   * @var Cache
+   */
+  private $cache;
+
   public function getInfo() {
     return array('name' => 'AT Unit: Cache') + parent::getInfo();
+  }
+
+  public function setUp() {
+    parent::setUp();
+
+    $this->cache = at_container('wrapper.cache');
   }
 
   /**
@@ -21,7 +33,10 @@ class CacheTest extends UnitTestCase {
     $wrapper = at_container('wrapper.cache');
 
     // Make sure the cache wrapper is faked correctly
-    $this->assertEqual('Drupal\at_base\Helper\Test\Cache', get_class($wrapper));
+    $this->assertEqual(
+      'Drupal\at_base\Helper\Test\Cache',
+      get_class($this->cache)
+    );
 
     // Save __FUNCTION__ then get __FUNCTION__
     $wrapper->set(__FUNCTION__, __CLASS__);
@@ -38,17 +53,12 @@ class CacheTest extends UnitTestCase {
     $callbacks['arguments']  = array('sprintf', array('Timestamp: %d', time()));
     foreach ($callbacks as $type => $callback) {
       list($callback, $arguments) = $callback;
-      $options = array('id' => "at_test:time:{$type}", 'reset' => TRUE) + $cache_options;
+      $o = array('id' => "at_test:time:{$type}", 'reset' => TRUE) + $cache_options;
 
-      // Init the value
-      $output_1 = at_cache($options, $callback, $arguments);
-      sleep(1);
+      $output = at_cache($o, $callback, $arguments);
+      $cached = $this->cache->get($o['id'], $o['bin'])->data;
 
-      // Call at_cache() again
-      $output_2 = at_cache(array('reset' => FALSE) + $options, $callback, $arguments);
-
-      // The value should be same — it's cached.
-      $this->assertEqual($output_1, $output_2);
+      $this->assertEqual($output, $cached);
     }
   }
 
