@@ -65,7 +65,7 @@ class Entity_Warmer implements Warmer_Interface {
     $relationship_warmers = at_container('container')->find('cache.warmer.entity.relationships', 'service');
     foreach ($relationship_warmers as $relationship_warmer) {
       if ($relationship_warmer->validateTag($tag)) {
-        $relationship_warmer->processTag($tag, $entity_warmer);
+        $relationship_warmer->processTag($tag, $this);
       }
     }
 

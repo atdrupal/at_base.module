@@ -1,7 +1,6 @@
 <?php
 namespace Drupal\at_base;
 
-use Drupal\at_base\Container\Definition;
 use Drupal\at_base\Container\Service_Resolver;
 use Drupal\at_base\Helper\Config_Fetcher;
 use Drupal\at_base\Helper\Wrapper\Database as DB_Wrapper;
@@ -15,7 +14,7 @@ use Drupal\at_base\Config\Config;
  * @see  https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container
  */
 class Container {
-  private static $c;
+  protected static $c;
 
   public function __construct() {
     if (!self::$c) {

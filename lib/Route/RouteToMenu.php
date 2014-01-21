@@ -23,6 +23,11 @@ class RouteToMenu {
    */
   private $menu_item = array();
 
+  /**
+   * @param string $module
+   * @param array $route_name
+   * @param array $route_data
+   */
   public function __construct($module, $route_name, $route_data) {
     $this->module     = $module;
     $this->route_name = $route_name;

@@ -8,6 +8,10 @@ class ModulesFetcher {
   private $base_module;
   private $config_file;
 
+  /**
+   * @param string $base_module
+   * @param string $config_file
+   */
   public function __construct($base_module, $config_file) {
     $this->base_module = $base_module;
     $this->config_file = $config_file;

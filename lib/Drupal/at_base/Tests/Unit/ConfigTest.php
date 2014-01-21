@@ -79,6 +79,8 @@ class ConfigTest extends UnitTestCase {
    * Make sure at_modules() function is working correctly.
    */
   public function testAtModules() {
+    $enabled_modules = array();
+
     // Just check with two modules
     foreach (array('at_base', 'atest_base') as $module_name) {
       $enabled_modules[$module_name] = drupal_get_path('module', $module_name) . '/'. $module_name .'.info';

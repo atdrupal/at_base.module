@@ -11,6 +11,9 @@ class SubRequest {
   private $path;
   private $original_path;
 
+  /**
+   * @param string $path
+   */
   public function __construct($path) {
     $this->path = $path;
     $this->original_path = $_GET['q'];

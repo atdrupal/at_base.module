@@ -47,6 +47,8 @@ class Admin_Form {
   }
 
   public function validate() {
+    $json = array();
+
     if (empty($this->form_state['values']['at_config_item'])) {
       $error = TRUE;
     }

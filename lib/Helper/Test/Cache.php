@@ -4,6 +4,9 @@ namespace Drupal\at_base\Helper\Test;
 class Cache {
   static $data;
 
+  /**
+   * @param boolean|string $cid
+   */
   public function get($cid, $bin = 'cache') {
     if (isset(self::$data[$bin][$cid])) {
       return self::$data[$bin][$cid];

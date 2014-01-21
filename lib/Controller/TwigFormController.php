@@ -2,6 +2,9 @@
 namespace Drupal\at_base\Controller;
 
 class TwigFormController {
+  protected $form;
+  protected $form_state;
+
   public function setForm($form) {
     $this->form = $form;
   }

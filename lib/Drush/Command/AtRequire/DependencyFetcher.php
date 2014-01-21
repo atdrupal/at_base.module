@@ -4,6 +4,7 @@ namespace Drupal\at_base\Drush\Command\AtRequire;
 class DependencyFetcher {
   private $name;
   private $info;
+  private $contrib_destination;
 
   public function __construct($name, $info) {
     $this->name = $name;
@@ -29,8 +30,7 @@ class DependencyFetcher {
   }
 
   /**
-   * [getContribDestination description]
-   * @return [type] [description]
+   * @return string
    */
   private function getContribDestination() {
     if (!is_null($this->contrib_destination)) {
