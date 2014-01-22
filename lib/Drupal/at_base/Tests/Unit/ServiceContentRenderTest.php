@@ -31,6 +31,7 @@ class ServiceContentRenderTest extends UnitTestCase {
   }
 
   public function testTemplateString() {
+    $data = array();
     $data['template_string'] = 'Hello {{ name }}';
     $data['variables']['name'] = 'Andy Truong';
     $output = $this->render->render($data);
@@ -38,6 +39,7 @@ class ServiceContentRenderTest extends UnitTestCase {
   }
 
   public function testTemplate() {
+    $data = array();
     $data['template'] = '@atest_base/templates/block/hello_template.html.twig';
     $data['variables']['name'] = 'Andy Truong';
     $output = trim($this->render->render($data));
@@ -45,6 +47,8 @@ class ServiceContentRenderTest extends UnitTestCase {
   }
 
   public function testDynamicVariables() {
+    $data = array();
+
     $expected = 'Hello Andy Truong';
     $data['template_string'] = 'Hello {{ name }}';
 
