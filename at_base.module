@@ -36,15 +36,21 @@ function at_id($x) {
 
 /**
  * Service container.
+ *
+ * @staticvar \Drupal\at_base\Container $container
+ * @param string $id
+ * @return mixed
+ *
+ * @see https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container
  */
-function at_container($service_name) {
+function at_container($id) {
     static $container = NULL;
 
     if (!$container) {
         $container = new \Drupal\at_base\Container();
     }
 
-    return $container[$service_name];
+    return $container[$id];
 }
 
 /**
@@ -119,15 +125,16 @@ function at_config($module, $id = 'config', $refresh = FALSE) {
 }
 
 /**
- * Get modules that depends on at.module — found
- * `requirements[] = at_base` in .info file
- *
+ * Get modules that depends on a specific module.
+ * @param string $base_module
+ * @param string $config_file
+ * @return array
  * @see system_list()
  */
 function at_modules($base_module = 'at_base', $config_file = '') {
   $o['ttl'] = '+ 1 year';
   $o['bin'] = 'cache_bootstrap';
-  $o['id']  = "at_modules:{$base_module}:{$config_file}";
+  $o['id']  = "atmodules:{$base_module}:{$config_file}";
 
   return at_cache($o, function() use ($base_module, $config_file) {
     $module_enabled = system_list('module_enabled');
