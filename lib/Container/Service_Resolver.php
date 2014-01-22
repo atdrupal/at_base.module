@@ -1,112 +1,132 @@
 <?php
+
 namespace Drupal\at_base\Container;
 
-class Service_Resolver {
-  public function getCallback($service_name) {
-    return $this->convertDefinitionToCallback(
-      $this->getDefinition($service_name)
-    );
-  }
+/**
+ * Help to find service defintions, convert them to real object.
+ */
+class Service_Resolver
+{
 
-  /**
-   * Get service definition in configuration files.
-   */
-  private function getDefinition($service_name) {
-    $def = at_container('helper.config_fetcher')
-            ->getItem('at_base', 'services', 'services', $service_name, TRUE);
-    if (is_null($def)) {
-      throw new \Exception("Missing service: {$service_name}");
+    /**
+     * Generate closure which to be used to fetch the service.
+     *
+     * @param string $id
+     * @return mixed
+     */
+    public function getClosure($id) {
+        $def = $this->getDefinition($id);
+        return function($c) use ($def) {
+            $args = !empty($def['arguments']) ? $def['arguments'] : array();
+
+            // Make arguments are objects.
+            foreach ($args as $k => $v) {
+                if (is_string($v) && '@' === substr($v, 0, 1)) {
+                    $args[$k] = $c[substr($v, 1)];
+                }
+            }
+
+            return $c['service.resolver']->convertDefinitionToService($def, $args);
+        };
     }
-    return $this->resolve($def);
-  }
 
-  public function findDefinitions($tag) {
-    $o = array('id' => "ATTaggedService:{$tag}", 'ttl' => '+ 1 year');
-
-    return at_cache($o, array($this, 'fetchDefinitions'), array($tag));
-  }
-
-  public function fetchDefinitions($tag) {
-    $tagged_defs = array();
-
-    $defs = at_container('helper.config_fetcher')->getItems('at_base', 'services', 'services', TRUE);
-    foreach ($defs as $name => $def) {
-      if (empty($def['tags'])) {
-        continue;
-      }
-
-      foreach ($def['tags'] as $_tag) {
-        if ($tag === $_tag['name']) {
-            $tagged_defs[] = $name;
-            break;
+    /**
+     * Get service definition in configuration files.
+     */
+    private function getDefinition($id) {
+        $def = at_container('helper.config_fetcher')
+                ->getItem('at_base', 'services', 'services', $id, TRUE);
+        if (is_null($def)) {
+            throw new \Exception("Missing service: {$id}");
         }
-      }
+        return $this->resolve($def);
     }
 
-    uasort($tagged_defs, 'drupal_sort_weight');
+    /**
+     * Get services definitions those are tagged with specific tag.
+     *
+     * @param string $tag
+     * @return array
+     */
+    public function fetchDefinitions($tag)
+    {
+        $tagged_defs = array();
 
-    return $tagged_defs;
-  }
+        $defs = at_container('helper.config_fetcher')->getItems('at_base', 'services', 'services', TRUE);
+        foreach ($defs as $name => $def) {
+            if (empty($def['tags'])) {
+                continue;
+            }
 
-  private function resolve($def) {
-    // A service depends on others, this method to resolve them.
-    foreach (array('arguments', 'calls') as $k) {
-      if (!empty($def[$k])) {
-        $this->resolveDependencies($def[$k]);
-      }
-    }
-
-    // Service has factory
-    if (!empty($def['factory_service'])) {
-      at_container('container')->set($def['factory_service']);
-    }
-
-    return $def;
-  }
-
-  /**
-   * Resolve array of dependencies.
-   *
-   * @see resolveDefinition()
-   */
-  private function resolveDependencies($array) {
-    foreach ($array as $id) {
-      if (is_array($id)) {
-          $this->resolveDependencies($id);
-      }
-
-      if (!is_string($id) || '@' !== substr($id, 0, 1)) {
-          continue;
-      }
-
-      at_container(substr($id, 1));
-    }
-  }
-
-  private function convertDefinitionToCallback($def) {
-    return function($c) use ($def) {
-      $def['arguments'] = !empty($def['arguments']) ? $def['arguments'] : array();
-
-      // Make arguments are objects.
-      foreach (array_keys($def['arguments']) as $k) {
-        if ('@' === substr($def['arguments'][$k], 0, 1)) {
-          $a_service_name = substr($def['arguments'][$k], 1);
-          $def['arguments'][$k] = $c[$a_service_name];
+            foreach ($def['tags'] as $_tag) {
+                if ($tag === $_tag['name']) {
+                    $tagged_defs[] = $name;
+                    break;
+                }
+            }
         }
-      }
 
-      if (!empty($def['factory_service'])) {
-        $f = $c[$def['factory_service']];
-        return call_user_func_array(array($f, $def['factory_method']), $def['arguments']);
-      }
+        uasort($tagged_defs, 'drupal_sort_weight');
 
-      if (!empty($def['factory_class'])) {
-        $f = new $def['factory_class'];
-        return call_user_func_array(array($f, $def['factory_method']), $def['arguments']);
-      }
+        return $tagged_defs;
+    }
 
-      $class = new \ReflectionClass($def['class']);
-      return $class->newInstanceArgs($def['arguments']);
-    };
-  }
+    private function resolve($def)
+    {
+        // A service depends on others, this method to resolve them.
+        foreach (array('arguments', 'calls') as $k) {
+            if (!empty($def[$k])) {
+                $this->resolveDependencies($def[$k]);
+            }
+        }
+
+        // Service has factory
+        if (!empty($def['factory_service'])) {
+            at_container($def['factory_service']);
+        }
+
+        return $def;
+    }
+
+    /**
+     * Resolve array of dependencies.
+     *
+     * @see resolveDefinition()
+     */
+    private function resolveDependencies($array)
+    {
+        foreach ($array as $id) {
+            if (is_array($id)) {
+                $this->resolveDependencies($id);
+            }
+
+            if (!is_string($id) || '@' !== substr($id, 0, 1)) {
+                continue;
+            }
+
+            at_container(substr($id, 1));
+        }
+    }
+
+    /**
+     * Init service object from definition.
+     *
+     * @param type $def
+     * @param type $args
+     * @return type
+     */
+    public function convertDefinitionToService($def, $args = array()) {
+        if (!empty($def['factory_service'])) {
+            return call_user_func_array(
+              array(at_container($def['factory_service']), $def['factory_method']), $args
+            );
+        }
+
+        if (!empty($def['factory_class'])) {
+            return call_user_func_array(array(new $def['factory_class'], $def['factory_method']), $args);
+        }
+
+        return at_id(new \ReflectionClass($def['class']))->newInstanceArgs($args);
+    }
+
 }

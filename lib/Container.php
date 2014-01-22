@@ -5,7 +5,7 @@ use Drupal\at_base\Container\Service_Resolver;
 use Drupal\at_base\Helper\Config_Fetcher;
 use Drupal\at_base\Helper\Wrapper\Database as DB_Wrapper;
 use Drupal\at_base\Helper\Wrapper\Cache as Cache_Wrapper;
-use Drupal\at_base\Config\Resolver as ConfigResolver;
+use Drupal\at_base\Config\Resolver as Config_Resolver;
 use Drupal\at_base\Config\Config;
 
 require_once at_library('pimple') . '/lib/Pimple.php';
@@ -20,18 +20,19 @@ class Container extends \Pimple {
     {
         parent::__construct(array(
             'container' => $this,
-            'service.resolver' => function() { return new Service_Resolver(); },
-            'helper.config_fetcher' => function() { return new Config_Fetcher(); },
+            // Dependencies for Container itself
             'wrapper.db' => function() { return new DB_Wrapper(); },
             'wrapper.cache' => function() { return new Cache_Wrapper(); },
-            'config' => function() { return new Config(new ConfigResolver()); },
+            'config' => function() { return new Config(new Config_Resolver()); },
+            'service.resolver' => function() { return new Service_Resolver(); },
+            'helper.config_fetcher' => function() { return new Config_Fetcher(); },
         ));
     }
 
     public function offsetGet($id)
     {
         if (!$this->offsetExists($id)) {
-            if ($value = $this['service.resolver']->getCallback($id)) {
+            if ($value = $this['service.resolver']->getClosure($id)) {
                 $this->offsetSet($id, $value);
             }
         }
@@ -47,7 +48,7 @@ class Container extends \Pimple {
      */
     public function find($tag, $return = 'service_name')
     {
-        $defs = $this['service.resolver']->findDefinitions($tag);
+        $defs = at_cache("atc:tag:{$tag}, + 1 year", array($this['service.resolver'], 'fetchDefinitions'), array($tag));
 
         if ($return === 'service_name') {
             return $defs;
