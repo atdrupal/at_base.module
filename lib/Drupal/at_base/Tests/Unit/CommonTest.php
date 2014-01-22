@@ -21,7 +21,7 @@ class CommonTest extends UnitTestCase {
    * Test for at_id() function.
    */
   public function testAtId() {
-    $object = at_id(new \Drupal\at_base\Autoloader())->register();
+    at_id(new \Drupal\at_base\Autoloader())->register();
     $this->assertTrue(TRUE, 'No exception raised.');
   }
 

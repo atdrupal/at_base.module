@@ -41,7 +41,7 @@ class Config_Fetcher {
     $o = array(
       'ttl' => '+ 1 year',
       'id' => "ATConfig:{$module}:{$id}:{$key}:{$item_key}:" . ($include_at_base ? 1 : 0),
-      'reset' => TRUE,
+      'reset' => $reset,
     );
 
     return at_cache($o, function() use ($module, $id, $key, $item_key, $include_at_base) {

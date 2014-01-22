@@ -5,6 +5,7 @@ class Database {
   static $log;
   static $last_method = 'unknown_method';
   static $last_table = 'unknown_table';
+  static $last_options = array();
 
   public function __call($name, $arguments) {
     self::$log[self::$last_method][self::$last_table][$name][] = $arguments;
@@ -12,7 +13,7 @@ class Database {
   }
 
   public function select($table, $alias = NULL, array $options = array()) {
-    return $this->methodCall('select', $table, $options);
+    return $this->methodCall('select', $table, array('alias' => $alias) + $options);
   }
 
   public function update($table, array $options = array()) {
@@ -27,13 +28,10 @@ class Database {
     return $this->methodCall('insert', $table, $options);
   }
 
-  /**
-   * @param string $method
-   */
   private function methodCall($method, $table, $options) {
     self::$last_method = $method;
     self::$last_table = $table;
-
+    self::$last_options = $options;
     return $this;
   }
 
