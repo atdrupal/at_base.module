@@ -5,7 +5,35 @@ namespace Drupal\at_base\Route;
 class Controller
 {
 
+    /**
+     * Content render
+     * @var \Drupal\at_base\Helper\Content_Render
+     */
+    private $render;
+
+    /**
+     * Route definition.
+     *
+     * @var array
+     */
     private $route;
+
+    /**
+     * Menu item for request.
+     *
+     * @var array
+     */
+    private $menu_item;
+
+    /**
+     * @param \Drupal\at_base\Helper\Content_Render $content_render
+     * @param string $request_path Request path — Example: user/login
+     */
+    public function __construct($content_render, $request_path)
+    {
+        $this->render = $content_render;
+        $this->menu_item = menu_get_item($request_path);
+    }
 
     /**
      * Page callback for routes.
@@ -15,50 +43,75 @@ class Controller
     public static function pageCallback() {
         $args = func_get_args();
         $route = array_pop($args);
-        return at_id(new self())->setRoute($route)->execute();
+
+        $render = at_container('helper.content_render');
+
+        return at_id(new self($render, filter_input(INPUT_GET, 'q', FILTER_SANITIZE_STRING)))
+                ->setRoute($route)
+                ->execute();
     }
 
+    /**
+     * Drupal has parametter converting system, which convert %node with result
+     * of node_load($context_nid). This method to convert parameter in part of
+     * route definition to real object, which already converted by Drupal menu
+     * system.
+     *
+     * @param type $array
+     * @param type $position
+     * @return array
+     */
+    private function repairArguments($array, $position) {
+        foreach ($array as $k => $v) {
+            if (is_numeric($v) && $v == $position) {
+                $array[$k] = $this->menu_item['map'][$position];
+            }
+        }
+        return $array;
+    }
+
+    /**
+     * Apply reoute definition to the controller.
+     *
+     * @param array $route
+     * @return \Drupal\at_base\Route\Controller
+     */
     public function setRoute($route) {
-        $this->route = $route;
-        return $this;
-    }
+        foreach (explode('/', $route['pattern']) as $position => $part) {
+            if (strpos($part, '%') !== 0) {
+                continue;
+            }
 
-    public function execute() {
-        $item = menu_get_item($_GET['q']);
-        $path = explode('/', $this->route['pattern']);
-        foreach ($path as $i => $part) {
-            if (strpos($part, '%') === 0) {
-                $part = substr($part, 1);
-                $this->route['variables'][$part] = $item['map'][$i];
+            $part = substr($part, 1);
+            $route['variables'][$part] = $this->menu_item['map'][$position];
 
-                if (!empty($this->route['page arguments'])) {
-                    foreach ($this->route['page arguments'] as $k => $v) {
-                        if (is_numeric($v) && $v == $i) {
-                            $this->route['page arguments'][$k] = $item['map'][$i];
-                        }
-                    }
-                }
+            if (!empty($route['page arguments'])) {
+                $route['page arguments'] = $this->repairArguments($route['page arguments'], $position);
+            }
 
-                if (!empty($this->route['controller'][2])) {
-                    foreach ($this->route['controller'][2] as $k => $v) {
-                        if (is_numeric($v) && $v == $i) {
-                            $this->route['controller'][2][$k] = $item['map'][$i];
-                        }
-                    }
-                }
+            if (!empty($route['controller'][2])) {
+                $route['controller'][2] = $this->repairArguments($route['controller'][2], $position);
             }
         }
 
-        // Get render service
-        $render = at_container('helper.content_render');
+        $this->route = $route;
 
+        return $this;
+    }
+
+    /**
+     * Dispatch the controller.
+     *
+     * @return array
+     */
+    public function execute() {
         // User want cache the page
         if (!empty($this->route['cache'])) {
-            $render->setCacheHandler(new Cache_Handler());
+            $this->render->setCacheHandler(new Cache_Handler());
 
             // Prepair the cache ID
             if (empty($this->route['cache']['id'])) {
-                $this->route['cache']['id'] = 'atroute:' . $item['tab_root_href'];
+                $this->route['cache']['id'] = 'atroute:' . $this->menu_item['tab_root_href'];
             }
         }
 
@@ -67,7 +120,7 @@ class Controller
             unset($this->route['page arguments']);
         }
 
-        return $render->setData($this->route)->render();
+        return $this->render->render($this->route);
     }
 
 }

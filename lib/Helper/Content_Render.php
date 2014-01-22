@@ -62,6 +62,7 @@ class Content_Render {
 
     $no_cache = !empty($this->data['cache']) && is_null($this->cache_handler);
     $no_cache = $no_cache || empty($this->data['cache']);
+
     if ($no_cache) {
       return $this->build();
     }
@@ -101,6 +102,10 @@ class Content_Render {
       return $this->processFunction();
     }
 
+    if (isset($this->data['form'])) {
+      return $this->processForm();
+    }
+
     if (isset($this->data['controller'])) {
       return $this->processController();
     }
@@ -118,6 +123,13 @@ class Content_Render {
     $func = $this->data['function'];
     $args = $this->getVariables();
     return call_user_func_array($func, $args);
+  }
+
+  public function processForm() {
+    $args[] = 'at_form';
+    $args[] = $this->data['form'];
+    $args[] = isset($this->data['form arguments']) ? $this->data['form arguments'] : array();
+    return call_user_func_array('drupal_get_form', $args);
   }
 
   public function processController() {
