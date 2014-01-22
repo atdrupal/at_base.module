@@ -28,9 +28,8 @@ class Config_Fetcher {
       }
 
       $items = array();
-
       foreach ($modules as $module_name) {
-        $items += at_config($module_name, $id)->get($key);
+        $items = array_merge($items, at_config($module_name, $id)->get($key));
       }
 
       return $items;
