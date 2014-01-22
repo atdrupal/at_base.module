@@ -30,7 +30,7 @@ class ConfigTest extends UnitTestCase {
 
     // Test not found exception
     try {
-      $not_there = at_config('atest_config')->get('not_there');
+      at_config('atest_config')->get('not_there');
       $this->assertTrue('No exception thrown');
     }
     catch (\Drupal\at_base\Config\NotFoundException $e) {
@@ -68,8 +68,10 @@ class ConfigTest extends UnitTestCase {
     at_id(new \Drupal\at_base\Hook\Flush_Cache())->resolveModuleWeight('atest_base', 10);
     $db_log = at_container('wrapper.db')->getLog('update', 'system');
 
-    $expected['condition'] = array('name', 'atest_base');
-    $expected['fields'] = array('weight' => 10);
+    $expected = array(
+      'condition' => array('name', 'atest_base'),
+      'fields' => array('weight' => 10)
+    );
 
     $this->assertTrue(in_array($expected['condition'], $db_log['condition']));
     $this->assertTrue(in_array($expected['fields'], $db_log['fields'][0]));

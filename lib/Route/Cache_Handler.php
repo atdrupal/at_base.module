@@ -24,7 +24,7 @@ class Cache_Handler implements CacheHandler_Interface {
     $o       = &$this->options;
     $o['id'] = isset($o['id']) ? $o['id'] : '';
 
-    $cid_parts[] = $o['id'];
+    $cid_parts = array($o['id']);
     $cid_parts = array_merge($cid_parts, drupal_render_cid_parts($o['type']));
 
     return implode(':', $cid_parts);
