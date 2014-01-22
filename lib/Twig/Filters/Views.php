@@ -73,10 +73,10 @@ class Views {
     // With template
     // ---------------------
     // Many tags rendered by views, we get rid of them
-    if (!empty($view->display[$display_id]->display_options['fields'])) {
-      foreach (array_keys($view->display[$display_id]->display_options['fields']) as $k) {
-        $view->display[$display_id]->display_options['fields'][$k]['element_default_classes'] = 0;
-        $view->display[$display_id]->display_options['fields'][$k]['element_type'] = 0;
+    if (!empty($this->view->display[$this->display_id]->display_options['fields'])) {
+      foreach (array_keys($this->view->display[$this->display_id]->display_options['fields']) as $k) {
+        $this->view->display[$this->display_id]->display_options['fields'][$k]['element_default_classes'] = 0;
+        $this->view->display[$this->display_id]->display_options['fields'][$k]['element_type'] = 0;
       }
     }
 
