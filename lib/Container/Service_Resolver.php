@@ -12,7 +12,7 @@ class Service_Resolver
      * Generate closure which to be used to fetch the service.
      *
      * @param string $id
-     * @return mixed
+     * @return \Closure
      */
     public function getClosure($id) {
         $def = $this->getDefinition($id);
@@ -32,6 +32,7 @@ class Service_Resolver
 
     /**
      * Get service definition in configuration files.
+     * @param string $id
      */
     private function getDefinition($id) {
         $def = at_container('helper.config_fetcher')

@@ -57,8 +57,8 @@ class Controller
      * route definition to real object, which already converted by Drupal menu
      * system.
      *
-     * @param type $array
-     * @param type $position
+     * @param array $array
+     * @param int $position
      * @return array
      */
     private function repairArguments($array, $position) {

@@ -126,8 +126,7 @@ class Content_Render {
   }
 
   public function processForm() {
-    $args[] = 'at_form';
-    $args[] = $this->data['form'];
+    $args = array('at_form', $this->data['form']);
     $args[] = isset($this->data['form arguments']) ? $this->data['form arguments'] : array();
     return call_user_func_array('drupal_get_form', $args);
   }

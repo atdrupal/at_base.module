@@ -42,7 +42,7 @@ class Cache_Handler implements CacheHandler_Interface {
       switch ($o['type']) {
         case DRUPAL_CACHE_CUSTOM:
         case DRUPAL_NO_CACHE:
-          return $this->getEngine()->render();
+          return call_user_func($this->callback);
 
         default:
           $o['id'] = $this->getCacheId();
