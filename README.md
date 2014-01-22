@@ -23,7 +23,7 @@ Provide some more API for developer to work with Drupal (7).
 
 - [Autoload](https://github.com/andytruong/at_base/wiki/7.x-2.x-autoload)
 - [Config](https://github.com/andytruong/at_base/wiki/7.x-2.x-config)
-- [Serivce Container](https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container)
+- [Service Container](https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container)
 - [Easy Routing](https://github.com/andytruong/at_base/wiki/7.x-2.x-easy-routing)
 - [Easy Block](https://github.com/andytruong/at_base/wiki/7.x-2.x-easy-routing)
 - [Useful functions](https://github.com/andytruong/at_base/wiki/7.x-2.x-functions)
