@@ -52,7 +52,7 @@ class RouteToMenu {
       $this->menu_item['function'] = $this->menu_item['page callback'];
     }
 
-    $this->menu_item['page callback'] = 'at_route';
+    $this->menu_item['page callback'] = 'Drupal\at_base\Route\Controller::pageCallback';
     $this->menu_item['page arguments'][] = $this->menu_item;
 
     return $this->menu_item;

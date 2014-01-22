@@ -237,14 +237,3 @@ function at_form_submit($form, &$form_state) {
   // Do validate
   $obj->submit();
 }
-
-/**
- * Page callback for routes.
- *
- * @see \Drupal\at_base\Route\RouteToMenu
- */
-function at_route() {
-  $args = func_get_args();
-  $route = array_pop($args);
-  return at_id(new \Drupal\at_base\Route\Controller())->setRoute($route)->execute();
-}

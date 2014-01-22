@@ -2,58 +2,72 @@
 
 namespace Drupal\at_base\Route;
 
-class Controller {
-  private $route;
+class Controller
+{
 
-  public function setRoute($route) {
-    $this->route = $route;
-    return $this;
-  }
+    private $route;
 
-  public function execute() {
-    $item = menu_get_item($_GET['q']);
-    $path = explode('/', $this->route['pattern']);
-    foreach ($path as $i => $part) {
-      if (strpos($part, '%') === 0) {
-        $part = substr($part, 1);
-        $this->route['variables'][$part] = $item['map'][$i];
+    /**
+     * Page callback for routes.
+     *
+     * @see \Drupal\at_base\Route\RouteToMenu
+     */
+    public static function pageCallback() {
+        $args = func_get_args();
+        $route = array_pop($args);
+        return at_id(new self())->setRoute($route)->execute();
+    }
 
-        if (!empty($this->route['page arguments'])) {
-          foreach ($this->route['page arguments'] as $k => $v) {
-            if (is_numeric($v) && $v == $i) {
-              $this->route['page arguments'][$k] = $item['map'][$i];
+    public function setRoute($route) {
+        $this->route = $route;
+        return $this;
+    }
+
+    public function execute() {
+        $item = menu_get_item($_GET['q']);
+        $path = explode('/', $this->route['pattern']);
+        foreach ($path as $i => $part) {
+            if (strpos($part, '%') === 0) {
+                $part = substr($part, 1);
+                $this->route['variables'][$part] = $item['map'][$i];
+
+                if (!empty($this->route['page arguments'])) {
+                    foreach ($this->route['page arguments'] as $k => $v) {
+                        if (is_numeric($v) && $v == $i) {
+                            $this->route['page arguments'][$k] = $item['map'][$i];
+                        }
+                    }
+                }
+
+                if (!empty($this->route['controller'][2])) {
+                    foreach ($this->route['controller'][2] as $k => $v) {
+                        if (is_numeric($v) && $v == $i) {
+                            $this->route['controller'][2][$k] = $item['map'][$i];
+                        }
+                    }
+                }
             }
-          }
         }
 
-        if (!empty($this->route['controller'][2])) {
-          foreach ($this->route['controller'][2] as $k => $v) {
-            if (is_numeric($v) && $v == $i) {
-              $this->route['controller'][2][$k] = $item['map'][$i];
+        // Get render service
+        $render = at_container('helper.content_render');
+
+        // User want cache the page
+        if (!empty($this->route['cache'])) {
+            $render->setCacheHandler(new Cache_Handler());
+
+            // Prepair the cache ID
+            if (empty($this->route['cache']['id'])) {
+                $this->route['cache']['id'] = 'atroute:' . $item['tab_root_href'];
             }
-          }
         }
-      }
+
+        if (!empty($this->route['function'])) {
+            $this->route['arguments'] = $this->route['page arguments'];
+            unset($this->route['page arguments']);
+        }
+
+        return $render->setData($this->route)->render();
     }
 
-    // Get render service
-    $render = at_container('helper.content_render');
-
-    // User want cache the page
-    if (!empty($this->route['cache'])) {
-      $render->setCacheHandler(new Cache_Handler());
-
-      // Prepair the cache ID
-      if (empty($this->route['cache']['id'])) {
-        $this->route['cache']['id'] = 'atroute:' . $item['tab_root_href'];
-      }
-    }
-
-    if (!empty($this->route['function'])) {
-      $this->route['arguments'] = $this->route['page arguments'];
-      unset($this->route['page arguments']);
-    }
-
-    return $render->setData($this->route)->render();
-  }
 }
