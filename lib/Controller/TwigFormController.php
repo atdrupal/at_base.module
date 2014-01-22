@@ -14,7 +14,7 @@ class TwigFormController {
   }
 
   public function get() {
-    $form['#redirect'] = FALSE;
+    $form = array('#redirect' => FALSE);
     $form['string'] = array(
       '#type' => 'textarea',
       '#default_value' => (isset($_SESSION['twig_execute_code']) ? $_SESSION['twig_execute_code'] : ''),

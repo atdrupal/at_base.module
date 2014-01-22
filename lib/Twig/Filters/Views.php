@@ -51,6 +51,7 @@ class Views {
    * @todo Remove this magic
    */
   protected function suggestTemplate() {
+    $suggestions = array();
     $suggestions[] = path_to_theme() . "/templates/views/{$this->name}.{$this->display_id}.html.twig";
     $suggestions[] = path_to_theme() . "/templates/views/{$this->name}.html.twig";
     foreach ($suggestions as $path) {
@@ -84,7 +85,7 @@ class Views {
     $this->view->execute();
 
     module_load_include('inc', 'views', 'theme/theme');
-    $vars['view'] = $this->view;
+    $vars = array('view' => $this->view);
     template_preprocess_views_view($vars);
     return at_container('twig')->render($this->template, $vars);
   }
