@@ -48,34 +48,7 @@ function at_container($service_name) {
 }
 
 /**
- * Helper function for quick cache get/set.
- *
- * @code
- *   $nid = $vid = 1;
- *
- *   $options['ttl'] = '+ 15 minutes';
- *   $options['cache_id'] = "node:{$nid}";
- *   # Same to
- *   $options['id'] = "node:{$nid}";
- *   $options['file'] = '/path/to/file.php;
- *   $options['reset'] = FALSE;
- *   $options['allow_empty'] = TRUE;
- *   $options['tags'] = array('demo', 'testing');
- *
- *   // Use case 1:
- *   $data = at_cache($options, function() use ($nid, $vid) {
- *     return node_load($nid, $vid);
- *   });
- *
- *   // Use case 2:
- *   $data = at_cache($options, 'node_load', array($nid, $vid));
- *
- * @endcode
- *
- * If GODEV constant is defined, at_cache() is by passed rebuild the cache if
- * $_GET['nocache'] is not empty.
- *
- * Tags can be flushed by config. See \Drupal\at_base\Cache\Warming\Entity.php
+ * Care about site caching.
  *
  * @param  array|string $options
  * @param  Closure|string $callback
@@ -83,6 +56,7 @@ function at_container($service_name) {
  * @return mixed
  * @see    at_cache_flush_by_tag()
  * @see    https://github.com/andytruong/at_base/wiki/7.x-2.x-cache-warming
+ * @see    https://github.com/andytruong/at_base/wiki/7.x-2.x-Function:-at_cache
  */
 function at_cache($options, $callback = NULL, $arguments = array()) {
   // User prefer string as cache options
@@ -150,11 +124,10 @@ function at_config($module, $id = 'config', $refresh = FALSE) {
  *
  * @see system_list()
  */
-function at_modules($base_module = 'at_base', $config_file = '', $reset = FALSE) {
+function at_modules($base_module = 'at_base', $config_file = '') {
   $o['ttl'] = '+ 1 year';
   $o['bin'] = 'cache_bootstrap';
   $o['id']  = "at_modules:{$base_module}:{$config_file}";
-  $o['reset'] = $reset;
 
   return at_cache($o, function() use ($base_module, $config_file) {
     $module_enabled = system_list('module_enabled');

@@ -19,7 +19,7 @@ else {
  */
 function at_base_drush_command() {
   if (function_exists('cache_get')) {
-    return at_cache(array('id' => 'at:drush:commands'), 'at_base_fetch_commands');
+    return at_cache('at:drush:commands', 'at_base_fetch_commands');
   }
   return at_base_fetch_commands();
 }
