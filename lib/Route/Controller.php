@@ -85,13 +85,11 @@ class Controller
             $part = substr($part, 1);
             $route['variables'][$part] = $this->menu_item['map'][$position];
 
-            if (!empty($route['page arguments'])) {
-                $route['page arguments'] = $this->repairArguments($route['page arguments'], $position);
-            }
+            !empty($route['page arguments'])
+                && ($route['page arguments'] = $this->repairArguments($route['page arguments'], $position));
 
-            if (!empty($route['controller'][2])) {
-                $route['controller'][2] = $this->repairArguments($route['controller'][2], $position);
-            }
+            !empty($route['controller'][2])
+                && ($route['controller'][2] = $this->repairArguments($route['controller'][2], $position));
         }
 
         $this->route = $route;
