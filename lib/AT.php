@@ -4,7 +4,7 @@
  * Class for type hint.
  */
 class AT {
-  private static $container;
+  protected static $container;
 
   /**
    * Factory method to get container.
