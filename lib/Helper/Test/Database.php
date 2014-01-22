@@ -28,6 +28,9 @@ class Database {
     return $this->methodCall('insert', $table, $options);
   }
 
+  /**
+   * @param string $method
+   */
   private function methodCall($method, $table, $options) {
     self::$last_method = $method;
     self::$last_table = $table;

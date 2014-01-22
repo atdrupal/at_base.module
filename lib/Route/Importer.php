@@ -12,6 +12,9 @@ class Importer {
    */
   private $path;
 
+  /**
+   * @param string $module
+   */
   public function setModule($module) {
     $this->module = $module;
     return $this;

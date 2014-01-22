@@ -25,7 +25,7 @@ class Resolver implements ResolverInterface {
   /**
    *
    *
-   * @return string|boolean
+   * @return string|false
    */
   public function getOriginalPath() {
     $config_id = $this->config->getId();
@@ -43,7 +43,7 @@ class Resolver implements ResolverInterface {
 
   /**
    *
-   * @return string|boolean
+   * @return string|false
    */
   public function getOverridePath($check_exists = TRUE) {
     $return = variable_get('file_private_path');
@@ -70,6 +70,9 @@ class Resolver implements ResolverInterface {
     }
   }
 
+  /**
+   * @param string $path
+   */
   private function fetchFile($path) {
     $return = yaml_parse_file($path);
 

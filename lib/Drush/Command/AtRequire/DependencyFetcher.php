@@ -30,7 +30,9 @@ class DependencyFetcher {
   }
 
   /**
-   * @return string
+   * Find destination to download the project.
+   *
+   * @return string|boolean
    */
   private function getContribDestination() {
     if (!is_null($this->contrib_destination)) {
