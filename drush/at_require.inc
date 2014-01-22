@@ -61,14 +61,16 @@ if (!function_exists('yaml_parse')) {
   $fn = 'spyc_load_file';
 }
 
-$projects = drupal_get_path('module', 'at_base') . '/config/require.yml';
-$projects = $fn($projects);
-unset($projects['spyc']);
-foreach ($projects['projects'] as $name => $info) {
-  try {
-    at_library($name);
-  }
-  catch (\Exception $e) {
-    at_id(new DependencyFetcher($name, $info))->fetch();
+if (function_exists('drupal_get_path')) {  
+  $projects = drupal_get_path('module', 'at_base') . '/config/require.yml';
+  $projects = $fn($projects);
+  unset($projects['spyc']);
+  foreach ($projects['projects'] as $name => $info) {
+    try {
+      at_library($name);
+    }
+    catch (\Exception $e) {
+      at_id(new DependencyFetcher($name, $info))->fetch();
+    }
   }
 }
