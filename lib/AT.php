@@ -21,14 +21,14 @@ class AT {
    * @return \Twig_Environment
    */
   public static function twig() {
-    return static::getContainer()->get('twig');
+      return at_container('twig');
   }
 
   /**
    * @return \Twig_Environment
    */
   public static function twig_string() {
-    return static::getContainer()->get('twig_string');
+      return at_container('twig_string');
   }
 
   public function getExpressionLanguage() {

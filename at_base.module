@@ -6,11 +6,11 @@
  */
 
 use \Drupal\at_base\Autoloader;
-use \Drupal\at_base\Config\Config;
 use \Drupal\at_base\Cache;
 use \Drupal\at_base\Helper\ModulesFetcher;
 
 require_once dirname(__FILE__) . '/lib/AT.php';
+require_once dirname(__FILE__) . '/lib/ATC.php';
 require_once dirname(__FILE__) . '/at_base.hooks.inc';
 require_once dirname(__FILE__) . '/lib/Autoloader.php';
 at_id(new Autoloader())->register();
@@ -39,7 +39,13 @@ function at_id($x) {
  * Service container.
  */
 function at_container($service_name) {
-  return at_id(new \Drupal\at_base\Container())->get($service_name);
+    static $container = NULL;
+
+    if (!$container) {
+        $container = new \Drupal\at_base\Container();
+    }
+
+    return $container[$service_name];
 }
 
 /**

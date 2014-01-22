@@ -76,13 +76,16 @@ class Service_Resolver {
    * @see resolveDefinition()
    */
   private function resolveDependencies($array) {
-    foreach ($array as $item) {
-      if (is_array($item))             $this->resolveDependencies($item);
-      if (!is_string($item))           continue;
-      if ('@' !== substr($item, 0, 1)) continue;
+    foreach ($array as $id) {
+      if (is_array($id)) {
+          $this->resolveDependencies($id);
+      }
 
-      $service_name = substr($item, 1);
-      at_container('container')->set($service_name);
+      if (!is_string($id) || '@' !== substr($id, 0, 1)) {
+          continue;
+      }
+
+      at_container(substr($id, 1));
     }
   }
 
@@ -100,18 +103,12 @@ class Service_Resolver {
 
       if (!empty($def['factory_service'])) {
         $f = $c[$def['factory_service']];
-        return call_user_func_array(
-          array($f, $def['factory_method']),
-          $def['arguments']
-        );
+        return call_user_func_array(array($f, $def['factory_method']), $def['arguments']);
       }
 
       if (!empty($def['factory_class'])) {
         $f = new $def['factory_class'];
-        return call_user_func_array(
-          array($f, $def['factory_method']),
-          $def['arguments']
-        );
+        return call_user_func_array(array($f, $def['factory_method']), $def['arguments']);
       }
 
       $class = new \ReflectionClass($def['class']);
