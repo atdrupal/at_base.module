@@ -7,14 +7,16 @@ namespace Drupal\at_base\Twig\Filters;
  *
  * @todo  More test case for view with custom template, …
  */
-class Views {
+class Views
+{
   private $view;
   private $name;
   private $display_id = 'default';
   private $template;
   private $arguments = array();
 
-  public function __construct($name, $display_id = 'default', $arguments = array()) {
+  public function __construct($name, $display_id = 'default', $arguments = array())
+  {
     if (!$this->view = views_get_view($name)) {
       throw new \Exception('View not found: '. $this->name);
     }
@@ -24,7 +26,8 @@ class Views {
     $this->setArguments($arguments);
   }
 
-  public function setDisplayId($display_id) {
+  public function setDisplayId($display_id)
+  {
     $this->display_id = $display_id;
     $this->view->set_display($display_id);
 
@@ -33,7 +36,8 @@ class Views {
     }
   }
 
-  public function setArguments($arguments) {
+  public function setArguments($arguments)
+  {
     $this->arguments = $arguments;
 
     if (is_array($this->arguments)) {
@@ -41,7 +45,8 @@ class Views {
     }
   }
 
-  public function setTemplate($template) {
+  public function setTemplate($template)
+  {
     $this->template = at_container('helper.real_path')->get($template);
   }
 
@@ -50,7 +55,8 @@ class Views {
    *
    * @todo Remove this magic
    */
-  protected function suggestTemplate() {
+  protected function suggestTemplate()
+  {
     $suggestions = array();
     $suggestions[] = path_to_theme() . "/templates/views/{$this->name}.{$this->display_id}.html.twig";
     $suggestions[] = path_to_theme() . "/templates/views/{$this->name}.html.twig";
@@ -61,7 +67,8 @@ class Views {
     }
   }
 
-  public function execute() {
+  public function execute()
+  {
     // ---------------------
     // No template, use default
     // ---------------------
@@ -90,7 +97,8 @@ class Views {
     return at_container('twig')->render($this->template, $vars);
   }
 
-  public static function render($name, $display_id = 'default') {
+  public static function render($name, $display_id = 'default')
+  {
     $args = func_get_args();
     array_shift($args); // $name
     if (count($args)) {
@@ -115,8 +123,7 @@ class Views {
       }
 
       return $me->execute();
-    }
-    catch (\Exception $e) {
+    } catch (\Exception $e) {
       return $e->getMessage();
     }
   }

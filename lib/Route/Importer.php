@@ -1,7 +1,8 @@
 <?php
 namespace Drupal\at_base\Route;
 
-class Importer {
+class Importer
+{
   /**
    * @var string
    */
@@ -15,12 +16,14 @@ class Importer {
   /**
    * @param string $module
    */
-  public function setModule($module) {
+  public function setModule($module)
+  {
     $this->module = $module;
     return $this;
   }
 
-  public function import() {
+  public function import()
+  {
     $data = at_config($this->module, 'routes', $refresh = TRUE)->get('routes');
 
     foreach ($data as $route_name => $route_data) {

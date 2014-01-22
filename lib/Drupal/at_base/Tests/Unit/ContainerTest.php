@@ -4,15 +4,18 @@ namespace Drupal\at_base\Tests\Unit;
 
 use Drupal\at_base\Helper\Test\UnitTestCase;
 
-class ContainerTest extends UnitTestCase {
-  public function getInfo() {
+class ContainerTest extends UnitTestCase
+{
+  public function getInfo()
+  {
     return array('name' => 'AT Unit: Container') + parent::getInfo();
   }
 
   /**
    * Test for at_container().
    */
-  public function testServiceContainer() {
+  public function testServiceContainer()
+  {
     // Simple service
     $service_1 = at_container('helper.content_render');
     $this->assertEqual('Drupal\at_base\Helper\Content_Render', get_class($service_1));
@@ -29,7 +32,8 @@ class ContainerTest extends UnitTestCase {
     $this->assertEqual('Twig_Environment', get_class($service_4));
   }
 
-  public function testTaggedServices() {
+  public function testTaggedServices()
+  {
     // With weight
     $expected = array('cache.warmer.view', 'cache.warmer.entity', 'cache.warmer.simple');
     $actual = at_container('container')->find('cache.warmer');

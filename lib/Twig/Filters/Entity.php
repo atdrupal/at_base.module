@@ -9,14 +9,16 @@ namespace Drupal\at_base\Twig\Filters;
  *
  *     {{ 'user:1' | drupalEntity }}
  */
-class Entity {
+class Entity
+{
   /**
    * Callback for drupalEntity filter.
    *
    * @param  string  $string  %entity_type:%id:%view_mode
    * @param  array   $options
    */
-  public static function render($string, $options = array()) {
+  public static function render($string, $options = array())
+  {
     $string = explode(':', $string);
     if (2 !== count($string)) {
       return '<!-- Wrong param -->';

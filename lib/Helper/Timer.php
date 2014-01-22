@@ -10,7 +10,7 @@ namespace Drupal\at_base\Helper;
  *   $timer = at_container('helper.timer');
  *
  *   // Set the callback — code to be benchmarked
- *   $timer->setCallback(function() { $modules = at_modules('at_base'); });
+ *   $timer->setCallback(function () { $modules = at_modules('at_base'); });
  *
  *   // Run it 10 times
  *   $timer->setTimes(10);
@@ -25,7 +25,8 @@ namespace Drupal\at_base\Helper;
  *   $data = $timer->run();
  * @code
  */
-class Timer {
+class Timer
+{
   private $callback;
   private $times = 1;
   private $memory = TRUE;
@@ -34,25 +35,29 @@ class Timer {
   /**
    * @param  callable  $callback
    */
-  public function setCallback($callback) {
+  public function setCallback($callback)
+  {
     $this->callback = $callback;
   }
 
   /**
    * @param int $times
    */
-  public function setTimes($times) {
+  public function setTimes($times)
+  {
     $this->times = $times;
   }
 
   /**
    * @param boolean $memory
    */
-  public function setMemory($memory) {
+  public function setMemory($memory)
+  {
     $this->memory = $memory;
   }
 
-  public function setXProfConfig($xhprof_config = array()) {
+  public function setXProfConfig($xhprof_config = array())
+  {
     $this->xhprof_config = $xhprof_config;
 
     if (empty($this->xhprof_config['domain'])) {
@@ -68,7 +73,8 @@ class Timer {
     }
   }
 
-  public function run() {
+  public function run()
+  {
     // Start timer, memory, profile
     // memory_get_peak_usage
     if ($this->memory) {
@@ -98,12 +104,14 @@ class Timer {
     return $return;
   }
 
-  private function profileStart() {
+  private function profileStart()
+  {
     if (empty($this->xhprof_config)) return;
     xhprof_enable();
   }
 
-  private function profileStop() {
+  private function profileStop()
+  {
     if (empty($this->xhprof_config)) return array();
 
     $xhprof_data = xhprof_disable();

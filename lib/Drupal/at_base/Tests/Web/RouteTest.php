@@ -5,8 +5,10 @@ namespace Drupal\at_base\Tests\Web;
 /**
  * Test cases for routing feature.
  */
-class RouteTest extends \DrupalWebTestCase {
-  public function getInfo() {
+class RouteTest extends \DrupalWebTestCase
+{
+  public function getInfo()
+  {
     return array(
       'name' => 'AT Base: Route',
       'description' => 'Make sure the routing feature is working correctly.',
@@ -14,12 +16,14 @@ class RouteTest extends \DrupalWebTestCase {
     );
   }
 
-  public function setUp() {
+  public function setUp()
+  {
     $this->profile = 'testing';
     parent::setUp('atest_base', 'atest_route');
   }
 
-  public function testRoutes() {
+  public function testRoutes()
+  {
     # ---------------------
     # Test /atest_route/drupal
     # ---------------------

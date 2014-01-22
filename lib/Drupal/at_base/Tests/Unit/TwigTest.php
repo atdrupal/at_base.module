@@ -4,17 +4,21 @@ namespace Drupal\at_base\Tests\Unit;
 
 use Drupal\at_base\Helper\Test\UnitTestCase;
 
-class TwigTest extends UnitTestCase {
-  public function getInfo() {
+class TwigTest extends UnitTestCase
+{
+  public function getInfo()
+  {
     return array('name' => 'AT Unit: Twig') + parent::getInfo();
   }
 
-  public function testServiceContainer() {
+  public function testServiceContainer()
+  {
     $this->assertEqual('Twig_Environment', get_class(at_container('twig')));
     $this->assertEqual('Twig_Environment', get_class(at_container('twig_string')));
   }
 
-  public function testDefaultFilters() {
+  public function testDefaultFilters()
+  {
     $twig = at_container('twig');
     $filters = $twig->getFilters();
 
@@ -27,12 +31,14 @@ class TwigTest extends UnitTestCase {
     }
   }
 
-  public function testTwigStringLoader() {
+  public function testTwigStringLoader()
+  {
     $output = \AT::twig_string()->render('Hello {{ name }}', array('name' => 'Andy Truong'));
     $this->assertEqual('Hello Andy Truong', $output, 'Template string is rendered correctly.');
   }
 
-  public function testCacheFilter() {
+  public function testCacheFilter()
+  {
     $string_1  = "{% set options = { cache_id: 'atestTwigCache:1' } %}";
     $string_1 .= "\n {{ 'atest_base.service_1:hello' | cache(options) }}";
     $string_2  = "{% set options = { cache_id: 'atestTwigCache:2' } %}";

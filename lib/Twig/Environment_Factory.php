@@ -1,12 +1,14 @@
 <?php
 namespace Drupal\at_base\Twig;
 
-class Environment_Factory {
+class Environment_Factory
+{
   private static $twig;
   private static $loader;
   private $options;
 
-  public function getObject() {
+  public function getObject()
+  {
     if (!self::$twig) {
       $this->options = array(
         'debug' => at_debug(),
@@ -21,19 +23,22 @@ class Environment_Factory {
     return self::$twig;
   }
 
-  public function getFileService($twig) {
+  public function getFileService($twig)
+  {
     $service = clone $twig;
     $service->setLoader($this->getFileLoader());
     return $service;
   }
 
-  public function getStringService($twig) {
+  public function getStringService($twig)
+  {
     $service = clone $twig;
     $service->setLoader(new \Twig_Loader_String());
     return $service;
   }
 
-  private function fetchService() {
+  private function fetchService()
+  {
     require_once at_library('twig') . '/lib/Twig/Autoloader.php';
 
     \Twig_Autoloader::register();
@@ -49,7 +54,8 @@ class Environment_Factory {
     return $twig;
   }
 
-  private function getFileLoader() {
+  private function getFileLoader()
+  {
     if (!self::$loader) {
       self::$loader = $this->fetchFileLoader();
     }
@@ -60,7 +66,8 @@ class Environment_Factory {
   /**
    * @todo cache me
    */
-  private function fetchFileLoader() {
+  private function fetchFileLoader()
+  {
     $loader = new \Twig_Loader_Filesystem(DRUPAL_ROOT);
 
     // Add @module shortcuts

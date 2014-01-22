@@ -20,18 +20,21 @@ namespace Drupal\at_base;
  * @author Kris Wallsmith <kris.wallsmith@gmail.com>
  * @author Fabien Potencier <fabien.potencier@symfony-project.org>
  */
-class Autoloader {
+class Autoloader
+{
   private $_fileExtension = '.php';
   private $_namespace = 'Drupal';
   private $_includePath;
   private $_namespaceSeparator = '\\';
 
-  public function __construct($ns = 'Drupal', $includePath = NULL) {
+  public function __construct($ns = 'Drupal', $includePath = NULL)
+  {
       $this->_namespace = $ns;
       $this->_includePath = $includePath ? $includePath : DRUPAL_ROOT;
   }
 
-  public function register($throw = FALSE, $prepend = FALSE) {
+  public function register($throw = FALSE, $prepend = FALSE)
+  {
     spl_autoload_register(
       array($this, $this->_namespace === 'Drupal' ? 'loadDrupalClass' : 'loadClass'),
       $throw,
@@ -45,7 +48,8 @@ class Autoloader {
    * @param string $className The name of the class to load.
    * @return void
    */
-  public function loadClass($className) {
+  public function loadClass($className)
+  {
     if (null === $this->_namespace || $this->_namespace.$this->_namespaceSeparator === substr($className, 0, strlen($this->_namespace.$this->_namespaceSeparator))) {
       $fileName = $namespace = '';
       if (false !== ($lastNsPos = strripos($className, $this->_namespaceSeparator))) {
@@ -62,7 +66,8 @@ class Autoloader {
   /**
    * Method to load Drupal classes
    */
-  public function loadDrupalClass($className) {
+  public function loadDrupalClass($className)
+  {
     $do_load = null === $this->_namespace;
     $do_load = $do_load || $this->_namespace.$this->_namespaceSeparator === substr($className, 0, strlen($this->_namespace.$this->_namespaceSeparator));
     if (!$do_load) return;

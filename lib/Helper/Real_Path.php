@@ -11,8 +11,10 @@ namespace Drupal\at_base\Helper;
  *
  * @see \At_Base_TestCase::testRealPath()
  */
-class Real_Path {
-  public function get($path) {
+class Real_Path
+{
+  public function get($path)
+  {
     $real_path = $path;
 
     if (strpos($real_path, '%theme/') !== FALSE) {

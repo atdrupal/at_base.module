@@ -4,13 +4,16 @@ namespace Drupal\at_base\Twig;
 use \Drupal\at_base\Twig\Filters as Twig_Filters;
 use \Drupal\at_base\Twig\Functions as Twig_Functions;
 
-class Extension extends \Twig_Extension {
-  public function getName() {
+class Extension extends \Twig_Extension
+{
+  public function getName()
+  {
     return 'AT Base';
   }
 
-  function getFilters() {
-    return at_cache(array('id' => 'at:twig:fts'), function() {
+  public function getFilters()
+  {
+    return at_cache(array('id' => 'at:twig:fts'), function () {
       $filters = array();
 
       $fs = at_container('helper.config_fetcher')->getItems('at_base', 'twig_filters', 'twig_filters', TRUE);
@@ -26,8 +29,9 @@ class Extension extends \Twig_Extension {
     });
   }
 
-  function getFunctions() {
-    return at_cache(array('id' => 'at:twig:fns'), function() {
+  public function getFunctions()
+  {
+    return at_cache(array('id' => 'at:twig:fns'), function () {
       $functions = array();
 
       $fns = at_container('helper.config_fetcher')->getItems('at_base', 'twig_functions', 'twig_functions', TRUE);
@@ -39,7 +43,8 @@ class Extension extends \Twig_Extension {
     });
   }
 
-  function getGlobals() {
+  public function getGlobals()
+  {
     global $user;
 
     return array(

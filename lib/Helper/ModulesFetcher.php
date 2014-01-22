@@ -4,7 +4,8 @@ namespace Drupal\at_base\Helper;
 /**
  * @see at_modules()
  */
-class ModulesFetcher {
+class ModulesFetcher
+{
   private $base_module;
   private $config_file;
 
@@ -12,12 +13,14 @@ class ModulesFetcher {
    * @param string $base_module
    * @param string $config_file
    */
-  public function __construct($base_module, $config_file) {
+  public function __construct($base_module, $config_file)
+  {
     $this->base_module = $base_module;
     $this->config_file = $config_file;
   }
 
-  public function fetch($enabled_modules) {
+  public function fetch($enabled_modules)
+  {
     $modules = array();
 
     foreach ($enabled_modules as $name => $info) {
@@ -29,7 +32,8 @@ class ModulesFetcher {
     return $modules;
   }
 
-  private function validateModule($name, $info) {
+  private function validateModule($name, $info)
+  {
     if (empty($info['dependencies'])) {
       return FALSE;
     }

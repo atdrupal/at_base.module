@@ -2,7 +2,8 @@
 
 namespace Drupal\at_base\Route;
 
-class RouteToMenu {
+class RouteToMenu
+{
   /**
    * @var string
    */
@@ -28,7 +29,8 @@ class RouteToMenu {
    * @param array $route_name
    * @param array $route_data
    */
-  public function __construct($module, $route_name, $route_data) {
+  public function __construct($module, $route_name, $route_data)
+  {
     $this->module     = $module;
     $this->route_name = $route_name;
     $this->route_data = $route_data;
@@ -37,7 +39,8 @@ class RouteToMenu {
   /**
    * We can not define constants in yaml, this method is to convert them.
    */
-  public function convert() {
+  public function convert()
+  {
     $this->menu_item = $this->route_data + array(
       'pattern' => $this->route_name,
       'file path' => drupal_get_path('module', $this->module)

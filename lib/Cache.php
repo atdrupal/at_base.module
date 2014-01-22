@@ -1,7 +1,8 @@
 <?php
 namespace Drupal\at_base;
 
-class Cache {
+class Cache
+{
   /**
    * Cache bin
    * @var string
@@ -56,7 +57,8 @@ class Cache {
    */
   private $arguments;
 
-  public function __construct($options, $callback, $arguments = array()) {
+  public function __construct($options, $callback, $arguments = array())
+  {
     $_keys = array(
       'bin' => 'cache',
       'id' => '',
@@ -87,7 +89,8 @@ class Cache {
    *
    * @return  mixed
    */
-  public function get() {
+  public function get()
+  {
     if (!$this->reset && $cache = at_container('wrapper.cache')->get($this->id, $this->bin)) {
       if (!empty($cache->data) || $this->allow_empty) {
         return $cache->data;
@@ -102,7 +105,8 @@ class Cache {
    *
    * @return mixed
    */
-  public function fetch() {
+  public function fetch()
+  {
     if (!is_callable($this->callback)) {
       throw new \InvalidArgumentException('Invalid callback: ' . print_r($this->callback, TRUE));
     }
@@ -117,7 +121,8 @@ class Cache {
    *
    * @param  mixed $data
    */
-  protected function write($data) {
+  protected function write($data)
+  {
     if (FALSE !== at_container('wrapper.cache')->set($this->id, $data, $this->bin, strtotime($this->ttl))) {
       if (!empty($this->tags)) {
         $this->removeAllTags();
@@ -134,7 +139,8 @@ class Cache {
    * @param string $tag
    * @see   at_base_flush_caches()
    */
-  public function addTag($tag) {
+  public function addTag($tag)
+  {
     return at_container('wrapper.db')->insert('at_base_cache_tag')
       ->fields(array(
           'bin' => $this->bin,
@@ -145,7 +151,8 @@ class Cache {
     ;
   }
 
-  public function removeAllTags() {
+  public function removeAllTags()
+  {
     return at_container('wrapper.db')->delete('at_base_cache_tag')
       ->condition('bin', $this->bin)
       ->condition('cid', $this->id)
@@ -158,7 +165,8 @@ class Cache {
    *
    * @param  string $tag
    */
-  public function removeTag($tag) {
+  public function removeTag($tag)
+  {
     return at_container('wrapper.db')->delete('at_base_cache_tag')
       ->condition('bin', $this->bin)
       ->condition('cid', $this->id)

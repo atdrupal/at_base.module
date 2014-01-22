@@ -1,12 +1,14 @@
 <?php
 namespace Drupal\at_base\Drush\Command\AtRequire;
 
-class DependencyFetcher {
+class DependencyFetcher
+{
   private $name;
   private $info;
   private $contrib_destination;
 
-  public function __construct($name, $info) {
+  public function __construct($name, $info)
+  {
     $this->name = $name;
     $this->info = $info;
   }
@@ -17,13 +19,15 @@ class DependencyFetcher {
    *   1. Update
    *   2. Download in site directory
    */
-  public function fetch() {
+  public function fetch()
+  {
     if ($contrib_destination = $this->getContribDestination()) {
       $this->_fetchDependency($contrib_destination);
     }
   }
 
-  private function getDestination() {
+  private function getDestination()
+  {
     if ($this->info['type']  === 'module')   return 'modules';
     if ($this->info['type']  === 'theme')    return 'themes';
     if ($this->info['type']  === 'library')  return 'libraries';
@@ -34,7 +38,8 @@ class DependencyFetcher {
    *
    * @return string|boolean
    */
-  private function getContribDestination() {
+  private function getContribDestination()
+  {
     if (!is_null($this->contrib_destination)) {
       return $this->contrib_destination;
     }
@@ -51,8 +56,7 @@ class DependencyFetcher {
       $msg = '[at_require] %s is already exist (%s), would you like to override it?';
       $msg = sprintf($msg, $this->name, $p_site);
       $this->contrib_destination = drush_confirm($msg) ? conf_path() : FALSE;
-    }
-    elseif (is_dir($p_all))  {
+    } elseif (is_dir($p_all))  {
       $msg = '[at_require] %s is already exist (%s), would you like to override it?';
       $msg = sprintf($msg, $this->name, $p_all);
       $choice = array(0 => 'Skip download', 1 => 'Re-download', 2 => 'Download to ' . $p_site);
@@ -63,7 +67,8 @@ class DependencyFetcher {
     return $this->contrib_destination;
   }
 
-  private function _fetchDependency($contrib_destination = 'sites/all') {
+  private function _fetchDependency($contrib_destination = 'sites/all')
+  {
     $this->info += array(
       'type' => $this->info['type'],
       'destination' => $this->getDestination(),

@@ -14,9 +14,10 @@ class Service_Resolver
      * @param string $id
      * @return \Closure
      */
-    public function getClosure($id) {
+    public function getClosure($id)
+    {
         $def = $this->getDefinition($id);
-        return function($c) use ($def) {
+        return function ($c) use ($def) {
             $args = !empty($def['arguments']) ? $def['arguments'] : array();
 
             // Make arguments are objects.
@@ -34,7 +35,8 @@ class Service_Resolver
      * Get service definition in configuration files.
      * @param string $id
      */
-    private function getDefinition($id) {
+    private function getDefinition($id)
+    {
         $def = at_container('helper.config_fetcher')
                 ->getItem('at_base', 'services', 'services', $id, TRUE);
         if (is_null($def)) {
@@ -116,7 +118,8 @@ class Service_Resolver
      * @param type $args
      * @return type
      */
-    public function convertDefinitionToService($def, $args = array()) {
+    public function convertDefinitionToService($def, $args = array())
+    {
         if (!empty($def['factory_service'])) {
             return call_user_func_array(
               array(at_container($def['factory_service']), $def['factory_method']), $args

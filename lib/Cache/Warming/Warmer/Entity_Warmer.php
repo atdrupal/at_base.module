@@ -1,7 +1,8 @@
 <?php
 namespace Drupal\at_base\Cache\Warming\Warmer;
 
-class Entity_Warmer implements Warmer_Interface {
+class Entity_Warmer implements Warmer_Interface
+{
   private $entity_info;
   private $entity_type;
   private $entity;
@@ -9,10 +10,12 @@ class Entity_Warmer implements Warmer_Interface {
   private $entity_id;
   private $tokens = array('%entity_type', '%type', '%entity_bundle', '%bundle', '%entity_id', '%id');
 
-  public function __construct() {
+  public function __construct()
+  {
   }
 
-  public function validateTag($tag) {
+  public function validateTag($tag)
+  {
     foreach ($this->tokens as $token) {
       if (FALSE !== strpos($tag, $token)) {
         return TRUE;
@@ -20,7 +23,8 @@ class Entity_Warmer implements Warmer_Interface {
     }
   }
 
-  private function setEntityInfoFromContext($context) {
+  private function setEntityInfoFromContext($context)
+  {
     if (empty($context['entity_type'])) {
       throw new \Exception('Missing entity type');
     }
@@ -44,18 +48,21 @@ class Entity_Warmer implements Warmer_Interface {
     $this->entity_id     = $this->entity->{$info['entity keys']['id']};
   }
 
-  private function getTagFind() {
+  private function getTagFind()
+  {
     return array('%entity_type', '%type', '%entity_bundle', '%bundle', '%entity_id', '%id');
   }
 
-  private function getTagReplace() {
+  private function getTagReplace()
+  {
     $type = $this->entity_type;
     $bundle = $this->entity_bundle;
     $id = $this->entity_id;
     return array($type, $type, $bundle, $bundle, $id, $id, $id);
   }
 
-  public function processTag($tag, $context = array()) {
+  public function processTag($tag, $context = array())
+  {
     $this->setEntityInfoFromContext($context);
 
     // Replace entity's tokens with real values

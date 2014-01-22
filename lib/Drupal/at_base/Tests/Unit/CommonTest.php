@@ -4,15 +4,18 @@ namespace Drupal\at_base\Tests\Unit;
 
 use Drupal\at_base\Helper\Test\UnitTestCase;
 
-class CommonTest extends UnitTestCase {
-  public function getInfo() {
+class CommonTest extends UnitTestCase
+{
+  public function getInfo()
+  {
     return array('name' => 'AT Unit: Basic features') + parent::getInfo();
   }
 
   /**
    * Autoload feature
    */
-  public function testAutoloader() {
+  public function testAutoloader()
+  {
     $this->assertTrue(class_exists('Drupal\at_base\Cache\Warming\Warmer'));
     $this->assertTrue(class_exists('Drupal\at_base\Container'));
   }
@@ -20,7 +23,8 @@ class CommonTest extends UnitTestCase {
   /**
    * Test for at_id() function.
    */
-  public function testAtId() {
+  public function testAtId()
+  {
     at_id(new \Drupal\at_base\Autoloader())->register();
     $this->assertTrue(TRUE, 'No exception raised.');
   }
@@ -28,7 +32,8 @@ class CommonTest extends UnitTestCase {
   /**
    * Test for \Drupal\at_base\Helper\RealPath class
    */
-  public function testRealPath() {
+  public function testRealPath()
+  {
     $expected = path_to_theme() . '/templates/page.home.html.twig';
     $actual = at_container('helper.real_path')->get('%theme/templates/page.home.html.twig');
     $this->assertEqual($expected, $actual);
@@ -37,7 +42,8 @@ class CommonTest extends UnitTestCase {
   /**
    * Test ExpressionLanguage.
    */
-  public function testExpressionLanguage() {
+  public function testExpressionLanguage()
+  {
     $expected = 'Symfony\Component\ExpressionLanguage\ExpressionLanguage';
     $actual = get_class(at_container('expression_language'));
     $this->assertEqual($expected, $actual);

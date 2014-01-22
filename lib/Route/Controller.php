@@ -40,7 +40,8 @@ class Controller
      *
      * @see \Drupal\at_base\Route\RouteToMenu
      */
-    public static function pageCallback() {
+    public static function pageCallback()
+    {
         $args = func_get_args();
         $route = array_pop($args);
 
@@ -61,7 +62,8 @@ class Controller
      * @param int $position
      * @return array
      */
-    private function repairArguments($array, $position) {
+    private function repairArguments($array, $position)
+    {
         foreach ($array as $k => $v) {
             if (is_numeric($v) && $v == $position) {
                 $array[$k] = $this->menu_item['map'][$position];
@@ -76,7 +78,8 @@ class Controller
      * @param array $route
      * @return \Drupal\at_base\Route\Controller
      */
-    public function setRoute($route) {
+    public function setRoute($route)
+    {
         foreach (explode('/', $route['pattern']) as $position => $part) {
             if (strpos($part, '%') !== 0) {
                 continue;
@@ -102,7 +105,8 @@ class Controller
      *
      * @return array
      */
-    public function execute() {
+    public function execute()
+    {
         // User want cache the page
         if (!empty($this->route['cache'])) {
             $this->render->setCacheHandler(new Cache_Handler());

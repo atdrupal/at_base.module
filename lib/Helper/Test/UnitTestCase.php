@@ -8,10 +8,12 @@ require_once dirname(__FILE__) . '/Database.php';
 /**
  * cache_get()/cache_set() does not work on unit test cases.
  */
-abstract class UnitTestCase extends \DrupalUnitTestCase {
+abstract class UnitTestCase extends \DrupalUnitTestCase
+{
   protected $container;
 
-  public function getInfo() {
+  public function getInfo()
+  {
     return array(
       'name' => 'AT Unit',
       'description' => 'Make sure the at_cache() is working correctly.',
@@ -19,15 +21,16 @@ abstract class UnitTestCase extends \DrupalUnitTestCase {
     );
   }
 
-  public function setUp() {
+  public function setUp()
+  {
     $this->container = at_container('container');
 
     // Mock db, cache
     unset($this->container['wrapper.db']);
     unset($this->container['wrapper.cache']);
 
-    $this->container['wrapper.db'] = function() { return new \Drupal\at_base\Helper\Test\Database(); };
-    $this->container['wrapper.cache'] = function() { return new \Drupal\at_base\Helper\Test\Cache(); };
+    $this->container['wrapper.db'] = function () { return new \Drupal\at_base\Helper\Test\Database(); };
+    $this->container['wrapper.cache'] = function () { return new \Drupal\at_base\Helper\Test\Cache(); };
 
     // Make our autoloader run first — drush_print_r(spl_autoload_functions());
     spl_autoload_unregister('drupal_autoload_class');

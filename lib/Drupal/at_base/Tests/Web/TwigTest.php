@@ -5,8 +5,10 @@ namespace Drupal\at_base\Tests\Web;
 /**
  * cache_get()/cache_set() does not work on unit test cases.
  */
-class TwigTest extends \DrupalWebTestCase {
-  public function getInfo() {
+class TwigTest extends \DrupalWebTestCase
+{
+  public function getInfo()
+  {
     return array(
       'name' => 'AT Base: Twig Service',
       'description' => 'Test Twig service',
@@ -14,12 +16,14 @@ class TwigTest extends \DrupalWebTestCase {
     );
   }
 
-  public function setUp() {
+  public function setUp()
+  {
     $this->profile = 'testing';
     parent::setUp('atest_base');
   }
 
-  public function testTwigFilters() {
+  public function testTwigFilters()
+  {
     $output = at_container('twig_string')->render("{{ 'user:1'|drupalEntity }}");
     $this->assertTrue(strpos($output, 'History'), 'Found text "History"');
     $this->assertTrue(strpos($output, 'Member for'), 'Found text: "Member for"');
@@ -35,7 +39,8 @@ class TwigTest extends \DrupalWebTestCase {
   /**
    * Test easy block definition.
    */
-  public function testEasyBlocks() {
+  public function testEasyBlocks()
+  {
     $block_1 = \AT::twig_string()->render("{{ 'at_base:atest_base|hi_s'  | drupalBlock(TRUE) }}");
     $block_2 = \AT::twig_string()->render("{{ 'at_base:atest_base|hi_t'  | drupalBlock(TRUE) }}");
     $block_3 = \AT::twig_string()->render("{{ 'at_base:atest_base|hi_ts' | drupalBlock(TRUE) }}");

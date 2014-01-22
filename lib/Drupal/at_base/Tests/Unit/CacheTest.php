@@ -5,17 +5,20 @@ namespace Drupal\at_base\Tests\Unit;
 use Drupal\at_base\Helper\Test\UnitTestCase;
 use Drupal\at_base\Helper\Test\Cache;
 
-class CacheTest extends UnitTestCase {
+class CacheTest extends UnitTestCase
+{
   /**
    * @var Cache
    */
   private $cache;
 
-  public function getInfo() {
+  public function getInfo()
+  {
     return array('name' => 'AT Unit: Cache') + parent::getInfo();
   }
 
-  public function setUp() {
+  public function setUp()
+  {
     parent::setUp();
 
     $this->cache = at_container('wrapper.cache');
@@ -25,11 +28,13 @@ class CacheTest extends UnitTestCase {
    * Helper method for testObjectCallback().
    * @return int
    */
-  public static function time() {
+  public static function time()
+  {
     return time();
   }
 
-  public function testFakeCacheWrapper() {
+  public function testFakeCacheWrapper()
+  {
     $wrapper = at_container('wrapper.cache');
 
     // Make sure the cache wrapper is faked correctly
@@ -43,7 +48,8 @@ class CacheTest extends UnitTestCase {
     $this->assertEqual(__CLASS__, $wrapper->get(__FUNCTION__)->data);
   }
 
-  public function testAtCache() {
+  public function testAtCache()
+  {
     $cache_options = array('bin' => 'cache', 'reset' => FALSE, 'ttl' => '+ 15 minutes');
 
     $callbacks['closure']    = array(function () { return time(); }, array());
@@ -62,7 +68,8 @@ class CacheTest extends UnitTestCase {
     }
   }
 
-  public function testStringOptions() {
+  public function testStringOptions()
+  {
     $id = 'atestStringOptions';
     $bin = 'cache';
     $ttl = '';
@@ -93,7 +100,8 @@ class CacheTest extends UnitTestCase {
     $this->assertEqual($cached, $output);
   }
 
-  public function testAtCacheAllowEmpty() {
+  public function testAtCacheAllowEmpty()
+  {
     $options = array('bin' => 'cache', 'reset' => FALSE, 'ttl' => '+ 15 minutes');
     $options = array('id' => 'at_test:time:allowEmpty', 'reset' => TRUE, 'allow_empty' => FALSE) + $options;
 
@@ -111,14 +119,15 @@ class CacheTest extends UnitTestCase {
     $this->assertNotEqual($time_1, $time_2);
   }
 
-  public function testCacheTagging() {
+  public function testCacheTagging()
+  {
     $o = array('bin' => 'cache', 'reset' => FALSE, 'ttl' => '+ 15 minutes');
     $o = array('id' => 'atest_base:cache:tag:1', 'tags' => array('at_base', 'atest')) + $o;
 
     // ---------------------------------------------------------------
     // Tag must be written when cache with tag(s)
     // ---------------------------------------------------------------
-    at_cache($o, function(){ return 'Data #1'; });
+    at_cache($o, function () { return 'Data #1'; });
 
     $db_log = at_container('wrapper.db')->getLog();
     $tag1_row = array('bin' => 'cache', 'cid' => $o['id'], 'tag' => $o['tags'][0]);
@@ -149,7 +158,8 @@ class CacheTest extends UnitTestCase {
   /**
    * @todo Test when we can fake the service.
    */
-  public function testCacheWarming() {
+  public function testCacheWarming()
+  {
     // Fake the cache.tag_flusher service
 
     // Warmer > Simple

@@ -7,27 +7,32 @@ namespace Drupal\at_base\Cache\Warming;
  *
  * Delete cached data by tags.
  */
-class Tag_Flusher {
+class Tag_Flusher
+{
   private $tag = array();
 
-  public function resetTags() {
+  public function resetTags()
+  {
     $this->tags = array();
     return $this;
   }
 
-  public function setTags($tags) {
+  public function setTags($tags)
+  {
     $this->tags = $tags;
     return $this;
   }
 
-  public function addTag($tag) {
+  public function addTag($tag)
+  {
     if (!in_array($tag, $this->tags)) {
       $this->tags[] = $tag;
     }
     return $this;
   }
 
-  public function flush() {
+  public function flush()
+  {
     if (empty($this->tags)) {
       return;
     }

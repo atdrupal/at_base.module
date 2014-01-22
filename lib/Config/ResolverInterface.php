@@ -1,8 +1,8 @@
 <?php
 namespace Drupal\at_base\Config;
 
-interface ResolverInterface {
-
+interface ResolverInterface
+{
   /**
    * @param Config $config
    *

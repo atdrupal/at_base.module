@@ -36,14 +36,16 @@ namespace Drupal\at_base\Hook\Entity;
  * @todo  Test me
  * @todo  Update wiki
  */
-class View_Alter {
+class View_Alter
+{
   protected $build;
   protected $entity_type;
   protected $bundle;
   protected $id;
   protected $view_mode;
 
-  public function __construct(&$build, $entity_type) {
+  public function __construct(&$build, $entity_type)
+  {
     $this->build = &$build;
     $this->entity_type = $entity_type;
     $this->bundle = $build['#bundle'];
@@ -51,7 +53,8 @@ class View_Alter {
     $this->view_mode = $build['#view_mode'];
   }
 
-  protected function resolveTokens($template) {
+  protected function resolveTokens($template)
+  {
     if (is_array($template)) {
       foreach ($template as $i => $_template) {
         $template[$i] = $this->resolveTokens($_template);
@@ -66,7 +69,8 @@ class View_Alter {
     );
   }
 
-  protected function build () {
+  protected function build()
+  {
     if ($config = $this->getConfig()) {
       $config['variables']  = isset($config['variables']) ? $config['variables'] : array();
       $config['variables'] += array('build' => $this->build);
@@ -80,7 +84,8 @@ class View_Alter {
     }
   }
 
-  public function execute() {
+  public function execute()
+  {
     if ($build = $this->build()) {
       $this->build = array(
         '#entity_type' => $this->entity_type,
@@ -97,7 +102,8 @@ class View_Alter {
   /**
    * Get cached render configuration for context.
    */
-  public function getConfig() {
+  public function getConfig()
+  {
     $o['id'] = "at_theming:entity_template:{$this->entity_type}:{$this->bundle}:{$this->view_mode}";
     $o['ttl'] = '+ 1 year';
     return at_cache($o, array($this, 'fetchConfig'));
@@ -106,7 +112,8 @@ class View_Alter {
   /**
    * Get cached render configuration for context.
    */
-  public function fetchConfig() {
+  public function fetchConfig()
+  {
     foreach (at_modules('at_base', 'entity_template') as $module) {
       $config = at_config($module, 'entity_template')->get('entity_templates');
       if (!isset($config[$this->entity_type])) {
@@ -117,21 +124,17 @@ class View_Alter {
 
       if (isset($config[$this->bundle])) {
         $config = $config[$this->bundle];
-      }
-      elseif (isset($config['all'])) {
+      } elseif (isset($config['all'])) {
         $config = $config['all'];
-      }
-      else {
+      } else {
         continue;
       }
 
       if (isset($config[$this->view_mode])) {
         $config = $config[$this->view_mode];
-      }
-      elseif (isset($config['all'])) {
+      } elseif (isset($config['all'])) {
         $config = $config['all'];
-      }
-      else {
+      } else {
         continue;
       }
 
