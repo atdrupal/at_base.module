@@ -1,23 +1,19 @@
 <?php
 namespace Drupal\at_base\Controller;
 
-class TwigFormController
-{
+class TwigFormController {
   protected $form;
   protected $form_state;
 
-  public function setForm($form)
-  {
+  public function setForm($form) {
     $this->form = $form;
   }
 
-  public function setFormState(&$form_state)
-  {
+  public function setFormState(&$form_state) {
     $this->form_state = &$form_state;
   }
 
-  public function get()
-  {
+  public function get() {
     $form = array('#redirect' => FALSE);
     $form['string'] = array(
       '#type' => 'textarea',
@@ -29,8 +25,7 @@ class TwigFormController
 
   public function validate() {}
 
-  public function submit()
-  {
+  public function submit() {
     $string = $this->form_state['values']['string'];
     ob_start();
     print at_container('twig_string')->render($string);
@@ -38,7 +33,8 @@ class TwigFormController
 
     if (function_exists('dsm')) {
       dsm(ob_get_clean());
-    } else {
+    }
+    else {
       drupal_set_message(print_r(ob_get_clean(), TRUE));
     }
   }

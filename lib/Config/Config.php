@@ -1,8 +1,7 @@
 <?php
 namespace Drupal\at_base\Config;
 
-class Config
-{
+class Config {
   /**
    * Module name.
    *
@@ -30,20 +29,17 @@ class Config
    */
   private $config_data;
 
-  public function __construct(ResolverInterface $resolver)
-  {
+  public function __construct(ResolverInterface $resolver) {
     $this->id = 'config';
     $resolver->setConfig($this);
     $this->resolver = $resolver;
   }
 
-  public function getId()
-  {
+  public function getId() {
     return $this->id;
   }
 
-  public function setId($id)
-  {
+  public function setId($id) {
     if (!empty($this->config_data)) {
       $this->config_data = NULL;
     }
@@ -53,13 +49,11 @@ class Config
     return $this;
   }
 
-  public function getModule()
-  {
+  public function getModule() {
     return $this->module;
   }
 
-  public function setModule($module)
-  {
+  public function setModule($module) {
     if (!empty($this->config_data)) {
       $this->config_data = NULL;
     }
@@ -73,23 +67,21 @@ class Config
     return $this;
   }
 
-  public function getPath()
-  {
+  public function getPath() {
     return $this->resolver->getPath();
   }
 
   /**
    * Fetch configuration data.
    */
-  private function fetchData()
-  {
+  private function fetchData() {
     $resolver = $this->resolver;
-
+    
     $options = array('id' => "ATConfig:{$this->module}:{$this->id}");
     $options['ttl'] = '+ 1 year';
     $options['tags'] = array('at-config');
 
-    $this->config_data = at_cache($options, function () use ($resolver) {
+    $this->config_data = at_cache($options, function() use ($resolver) {
       return $resolver->fetchData();
     });
   }
@@ -100,8 +92,7 @@ class Config
    * @param  string $key Config key.
    * @return mixed
    */
-  public function get($key)
-  {
+  public function get($key) {
     if (!$this->config_data) {
       $this->fetchData();
     }
@@ -113,8 +104,7 @@ class Config
     return $this->config_data[$key];
   }
 
-  public function set($key, $data)
-  {
+  public function set($key, $data) {
     if (!$this->config_data) {
       $this->fetchData();
     }
@@ -122,21 +112,18 @@ class Config
     $this->config_data[$key] = $data;
   }
 
-  public function getAll()
-  {
+  public function getAll() {
     if (!$this->config_data) {
       $this->fetchData();
     }
     return $this->config_data;
   }
 
-  public function setAll($data)
-  {
+  public function setAll($data) {
     $this->config_data = $data;
   }
 
-  public function write()
-  {
+  public function write() {
     $this->resolver->writeData($this->config_data);
   }
 }

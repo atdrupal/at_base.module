@@ -1,15 +1,13 @@
 <?php
 namespace Drupal\at_base\Helper\Test;
 
-class Cache
-{
+class Cache {
   static $data;
 
   /**
    * @param boolean|string $cid
    */
-  public function get($cid, $bin = 'cache')
-  {
+  public function get($cid, $bin = 'cache') {
     if (isset(self::$data[$bin][$cid])) {
       return self::$data[$bin][$cid];
     }
@@ -17,8 +15,7 @@ class Cache
     return FALSE;
   }
 
-  public function set($cid, $data, $bin = 'cache', $expire = \CACHE_PERMANENT)
-  {
+  public function set($cid, $data, $bin = 'cache', $expire = \CACHE_PERMANENT) {
     self::$data[$bin][$cid] = (object)array(
       'cid' => $cid,
       'data' => $data,
@@ -28,11 +25,11 @@ class Cache
     );
   }
 
-  public function clearAll($cid = NULL, $bin = NULL, $wildcard = FALSE)
-  {
+  public function clearAll($cid = NULL, $bin = NULL, $wildcard = FALSE) {
     if ($wildcard) {
       unset(self::$data[$bin]);
-    } else {
+    }
+    else {
       unset(self::$data[$bin][$cid]);
     }
   }

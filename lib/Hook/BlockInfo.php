@@ -1,10 +1,8 @@
 <?php
 namespace Drupal\at_base\Hook;
 
-class BlockInfo
-{
-  public function import()
-  {
+class BlockInfo {
+  public function import() {
     $info = array();
     foreach (at_modules('at_base', 'blocks') as $module) {
       $info += $this->importResource($module);
@@ -12,8 +10,7 @@ class BlockInfo
     return $info;
   }
 
-  private function importResource($module)
-  {
+  private function importResource($module) {
     $info = array();
     foreach (at_config($module, 'blocks')->get('blocks') as $k => $block) {
       $cache = DRUPAL_CACHE_PER_ROLE;

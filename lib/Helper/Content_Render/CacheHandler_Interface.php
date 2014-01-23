@@ -6,8 +6,7 @@ namespace Drupal\at_base\Helper\Content_Render;
  *
  * @see Drupal\at_base\Helper\Content_Render::render()
  */
-interface CacheHandler_Interface
-{
+interface CacheHandler_Interface {
   /**
    * Cache options
    *

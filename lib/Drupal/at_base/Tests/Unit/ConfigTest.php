@@ -5,18 +5,15 @@ namespace Drupal\at_base\Tests\Unit;
 use \Drupal\at_base\Helper\Test\UnitTestCase;
 use \Drupal\at_base\Helper\ModulesFetcher;
 
-class ConfigTest extends UnitTestCase
-{
-  public function getInfo()
-  {
+class ConfigTest extends UnitTestCase {
+  public function getInfo() {
     return array('name' => 'AT Unit: Config') + parent::getInfo();
   }
 
   /**
    * Test case for at_config() function.
    */
-  public function testConfigGet()
-  {
+  public function testConfigGet() {
     // Test getPath(), case #1
     $expected_path = DRUPAL_ROOT . '/' . drupal_get_path('module', 'atest_config') . '/config/config.yml';
     $actual_path = at_config('atest_config')->getPath();
@@ -35,7 +32,8 @@ class ConfigTest extends UnitTestCase
     try {
       at_config('atest_config')->get('not_there');
       $this->assertTrue('No exception thrown');
-    } catch (\Drupal\at_base\Config\NotFoundException $e) {
+    }
+    catch (\Drupal\at_base\Config\NotFoundException $e) {
       $this->assertTrue('Throw NotFoundException if config item is not configured.');
     }
 
@@ -50,8 +48,7 @@ class ConfigTest extends UnitTestCase
   /**
    * Test for service: helper.config_fetcher
    */
-  public function testConfigFetcher()
-  {
+  public function testConfigFetcher() {
     $config_fetcher = at_container('helper.config_fetcher');
 
     // Get all
@@ -66,8 +63,7 @@ class ConfigTest extends UnitTestCase
   /**
    * Module weight can be updated correctly
    */
-  public function testWeight()
-  {
+  public function testWeight() {
     at_container('wrapper.db')->resetLog();
     at_id(new \Drupal\at_base\Hook\Flush_Cache())->resolveModuleWeight('atest_base', 10);
     $db_log = at_container('wrapper.db')->getLog('update', 'system');
@@ -84,8 +80,7 @@ class ConfigTest extends UnitTestCase
   /**
    * Make sure at_modules() function is working correctly.
    */
-  public function testAtModules()
-  {
+  public function testAtModules() {
     $enabled_modules = array();
 
     // Just check with two modules

@@ -24,8 +24,7 @@ use Drupal\at_base\Helper\Content_Render\CacheHandler_Interface;
  * @see  \Drupal\at_base\Hook\BlockView
  * @see  \At_Twig_TestCase::testContentRender()
  */
-class Content_Render
-{
+class Content_Render {
   /**
    * Data to be rendered.
    *
@@ -38,30 +37,25 @@ class Content_Render
    */
   private $cache_handler;
 
-  public function setData($data)
-  {
+  public function setData($data) {
     $this->data = $data;
     return $this;
   }
 
-  public function getData()
-  {
+  public function getData() {
     return $this->data;
   }
 
-  public function setCacheHandler(CacheHandler_Interface $cache_handler)
-  {
+  public function setCacheHandler(CacheHandler_Interface $cache_handler) {
     $this->cache_handler = $cache_handler;
     return $this;
   }
 
-  public function getCacheHandler()
-  {
+  public function getCacheHandler() {
     return $this->cache_handler;
   }
 
-  public function render($data = NULL)
-  {
+  public function render($data = NULL) {
     if (!is_null($data)) {
       $this->setdata($data);
     }
@@ -81,8 +75,7 @@ class Content_Render
     ;
   }
 
-  public function build()
-  {
+  public function build() {
     if (is_string($this->data)) {
       return $this->data;
     }
@@ -95,7 +88,8 @@ class Content_Render
 
       if (isset($return['#attached'])) {
         $return['#attached'] = array_merge_recursive($return['#attached'], $this->buildAttached());
-      } else {
+      }
+      else {
         $return['#attached'] = $this->buildAttached();
       }
     }
@@ -103,8 +97,7 @@ class Content_Render
     return $return;
   }
 
-  public function process()
-  {
+  public function process() {
     if (isset($this->data['function'])) {
       return $this->processFunction();
     }
@@ -126,22 +119,19 @@ class Content_Render
     }
   }
 
-  public function processFunction()
-  {
+  public function processFunction() {
     $func = $this->data['function'];
     $args = $this->getVariables();
     return call_user_func_array($func, $args);
   }
 
-  public function processForm()
-  {
+  public function processForm() {
     $args = array('at_form', $this->data['form']);
     $args[] = isset($this->data['form arguments']) ? $this->data['form arguments'] : array();
     return call_user_func_array('drupal_get_form', $args);
   }
 
-  public function processController()
-  {
+  public function processController() {
     @list($class, $method, $args) = $this->data['controller'];
     $obj = new $class();
     $args = !empty($args) ? $args : array();
@@ -156,8 +146,7 @@ class Content_Render
   /**
    * @todo  Test case for template as array.
    */
-  public function processTemplate()
-  {
+  public function processTemplate() {
     $template = $this->data['template'];
     if (is_string($template)) {
       $template = at_container('helper.real_path')->get($template);
@@ -174,13 +163,11 @@ class Content_Render
     }
   }
 
-  public function processTemplateString()
-  {
+  public function processTemplateString() {
     return at_container('twig_string')->render($this->data['template_string'], $this->getVariables());
   }
 
-  private function getVariables()
-  {
+  private function getVariables() {
     if (isset($this->data['arguments'])) {
       return $this->data['arguments'];
     }
@@ -208,8 +195,7 @@ class Content_Render
     return $v;
   }
 
-  protected function buildAttached()
-  {
+  protected function buildAttached() {
     foreach (array_keys($this->data['attached']) as $type) {
       foreach ($this->data['attached'][$type] as $k => $item) {
         if (is_string($item)) {

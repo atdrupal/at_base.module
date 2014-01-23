@@ -17,8 +17,7 @@ namespace Drupal\at_base\Cache\Warming;
  *   ;
  * @code
  */
-class Warmer
-{
+class Warmer {
   private $tag_discover;
   private $tag_flusher;
   private $warmers;
@@ -33,29 +32,25 @@ class Warmer
    */
   private $is_sub_process = FALSE;
 
-  public function __construct($tag_discover, $tag_flusher)
-  {
+  public function __construct($tag_discover, $tag_flusher) {
     $this->tag_discover = $tag_discover;
     $this->tag_flusher = $tag_flusher;
 
     $this->warmers = at_container('container')->find('cache.warmer', 'service');
   }
 
-  public function setEventName($event_name)
-  {
+  public function setEventName($event_name) {
     $this->event_name = $event_name;
     $this->tag_discover->setEventName($event_name);
     return $this;
   }
 
-  public function setIsSubProcess($is_sub_process = FALSE)
-  {
+  public function setIsSubProcess($is_sub_process = FALSE) {
     $this->is_sub_process = $is_sub_process;
     return $this;
   }
 
-  public function setContext($context)
-  {
+  public function setContext($context) {
     $this->context = $context;
     return $this;
   }
@@ -63,8 +58,7 @@ class Warmer
   /**
    * Wrapper function to warm cached-tags & views.
    */
-  public function warm()
-  {
+  public function warm() {
     $this->tag_flusher->resetTags();
 
     foreach ($this->tag_discover->tags() as $tag) {

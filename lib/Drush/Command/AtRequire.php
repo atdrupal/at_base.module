@@ -4,17 +4,14 @@ namespace Drupal\at_base\Drush\Command;
 
 use \Drupal\at_base\Drush\Command\AtRequire\DependencyFetcher;
 
-class AtRequire
-{
+class AtRequire {
   private $module;
 
-  public function __construct($module = 'all')
-  {
+  public function __construct($module = 'all') {
     $this->module = $module;
   }
 
-  public function execute()
-  {
+  public function execute() {
     $modules = array($this->module);
 
     if ($this->module === 'all') {
@@ -26,8 +23,7 @@ class AtRequire
     }
   }
 
-  private function fetchDependencies($module)
-  {
+  private function fetchDependencies($module) {
     $data = at_config($module, 'require')->get('projects');
 
     foreach ($data as $name => $info) {

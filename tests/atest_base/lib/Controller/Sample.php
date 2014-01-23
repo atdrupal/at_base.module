@@ -2,10 +2,8 @@
 
 namespace Drupal\atest_base\Controller;
 
-class Sample
-{
-  public function renderAction()
-  {
+class Sample {
+  public function renderAction() {
     return "Hello World!";
   }
 }

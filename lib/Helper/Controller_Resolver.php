@@ -14,10 +14,8 @@ namespace Drupal\at_base\Helper;
  *
  * @see Drupal\at_base\Tests\CommonTest::testControllerRevoler()
  */
-class Controller_Resolver
-{
-  public function get($definition)
-  {
+class Controller_Resolver {
+  public function get($definition) {
     // definition: [Foo, bar]
     if (is_array($definition) && 2 === count($definition)) {
       return $definition;

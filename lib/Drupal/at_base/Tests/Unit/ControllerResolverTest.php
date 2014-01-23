@@ -4,24 +4,20 @@ namespace Drupal\at_base\Tests\Unit;
 
 use Drupal\at_base\Helper\Test\UnitTestCase;
 
-class ControllerResolverTest extends UnitTestCase
-{
+class ControllerResolverTest extends UnitTestCase {
   private $resolver;
 
-  public function getInfo()
-  {
+  public function getInfo() {
     return array('name' => 'AT Unit: Controller Resolver') + parent::getInfo();
   }
 
-  public function setUp()
-  {
+  public function setUp() {
     $this->resolver = at_container('controller.resolver');
 
     parent::setUp();
   }
 
-  public function testObjectMethodPair()
-  {
+  public function testObjectMethodPair() {
     $obj = new \At_Base_Test_Class();
     $definition = array($obj, 'foo');
     $expected = array($obj, 'foo');
@@ -29,16 +25,14 @@ class ControllerResolverTest extends UnitTestCase
     $this->assertEqual($expected, $actual);
   }
 
-  public function testStaticMethod()
-  {
+  public function testStaticMethod() {
     $definition = 'At_Base_Test_Class::foo';
     $expected = array('At_Base_Test_Class', 'foo');
     $actual = $this->resolver->get($definition);
     $this->assertEqual($expected, $actual);
   }
 
-  public function testTwigTemplate()
-  {
+  public function testTwigTemplate() {
     $definition = "{{ 'Hello ' ~ 'Andy Truong' }}";
     $expected = 'Hello Andy Truong';
     $actual = $this->resolver->get($definition);
@@ -46,16 +40,14 @@ class ControllerResolverTest extends UnitTestCase
     $this->assertEqual($expected, $actual);
   }
 
-  public function testFunctionString()
-  {
+  public function testFunctionString() {
     $definition = 'time';
     $expected = 'time';
     $actual = $this->resolver->get($definition);
     $this->assertEqual($expected, $actual);
   }
 
-  public function testObjectInvoke()
-  {
+  public function testObjectInvoke() {
     $obj = new \At_Base_Test_Class();
     $definition = $obj;
     $expected = $obj;
@@ -63,8 +55,7 @@ class ControllerResolverTest extends UnitTestCase
     $this->assertEqual($expected, $actual);
   }
 
-  public function testClassStringInvoke()
-  {
+  public function testClassStringInvoke() {
     $definition = 'At_Base_Test_Class';
     $expected = 'At_Base_Test_Class';
     $actual = $this->resolver->get($definition);

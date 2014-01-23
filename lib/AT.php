@@ -3,16 +3,14 @@
 /**
  * Class for type hint.
  */
-class AT
-{
+class AT {
   protected static $container;
 
   /**
    * Factory method to get container.
    * @return \Drupal\at_base\Container
    */
-  public static function getContainer()
-  {
+  public static function getContainer() {
     if (!static::$container) {
       static::$container = new \Drupal\at_base\Container();
     }
@@ -22,21 +20,18 @@ class AT
   /**
    * @return \Twig_Environment
    */
-  public static function twig()
-  {
+  public static function twig() {
       return at_container('twig');
   }
 
   /**
    * @return \Twig_Environment
    */
-  public static function twig_string()
-  {
+  public static function twig_string() {
       return at_container('twig_string');
   }
 
-  public function getExpressionLanguage()
-  {
+  public function getExpressionLanguage() {
     static $engine;
 
     if (!$engine) {
@@ -49,3 +44,4 @@ class AT
     return $engine;
   }
 }
+

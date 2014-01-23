@@ -1,8 +1,7 @@
 <?php
 namespace Drupal\at_base\Config;
 
-class Admin_Form
-{
+class Admin_Form {
   private $config;
 
   /**
@@ -19,23 +18,19 @@ class Admin_Form
    */
   private $form_state;
 
-  public function __construct($module, $id)
-  {
+  public function __construct($module, $id) {
     $this->config = at_config($module, $id);
   }
 
-  public function setForm($form)
-  {
+  public function setForm($form) {
     $this->form = $form;
   }
 
-  public function setFormState(&$form_state)
-  {
+  public function setFormState(&$form_state) {
     $this->form_state = &$form_state;
   }
 
-  public function get()
-  {
+  public function get() {
     $iframe = drupal_get_path('module', 'at_base') . '/misc/html/jsonEditor.html';
     $iframe = url('<front>', array('absolute' => TRUE)) . '/' . $iframe;
 
@@ -51,25 +46,25 @@ class Admin_Form
     return $form;
   }
 
-  public function validate()
-  {
+  public function validate() {
     $json = array();
 
     if (empty($this->form_state['values']['at_config_item'])) {
       $error = TRUE;
-    } elseif (!$json = json_decode($this->form_state['values']['at_config_item'], TRUE)) {
+    }
+    elseif (!$json = json_decode($this->form_state['values']['at_config_item'], TRUE)) {
       $error = TRUE;
     }
 
     if (!empty($error)) {
       form_set_error('', 'Invalid config data');
-    } else {
+    }
+    else {
       $this->form_state['at_config_json'] = $json;
     }
   }
 
-  public function submit()
-  {
+  public function submit() {
     $json = &$this->form_state['at_config_json'];
     $this->config->setAll($json);
     $this->config->write();

@@ -15,18 +15,17 @@ require_once at_library('pimple') . '/lib/Pimple.php';
  *
  * @see  https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container
  */
-class Container extends \Pimple
-{
+class Container extends \Pimple {
     public function __construct()
     {
         parent::__construct(array(
             'container' => $this,
             // Dependencies for Container itself
-            'wrapper.db' => function () { return new DB_Wrapper(); },
-            'wrapper.cache' => function () { return new Cache_Wrapper(); },
-            'config' => function () { return new Config(new Config_Resolver()); },
-            'service.resolver' => function () { return new Service_Resolver(); },
-            'helper.config_fetcher' => function () { return new Config_Fetcher(); },
+            'wrapper.db' => function() { return new DB_Wrapper(); },
+            'wrapper.cache' => function() { return new Cache_Wrapper(); },
+            'config' => function() { return new Config(new Config_Resolver()); },
+            'service.resolver' => function() { return new Service_Resolver(); },
+            'helper.config_fetcher' => function() { return new Config_Fetcher(); },
         ));
     }
 

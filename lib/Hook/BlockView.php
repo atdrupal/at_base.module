@@ -1,20 +1,17 @@
 <?php
 namespace Drupal\at_base\Hook;
 
-class BlockView
-{
+class BlockView {
   private $module;
   private $key;
 
-  public function __construct($delta)
-  {
+  public function __construct($delta) {
     list($module, $key) = explode('|', $delta);
     $this->module = $module;
     $this->key = $key;
   }
 
-  public function view()
-  {
+  public function view () {
     $info = $this->getInfo();
     $render = at_container('helper.content_render');
 
@@ -24,8 +21,7 @@ class BlockView
     );
   }
 
-  private function getInfo()
-  {
+  private function getInfo() {
     $info = at_config($this->module, 'blocks')->get('blocks');
     if (!isset($info[$this->key])) {
       throw new \Exception("Invalid block: {$this->module}:{$this->key}");

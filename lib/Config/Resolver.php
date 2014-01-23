@@ -1,15 +1,13 @@
 <?php
 namespace Drupal\at_base\Config;
 
-class Resolver implements ResolverInterface
-{
+class Resolver implements ResolverInterface {
   /**
    * @var Config
    */
   private $config;
 
-  public function setConfig($config)
-  {
+  public function setConfig($config) {
     $this->config = $config;
   }
 
@@ -17,8 +15,7 @@ class Resolver implements ResolverInterface
    * [getPath description]
    * @return [type] [description]
    */
-  public function getPath()
-  {
+  public function getPath() {
     if ($path = $this->getOverridePath()) {
       return $path;
     }
@@ -30,8 +27,7 @@ class Resolver implements ResolverInterface
    *
    * @return string|false
    */
-  public function getOriginalPath()
-  {
+  public function getOriginalPath() {
     $config_id = $this->config->getId();
 
     $path = DRUPAL_ROOT . '/' . conf_path();
@@ -49,8 +45,7 @@ class Resolver implements ResolverInterface
    *
    * @return string|false
    */
-  public function getOverridePath($check_exists = TRUE)
-  {
+  public function getOverridePath($check_exists = TRUE) {
     $return = variable_get('file_private_path');
     $return = dirname($return);
     $return .= '/config';
@@ -69,8 +64,7 @@ class Resolver implements ResolverInterface
    *
    * @return mixed
    */
-  public function fetchData()
-  {
+  public function fetchData() {
     if ($path = $this->getPath()) {
       return $this->fetchFile($path);
     }
@@ -79,8 +73,7 @@ class Resolver implements ResolverInterface
   /**
    * @param string $path
    */
-  private function fetchFile($path)
-  {
+  private function fetchFile($path) {
     $return = yaml_parse_file($path);
 
     if (empty($return['imports'])) {
@@ -107,8 +100,7 @@ class Resolver implements ResolverInterface
     return $_return;
   }
 
-  public function writeData($data)
-  {
+  public function writeData($data) {
     $path = $this->getOverridePath(FALSE);
     $data = yaml_emit($data);
 
@@ -124,8 +116,7 @@ if (!function_exists('yaml_parse')) {
    * @param  string $path Path to yaml file.
    * @return mixed
    */
-  public function yaml_parse_file($path)
-  {
+  function yaml_parse_file($path) {
     if (!is_file(DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php')) {
       throw new \RuntimeException('Missing library: spyc');
     }
@@ -139,8 +130,7 @@ if (!function_exists('yaml_parse')) {
 }
 
 if (!function_exists('yaml_emit')) {
-  public function yaml_emit($data)
-  {
+  function yaml_emit($data) {
     return spyc_dump($data);
   }
 }
