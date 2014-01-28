@@ -20,20 +20,22 @@ class Config_Fetcher {
       'reset' => $reset,
     );
 
-    return at_cache($o, function() use ($module, $id, $key, $include_at_base) {
-      $modules = at_modules($module, $id);
+    return at_cache($o, array($this, 'fetchItems'), array($module, $id, $key, $include_at_base));
+  }
 
-      if ($include_at_base) {
-        $modules = array_merge(array('at_base'), $modules);
-      }
+  public function fetchItems($module, $id, $key, $include_at_base) {
+    $modules = at_modules($module, $id);
 
-      $items = array();
-      foreach ($modules as $module_name) {
-        $items = array_merge($items, at_config($module_name, $id)->get($key));
-      }
+    if ($include_at_base) {
+      $modules = array_merge(array('at_base'), $modules);
+    }
 
-      return $items;
-    });
+    $items = array();
+    foreach ($modules as $module_name) {
+      $items = array_merge($items, at_config($module_name, $id)->get($key));
+    }
+
+    return $items;
   }
 
   public function getItem($module, $id, $key, $item_key, $include_at_base = FALSE, $reset = FALSE) {
@@ -43,11 +45,14 @@ class Config_Fetcher {
       'reset' => $reset,
     );
 
-    return at_cache($o, function() use ($module, $id, $key, $item_key, $include_at_base) {
-      $items = at_container('helper.config_fetcher')->getItems($module, $id, $key, $include_at_base);
-      if (isset($items[$item_key])) {
+    return at_cache($o, array($this, 'fetchItem'), array($module, $id, $key, $item_key, $include_at_base));
+  }
+
+  public function fetchItem($module, $id, $key, $item_key, $include_at_base) {
+    if ($items = $this->getItems($module, $id, $key, $include_at_base)) {
+      if (!empty($items[$item_key])) {
         return $items[$item_key];
       }
-    });
+    }
   }
 }

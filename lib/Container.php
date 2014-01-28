@@ -29,6 +29,11 @@ class Container extends \Pimple {
         ));
     }
 
+    /**
+     * Get service by ID.
+     *
+     * @param  string $id Service ID.
+     */
     public function offsetGet($id)
     {
         if (!$this->offsetExists($id)) {
@@ -44,6 +49,7 @@ class Container extends \Pimple {
      * Find services by tag
      *
      * @param  string  $tag
+     * @param  string  $return Type of returned services,
      * @return array
      */
     public function find($tag, $return = 'service_name')

@@ -16,17 +16,16 @@ class Service_Resolver
      */
     public function getClosure($id) {
         $def = $this->getDefinition($id);
-        return function($c) use ($def) {
-            $args = !empty($def['arguments']) ? $def['arguments'] : array();
 
+        return function($c) use ($def) {
             // Make arguments are objects.
-            foreach ($args as $k => $v) {
+            foreach ($def['arguments'] as $k => $v) {
                 if (is_string($v) && '@' === substr($v, 0, 1)) {
-                    $args[$k] = $c[substr($v, 1)];
+                    $def['arguments'][$k] = $c[substr($v, 1)];
                 }
             }
 
-            return $c['service.resolver']->convertDefinitionToService($def, $args);
+            return $c['service.resolver']->convertDefinitionToService($def, $def['arguments']);
         };
     }
 
@@ -35,11 +34,14 @@ class Service_Resolver
      * @param string $id
      */
     private function getDefinition($id) {
-        $def = at_container('helper.config_fetcher')
-                ->getItem('at_base', 'services', 'services', $id, TRUE);
+        $def = at_container('helper.config_fetcher')->getItem('at_base', 'services', 'services', $id, TRUE);
+
+        $def['arguments'] = !empty($def['arguments']) ? $def['arguments'] : array();
+
         if (is_null($def)) {
             throw new \Exception("Missing service: {$id}");
         }
+
         return $this->resolve($def);
     }
 
@@ -112,9 +114,9 @@ class Service_Resolver
     /**
      * Init service object from definition.
      *
-     * @param type $def
-     * @param type $args
-     * @return type
+     * @param array $def
+     * @param array $args
+     * @return object
      */
     public function convertDefinitionToService($def, $args = array()) {
         if (!empty($def['factory_service'])) {
