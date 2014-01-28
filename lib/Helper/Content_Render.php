@@ -174,18 +174,14 @@ class Content_Render {
 
     $v = array();
 
-    if (isset($this->data['variables'])) {
-      $v = $this->data['variables'];
-    }
+    isset($this->data['variables']) && ($v = $this->data['variables']);
 
     // Dynamic variables
-    if (!empty($v)) {
-      $dyn = is_string($v);
-      $dyn = $dyn || (($k = array_keys($v)) && is_numeric($k[0]));
-      if ($dyn && $callback = at_container('controller.resolver')->get($v)) {
-        $v = call_user_func($callback);
-      }
-    }
+    !empty($v)
+      && (is_string($v) || (($k = array_keys($v)) && is_numeric($k[0])))
+      && ($callback = at_container('controller.resolver')->get($v))
+      && ($v = call_user_func($callback))
+    ;
 
     if (!empty($v)) {
       $k = array_keys($v);
