@@ -46,11 +46,14 @@ class CacheTest extends UnitTestCase {
   public function testAtCache() {
     $cache_options = array('bin' => 'cache', 'reset' => FALSE, 'ttl' => '+ 15 minutes');
 
-    $callbacks['closure']    = array(function () { return time(); }, array());
-    $callbacks['string']     = array('time', array());
-    $callbacks['object']     = array(array($this, 'time'), array());
-    $callbacks['static']     = array(__CLASS__ . '::time', array());
-    $callbacks['arguments']  = array('sprintf', array('Timestamp: %d', time()));
+    $callbacks = array(
+      'closure'    => array(function () { return time(); }, array()),
+      'string'     => array('time', array()),
+      'object'     => array(array($this, 'time'), array()),
+      'static'     => array(__CLASS__ . '::time', array()),
+      'arguments'  => array('sprintf', array('Timestamp: %d', time())),
+    );
+
     foreach ($callbacks as $type => $callback) {
       list($callback, $arguments) = $callback;
       $o = array('id' => "at_test:time:{$type}", 'reset' => TRUE) + $cache_options;

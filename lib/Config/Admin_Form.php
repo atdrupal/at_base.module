@@ -34,6 +34,8 @@ class Admin_Form {
     $iframe = drupal_get_path('module', 'at_base') . '/misc/html/jsonEditor.html';
     $iframe = url('<front>', array('absolute' => TRUE)) . '/' . $iframe;
 
+    $form = $this->form;
+
     $form['at_config_item'] = array(
       '#type' => 'textarea',
       '#default_value' => json_encode($this->config->getAll()),

@@ -98,8 +98,10 @@ class View_Alter {
    * Get cached render configuration for context.
    */
   public function getConfig() {
-    $o['id'] = "at_theming:entity_template:{$this->entity_type}:{$this->bundle}:{$this->view_mode}";
-    $o['ttl'] = '+ 1 year';
+    $o = array(
+      'id' => "at_theming:entity_template:{$this->entity_type}:{$this->bundle}:{$this->view_mode}",
+      'ttl' => '+ 1 year',
+    );
     return at_cache($o, array($this, 'fetchConfig'));
   }
 

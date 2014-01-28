@@ -21,6 +21,8 @@ class Importer {
   }
 
   public function import() {
+    $items = array();
+
     $data = at_config($this->module, 'routes', $refresh = TRUE)->get('routes');
 
     foreach ($data as $route_name => $route_data) {
@@ -29,6 +31,6 @@ class Importer {
       }
     }
 
-    return !empty($items) ? $items : array();
+    return $items;
   }
 }
