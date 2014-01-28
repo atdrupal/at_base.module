@@ -27,8 +27,11 @@ class Tag_Flusher {
     return $this;
   }
 
-  public function flush() {
-    if (empty($this->tags)) {
+  public function flush($tags = array()) {
+    if (!empty($tags)) {
+      $this->setTags($tags);
+    }
+    elseif (empty($this->tags)) {
       return;
     }
 

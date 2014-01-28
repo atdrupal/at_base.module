@@ -123,10 +123,7 @@ function at_cache($options, $callback = NULL, $arguments = array()) {
  * @param  array  $tags
  */
 function at_cache_flush_by_tags($tags = array()) {
-  at_container('cache.tag_flusher')
-    ->setTags($tags)
-    ->flush()
-  ;
+  at_container('cache.tag_flusher')->flush($tags);
 }
 
 /**
