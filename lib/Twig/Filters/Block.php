@@ -24,7 +24,7 @@ class Block {
       return drupal_render($output);
     }
     catch (\Exception $e) {
-      return $e->getMessage('!-- '. $e->getMessage() .' -->');
+      return $e->getMessage('<!-- '. $e->getMessage() .' -->');
     }
   }
 
