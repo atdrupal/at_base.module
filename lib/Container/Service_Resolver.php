@@ -18,26 +18,13 @@ class Service_Resolver
         $def = $this->getDefinition($id);
 
         return function($c) use ($def) {
-            // Make arguments are objects.
-            foreach ($def['arguments'] as $k => $v) {
-                if (is_string($v) && '@' === substr($v, 0, 1)) {
-                    $def['arguments'][$k] = $c[substr($v, 1)];
-                }
-            }
+            $resolver = $c['service.resolver'];
 
-            // Make arguments are objects.
-            if (!empty($def['calls'])) {
-                foreach ($def['calls'] as $k => $call) {
-                    list($method, $params) = $call;
-                    foreach ($params as $i => &$param) {
-                        if (is_string($param) && '@' === substr($param, 0, 1)) {
-                            $def['calls'][$k][1][$i] = $c[substr($param, 1)];
-                        }
-                    }
-                }
-            }
-
-            return $c['service.resolver']->convertDefinitionToService($def, $def['arguments']);
+            return $resolver->convertDefinitionToService(
+                        $def,
+                        !empty($def['arguments']) ? $resolver->prepareArguments($def['arguments']): array(),
+                        !empty($def['calls']) ? $resolver->prepareCalls($def['calls']) : array()
+                    );
         };
     }
 
@@ -83,13 +70,46 @@ class Service_Resolver
     }
 
     /**
+     * Make sure arguments are objects.
+     *
+     * @param  array $args
+     * @return array
+     */
+    public function prepareArguments($args) {
+        foreach ($args as $k => $v) {
+            if (is_string($v) && '@' === substr($v, 0, 1)) {
+                $args[$k] = at_container(substr($v, 1));
+            }
+        }
+        return $args;
+    }
+
+    /**
+     * Make sure call's arguments are objects.
+     *
+     * @param  array $calls
+     * @return array
+     */
+    public function prepareCalls($calls) {
+        foreach ($calls as $k => $call) {
+            list($method, $params) = $call;
+            foreach ($params as $i => &$param) {
+                if (is_string($param) && '@' === substr($param, 0, 1)) {
+                    $calls[$k][1][$i] = at_container(substr($param, 1));
+                }
+            }
+        }
+        return $calls;
+    }
+
+    /**
      * Init service object from definition.
      *
      * @param array $def
      * @param array $args
      * @return object
      */
-    public function convertDefinitionToService($def, $args = array()) {
+    public function convertDefinitionToService($def, $args = array(), $calls = array()) {
         if (!empty($def['factory_service'])) {
             return call_user_func_array(
               array(at_container($def['factory_service']), $def['factory_method']), $args
@@ -103,10 +123,9 @@ class Service_Resolver
             $service = at_newv($def['class'], $args);
         }
 
-        if (!empty($def['calls'])) {
-            foreach ($def['calls'] as $call) {
+        if (!empty($calls)) {
+            foreach ($calls as $call) {
                 list($method, $params) = $call;
-
                 call_user_func_array(array($service, $method), $params);
             }
         }
