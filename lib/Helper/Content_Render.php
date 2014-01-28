@@ -187,9 +187,12 @@ class Content_Render {
       }
     }
 
-    if (!empty($v) && ($k = array_keys($v)) && is_numeric($k[0])) {
-      $msg  = 'Expected keyed-array for $variables.';
-      throw new \Exception($msg);
+    if (!empty($v)) {
+      $k = array_keys($v);
+      if (is_numeric($k[0])) {
+        $msg  = 'Expected keyed-array for $variables.';
+        throw new \Exception($msg);
+      }
     }
 
     return $v;

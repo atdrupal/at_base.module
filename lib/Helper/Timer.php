@@ -87,7 +87,7 @@ class Timer {
     $return  = array();
     $return += $this->profileStop();
     $return += timer_stop('ATimer');
-    if ($this->memory) {
+    if (!empty($memory_start) && !empty($memory_peak_start)) {
       $return += array(
         'memory' => number_format(memory_get_usage() - $memory_start),
         'memory_peak' => number_format(memory_get_peak_usage() - $memory_peak_start),

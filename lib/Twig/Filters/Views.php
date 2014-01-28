@@ -104,7 +104,7 @@ class Views {
     try {
       $me = new self($name, $display_id, $args);
 
-      if (is_array($a1)) {
+      if (isset($a1) && is_array($a1)) {
         foreach ($a1 as $k => $v) {
           switch ($k) {
             case 'template':   $me->setTemplate($v);  break;

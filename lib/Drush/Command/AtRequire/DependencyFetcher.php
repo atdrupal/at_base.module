@@ -19,7 +19,7 @@ class DependencyFetcher {
    */
   public function fetch() {
     $contrib_destination = $this->getContribDestination();
-    if (!empty($contrib_destination)) {
+    if (is_string($contrib_destination)) {
       $this->_fetchDependency($contrib_destination);
     }
   }
