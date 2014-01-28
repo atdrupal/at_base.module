@@ -51,19 +51,15 @@ class Environment_Factory {
 
   private function getFileLoader() {
     if (!self::$loader) {
-      self::$loader = $this->fetchFileLoader();
+      self::$loader = at_cache('atwig:file_loader, + 1 year', array($this, 'fetchFileLoader'));
     }
 
     return self::$loader;
   }
 
-  /**
-   * @todo cache me
-   */
-  private function fetchFileLoader() {
+  public function fetchFileLoader() {
     $loader = new \Twig_Loader_Filesystem(DRUPAL_ROOT);
 
-    // Add @module shortcuts
     foreach (array('at_base' => 'at_base') + at_modules('at_base') as $module_name) {
       $dir = DRUPAL_ROOT . '/' . drupal_get_path('module', $module_name);
       if (is_dir($dir)) {
