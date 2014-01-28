@@ -4,6 +4,11 @@ namespace Drupal\at_base\Tests\Unit;
 
 use Drupal\at_base\Helper\Test\UnitTestCase;
 
+/**
+ * Test service container
+ *
+ *  drush test-run --dirty 'Drupal\at_base\Tests\Unit\ContainerTest'
+ */
 class ContainerTest extends UnitTestCase {
   public function getInfo() {
     return array('name' => 'AT Unit: Container') + parent::getInfo();

@@ -25,24 +25,93 @@ class Service_Resolver
                 }
             }
 
+            // Make arguments are objects.
+            if (!empty($def['calls'])) {
+                foreach ($def['calls'] as $k => $call) {
+                    list($method, $params) = $call;
+                    foreach ($params as $i => &$param) {
+                        if (is_string($param) && '@' === substr($param, 0, 1)) {
+                            $def['calls'][$k][1][$i] = $c[substr($param, 1)];
+                        }
+                    }
+                }
+            }
+
             return $c['service.resolver']->convertDefinitionToService($def, $def['arguments']);
         };
     }
 
     /**
      * Get service definition in configuration files.
+     *
      * @param string $id
      */
     private function getDefinition($id) {
-        $def = at_container('helper.config_fetcher')->getItem('at_base', 'services', 'services', $id, TRUE);
-
-        $def['arguments'] = !empty($def['arguments']) ? $def['arguments'] : array();
-
-        if (is_null($def)) {
+        if (!$def = at_container('helper.config_fetcher')->getItem('at_base', 'services', 'services', $id, TRUE)) {
             throw new \Exception("Missing service: {$id}");
         }
 
-        return $this->resolve($def);
+        $def['arguments'] = !empty($def['arguments']) ? $def['arguments'] : array();
+
+        // A service depends on others, this method to resolve them.
+        foreach (array('arguments', 'calls', 'factory_service') as $k) {
+            if (isset($def[$k])) {
+                $this->resolveDependencies($def[$k]);
+            }
+        }
+
+        return $def;
+    }
+
+    /**
+     * Resolve array of dependencies.
+     *
+     * @see self::resolve()
+     */
+    private function resolveDependencies($array)
+    {
+        $array = is_string($array) ? array($array) : $array;
+
+        foreach ($array as $id) {
+            if (is_array($id)) {
+                $this->resolveDependencies($id);
+            }
+            elseif (is_string($id) && '@' === substr($id, 0, 1)) {
+                at_container(substr($id, 1));
+            }
+        }
+    }
+
+    /**
+     * Init service object from definition.
+     *
+     * @param array $def
+     * @param array $args
+     * @return object
+     */
+    public function convertDefinitionToService($def, $args = array()) {
+        if (!empty($def['factory_service'])) {
+            return call_user_func_array(
+              array(at_container($def['factory_service']), $def['factory_method']), $args
+            );
+        }
+
+        if (!empty($def['factory_class'])) {
+            $service = call_user_func_array(array(new $def['factory_class'], $def['factory_method']), $args);
+        }
+        else {
+            $service = at_newv($def['class'], $args);
+        }
+
+        if (!empty($def['calls'])) {
+            foreach ($def['calls'] as $call) {
+                list($method, $params) = $call;
+
+                call_user_func_array(array($service, $method), $params);
+            }
+        }
+
+        return $service;
     }
 
     /**
@@ -73,63 +142,4 @@ class Service_Resolver
 
         return $tagged_defs;
     }
-
-    private function resolve($def)
-    {
-        // A service depends on others, this method to resolve them.
-        foreach (array('arguments', 'calls') as $k) {
-            if (!empty($def[$k])) {
-                $this->resolveDependencies($def[$k]);
-            }
-        }
-
-        // Service has factory
-        if (!empty($def['factory_service'])) {
-            at_container($def['factory_service']);
-        }
-
-        return $def;
-    }
-
-    /**
-     * Resolve array of dependencies.
-     *
-     * @see resolveDefinition()
-     */
-    private function resolveDependencies($array)
-    {
-        foreach ($array as $id) {
-            if (is_array($id)) {
-                $this->resolveDependencies($id);
-            }
-
-            if (!is_string($id) || '@' !== substr($id, 0, 1)) {
-                continue;
-            }
-
-            at_container(substr($id, 1));
-        }
-    }
-
-    /**
-     * Init service object from definition.
-     *
-     * @param array $def
-     * @param array $args
-     * @return object
-     */
-    public function convertDefinitionToService($def, $args = array()) {
-        if (!empty($def['factory_service'])) {
-            return call_user_func_array(
-              array(at_container($def['factory_service']), $def['factory_method']), $args
-            );
-        }
-
-        if (!empty($def['factory_class'])) {
-            return call_user_func_array(array(new $def['factory_class'], $def['factory_method']), $args);
-        }
-
-        return at_newv($def['class'], $args);
-    }
-
 }
