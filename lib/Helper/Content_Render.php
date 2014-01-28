@@ -206,7 +206,7 @@ class Content_Render {
       $dyn = is_string($v);
       $dyn = $dyn || (($k = array_keys($v)) && is_numeric($k[0]));
       if ($dyn && $callback = at_container('controller.resolver')->get($v)) {
-        $v = call_user_func($callback);
+        $this->data['variables'] = call_user_func($callback);
         return $this->getStaticVariables();
       }
     }

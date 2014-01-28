@@ -66,7 +66,7 @@ class View_Alter {
     );
   }
 
-  protected function build () {
+  protected function build() {
     if ($config = $this->getConfig()) {
       $config['variables']  = isset($config['variables']) ? $config['variables'] : array();
       $config['variables'] += array('build' => $this->build);
@@ -110,34 +110,25 @@ class View_Alter {
    */
   public function fetchConfig() {
     foreach (at_modules('at_base', 'entity_template') as $module) {
-      $config = at_config($module, 'entity_template')->get('entity_templates');
-      if (!isset($config[$this->entity_type])) {
-        continue;
+      if ($config = $this->fetchModuleConfig($module)) {
+        return $config;
       }
-
-      $config = $config[$this->entity_type];
-
-      if (isset($config[$this->bundle])) {
-        $config = $config[$this->bundle];
-      }
-      elseif (isset($config['all'])) {
-        $config = $config['all'];
-      }
-      else {
-        continue;
-      }
-
-      if (isset($config[$this->view_mode])) {
-        $config = $config[$this->view_mode];
-      }
-      elseif (isset($config['all'])) {
-        $config = $config['all'];
-      }
-      else {
-        continue;
-      }
-
-      return $config;
     }
+  }
+
+  private function fetchModuleConfig($module) {
+    $config = at_config($module, 'entity_template')->get('entity_templates');
+
+    foreach ('entity_type', 'bundle', 'view_mode' as $k) {
+      $config = isset($config[$this->{$k}])
+                      ? $config[$this->{$k}]
+                      : (isset($config['all']) ? $config['all'] : NULL);
+
+      if (is_null($config)) {
+        return;
+      }
+    }
+
+    return $config;
   }
 }
