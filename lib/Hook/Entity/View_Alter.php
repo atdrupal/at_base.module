@@ -119,7 +119,7 @@ class View_Alter {
   private function fetchModuleConfig($module) {
     $config = at_config($module, 'entity_template')->get('entity_templates');
 
-    foreach ('entity_type', 'bundle', 'view_mode' as $k) {
+    foreach (array('entity_type', 'bundle', 'view_mode') as $k) {
       $config = isset($config[$this->{$k}])
                       ? $config[$this->{$k}]
                       : (isset($config['all']) ? $config['all'] : NULL);
