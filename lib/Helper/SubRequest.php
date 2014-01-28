@@ -26,6 +26,9 @@ class SubRequest {
     $_GET['q'] = $this->original_path;
   }
 
+  /**
+   * @param string $path
+   */
   public function setPath($path) {
     $this->path = $path;
     $_GET['q'] = $path;
@@ -34,7 +37,7 @@ class SubRequest {
   /**
    * @param string $path
    *
-   * @return string
+   * @return mixed Return string or render array.
    */
   public function request($path = NULL) {
     if (!empty($path)) {

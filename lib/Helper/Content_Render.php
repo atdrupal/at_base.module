@@ -168,7 +168,7 @@ class Content_Render {
   }
 
   /**
-   * @return callable
+   * @return array
    */
   private function getVariables() {
     if (isset($this->data['arguments'])) {
