@@ -28,6 +28,11 @@ class Block {
     }
   }
 
+  /**
+   * Load the block.
+   *
+   * @param string $string Format %module:%delta
+   */
   private static function load($string) {
     $string = explode(':', $string);
     if (2 !== count($string)) {
