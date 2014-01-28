@@ -45,13 +45,13 @@ function at_id($x) {
  *
  * $pancake = new Pancake('Blueberry', 'Maple Syrup', true);
  * $pancake = newv('Pancake', array('Blueberry', 'Maple Syrup', true));
- * 
+ *
  * @param  string  The name of a class.
  * @param  list    Array of arguments to pass to its constructor.
  * @return obj     A new object of the specified class, constructed by passing
  *                  the argument vector to its constructor.
  */
-function at_newv($class_name, array $argv) {
+function at_newv($class_name, $argv = array()) {
   $reflector = new ReflectionClass($class_name);
   if ($argv) {
     return $reflector->newInstanceArgs($argv);
@@ -219,8 +219,7 @@ function at_form($form, &$form_state) {
   $args       = reset($args);
 
   // Build the form
-  $class = new \ReflectionClass($class);
-  $obj = $class->newInstanceArgs($args);
+  $obj = at_newv($class, $args);
   $obj->setForm($form);
   $obj->setFormState($form_state);
 
@@ -236,12 +235,10 @@ function at_form($form, &$form_state) {
 function at_form_validate($form, &$form_state) {
   // Build the form
   list($class, $args) = $form['#at_form'];
-  $class = new \ReflectionClass($class);
-  $obj = $class->newInstanceArgs($args);
+
+  $obj = at_newv($class, $args);
   $obj->setForm($form);
   $obj->setFormState($form_state);
-
-  // Do validate
   $obj->validate();
 }
 
@@ -251,11 +248,9 @@ function at_form_validate($form, &$form_state) {
 function at_form_submit($form, &$form_state) {
   // Build the form
   list($class, $args) = $form['#at_form'];
-  $class = new \ReflectionClass($class);
-  $obj = $class->newInstanceArgs($args);
+
+  $obj = at_newv($class, $args);
   $obj->setForm($form);
   $obj->setFormState($form_state);
-
-  // Do validate
   $obj->submit();
 }

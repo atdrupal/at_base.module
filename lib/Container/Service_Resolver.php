@@ -127,7 +127,7 @@ class Service_Resolver
             return call_user_func_array(array(new $def['factory_class'], $def['factory_method']), $args);
         }
 
-        return at_id(new \ReflectionClass($def['class']))->newInstanceArgs($args);
+        return at_newv($def['class'], $args);
     }
 
 }
