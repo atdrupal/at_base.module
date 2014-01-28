@@ -76,18 +76,21 @@ class Resolver implements ResolverInterface {
   private function fetchFile($path) {
     $return = yaml_parse_file($path);
 
-    if (empty($return['imports'])) {
-      return $return;
+    if (!empty($return['imports'])) {
+      return $this->resolveDataImports($return);
     }
 
+    return $return;
+  }
+
+  private function resolveDataImports($return) {
     $_return = array();
     foreach ($return['imports'] as $i => $import) {
       $resource = $import['resource'];
       $resource = DRUPAL_ROOT . '/' . drupal_get_path('module', $this->config->getModule()) . '/config/' . $resource;
-      if ($data = $this->fetchFile($resource)) {
-        foreach ($data as $k => $v) {
-          $_return[$k] = !isset($_return[$k]) ? $v : array_merge($_return[$k], $v);
-        }
+      $data = $this->fetchFile($resource);
+      foreach ($data as $k => $v) {
+        $_return[$k] = !isset($_return[$k]) ? $v : array_merge($_return[$k], $v);
       }
     }
 
