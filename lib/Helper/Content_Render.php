@@ -172,26 +172,44 @@ class Content_Render {
       return $this->data['arguments'];
     }
 
-    $v = array();
+    if (empty($this->data['variables'])) {
+      return array();
+    }
 
-    isset($this->data['variables']) && ($v = $this->data['variables']);
+    if (TRUE === $this->getDynamicVariables()) {
+      return $this->data['variables'];
+    }
 
-    // Dynamic variables
-    !empty($v)
-      && (is_string($v) || (($k = array_keys($v)) && is_numeric($k[0])))
-      && ($callback = at_container('controller.resolver')->get($v))
-      && ($v = call_user_func($callback))
-    ;
+    if (TRUE === $this->getStaticVariables()) {
+      return $this->data['variables'];
+    }
+  }
 
-    if (!empty($v)) {
+  private function getStaticVariables() {
+    if (!empty($this->data['variables'])) {
+      $v = &$this->data['variables'];
+
       $k = array_keys($v);
       if (is_numeric($k[0])) {
         $msg  = 'Expected keyed-array for $variables.';
         throw new \Exception($msg);
       }
-    }
 
-    return $v;
+      return TRUE;
+    }
+  }
+
+  private function getDynamicVariables() {
+    if (!empty($this->data['variables'])) {
+      $v = &$this->data['variables'];
+
+      $dyn = is_string($v);
+      $dyn = $dyn || (($k = array_keys($v)) && is_numeric($k[0]));
+      if ($dyn && $callback = at_container('controller.resolver')->get($v)) {
+        $v = call_user_func($callback);
+        return $this->getStaticVariables();
+      }
+    }
   }
 
   protected function buildAttached() {
