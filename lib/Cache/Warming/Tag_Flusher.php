@@ -12,7 +12,7 @@ namespace Drupal\at_base\Cache\Warming;
 class Tag_Flusher {
   protected $db;
   protected $cache;
-  protected $tag = array();
+  protected $tags = array();
 
   public function __construct($db, $cache) {
     $this->db = $db;
