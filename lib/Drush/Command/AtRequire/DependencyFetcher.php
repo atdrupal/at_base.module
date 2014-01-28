@@ -43,19 +43,23 @@ class DependencyFetcher {
     $p_all  = 'sites/all/' . $this->getDestination() . '/' . $this->name;
     $p_site = conf_path() . '/' . $this->getDestination() . '/' . $this->name;
 
-    // Non-existing
-    if (!is_dir($p_all) && !is_dir($p_site)) {
-      return 'sites/all';
+    if (is_dir($p_site)) {
+      return $this->getConfirmedContribDestination($p_site);
+    }
+    elseif (is_dir($p_all)) {
+      return $this->getConfirmedContribDestination($p_all, $p_site, 'choice');
     }
 
-    if (is_dir($p_site)) {
-      $msg = '[at_require] %s is already exist (%s), would you like to override it?';
-      $msg = sprintf($msg, $this->name, $p_site);
+    return 'sites/all';
+  }
+
+  private function getConfirmedContribDestination($path, $p_site = '', $type = 'confirm') {
+    $msg = '[at_require] %s is already exist (%s), would you like to override it?';
+    $msg = sprintf($msg, $this->name, $path);
+    if ($type === 'confirm') {
       $this->contrib_destination = drush_confirm($msg) ? conf_path() : FALSE;
     }
-    elseif (is_dir($p_all))  {
-      $msg = '[at_require] %s is already exist (%s), would you like to override it?';
-      $msg = sprintf($msg, $this->name, $p_all);
+    else {
       $choice = array(0 => 'Skip download', 1 => 'Re-download', 2 => 'Download to ' . $p_site);
       $choice = drush_choice($choice, $msg);
       $this->contrib_destination = $choice == 1 ? 'sites/all' : ($choice == 2 ? conf_path() : FALSE);
