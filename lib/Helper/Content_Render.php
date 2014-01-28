@@ -167,6 +167,9 @@ class Content_Render {
     return at_container('twig_string')->render($this->data['template_string'], $this->getVariables());
   }
 
+  /**
+   * @return callable
+   */
   private function getVariables() {
     if (isset($this->data['arguments'])) {
       return $this->data['arguments'];

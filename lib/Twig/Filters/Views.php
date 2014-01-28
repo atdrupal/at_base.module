@@ -135,7 +135,7 @@ class Views {
   /**
    * Get callback.
    *
-   * @param  mixed $a1
+   * @param  string $a1
    * @return \Closure
    */
   private static function getBuilder($a1) {

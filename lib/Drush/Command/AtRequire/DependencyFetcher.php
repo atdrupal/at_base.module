@@ -53,6 +53,9 @@ class DependencyFetcher {
     return 'sites/all';
   }
 
+  /**
+   * @param string $path
+   */
   private function getConfirmedContribDestination($path, $p_site = '', $type = 'confirm') {
     $msg = '[at_require] %s is already exist (%s), would you like to override it?';
     $msg = sprintf($msg, $this->name, $path);

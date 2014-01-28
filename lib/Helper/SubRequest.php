@@ -31,6 +31,11 @@ class SubRequest {
     $_GET['q'] = $path;
   }
 
+  /**
+   * @param string $path
+   *
+   * @return string
+   */
   public function request($path = NULL) {
     if (!empty($path)) {
       $this->setPath($path);
