@@ -40,7 +40,9 @@ class Cache_Handler implements CacheHandler_Interface {
   }
 
   public function render() {
-    if (!drupal_page_is_cacheable()) {
+    $cachable = drupal_is_cli() || drupal_page_is_cacheable();
+
+    if (!$cachable) {
       return call_user_func($this->callback);
     }
 
