@@ -101,11 +101,12 @@ class Resolver implements ResolverInterface {
   }
 
   public function writeData($data) {
-    $path = $this->getOverridePath(FALSE);
-    $data = yaml_emit($data);
-
-    @mkdir(dirname($path), 0777, TRUE);
-    return file_put_contents($path, $data);
+    if ($path = $this->getOverridePath(FALSE)) {
+      $data = yaml_emit($data);
+      @mkdir(dirname($path), 0777, TRUE);
+      return file_put_contents($path, $data);
+    }
+    throw new \Exception('Configuration directory is not writable');
   }
 }
 

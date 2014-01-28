@@ -25,7 +25,7 @@ class RouteToMenu {
 
   /**
    * @param string $module
-   * @param array $route_name
+   * @param string $route_name
    * @param array $route_data
    */
   public function __construct($module, $route_name, $route_data) {

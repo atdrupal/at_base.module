@@ -18,7 +18,8 @@ class DependencyFetcher {
    *   2. Download in site directory
    */
   public function fetch() {
-    if ($contrib_destination = $this->getContribDestination()) {
+    $contrib_destination = $this->getContribDestination();
+    if (!empty($contrib_destination)) {
       $this->_fetchDependency($contrib_destination);
     }
   }

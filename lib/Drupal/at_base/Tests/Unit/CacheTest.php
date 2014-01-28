@@ -44,7 +44,7 @@ class CacheTest extends UnitTestCase {
   }
 
   public function testAtCache() {
-    $cache_options = array('bin' => 'cache', 'reset' => FALSE, 'ttl' => '+ 15 minutes');
+    $cache_options = array('reset' => FALSE, 'ttl' => '+ 15 minutes');
 
     $callbacks = array(
       'closure'    => array(function () { return time(); }, array()),
@@ -59,7 +59,7 @@ class CacheTest extends UnitTestCase {
       $o = array('id' => "at_test:time:{$type}", 'reset' => TRUE) + $cache_options;
 
       $output = at_cache($o, $callback, $arguments);
-      $cached = $this->cache->get($o['id'], $o['bin'])->data;
+      $cached = $this->cache->get($o['id'])->data;
 
       $this->assertEqual($output, $cached);
     }
@@ -97,15 +97,23 @@ class CacheTest extends UnitTestCase {
   }
 
   public function testAtCacheAllowEmpty() {
-    $options = array('bin' => 'cache', 'reset' => FALSE, 'ttl' => '+ 15 minutes');
-    $options = array('id' => 'at_test:time:allowEmpty', 'reset' => TRUE, 'allow_empty' => FALSE) + $options;
+    $options = array(
+      'bin' => 'cache',
+      'reset' => FALSE,
+      'ttl' => '+ 15 minutes',
+      'id' => 'at_test:time:allowEmpty',
+      'reset' => TRUE,
+      'allow_empty' => FALSE
+    );
 
     // Init the value
     $time_1 = at_cache($options, __CLASS__ . '::time');
     sleep(1);
 
     // Change cached-data to empty string
-    at_container('wrapper.cache')->set($options['id'], '', $options['bin'], strtotime($options['ttl']));
+    if ($ttl = strtotime($options['ttl'])) {
+      at_container('wrapper.cache')->set($options['id'], '', $options['bin'], $ttl);
+    }
 
     // Call at_cache() again
     $time_2 = at_cache(array('reset' => FALSE) + $options, __CLASS__ . '::time');
