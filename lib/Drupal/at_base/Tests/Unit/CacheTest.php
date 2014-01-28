@@ -135,9 +135,10 @@ class CacheTest extends UnitTestCase {
     // Delete items tagged with 'atest'
     at_container('cache.tag_flusher')->flush($o['tags']);
 
-    $db_log = at_container('wrapper.db')->getLog();
+    $db_log = at_container('wrapper.db')->getLog('delete', 'at_base_cache_tag');
+
     $con = array('tag', $o['tags']);
-    foreach ($db_log['delete']['at_base_cache_tag']['condition'] as $_con) {
+    foreach ($db_log['condition'] as $_con) {
       if ('tag' === $_con[0]) {
         $this->assertEqual($con, $_con);
         return;
