@@ -11,7 +11,7 @@ class Block {
    */
   public static function render($string, $content_only = FALSE) {
     try {
-      $block = self::loadBlock($string);
+      $block = self::load($string);
 
       $output = _block_render_blocks(array($block));
       $output = _block_get_renderable_array($output);
