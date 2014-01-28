@@ -57,16 +57,7 @@ class Cache {
   private $arguments;
 
   public function __construct($options, $callback, $arguments = array()) {
-    $_keys = array(
-      'bin' => 'cache',
-      'id' => '',
-      'ttl' => '+ 15 minutes',
-      'reset' => FALSE,
-      'tags' => array());
-
-    foreach ($_keys as $k => $v) {
-      $this->{$k} = isset($options[$k]) ? $options[$k] : $v;
-    }
+    $this->setOptions($options);
 
     $this->callback = $callback;
     $this->arguments = $arguments;
@@ -74,6 +65,19 @@ class Cache {
     // No cache_id, can not fetch, can not write, this function is useless.
     if (empty($this->id) || !is_string($this->id)) {
       throw new \InvalidArgumentException('Please provide a valid cache ID');
+    }
+  }
+
+  public function setOptions($options) {
+    $defaults = array(
+      'bin' => 'cache',
+      'id' => '',
+      'ttl' => '+ 15 minutes',
+      'reset' => FALSE,
+      'tags' => array());
+
+    foreach ($defaults as $k => $v) {
+      $this->{$k} = isset($options[$k]) ? $options[$k] : $v;
     }
 
     // Allow dev to force rebuilding all caches on page
