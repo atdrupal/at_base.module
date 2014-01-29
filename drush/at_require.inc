@@ -11,8 +11,8 @@ class DrushMakeProject_AtRequire_Library extends \DrushMakeProject_Library {
   /**
    * Override default value of parent.
    */
-  protected function generatePath() {
-   return parent::generatePath($base = FALSE);
+  protected function generatePath($base = TRUE) {
+    return parent::generatePath($base = FALSE);
   }
 }
 
@@ -61,7 +61,7 @@ if (!function_exists('yaml_parse')) {
   $fn = 'spyc_load_file';
 }
 
-if (function_exists('drupal_get_path')) {  
+if (function_exists('drupal_get_path')) {
   $projects = drupal_get_path('module', 'at_base') . '/config/require.yml';
   $projects = $fn($projects);
   unset($projects['spyc']);
