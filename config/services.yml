@@ -4,9 +4,6 @@ imports:
   - { resource: services.helper.yml }
 
 services:
-  # ---------------------
-  # Config
-  # ---------------------
   expression_language:
     class: 'Symfony\Component\ExpressionLanguage\ExpressionLanguage'
     factory_class: 'AT'

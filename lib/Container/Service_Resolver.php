@@ -7,7 +7,6 @@ namespace Drupal\at_base\Container;
  */
 class Service_Resolver
 {
-
     /**
      * Generate closure which to be used to fetch the service.
      *
@@ -18,13 +17,22 @@ class Service_Resolver
         $def = $this->getDefinition($id);
 
         return function($c) use ($def) {
-            $resolver = $c['service.resolver'];
+            $ar = $c['argument.resolver'];
+            $sr = $c['service.resolver'];
 
-            return $resolver->convertDefinitionToService(
-                        $def,
-                        !empty($def['arguments']) ? $resolver->prepareArguments($def['arguments']): array(),
-                        !empty($def['calls']) ? $resolver->prepareCalls($def['calls']) : array()
-                    );
+            $args = $calls = array();
+
+            if (!empty($def['arguments'])) {
+                $args = $ar->prepareItems($def['arguments']);
+            }
+
+
+            if (!empty($def['calls'])) {
+                $calls = $ar->prepareItemsPartial($def['calls'], 1);
+                unset($def['calls']);
+            }
+
+            return $sr->convertDefinitionToService($def, $args, $calls);
         };
     }
 
@@ -67,39 +75,6 @@ class Service_Resolver
                 at_container(substr($id, 1));
             }
         }
-    }
-
-    /**
-     * Make sure arguments are objects.
-     *
-     * @param  array $args
-     * @return array
-     */
-    public function prepareArguments($args) {
-        foreach ($args as $k => $v) {
-            if (is_string($v) && '@' === substr($v, 0, 1)) {
-                $args[$k] = at_container(substr($v, 1));
-            }
-        }
-        return $args;
-    }
-
-    /**
-     * Make sure call's arguments are objects.
-     *
-     * @param  array $calls
-     * @return array
-     */
-    public function prepareCalls($calls) {
-        foreach ($calls as $k => $call) {
-            list($method, $params) = $call;
-            foreach ($params as $i => &$param) {
-                if (is_string($param) && '@' === substr($param, 0, 1)) {
-                    $calls[$k][1][$i] = at_container(substr($param, 1));
-                }
-            }
-        }
-        return $calls;
     }
 
     /**
