@@ -1,17 +1,9 @@
 imports:
   - { resource: services.cache.yml }
   - { resource: services.theming.yml }
+  - { resource: services.helper.yml }
 
 services:
-  container:
-    class: '\Drupal\at_base\Container'
-    factory_class: 'AT'
-    factory_method: getContainer
-
-  # @todo Rename to helper.controller.resolver
-  controller.resolver:
-    class: '\Drupal\at_base\Helper\Controller_Resolver'
-
   # ---------------------
   # Config
   # ---------------------
@@ -19,16 +11,3 @@ services:
     class: 'Symfony\Component\ExpressionLanguage\ExpressionLanguage'
     factory_class: 'AT'
     factory_method: getExpressionLanguage
-
-
-  # ---------------------
-  # Helpers
-  # ---------------------
-  helper.content_render:
-    class: 'Drupal\at_base\Helper\Content_Render'
-
-  helper.real_path:
-    class: 'Drupal\at_base\Helper\Real_Path'
-
-  helper.timer:
-    class: 'Drupal\at_base\Helper\Timer'

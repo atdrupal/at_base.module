@@ -2,7 +2,7 @@
 namespace Drupal\at_base\Helper;
 
 /**
- * controller.resolver service.
+ * helper.controller.resolver service.
  *
  * Get controller from definition.
  *

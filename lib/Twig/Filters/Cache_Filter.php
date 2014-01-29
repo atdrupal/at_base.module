@@ -14,7 +14,7 @@ class Cache_Filter {
       $callback = $callback['callback'];
     }
 
-    $this->callback = at_container('controller.resolver')->get($callback);
+    $this->callback = at_container('helper.controller.resolver')->get($callback);
     $this->options = $options;
   }
 

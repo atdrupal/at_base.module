@@ -12,8 +12,7 @@ class ControllerResolverTest extends UnitTestCase {
   }
 
   public function setUp() {
-    $this->resolver = at_container('controller.resolver');
-
+    $this->resolver = at_container('helper.controller.resolver');
     parent::setUp();
   }
 
