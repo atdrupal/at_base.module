@@ -34,6 +34,13 @@ class ContainerTest extends UnitTestCase {
     $this->assertEqual('Twig_Environment', get_class($service_4));
   }
 
+  public function testDynamicArguments() {
+    $service = at_container('atest_base.dynamic_arguments');
+    $this->assertEqual('Drupal\atest_base\Dynamic_Arguments', get_class($service));
+    $this->assertEqual('atest_base', $service->getDynParam());
+    $this->assertEqual('Drupal\atest_base\Service_1', get_class($service->getDynService()));
+  }
+
   public function testTaggedServices() {
     // With weight
     $expected = array('cache.warmer.view', 'cache.warmer.entity', 'cache.warmer.simple');

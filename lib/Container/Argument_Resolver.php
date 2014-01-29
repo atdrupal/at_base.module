@@ -52,9 +52,20 @@ class Argument_Resolver
         foreach (get_class_methods(get_class($this)) as $method) {
           if ('detect' === substr($method, 0, 6)) {
             if ($return = $this->{$method}($item)) {
-              return $return;
+                return $this->prepareItem($return);
             }
           }
+        }
+        return $item;
+    }
+
+    /**
+     * @param  string $item
+     */
+    private function detectConfig($item) {
+        if ('%' === substr($item, 0, 1)) {
+            list($module, $id, $key) = explode(':', substr($item, 1), 3);
+            return at_config($module, $id)->get($key);
         }
     }
 

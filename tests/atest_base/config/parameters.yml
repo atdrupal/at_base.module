@@ -1,0 +1,2 @@
+dynamic_param_1: 'atest_base'
+dynamic_service_1: '@atest_base.service_1'

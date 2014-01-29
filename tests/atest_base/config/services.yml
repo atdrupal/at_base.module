@@ -4,12 +4,14 @@ services:
     tags:
       - { name: atest1 }
       - { name: atest2, weight: 10 }
+
   atest_base.service_2:
     class: 'Drupal\atest_base\Service_2'
     arguments: ['@atest_base.service_1']
     tags:
       - { name: atest1 }
       - { name: atest2, weight: 0 }
+
   atest_base.service_3:
     class: 'Drupal\atest_base\Service_3'
     factory_class: Drupal\atest_base\Service_3_Factory
@@ -17,3 +19,7 @@ services:
     tags:
       - { name: atest1 }
       - { name: atest2, weight: -10 }
+
+  atest_base.dynamic_arguments:
+    class: 'Drupal\atest_base\Dynamic_Arguments'
+    arguments: ['%atest_base:parameters:dynamic_param_1', '%atest_base:parameters:dynamic_service_1']
