@@ -31,9 +31,15 @@ class AT {
    * @return \Twig_Environment
    */
   public static function twig_string() {
-      return at_container('twig_string');
+    return at_container('twig_string');
   }
 
+  /**
+   * Get expression language object.
+   *
+   * @return ExpressionLanguage
+   * @todo  Use service container when PSR-4 autoloading can be attached there.
+   */
   public function getExpressionLanguage() {
     static $engine;
 
