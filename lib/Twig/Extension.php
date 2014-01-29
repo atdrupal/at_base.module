@@ -4,6 +4,11 @@ namespace Drupal\at_base\Twig;
 use \Drupal\at_base\Twig\Filters as Twig_Filters;
 use \Drupal\at_base\Twig\Functions as Twig_Functions;
 
+/**
+ * Twig extensions, collection of filters, functions, … for Drupal site.
+ *
+ * @todo  Convert this to tagged-service.
+ */
 class Extension extends \Twig_Extension {
   public function getName() {
     return 'AT Base';
