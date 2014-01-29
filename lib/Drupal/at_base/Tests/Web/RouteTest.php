@@ -10,7 +10,7 @@ class RouteTest extends \DrupalWebTestCase {
     return array(
       'name' => 'AT Base: Route',
       'description' => 'Make sure the routing feature is working correctly.',
-      'group' => 'AT Base',
+      'group' => 'AT Web',
     );
   }
 

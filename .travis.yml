@@ -59,4 +59,4 @@ before_script:
 
 script:
   - drush test-run --dirty 'AT Unit'
-  - drush test-run --dirty 'AT Base'
+  - drush test-run --dirty 'AT Web'

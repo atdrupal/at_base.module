@@ -10,7 +10,7 @@ class TwigTest extends \DrupalWebTestCase {
     return array(
       'name' => 'AT Base: Twig Service',
       'description' => 'Test Twig service',
-      'group' => 'AT Base'
+      'group' => 'AT Web'
     );
   }
 
