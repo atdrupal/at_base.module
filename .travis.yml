@@ -1,3 +1,5 @@
+# Ref:
+#   - https://github.com/sonnym/travis-ci-drupal-module-example/blob/master/.travis.yml
 language: php
 php:
   - 5.3
@@ -14,24 +16,25 @@ mysql:
   username: root
   encoding: utf8
 
+install:
+  # ---------------------
+  # Install Drush
+  # ---------------------
+  - pear channel-discover pear.drush.org
+  - pear install drush/drush-5.8.0
+  - phpenv rehash
+
+  # ---------------------
+  # Setup DB
+  # ---------------------
+  - mysql -e 'create database drupal;'
+
 before_script:
   # ---------------------
   # Variables
   # ---------------------
   - cd ../..
   - export DRUPAL=`pwd`'/drupal/'
-
-  # ---------------------
-  # Setup DB
-  # ---------------------
-  - mysql -e 'create database drupal;'
-  - pear channel-discover pear.drush.org
-
-  # ---------------------
-  # Install Drush
-  # ---------------------
-  - pear install drush/drush-5.8.0
-  - phpenv rehash
 
   # ---------------------
   # Download the codebase
