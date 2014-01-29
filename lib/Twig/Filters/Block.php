@@ -2,30 +2,31 @@
 
 namespace Drupal\at_base\Twig\Filters;
 
+/**
+ * Callback for drupalBlock filter.
+ */
 class Block {
+  private $block;
+
   /**
-   * Callback for drupalBlock filter.
-   *
    * @param  string  $string       %module:%delta
    * @param  boolean $content_only TRUE to do not use block template.
    */
-  public static function render($string, $content_only = FALSE) {
-    try {
-      $block = self::load($string);
+  public function __construct($string, $content_only = FALSE) {
+    $this->block = $this->load($string);
+    $this->content_only = $content_only;
+  }
 
-      $output = _block_render_blocks(array($block));
-      $output = _block_get_renderable_array($output);
+  public function render() {
+    $output = _block_render_blocks(array($this->block));
+    $output = _block_get_renderable_array($output);
 
-      if ($content_only) {
-        $output = reset($output);
-        return isset($output['#markup']) ? $output['#markup'] : render(reset($output));
-      }
-
-      return drupal_render($output);
+    if ($this->content_only) {
+      $output = reset($output);
+      return isset($output['#markup']) ? $output['#markup'] : render(reset($output));
     }
-    catch (\Exception $e) {
-      return '<!-- '. $e->getMessage() .' -->';
-    }
+
+    return drupal_render($output);
   }
 
   /**

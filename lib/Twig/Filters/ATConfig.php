@@ -1,9 +1,19 @@
 <?php
 namespace Drupal\at_base\Twig\Filters;
 
+/**
+ * Callback for at_config filter.
+ */
 class ATConfig {
-  public static function render($string) {
-    list($module, $id, $key) = explode(':', $string);
-    return at_config($module, $id)->get($key);
+  private $module;
+  private $id;
+  private $key;
+
+  public function __construct($string) {
+    list($this->module, $this->id, $this->key) = explode(':', $string, 3);
+  }
+
+  public function render($string) {
+    return at_config($this->module, $this->id)->get($this->key);
   }
 }
