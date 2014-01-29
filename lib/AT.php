@@ -1,5 +1,8 @@
 <?php
 
+use Drupal\at_base\Autoloader;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+
 /**
  * Class for type hint.
  */
@@ -35,10 +38,10 @@ class AT {
     static $engine;
 
     if (!$engine) {
-      at_id(new Drupal\at_base\Autoloader('Symfony\Component\ExpressionLanguage', at_library('expression_language')))
+      at_id(new Autoloader('Symfony\Component\ExpressionLanguage', at_library('expression_language')))
         ->register();
 
-      $engine = new \Symfony\Component\ExpressionLanguage\ExpressionLanguage();
+      $engine = new ExpressionLanguage();
     }
 
     return $engine;
