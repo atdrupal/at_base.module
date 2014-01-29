@@ -12,8 +12,9 @@ class Resolver implements ResolverInterface {
   }
 
   /**
-   * [getPath description]
-   * @return [type] [description]
+   * Get path to configuration file.
+   *
+   * @return string
    */
   public function getPath() {
     if ($path = $this->getOverridePath()) {
@@ -23,7 +24,7 @@ class Resolver implements ResolverInterface {
   }
 
   /**
-   *
+   * Origininal path.
    *
    * @return string|false
    */
@@ -38,12 +39,16 @@ class Resolver implements ResolverInterface {
     }
     $config_id = trim(str_replace('.', '/', $config_id), '/');
     $path .= '/config/' . $config_id . '.yml';
-    return is_file($path) ? $path : FALSE;
+
+    if (is_file($path)) {
+      return $path;
+    }
   }
 
   /**
+   * Get overriden path.
    *
-   * @return string|false
+   * @return string
    */
   public function getOverridePath($check_exists = TRUE) {
     $return = variable_get('file_private_path');
@@ -56,7 +61,10 @@ class Resolver implements ResolverInterface {
     if (!$check_exists) {
       return $return;
     }
-    return is_file($return) ? $return : FALSE;
+
+    if (is_file($return)) {
+      return $return;
+    }
   }
 
   /**

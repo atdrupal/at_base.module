@@ -32,7 +32,7 @@ class Controller_Resolver {
   /**
    * definition: [Foo, bar]
    *
-   * @return [type] [description]
+   * @return array
    */
   private function detectPair() {
     if (is_array($this->def) && 2 === count($this->def)) {
