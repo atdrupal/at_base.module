@@ -209,6 +209,8 @@ function at_valid($key, $get_value = FALSE) {
 
 /**
  * Wrapper for class based forms.
+ *
+ * @todo  Test me.
  */
 function at_form($form, &$form_state) {
   // Get the variables from arguments
@@ -224,7 +226,7 @@ function at_form($form, &$form_state) {
   $obj->setFormState($form_state);
 
   $form = $obj->get();
-  $form['#at_form'] = array($class->getName(), $args);
+  $form['#at_form'] = array($class, $args);
 
   return $form;
 }
