@@ -1,5 +1,6 @@
 twig_functions:
   - element_children
+  - entity_view
   - node_load
   - get_defined_vars
   - user_is_logged_in

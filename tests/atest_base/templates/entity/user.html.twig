@@ -1,7 +1,8 @@
 <!-- @atest_base/templates/entity/user.html.twig -->
 
 <div class="my-wrapper">
+  {% set build = entity_view('user', [entity]) %}
   {{ build|render }}
 </div>
 
-<footer>Mail: {{ build['#account'].mail }}</footer>
+<footer>Mail: {{ entity.mail }}</footer>
