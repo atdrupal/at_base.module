@@ -32,15 +32,8 @@ class Extension extends \Twig_Extension {
   }
 
   function getFunctions() {
-    return at_cache(array('id' => 'at:twig:fns'), function() {
-      $functions = array();
-
-      $fns = at_container('helper.config_fetcher')->getItems('at_base', 'twig_functions', 'twig_functions', TRUE);
-      foreach ($fns as $fn) {
-        $functions[] = new \Twig_SimpleFunction($fn, $fn);
-      }
-
-      return $functions;
+    return at_cache('at:twig:fns', function() {
+      return at_id(new Function_Fetcher())->fetch();
     });
   }
 
