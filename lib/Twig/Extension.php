@@ -43,7 +43,8 @@ class Extension extends \Twig_Extension {
     global $user;
 
     return array(
-      'user' => $user
+      'user' => $user,
+      'request_path' => request_path(),
     );
   }
 }
