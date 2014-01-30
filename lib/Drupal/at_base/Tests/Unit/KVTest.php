@@ -5,7 +5,7 @@ namespace Drupal\at_base\Tests\Unit;
 use Drupal\at_base\Helper\Test\UnitTestCase;
 use Drupal\at_base\Helper\Test\Cache;
 
-class KV extends UnitTestCase {
+class KVTest extends UnitTestCase {
   public function getInfo() {
     return array('name' => 'AT Unit: Key-Value storage') + parent::getInfo();
   }
