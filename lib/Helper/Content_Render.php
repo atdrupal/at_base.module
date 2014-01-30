@@ -41,7 +41,7 @@ class Content_Render {
   public function setData($data) {
     $this->data = $data;
 
-    if (empty($this->data['variables'])) {
+    if (is_array($this->data) && empty($this->data['variables'])) {
       $this->data['variables'] = array();
     }
 

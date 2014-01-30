@@ -41,12 +41,12 @@ class Process {
       $obj = new $class();
       return call_user_func_array(
         array($obj, $method),
-        $this->getControllerArguments($obj)
+        $this->getControllerArguments($args, $obj)
       );
     }
   }
 
-  private function getControllerArguments($obj) {
+  private function getControllerArguments($args, $obj) {
     $args = !empty($args) ? $args : array();
     if (empty($args) && method_exists($obj, 'getVariables')) {
       $args = $obj->getVariables();
