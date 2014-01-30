@@ -4,6 +4,10 @@ imports:
   - { resource: services.helper.yml }
 
 services:
+  class_loader:
+    class: 'Doctrine\Common\ClassLoader'
+    file: '%doctrine_common/lib/Doctrine/Common/ClassLoader.php'
+
   expression_language:
     class: 'Symfony\Component\ExpressionLanguage\ExpressionLanguage'
     factory_class: 'AT'
