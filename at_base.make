@@ -17,4 +17,4 @@ libraries[twig][download][branch] = 'v1.15.0'
 
 libraries[expression_language][download][type] = 'git'
 libraries[expression_language][download][url] = 'https://github.com/symfony/expression-language.git'
-libraries[expression_language][download][branch] = 'v2.4.0'
+libraries[expression_language][download][branch] = 'v2.4.1'
