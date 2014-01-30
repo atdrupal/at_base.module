@@ -39,6 +39,11 @@ class Content_Render {
 
   public function setData($data) {
     $this->data = $data;
+
+    if (empty($this->data['variables'])) {
+      $this->data['variables'] = array();
+    }
+
     return $this;
   }
 
@@ -60,19 +65,13 @@ class Content_Render {
       $this->setdata($data);
     }
 
-    $no_cache = !empty($this->data['cache']) && is_null($this->cache_handler);
-    $no_cache = $no_cache || empty($this->data['cache']);
-
-    if ($no_cache) {
-      return $this->build();
-    }
-
-    return $this
-      ->getCacheHandler()
-      ->setOptions($this->data['cache'])
-      ->setCallback(array($this, 'build'))
-      ->render()
-    ;
+    return (empty($this->data['cache']) || is_null($this->cache_handler))
+      ? $this->build()
+      : $this
+          ->getCacheHandler()
+          ->setOptions($this->data['cache'])
+          ->setCallback(array($this, 'build'))
+          ->render();
   }
 
   public function build() {
@@ -98,73 +97,74 @@ class Content_Render {
   }
 
   public function process() {
-    if (isset($this->data['function'])) {
-      return $this->processFunction();
-    }
-
-    if (isset($this->data['form'])) {
-      return $this->processForm();
-    }
-
-    if (isset($this->data['controller'])) {
-      return $this->processController();
-    }
-
-    if (isset($this->data['template']) || isset($this->data['template_file'])) {
-      return $this->processTemplate();
-    }
-
-    if (isset($this->data['template_string'])) {
-      return $this->processTemplateString();
-    }
-  }
-
-  public function processFunction() {
-    $func = $this->data['function'];
-    $args = $this->getVariables();
-    return call_user_func_array($func, $args);
-  }
-
-  public function processForm() {
-    $args = array('at_form', $this->data['form']);
-    $args[] = isset($this->data['form arguments']) ? $this->data['form arguments'] : array();
-    return call_user_func_array('drupal_get_form', $args);
-  }
-
-  public function processController() {
-    @list($class, $method, $args) = $this->data['controller'];
-    $obj = new $class();
-    $args = !empty($args) ? $args : array();
-    if (empty($args)) {
-      if (method_exists($obj, 'getVariables')) {
-        $args = $obj->getVariables();
-      }
-    }
-    return call_user_func_array(array($obj, $method), $args);
-  }
-
-  /**
-   * @todo  Test case for template as array.
-   */
-  public function processTemplate() {
-    $template = $this->data['template'];
-    if (is_string($template)) {
-      $template = at_container('helper.real_path')->get($template);
-      return at_container('twig')->render($template, $this->getVariables());
-    }
-
-    if (is_array($template)) {
-      foreach ($template as $tpl) {
-        $file = at_container('helper.real_path')->get($tpl);
-        if (is_file($file)) {
-          return at_container('twig')->render($file, $this->getVariables());
+    foreach (get_class_methods(get_class($this)) as $method) {
+      if ('_process' === substr($method, 0, 8)) {
+        if ($return = $this->{$method}()) {
+          return $return;
         }
       }
     }
   }
 
-  public function processTemplateString() {
-    return at_container('twig_string')->render($this->data['template_string'], $this->getVariables());
+  private function _processFunction() {
+    if (isset($this->data['function'])) {
+      $func = $this->data['function'];
+      $args = $this->getVariables();
+      return call_user_func_array($func, $args ? $args : array());
+    }
+  }
+
+  private function _processForm() {
+    if (isset($this->data['form'])) {
+      $args = array('at_form', $this->data['form']);
+      $args[] = isset($this->data['form arguments']) ? $this->data['form arguments'] : array();
+      return call_user_func_array('drupal_get_form', $args);
+    }
+  }
+
+  private function _processController() {
+    if (isset($this->data['controller'])) {
+      @list($class, $method, $args) = $this->data['controller'];
+      $obj = new $class();
+      $args = !empty($args) ? $args : array();
+      if (empty($args)) {
+        if (method_exists($obj, 'getVariables')) {
+          $args = $obj->getVariables();
+        }
+      }
+      return call_user_func_array(array($obj, $method), $args);
+    }
+  }
+
+  /**
+   * @todo  Test case for template as array.
+   */
+  private function _processTemplate() {
+    if (isset($this->data['template']) || isset($this->data['template_file'])) {
+      $template = $this->data['template'];
+      if (is_string($template)) {
+        $template = at_container('helper.real_path')->get($template);
+        return at_container('twig')->render($template, $this->getVariables());
+      }
+
+      if (is_array($template)) {
+        foreach ($template as $tpl) {
+          $file = at_container('helper.real_path')->get($tpl);
+          if (is_file($file)) {
+            $args = $this->getVariables();
+            return at_container('twig')->render($file, $args ? $args : array());
+          }
+        }
+      }
+    }
+  }
+
+  private function _processTemplateString() {
+    if (isset($this->data['template_string'])) {
+      $tpl = $this->data['template_string'];
+      $args = $this->getVariables();
+      return at_container('twig_string')->render($tpl, $args ? $args : array());
+    }
   }
 
   /**
@@ -173,10 +173,6 @@ class Content_Render {
   private function getVariables() {
     if (isset($this->data['arguments'])) {
       return $this->data['arguments'];
-    }
-
-    if (empty($this->data['variables'])) {
-      return array();
     }
 
     if (TRUE === $this->getDynamicVariables()) {
