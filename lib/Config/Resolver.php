@@ -26,7 +26,7 @@ class Resolver implements ResolverInterface {
   /**
    * Origininal path.
    *
-   * @return string|false
+   * @return string|null
    */
   public function getOriginalPath() {
     $config_id = $this->config->getId();

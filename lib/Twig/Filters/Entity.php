@@ -11,6 +11,7 @@ namespace Drupal\at_base\Twig\Filters;
  */
 class Entity {
   private $entity_type;
+  private $entity_id;
   private $view_mode;
   private $entity;
   private $options;

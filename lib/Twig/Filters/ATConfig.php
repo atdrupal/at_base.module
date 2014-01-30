@@ -13,7 +13,7 @@ class ATConfig {
     list($this->module, $this->id, $this->key) = explode(':', $string, 3);
   }
 
-  public function render($string) {
+  public function render() {
     return at_config($this->module, $this->id)->get($this->key);
   }
 }

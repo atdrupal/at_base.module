@@ -39,14 +39,14 @@ class Filter_Fetcher {
 
   protected function makeClassBasedFilter($name, $def) {
     if ('__' === substr($name, 0, 2)) {
-      return $this->makeContructiveClassBasedFilter($name, $def);
+      return $this->makeContructiveClassBasedFilter($name);
     }
 
     list($class, $method) = $def;
     return at_newv($this->twig_base, array($name, "{$class}::{$method}"));
   }
 
-  protected function makeContructiveClassBasedFilter($name, $def) {
+  protected function makeContructiveClassBasedFilter($name) {
     $name = substr($name, 2);
     return at_newv($this->twig_base, array($name, "{$this->wrapper}::{$name}"));
   }

@@ -6,7 +6,19 @@ namespace Drupal\at_base\Twig\Filters;
  * Callback for drupalBlock filter.
  */
 class Block {
+  /**
+   * Block object.
+   *
+   * @var \stdClass
+   */
   private $block;
+
+  /**
+   * If FALSE, render block wrapper.
+   *
+   * @var boolean
+   */
+  private $content_only;
 
   /**
    * @param  string  $string       %module:%delta

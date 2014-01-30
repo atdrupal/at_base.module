@@ -48,6 +48,11 @@ class Argument_Resolver
         return $item;
     }
 
+    /**
+     * Replace item string to real object.
+     *
+     * @param  string $item
+     */
     private function replaceItem($item) {
         foreach (get_class_methods(get_class($this)) as $method) {
           if ('detect' === substr($method, 0, 6)) {
