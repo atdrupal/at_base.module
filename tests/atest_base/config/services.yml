@@ -38,6 +38,6 @@ services:
   atest_base.psr4_me:
     autoload:
       type: psr-4
-      namespace: AndyTruong\atest_base
+      namespace: ATest\atest_base
       includePath: '@atest_base/psr-4'
-    class: 'AndyTruong\atest_base\PSR4Me'
+    class: 'ATest\atest_base\PSR4Me'

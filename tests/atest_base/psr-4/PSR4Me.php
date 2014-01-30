@@ -1,6 +1,6 @@
 <?php
 
-namespace AndyTruong\atest_base;
+namespace ATest\atest_base;
 
 class PSR4Me {
 }
