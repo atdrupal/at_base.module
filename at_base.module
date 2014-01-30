@@ -5,30 +5,20 @@
  * Include custom functions.
  */
 
-use \Drupal\at_base\Autoloader;
 use \Drupal\at_base\Cache;
 use \Drupal\at_base\Helper\ModulesFetcher;
 
 require_once dirname(__FILE__) . '/lib/AT.php';
-require_once dirname(__FILE__) . '/at_base.hooks.inc';
 require_once dirname(__FILE__) . '/lib/Autoloader.php';
-at_id(new Autoloader())->register();
+require_once dirname(__FILE__) . '/at_base.hooks.inc';
+require_once dirname(__FILE__) . '/at_base.hack.inc';
 
 /**
- * Identity function, returns its argument unmodified.
- *
- * This is useful almost exclusively as a workaround to an oddity in the PHP
- * grammar -- this is a syntax error:
- *
- *    COUNTEREXAMPLE
+ * Can not:
  *    new Thing()->doStuff();
  *
- * ...but this works fine:
- *
+ * Can:
  *    at_id(new Thing())->doStuff();
- *
- * @param   wild Anything.
- * @return  wild Unmodified argument.
  */
 function at_id($x) {
   return $x;
@@ -69,13 +59,19 @@ function at_newv($class_name, $argv = array()) {
  * @see https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container
  */
 function at_container($id) {
-    static $container = NULL;
+  static $container = NULL;
 
-    if (!$container) {
-        $container = new \Drupal\at_base\Container();
-    }
+  if (!$container) {
+    $container = new \Drupal\at_base\Container();
+  }
 
-    return $container[$id];
+  $args = func_get_args();
+  if (1 !== count($args)) {
+    array_shift($args);
+    $container["{$id}:arguments"] = $args;
+  }
+
+  return $container[$id];
 }
 
 /**
@@ -205,73 +201,4 @@ function at_library($name, $version = 'default') {
   }
 
   throw new Exception("Missing library: {$name} (version {$version})");
-}
-
-/**
- * Check is Drupal system on dev or not.
- *
- * @return boolean
- */
-function at_debug() {
-  return defined('AT_DEBUG');
-}
-
-/**
- * Return if key|upercase/variable is not FALSE|NULL|0.
- */
-function at_valid($key, $get_value = FALSE) {
-  $c = strtoupper($key);
-  if (defined($c)) $return = constant($c);
-  else $return = variable_get($key, FALSE);
-  return $get_value ? $return : (boolean)($return);
-}
-
-/**
- * Wrapper for class based forms.
- *
- * @todo  Test me.
- */
-function at_form($form, &$form_state) {
-  // Get the variables from arguments
-  $args       = func_get_args();
-  $form       = array_shift($args);
-  $form_state = array_shift($args);
-  $class      = array_shift($args);
-  $args       = reset($args);
-
-  // Build the form
-  $obj = at_newv($class, $args);
-  $obj->setForm($form);
-  $obj->setFormState($form_state);
-
-  $form = $obj->get();
-  $form['#at_form'] = array($class, $args);
-
-  return $form;
-}
-
-/**
- * Wrapper for class based forms.
- */
-function at_form_validate($form, &$form_state) {
-  // Build the form
-  list($class, $args) = $form['#at_form'];
-
-  $obj = at_newv($class, $args);
-  $obj->setForm($form);
-  $obj->setFormState($form_state);
-  $obj->validate();
-}
-
-/**
- * Wrapper for class based forms.
- */
-function at_form_submit($form, &$form_state) {
-  // Build the form
-  list($class, $args) = $form['#at_form'];
-
-  $obj = at_newv($class, $args);
-  $obj->setForm($form);
-  $obj->setFormState($form_state);
-  $obj->submit();
 }

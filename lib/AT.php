@@ -40,7 +40,7 @@ class AT {
    * @return ExpressionLanguage
    * @todo  Use service container when PSR-4 autoloading can be attached there.
    */
-  public function getExpressionLanguage() {
+  public static function getExpressionLanguage() {
     static $engine;
 
     if (!$engine) {
@@ -53,4 +53,3 @@ class AT {
     return $engine;
   }
 }
-
