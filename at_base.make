@@ -18,3 +18,7 @@ libraries[twig][download][branch] = 'v1.15.0'
 libraries[expression_language][download][type] = 'git'
 libraries[expression_language][download][url] = 'https://github.com/symfony/expression-language.git'
 libraries[expression_language][download][branch] = 'v2.4.1'
+
+libraries[doctrine_cache][download][type] = 'git'
+libraries[doctrine_cache][download][url] = 'https://github.com/doctrine/cache.git'
+libraries[doctrine_cache][download][branch] = 'v1.3.0'
