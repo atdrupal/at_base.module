@@ -19,7 +19,7 @@
         "symfony/expression-language": "2.5.*@dev"
     },
     "autoload": {
-        "psr-4": { "Drupal\\at_base": "lib" }
+        "psr-4": { "Drupal\\at_base\\": "lib" }
     },
     "extra": {
         "branch-alias": {
