@@ -31,13 +31,13 @@ services:
   atest_base.psr0_me:
     autoload:
       type: psr-0
-      namespace: Drupal
-      includePath: %atest_base/psr-0
-    class: 'Drupal\atest_base\PSR0Me'
+      namespace: AndyTruong
+      includePath: '@atest_base/psr-0'
+    class: 'AndyTruong\atest_load\PSR0Me'
 
   atest_base.psr4_me:
     autoload:
       type: psr-4
-      namespace: Drupal\atest_base
-      includePath: %atest_base/psr-4
-    class: 'Drupal\atest_base\PSR0Me'
+      namespace: AndyTruong\atest_base
+      includePath: '@atest_base/psr-4'
+    class: 'AndyTruong\atest_base\PSR4Me'

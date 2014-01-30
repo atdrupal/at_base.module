@@ -48,12 +48,12 @@ class ContainerTest extends UnitTestCase {
 
   public function testAutoloadPSR0() {
     $service = at_container('atest_base.psr0_me');
-    $this->assertEqual('Drupal\atest_base\PSR0Me', get_class($service));
+    $this->assertEqual('AndyTruong\atest_load\PSR0Me', get_class($service));
   }
 
   public function testAutoloadPSR4() {
-    $service = at_container('atest_base.psr04_me');
-    $this->assertEqual('Drupal\atest_base\PSR4Me', get_class($service));
+    $service = at_container('atest_base.psr4_me');
+    $this->assertEqual('AndyTruong\atest_base\PSR4Me', get_class($service));
   }
 
   public function testTaggedServices() {
