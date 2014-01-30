@@ -46,29 +46,25 @@ function drush_at_twig_doc__list__filter() {
 function drush_at_twig_doc__item($name) {
   foreach (at_container('twig_string')->getFilters() as $filter_name => $filter) {
     if ($name === $filter_name) {
-      drush_print_table(array(
-        array('Property',   'Value'),
-        array('----------', '---------------------'),
-        array('Name',       $filter->getName()),
-        array('Callable',   $filter->getCallable()),
-        array('Node Class', $filter->getNodeClass()),
-        array('Arguments',  '[' . implode(', ', $filter->getArguments()) . ']'),
-        array('Safe',       (int) $filter->getSafe()),
-      ), TRUE);
+      drush_at_twig_doc__item__table($filter);
     }
   }
 
   foreach (at_container('twig_string')->getFunctions() as $fn_name => $fn) {
     if ($name === $fn_name) {
-      drush_print_table(array(
-        array('Property',   'Value'),
-        array('----------', '---------------------'),
-        array('Name',       $fn->getName()),
-        array('Callable',   $fn->getCallable()),
-        array('Node Class', $fn->getNodeClass()),
-        array('Arguments',  '[' . implode(', ', $fn->getArguments()) . ']'),
-        array('Safe',       (int) $fn->getSafe()),
-      ), TRUE);
+      drush_at_twig_doc__item__table($fn);
     }
   }
+}
+
+function drush_at_twig_doc__item__table($obj) {
+  drush_print_table(array(
+    array('Property',   'Value'),
+    array('----------', '---------------------'),
+    array('Name',       $obj->getName()),
+    array('Callable',   $obj->getCallable()),
+    array('Node Class', $obj->getNodeClass()),
+    array('Arguments',  '[' . implode(', ', $obj->getArguments()) . ']'),
+    array('Safe',       (int) $obj->getSafe()),
+  ), TRUE);
 }

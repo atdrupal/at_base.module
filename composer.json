@@ -5,6 +5,7 @@
     "keywords": ["Drupal", "drush", "dependency injection", "container", "config", "api", "autoloader"],
     "homepage": "http://v3k.net/",
     "license": "GPL-2.0",
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "Andy Truong",
