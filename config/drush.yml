@@ -9,6 +9,7 @@ commands:
       drush at_require module_name: Download dependencies for specific module
     aliases: ['at-require', 'atr']
     bootstrap: constant('DRUSH_BOOTSTRAP_DRUPAL_FULL')
+
   at_service:
     callback: drush_at_services
     description: List all services
@@ -17,6 +18,7 @@ commands:
       drush at_service server_name: View definition of service_name.
     aliases: ['at-service', 'ats']
     bootstrap: constant('DRUSH_BOOTSTRAP_DRUPAL_FULL')
+
   'at_cache:clear':
     callback: drush_at_cache_clear
     description: Flush cache by tags
@@ -24,3 +26,10 @@ commands:
       drush atcc at-config: Flush cached content tagged with at-config
       drush atcc node user: Flush cached content tagged with node or user
     aliases: ['atcc']
+
+  'twig:doc':
+    callback: drush_at_twig_doc
+    description: 'Lists twig functions, filters, globals and tests present in the current project'
+    examples:
+      'drush twig:doc': Display all Twig functions/filters
+      'drush twig:doc drupalView': View details of drupalView filter.

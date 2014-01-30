@@ -3,6 +3,7 @@
 require_once dirname(__FILE__) . '/at_base.module';
 require_once dirname(__FILE__) . '/drush/at_services.inc';
 require_once dirname(__FILE__) . '/drush/at_cache.inc';
+require_once dirname(__FILE__) . '/drush/at_twig.inc';
 
 if (class_exists('DrushMakeProject_Library')) {
   require_once dirname(__FILE__) . '/drush/at_require.inc';
