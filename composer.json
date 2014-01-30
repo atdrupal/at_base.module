@@ -4,7 +4,7 @@
     "description": "Provide some more API for developer to work with Drupal",
     "keywords": ["Drupal", "drush", "dependency injection", "container", "config", "api", "autoloader"],
     "homepage": "http://v3k.net/",
-    "license": "GPL2",
+    "license": "GPL-2.0",
     "authors": [
         {
             "name": "Andy Truong",
