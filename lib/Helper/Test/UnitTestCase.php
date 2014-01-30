@@ -35,13 +35,14 @@ abstract class UnitTestCase extends \DrupalUnitTestCase {
     at_id(new \Drupal\at_base\Autoloader())->register(FALSE, TRUE);
 
     // at_modules() > system_list() > need db, fake it!
-    $cids_1 = array("atmodules:at_base:", "atmodules:at_base:services");
+    // 'id' => "ATConfig:{$module}:{$id}:{$key}:" . ($include_at_base ? 1 : 0),
+    $cids_1 = array('atmodules:at_base:', 'atmodules:at_base:services', 'atmodules:at_base:twig_functions');
     $data_1 = array('at_base', 'atest_base');
     foreach ($cids_1 as $cid) {
       at_container('wrapper.cache')->set($cid, $data_1, 'cache_bootstrap');
     }
 
-    $cids_2 = array("atmodules:at_base:twig_filters", "atmodules:at_base:twig_functions");
+    $cids_2 = array('atmodules:at_base:twig_filters');
     $data_2 = array('at_base');
     foreach ($cids_2 as $cid) {
       at_container('wrapper.cache')->set($cid, $data_2, 'cache_bootstrap');

@@ -2,9 +2,14 @@
 namespace Drupal\at_base\Twig;
 
 class Filter_Fetcher {
+  protected $config_id  = 'twig_filters';
+  protected $config_key = 'twig_filters';
+  protected $twig_base  = '\Twig_SimpleFilter';
+  protected $wrapper    = '\Drupal\at_base\Twig\Filters\Wrapper';
 
-  private function fetchDefinitions() {
-    return at_container('helper.config_fetcher')->getItems('at_base', 'twig_filters', 'twig_filters', TRUE);
+  protected function fetchDefinitions() {
+    return at_container('helper.config_fetcher')
+      ->getItems('at_base', $this->config_id, $this->config_key, TRUE);
   }
 
   public function fetch() {
@@ -17,7 +22,7 @@ class Filter_Fetcher {
     return $filters;
   }
 
-  private function makeFilter($name, $def) {
+  protected function makeFilter($name, $def) {
     // Backward compactible
     //    old style: - [url, url]
     //    new style: - url: url
@@ -29,20 +34,20 @@ class Filter_Fetcher {
       return $this->makeClassBasedFilter($name, $def);
     }
 
-    return new \Twig_SimpleFilter($name, $def);
+    return at_newv($this->twig_base, array($name, $def));
   }
 
-  private function makeClassBasedFilter($name, $def) {
+  protected function makeClassBasedFilter($name, $def) {
     if ('__' === substr($name, 0, 2)) {
       return $this->makeContructiveClassBasedFilter($name, $def);
     }
 
     list($class, $method) = $def;
-    return new \Twig_SimpleFilter($name, "{$class}::{$method}");
+    return at_newv($this->twig_base, array($name, "{$class}::{$method}"));
   }
 
-  private function makeContructiveClassBasedFilter($name, $def) {
+  protected function makeContructiveClassBasedFilter($name, $def) {
     $name = substr($name, 2);
-    return new \Twig_SimpleFilter($name, "\Drupal\at_base\Twig\Filters\Wrapper::{$name}");
+    return at_newv($this->twig_base, array($name, "{$this->wrapper}::{$name}"));
   }
 }

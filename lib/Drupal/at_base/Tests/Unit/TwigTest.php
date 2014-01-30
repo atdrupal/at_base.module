@@ -4,6 +4,9 @@ namespace Drupal\at_base\Tests\Unit;
 
 use Drupal\at_base\Helper\Test\UnitTestCase;
 
+/**
+ * drush test-run --dirty 'Drupal\at_base\Tests\Unit\TwigTest'
+ */
 class TwigTest extends UnitTestCase {
   public function getInfo() {
     return array('name' => 'AT Unit: Twig') + parent::getInfo();
@@ -33,6 +36,8 @@ class TwigTest extends UnitTestCase {
   }
 
   public function testCacheFilter() {
+    $twig = at_container('twig_string');
+
     $string_1  = "{% set options = { cache_id: 'atestTwigCache:1' } %}";
     $string_1 .= "\n {{ 'atest_base.service_1:hello' | cache(options) }}";
     $string_2  = "{% set options = { cache_id: 'atestTwigCache:2' } %}";
@@ -43,11 +48,20 @@ class TwigTest extends UnitTestCase {
     $string_4 .= "\n {% set callback = { callback: 'atest_base_hello', arguments: ['Andy Truong'] } %}";
     $string_4 .= "\n {{ callback | cache(options) }}";
     for ($i = 1; $i <= 4; $i++) {
-      $expected = 'Hello Andy Truong';
       $actual = "string_{$i}";
-      $actual = at_container('twig_string')->render($$actual);
+      $actual = $twig->render($$actual);
       $actual = trim($actual);
-      $this->assertEqual($expected, $actual);
+      $this->assertEqual('Hello Andy Truong', $actual);
     }
+  }
+
+  public function testFilters() {
+    $twig = at_container('twig_string');
+
+    $expected = 'Hello Drupal';
+
+    $this->assertEqual($expected, $twig->render("{{ atest_1('Drupal') }}"));
+    $this->assertEqual($expected, $twig->render("{{ atest_2('Drupal') }}"));
+    $this->assertEqual($expected, $twig->render("{{ atest_3('Drupal') }}"));
   }
 }

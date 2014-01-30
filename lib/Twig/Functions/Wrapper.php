@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\at_base\Twig\Filters;
+namespace Drupal\at_base\Twig\Functions;
 
 /**
  * Handler for drupalEntity Twig filter.
@@ -9,10 +9,10 @@ namespace Drupal\at_base\Twig\Filters;
  */
 class Wrapper {
   public static function __callStatic($name, $arguments) {
-    $def = at_container('helper.config_fetcher')->getItem('at_base', 'twig_filters', 'twig_filters' , "__{$name}", TRUE);
+    $def = at_container('helper.config_fetcher')->getItem('at_base', 'twig_functions', 'twig_functions' , "__{$name}", TRUE);
 
     if (!$def) {
-      throw new \Exception("Can not find definition for Twig filter: {$name}");
+      throw new \Exception("Can not find definition for Twig function: {$name}");
     }
 
     list($class, $method) = $def;

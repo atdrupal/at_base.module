@@ -1,18 +1,9 @@
 <?php
 namespace Drupal\at_base\Twig;
 
-class Function_Fetcher {
-  private function fetchDefinitions() {
-    return at_container('helper.config_fetcher')->getItems('at_base', 'twig_functions', 'twig_functions', TRUE);
-  }
-
-  public function fetch() {
-    $functions = array();
-
-    foreach ($this->fetchDefinitions() as $fn) {
-      $functions[] = new \Twig_SimpleFunction($fn, $fn);
-    }
-
-    return $functions;
-  }
+class Function_Fetcher extends Filter_Fetcher {
+  protected $config_id  = 'twig_functions';
+  protected $config_key = 'twig_functions';
+  protected $twig_base  = '\Twig_SimpleFunction';
+  protected $wrapper    = '\Drupal\at_base\Twig\Functions\Wrapper';
 }

@@ -3,12 +3,24 @@
 define('ATEST_AUTHOR', 'Andy Truong');
 
 class At_Base_Test_Class {
+  private $name = 'Andy Truong';
+
+  public function __construct($name = NULL) {
+    if (!is_null($name)) {
+      $this->name = $name;
+    }
+  }
+
   public function __invoke() {}
 
   public function foo() {}
 
   public function hi($name) {
     return $this->hello($name);
+  }
+
+  public function helloProperty() {
+    return "Hello {$this->name}";
   }
 
   public function hello($name = 'Andy Truong') {

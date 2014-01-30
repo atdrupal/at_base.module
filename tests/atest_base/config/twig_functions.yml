@@ -1,0 +1,4 @@
+twig_functions:
+  atest_1: atest_base_hello
+  atest_2: [At_Base_Test_Class, helloStatic]
+  __atest_3: [At_Base_Test_Class, helloProperty]
