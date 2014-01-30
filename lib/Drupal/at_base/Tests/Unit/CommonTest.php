@@ -4,6 +4,9 @@ namespace Drupal\at_base\Tests\Unit;
 
 use Drupal\at_base\Helper\Test\UnitTestCase;
 
+/**
+ *  drush test-run --dirty 'Drupal\at_base\Tests\Unit\CommonTest'
+ */
 class CommonTest extends UnitTestCase {
   public function getInfo() {
     return array('name' => 'AT Unit: Basic features') + parent::getInfo();
@@ -21,7 +24,7 @@ class CommonTest extends UnitTestCase {
    * Test for at_id() function.
    */
   public function testAtId() {
-    at_id(new \Drupal\at_base\Autoloader())->register();
+    $container = new \Drupal\at_base\Container();
     $this->assertTrue(TRUE, 'No exception raised.');
   }
 
@@ -54,12 +57,14 @@ class CommonTest extends UnitTestCase {
    * Test ExpressionLanguage.
    */
   public function testExpressionLanguage() {
+    $engine = \AT::getExpressionLanguage();
+
     $expected = 'Symfony\Component\ExpressionLanguage\ExpressionLanguage';
-    $actual = get_class(at_container('expression_language'));
+    $actual = get_class($engine);
     $this->assertEqual($expected, $actual);
 
     $expected = 3;
-    $actual = at_container('expression_language')->evaluate("constant('MENU_CONTEXT_PAGE') | constant('MENU_CONTEXT_INLINE')");
+    $actual = $engine->evaluate("constant('MENU_CONTEXT_PAGE') | constant('MENU_CONTEXT_INLINE')");
     $this->assertEqual($expected, $actual);
   }
 }
