@@ -1,6 +1,8 @@
 <?php
 namespace Drupal\at_base;
 
+at_id(new Autoloader('Drupal'))->register();
+
 /**
  * Modified version of SplClassLoader (https://gist.github.com/jwage/221634)
  *
@@ -22,13 +24,13 @@ namespace Drupal\at_base;
  */
 class Autoloader {
   private $_fileExtension = '.php';
-  private $_namespace = 'Drupal';
+  private $_namespace;
   private $_includePath;
   private $_namespaceSeparator = '\\';
 
-  public function __construct($ns = 'Drupal', $includePath = NULL) {
-      $this->_namespace = $ns;
-      $this->_includePath = $includePath ? $includePath : DRUPAL_ROOT;
+  public function __construct($ns, $includePath = NULL) {
+    $this->_namespace = $ns;
+    $this->_includePath = $includePath ? $includePath : DRUPAL_ROOT;
   }
 
   public function register($throw = FALSE, $prepend = FALSE) {
