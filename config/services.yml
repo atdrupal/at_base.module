@@ -4,7 +4,10 @@ imports:
   - { resource: services.helper.yml }
 
 services:
-  class_loader:
+  autoloader:
+    class: 'Drupal\at_base\Container\Autoloader'
+
+  autoloader.psr0:
     class: 'Doctrine\Common\ClassLoader'
     file: '%doctrine_common/lib/Doctrine/Common/ClassLoader.php'
 

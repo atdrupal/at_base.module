@@ -59,13 +59,19 @@ function at_newv($class_name, $argv = array()) {
  * @see https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container
  */
 function at_container($id) {
-    static $container = NULL;
+  static $container = NULL;
 
-    if (!$container) {
-        $container = new \Drupal\at_base\Container();
-    }
+  if (!$container) {
+    $container = new \Drupal\at_base\Container();
+  }
 
-    return $container[$id];
+  $args = func_get_args();
+  if (1 !== count($args)) {
+    array_shift($args);
+    $container["{$id}:arguments"] = $args;
+  }
+
+  return $container[$id];
 }
 
 /**

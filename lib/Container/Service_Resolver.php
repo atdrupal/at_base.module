@@ -16,8 +16,13 @@ class Service_Resolver
      */
     public function getClosure($id) {
         $def = $this->getDefinition($id);
-        return function($c) use ($def) {
+        return function($c) use ($id, $def) {
+            if (isset($c["{$id}:arguments"])) {
+                $def['arguments'] = $c["{$id}:arguments"];
+            }
+
             list($args, $calls) = $c['argument.resolver']->resolve($def);
+
             return $c['service.resolver']->convertDefinitionToService($def, $args, $calls);
         };
     }

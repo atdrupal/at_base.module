@@ -28,6 +28,11 @@ class Argument_Resolver
             unset($def['file']);
         }
 
+        if (!empty($def['autoload'])) {
+            at_container('autoloader')->register($def['autoload']);
+            unset($def['autoload']);
+        }
+
         if (!empty($def['arguments'])) {
             $args = $this->prepareItems($def['arguments']);
             unset($def['arguments']);
