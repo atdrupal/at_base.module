@@ -23,3 +23,7 @@ services:
   atest_base.dynamic_arguments:
     class: 'Drupal\atest_base\Dynamic_Arguments'
     arguments: ['%atest_base:parameters:dynamic_param_1', '%atest_base:parameters:dynamic_service_1']
+
+  atest_base.include_me:
+    file: '@atest_base/lib/Include_Me.php'
+    class: 'ATest_Base_Include_Me'

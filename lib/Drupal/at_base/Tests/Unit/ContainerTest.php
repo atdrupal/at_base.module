@@ -34,6 +34,11 @@ class ContainerTest extends UnitTestCase {
     $this->assertEqual('Twig_Environment', get_class($service_4));
   }
 
+  public function testIncludingFile() {
+    $service = at_container('atest_base.include_me');
+    $this->assertEqual('ATest_Base_Include_Me', get_class($service));
+  }
+
   public function testDynamicArguments() {
     $service = at_container('atest_base.dynamic_arguments');
     $this->assertEqual('Drupal\atest_base\Dynamic_Arguments', get_class($service));
