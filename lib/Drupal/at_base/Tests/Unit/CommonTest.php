@@ -29,9 +29,25 @@ class CommonTest extends UnitTestCase {
    * Test for \Drupal\at_base\Helper\RealPath class
    */
   public function testRealPath() {
-    $expected = path_to_theme() . '/templates/page.home.html.twig';
-    $actual = at_container('helper.real_path')->get('%theme/templates/page.home.html.twig');
-    $this->assertEqual($expected, $actual);
+    $helper = at_container('helper.real_path');
+
+    // @module
+    $this->assertEqual(
+      drupal_get_path('module', 'at_base') . '/at_base.module',
+      $helper->get('@at_base/at_base.module')
+    );
+
+    // %theme
+    $this->assertEqual(
+      path_to_theme() . '/templates/page.home.html.twig',
+      $helper->get('%theme/templates/page.home.html.twig')
+    );
+
+    // %library
+    $this->assertEqual(
+      at_library('pimple') . '/lib/Pimple.php',
+      $helper->get('%pimple/lib/Pimple.php')
+    );
   }
 
   /**
