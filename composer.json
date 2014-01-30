@@ -11,8 +11,27 @@
             "email": "thehongtt@gmail.com"
         }
     ],
+    "repositories": [
+        {
+           "type": "package",
+           "package": {
+               "version": "7.26",
+               "name": "drupal/core",
+               "source": {
+                   "url": "http://git.drupal.org/project/drupal.git",
+                   "type": "git",
+                   "reference": "7.26"
+               },
+               "dist": {
+                   "url": "http://ftp.drupal.org/files/projects/drupal-7.26.zip",
+                   "type": "zip"
+               }
+           }
+       }
+    ],
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=5.3.8,<5.4",
+        "composer/installers": "*",
         "mustangostang/spyc": "0.5.*",
         "pimple/pimple": "1.1.*",
         "twig/twig": "1.15.*",
