@@ -16,7 +16,7 @@
         "mustangostang/spyc": "0.5.*@dev",
         "pimple/pimple": "1.1.*",
         "twig/twig": "1.15.*",
-        "symfony/expression-language": "2.4.x-dev"
+        "symfony/expression-language": "2.4.*"
     },
     "autoload": {
         "psr-4": { "Drupal\\at_base\\": "lib" }
