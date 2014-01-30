@@ -24,7 +24,7 @@ at_id(new Autoloader('Drupal'))->register();
  */
 class Autoloader {
   private $_fileExtension = '.php';
-  private $_namespace = 'Drupal';
+  private $_namespace;
   private $_includePath;
   private $_namespaceSeparator = '\\';
 
