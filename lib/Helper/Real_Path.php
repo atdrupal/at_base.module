@@ -70,7 +70,7 @@ class Real_Path {
       if (!empty($matches)) {
         $library = $matches[1];
         if ($library_path = at_library($library)) {
-          return str_replace("@{$library}/", $library_path . '/', $path);
+          return str_replace("%{$library}/", $library_path . '/', $path);
         }
       }
     }
