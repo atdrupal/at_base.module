@@ -20,6 +20,27 @@ namespace Drupal\at_base\Container;
 class Argument_Resolver
 {
 
+    public function resolve(&$def) {
+        $args = $calls = array();
+
+        if (!empty($def['file'])) {
+            require at_container('helper.real_path')->get($def['file']);
+            unset($def['file']);
+        }
+
+        if (!empty($def['arguments'])) {
+            $args = $this->prepareItems($def['arguments']);
+            unset($def['arguments']);
+        }
+
+        if (!empty($def['calls'])) {
+            $calls = $this->prepareItemsPartial($def['calls'], 1);
+            unset($def['calls']);
+        }
+
+        return array($args, $calls);
+    }
+
     public function prepareItemsPartial($items, $part = 0) {
         foreach ($items as $k => $item) {
             if (is_array($item) && isset($item[$part])) {

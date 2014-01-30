@@ -7,6 +7,7 @@ namespace Drupal\at_base\Container;
  */
 class Service_Resolver
 {
+
     /**
      * Generate closure which to be used to fetch the service.
      *
@@ -15,29 +16,9 @@ class Service_Resolver
      */
     public function getClosure($id) {
         $def = $this->getDefinition($id);
-
         return function($c) use ($def) {
-            $ar = $c['argument.resolver'];
-            $sr = $c['service.resolver'];
-
-            $args = $calls = array();
-
-            if (!empty($def['file'])) {
-                require at_container('helper.real_path')->get($def['file']);
-                unset($def['file']);
-            }
-
-            if (!empty($def['arguments'])) {
-                $args = $ar->prepareItems($def['arguments']);
-                unset($def['arguments']);
-            }
-
-            if (!empty($def['calls'])) {
-                $calls = $ar->prepareItemsPartial($def['calls'], 1);
-                unset($def['calls']);
-            }
-
-            return $sr->convertDefinitionToService($def, $args, $calls);
+            list($args, $calls) = $c['argument.resolver']->resolve($def);
+            return $c['service.resolver']->convertDefinitionToService($def, $args, $calls);
         };
     }
 
