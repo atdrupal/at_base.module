@@ -22,10 +22,15 @@ class Service_Resolver
 
             $args = $calls = array();
 
-            if (!empty($def['arguments'])) {
-                $args = $ar->prepareItems($def['arguments']);
+            if (!empty($def['file'])) {
+                require at_container('helper.real_path')->get($def['file']);
+                unset($def['file']);
             }
 
+            if (!empty($def['arguments'])) {
+                $args = $ar->prepareItems($def['arguments']);
+                unset($def['arguments']);
+            }
 
             if (!empty($def['calls'])) {
                 $calls = $ar->prepareItemsPartial($def['calls'], 1);
