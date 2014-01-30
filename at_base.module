@@ -75,6 +75,25 @@ function at_container($id) {
 }
 
 /**
+ * Wrapper for Key-Value services.
+ *
+ * @param  string $bin
+ * @param  array  $options
+ */
+function at_kv($bin, $options = array(), $engine_name = 'array') {
+  global $at;
+
+  if (isset($at['kv'][$bin]['engine'])) {
+    $engine_name = $at['kv'][$bin]['engine'];
+  }
+
+  $engine = at_container("kv.engine.{$engine_name}");
+  $engine->setOptions($options);
+
+  return $engine;
+}
+
+/**
  * Care about site caching.
  *
  * @param  array|string $options
