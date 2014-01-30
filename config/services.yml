@@ -1,4 +1,5 @@
 imports:
+  - { resource: services.kv.yml }
   - { resource: services.cache.yml }
   - { resource: services.theming.yml }
   - { resource: services.helper.yml }
