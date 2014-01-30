@@ -39,16 +39,17 @@ class Process {
     if (isset($this->data['controller'])) {
       @list($class, $method, $args) = $this->data['controller'];
       $obj = new $class();
-      return call_user_func_array(array($obj, $method), $this->processControllerArguments());
+      return call_user_func_array(
+        array($obj, $method),
+        $this->processControllerArguments($obj)
+      );
     }
   }
 
-  private function processControllerArguments() {
+  private function processControllerArguments($obj) {
     $args = !empty($args) ? $args : array();
-    if (empty($args)) {
-      if (method_exists($obj, 'getVariables')) {
-        $args = $obj->getVariables();
-      }
+    if (empty($args) && method_exists($obj, 'getVariables')) {
+      $args = $obj->getVariables();
     }
     return $args;
   }
