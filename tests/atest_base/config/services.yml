@@ -27,3 +27,17 @@ services:
   atest_base.include_me:
     file: '@atest_base/lib/Include_Me.php'
     class: 'ATest_Base_Include_Me'
+
+  atest_base.psr0_me:
+    autoload:
+      type: psr-0
+      namespace: Drupal
+      includePath: %atest_base/psr-0
+    class: 'Drupal\atest_base\PSR0Me'
+
+  atest_base.psr4_me:
+    autoload:
+      type: psr-4
+      namespace: Drupal\atest_base
+      includePath: %atest_base/psr-4
+    class: 'Drupal\atest_base\PSR0Me'

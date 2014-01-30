@@ -46,6 +46,16 @@ class ContainerTest extends UnitTestCase {
     $this->assertEqual('Drupal\atest_base\Service_1', get_class($service->getDynService()));
   }
 
+  public function testAutoloadPSR0() {
+    $service = at_container('atest_base.psr0_me');
+    $this->assertEqual('Drupal\atest_base\PSR0Me', get_class($service));
+  }
+
+  public function testAutoloadPSR4() {
+    $service = at_container('atest_base.psr04_me');
+    $this->assertEqual('Drupal\atest_base\PSR4Me', get_class($service));
+  }
+
   public function testTaggedServices() {
     // With weight
     $expected = array('cache.warmer.view', 'cache.warmer.entity', 'cache.warmer.simple');
