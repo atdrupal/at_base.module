@@ -33,7 +33,9 @@ before_script:
   # ---------------------
   # Variables
   # ---------------------
-  - cd ../..
+  - cd ..
+  - export VENDOR=`pwd`
+  - cd ..
   - export DRUPAL=`pwd`'/drupal/'
 
   # ---------------------
@@ -44,7 +46,7 @@ before_script:
   - mv atest_profile-master $DRUPAL
   - cd $DRUPAL
   - drush si testing --db-url=mysql://root:@localhost/drupal --yes
-  - mv ../andytruong/* sites/all/modules/
+  - mv $VENDOR/* sites/all/modules/
 
   # ---------------------
   # Prepare env for the module
