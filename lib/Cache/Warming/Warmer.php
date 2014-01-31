@@ -65,7 +65,14 @@ class Warmer {
       foreach ($this->warmers as $warmer) {
         if (TRUE === $warmer->validateTag($tag)) {
           if ($tag = $warmer->processTag($tag, $this->context)) {
-            $this->tag_flusher->addTag($tag);
+            if (is_array($tag)) {
+              foreach ($tag as $_tag) {
+                $this->tag_flusher->addTag($tag);
+              }
+            }
+            else {
+              $this->tag_flusher->addTag($tag);
+            }
           }
         }
       }
