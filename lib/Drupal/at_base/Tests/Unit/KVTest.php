@@ -5,6 +5,11 @@ namespace Drupal\at_base\Tests\Unit;
 use Drupal\at_base\Helper\Test\UnitTestCase;
 use Drupal\at_base\Helper\Test\Cache;
 
+/**
+ * Test case for Key-Value storage
+ * 
+ *    drush test-run --dirty 'Drupal\at_base\Tests\Unit\KVTest'
+ */
 class KVTest extends UnitTestCase {
   public function getInfo() {
     return array('name' => 'AT Unit: Key-Value storage') + parent::getInfo();
