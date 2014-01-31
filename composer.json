@@ -1,0 +1,44 @@
+{
+    "name": "andytruong/at_base",
+    "type": "drupal-module",
+    "description": "Provide some more API for developer to work with Drupal",
+    "keywords": ["Drupal", "drush", "dependency injection", "container", "config", "api", "autoloader"],
+    "homepage": "http://v3k.net/",
+    "license": "GPL-2.0",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Andy Truong",
+            "email": "thehongtt@gmail.com"
+        }
+    ],
+    "repositories": [
+        {
+           "type": "package",
+           "package": {
+               "version": "6.30",
+               "name": "drupal/core",
+               "source": {
+                   "url": "http://git.drupal.org/project/drupal.git",
+                   "type": "git",
+                   "reference": "6.30"
+               },
+               "dist": {
+                   "url": "http://ftp.drupal.org/files/projects/drupal-6.30.zip",
+                   "type": "zip"
+               }
+           }
+       }
+    ],
+    "require": {
+        "php": ">=5.3.8",
+        "composer/installers": "*",
+        "mustangostang/spyc": "0.5.*",
+        "pimple/pimple": "1.1.*",
+        "twig/twig": "1.15.*",
+        "symfony/expression-language": "2.4.*"
+    },
+    "autoload": {
+        "psr-4": { "Drupal\\at_base\\": "lib" }
+    }
+}
