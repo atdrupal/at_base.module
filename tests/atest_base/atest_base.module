@@ -1,9 +1,27 @@
 <?php
 
+define('ATEST_AUTHOR', 'Andy Truong');
+
 class At_Base_Test_Class {
+  private $name = 'Andy Truong';
+
+  public function __construct($name = NULL) {
+    if (!is_null($name)) {
+      $this->name = $name;
+    }
+  }
+
   public function __invoke() {}
 
   public function foo() {}
+
+  public function hi($name) {
+    return $this->hello($name);
+  }
+
+  public function helloProperty() {
+    return "Hello {$this->name}";
+  }
 
   public function hello($name = 'Andy Truong') {
     return "Hello {$name}";
@@ -12,8 +30,25 @@ class At_Base_Test_Class {
   public static function helloStatic($name = 'Andy Truong') {
     return "Hello {$name}";
   }
+
+  public function getVariables() {
+    return atest_variables();
+  }
+
+  public static function staticGetVariables() {
+    return atest_variables();
+  }
 }
 
 function atest_base_hello($name = 'Andy Truong') {
   return "Hello {$name}";
+}
+
+/**
+ * @see Drupal\at_base\Tests\Unit\ServiceContentRenderTest::testDynamicVariables
+ */
+function atest_variables() {
+  return array(
+    'name' => ATEST_AUTHOR,
+  );
 }

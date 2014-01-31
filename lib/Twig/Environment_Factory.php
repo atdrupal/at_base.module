@@ -6,8 +6,17 @@ class Environment_Factory {
   private static $loader;
   private $options;
 
+  /**
+   * Factory for @twig.core
+   *
+   * Return \Twig_Environment
+   */
   public function getObject() {
     if (!self::$twig) {
+      // Autoloading
+      require_once at_library('twig') . '/lib/Twig/Autoloader.php';
+      \Twig_Autoloader::register();
+
       $this->options = array(
         'debug' => at_debug(),
         'auto_reload' => at_debug(),
@@ -15,85 +24,50 @@ class Environment_Factory {
         'cache' => variable_get('file_temporary_path', FALSE),
       );
 
-      self::$twig = $this->fetchService();
+      // Init the object
+      self::$twig = new \Twig_Environment(NULL, $this->options);
+      self::$twig->addExtension(new \Drupal\at_base\Twig\Extension());
     }
 
     return self::$twig;
   }
 
+  /**
+   * Factory for @twig
+   *
+   * Return \Twig_Environment
+   */
   public function getFileService($twig) {
-    $service = clone $twig;
-    $service->setLoader($this->getFileLoader());
-    return $service;
-  }
-
-  public function getStringService($twig) {
-    $service = clone $twig;
-    $service->setLoader(new \Twig_Loader_String());
-    return $service;
-  }
-
-  private function fetchService() {
-    require_once at_library('twig') . '/lib/Twig/Autoloader.php';
-
-    \Twig_Autoloader::register();
-
-    $twig = new \Twig_Environment(NULL, $this->options);
-
-    // Extension
-    if (at_debug()) {
-      $twig->addExtension(new \Twig_Extension_Debug());
-    }
-
-    // Filters
-    foreach (self::getFilters() as $filter) {
-      $twig->addFilter($filter);
-    }
-
-    // Functions
-    foreach (self::getFunctions() as $function) {
-      $twig->addFunction($function);
-    }
-
-    return $twig;
-  }
-
-  private function getFileLoader() {
-    if (!self::$loader) {
-      self::$loader = $this->fetchFileLoader();
-    }
-
-    return self::$loader;
+    return clone $twig;
   }
 
   /**
-   * @todo cache me
+   * Factory for @twig.string
+   *
+   * Return \Twig_Environment
    */
-  private function fetchFileLoader() {
-    $loader = new \Twig_Loader_Filesystem(DRUPAL_ROOT);
+  public function getStringService($twig) {
+    return clone $twig;
+  }
 
-    // Add @module shortcuts
-    foreach (array('at_base' => 'at_base') + at_modules('at_base') as $module_name) {
-      $dir = DRUPAL_ROOT . '/' . drupal_get_path('module', $module_name);
-      if (is_dir($dir)) {
-        $loader->addPath($dir, $module_name);
+  /**
+   * Factory method for @twig.file_loader
+   * @return \Twig_Loader_Filesystem
+   */
+  public function getFileLoader() {
+    $root = DRUPAL_ROOT;
+
+    return at_cache('atwig:file_loader, + 1 year', function() use ($root) {
+      $loader = new \Twig_Loader_Filesystem($root);
+
+      foreach (array('at_base' => 'at_base') + at_modules('at_base') as $module) {
+        $dir = $root . '/' . drupal_get_path('module', $module);
+        if (is_dir($dir)) {
+          $loader->addPath($dir, $module);
+        }
       }
-    }
 
-    return $loader;
-  }
-
-  private function getFilters() {
-    $options['cache_id'] = 'at_theming:twig:filters';
-    return at_cache($options, function(){
-      return at_id(new \Drupal\at_base\Twig\Filters())->get();
-    });
-  }
-
-  private function getFunctions() {
-    $options['cache_id'] = 'at_theming:twig:functions';
-    return at_cache($options, function(){
-      return at_id(new \Drupal\at_base\Twig\Functions())->get();
+      return $loader;
     });
   }
 }

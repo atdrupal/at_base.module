@@ -12,19 +12,21 @@ class Resolver implements ResolverInterface {
   }
 
   /**
-   * [getPath description]
-   * @return [type] [description]
+   * Get path to configuration file.
+   *
+   * @return string
    */
   public function getPath() {
-    if ($path = $this->getOverridePath($this->config->getId(), $this->config->getModule())) {
+    if ($path = $this->getOverridePath()) {
       return $path;
     }
-    return $this->getOriginalPath($this->config->getId(), $this->config->getModule());
+    return $this->getOriginalPath();
   }
 
   /**
-   * [getOriginalPath description]
-   * @return [type] [description]
+   * Origininal path.
+   *
+   * @return string|null
    */
   public function getOriginalPath() {
     $config_id = $this->config->getId();
@@ -37,12 +39,16 @@ class Resolver implements ResolverInterface {
     }
     $config_id = trim(str_replace('.', '/', $config_id), '/');
     $path .= '/config/' . $config_id . '.yml';
-    return is_file($path) ? $path : FALSE;
+
+    if (is_file($path)) {
+      return $path;
+    }
   }
 
   /**
-   * [getOverridePath description]
-   * @return [type] [description]
+   * Get overriden path.
+   *
+   * @return string
    */
   public function getOverridePath($check_exists = TRUE) {
     $return = variable_get('file_private_path');
@@ -55,7 +61,10 @@ class Resolver implements ResolverInterface {
     if (!$check_exists) {
       return $return;
     }
-    return is_file($return) ? $return : FALSE;
+
+    if (is_file($return)) {
+      return $return;
+    }
   }
 
   /**
@@ -69,21 +78,27 @@ class Resolver implements ResolverInterface {
     }
   }
 
+  /**
+   * @param string $path
+   */
   private function fetchFile($path) {
     $return = yaml_parse_file($path);
 
-    if (empty($return['imports'])) {
-      return $return;
+    if (!empty($return['imports'])) {
+      return $this->resolveDataImports($return);
     }
 
+    return $return;
+  }
+
+  private function resolveDataImports($return) {
     $_return = array();
     foreach ($return['imports'] as $i => $import) {
       $resource = $import['resource'];
       $resource = DRUPAL_ROOT . '/' . drupal_get_path('module', $this->config->getModule()) . '/config/' . $resource;
-      if ($data = $this->fetchFile($resource)) {
-        foreach ($data as $k => $v) {
-          $_return[$k] = !isset($_return[$k]) ? $v : array_merge($_return[$k], $v);
-        }
+      $data = $this->fetchFile($resource);
+      foreach ($data as $k => $v) {
+        $_return[$k] = !isset($_return[$k]) ? $v : array_merge($_return[$k], $v);
       }
     }
 
@@ -97,11 +112,12 @@ class Resolver implements ResolverInterface {
   }
 
   public function writeData($data) {
-    $path = $this->getOverridePath(FALSE);
-    $data = yaml_emit($data);
-
-    @mkdir(dirname($path), 0777, TRUE);
-    $return = file_put_contents($path, $data);
+    if ($path = $this->getOverridePath(FALSE)) {
+      $data = yaml_emit($data);
+      @mkdir(dirname($path), 0777, TRUE);
+      return file_put_contents($path, $data);
+    }
+    throw new \Exception('Configuration directory is not writable');
   }
 }
 

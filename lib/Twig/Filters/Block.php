@@ -2,26 +2,63 @@
 
 namespace Drupal\at_base\Twig\Filters;
 
+/**
+ * Callback for drupalBlock filter.
+ */
 class Block {
   /**
-   * Callback for drupalBlock filter.
+   * Block object.
    *
+   * @var \stdClass
+   */
+  private $block;
+
+  /**
+   * If FALSE, render block wrapper.
+   *
+   * @var boolean
+   */
+  private $content_only;
+
+  /**
    * @param  string  $string       %module:%delta
    * @param  boolean $content_only TRUE to do not use block template.
    */
-  public static function render($string, $content_only = FALSE) {
+  public function __construct($string, $content_only = FALSE) {
+    $this->block = $this->load($string);
+    $this->content_only = $content_only;
+  }
+
+  public function render() {
+    $output = _block_render_blocks(array($this->block));
+    $output = _block_get_renderable_array($output);
+
+    if ($this->content_only) {
+      $output = reset($output);
+      return isset($output['#markup']) ? $output['#markup'] : render(reset($output));
+    }
+
+    return drupal_render($output);
+  }
+
+  /**
+   * Load the block.
+   *
+   * @param string $string Format %module:%delta
+   */
+  private static function load($string) {
     $string = explode(':', $string);
     if (2 !== count($string)) {
-      return '<!-- Wrong param -->';
+      throw new \Exception('Wrong param');
     }
 
     list($module, $delta) = $string;
     if (!module_exists($module)) {
-      return '<!-- Invalid module -->';
+      throw new \Exception('Invalid module');
     }
 
     if (!$block = block_load($module, $delta)) {
-      return '<!-- Block not found -->';
+      throw new \Exception('Block not found');
     }
 
     // Make sure properties are set
@@ -30,14 +67,6 @@ class Block {
       $block->title = '';
     }
 
-    $output = _block_render_blocks(array($block));
-    $output = _block_get_renderable_array($output);
-
-    if ($content_only) {
-      $output = reset($output);
-      return isset($output['#markup']) ? $output['#markup'] : render(reset($output));
-    }
-
-    return drupal_render($output);
+    return $block;
   }
 }

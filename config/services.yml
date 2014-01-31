@@ -1,55 +1,17 @@
 imports:
   - { resource: services.cache.yml }
+  - { resource: services.theming.yml }
+  - { resource: services.helper.yml }
 
 services:
-  container:
-    class: '\Drupal\at_base\Container'
-    factory_class: 'AT'
-    factory_method: getContainer
+  autoloader:
+    class: 'Drupal\at_base\Container\Autoloader'
 
-  controller.resolver:
-    class: '\Drupal\at_base\Helper\Controller_Resolver'
+  autoloader.psr0:
+    class: 'Doctrine\Common\ClassLoader'
+    file: '%doctrine_common/lib/Doctrine/Common/ClassLoader.php'
 
-  # ---------------------
-  # Config
-  # ---------------------
   expression_language:
     class: 'Symfony\Component\ExpressionLanguage\ExpressionLanguage'
     factory_class: 'AT'
     factory_method: getExpressionLanguage
-
-  # ---------------------
-  # Theming services
-  # ---------------------
-  twig.core:
-    class: '\Twig_Environment'
-    factory_class: '\Drupal\at_base\Twig\Environment_Factory'
-    factory_method: getObject
-
-  twig:
-    class: '\Twig_Environment'
-    factory_class: '\Drupal\at_base\Twig\Environment_Factory'
-    factory_method: getFileService
-    arguments: ['@twig.core']
-
-  twig_string:
-    class: '\Twig_Environment'
-    factory_class: '\Drupal\at_base\Twig\Environment_Factory'
-    factory_method: getStringService
-    arguments: ['@twig.core']
-
-  twig_controller:
-    class: 'Drupal\at_base\Helper\Controller_Resolver\Twig_Controller'
-    arguments: ['@twig_string']
-
-  # ---------------------
-  # Helpers
-  # ---------------------
-  helper.content_render:
-    class: 'Drupal\at_base\Helper\Content_Render'
-
-  helper.real_path:
-    class: 'Drupal\at_base\Helper\Real_Path'
-
-  helper.timer:
-    class: 'Drupal\at_base\Helper\Timer'

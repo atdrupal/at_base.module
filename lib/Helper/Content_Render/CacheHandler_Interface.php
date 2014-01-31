@@ -11,11 +11,13 @@ interface CacheHandler_Interface {
    * Cache options
    *
    * @see  at_cache()
+   * @return CacheHandler_Interface
    */
   public function setOptions($options);
 
   /**
    * @param callable $callback
+   * @return CacheHandler_Interface
    */
   public function setCallback($callback);
 

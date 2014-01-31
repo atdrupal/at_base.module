@@ -4,12 +4,14 @@ services:
     tags:
       - { name: atest1 }
       - { name: atest2, weight: 10 }
+
   atest_base.service_2:
     class: 'Drupal\atest_base\Service_2'
     arguments: ['@atest_base.service_1']
     tags:
       - { name: atest1 }
       - { name: atest2, weight: 0 }
+
   atest_base.service_3:
     class: 'Drupal\atest_base\Service_3'
     factory_class: Drupal\atest_base\Service_3_Factory
@@ -17,3 +19,25 @@ services:
     tags:
       - { name: atest1 }
       - { name: atest2, weight: -10 }
+
+  atest_base.dynamic_arguments:
+    class: 'Drupal\atest_base\Dynamic_Arguments'
+    arguments: ['%atest_base:parameters:dynamic_param_1', '%atest_base:parameters:dynamic_service_1']
+
+  atest_base.include_me:
+    file: '@atest_base/lib/Include_Me.php'
+    class: 'ATest_Base_Include_Me'
+
+  atest_base.psr0_me:
+    autoload:
+      type: psr-0
+      namespace: AndyTruong
+      includePath: '@atest_base/psr-0'
+    class: 'AndyTruong\atest_load\PSR0Me'
+
+  atest_base.psr4_me:
+    autoload:
+      type: psr-4
+      namespace: ATest\atest_base
+      includePath: '@atest_base/psr-4'
+    class: 'ATest\atest_base\PSR4Me'

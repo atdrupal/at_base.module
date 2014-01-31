@@ -22,6 +22,8 @@ class Views {
     $this->name = $name;
     $this->setDisplayId($display_id);
     $this->setArguments($arguments);
+
+    return $this;
   }
 
   public function setDisplayId($display_id) {
@@ -51,6 +53,7 @@ class Views {
    * @todo Remove this magic
    */
   protected function suggestTemplate() {
+    $suggestions = array();
     $suggestions[] = path_to_theme() . "/templates/views/{$this->name}.{$this->display_id}.html.twig";
     $suggestions[] = path_to_theme() . "/templates/views/{$this->name}.html.twig";
     foreach ($suggestions as $path) {
@@ -73,10 +76,10 @@ class Views {
     // With template
     // ---------------------
     // Many tags rendered by views, we get rid of them
-    if (!empty($view->display[$display_id]->display_options['fields'])) {
-      foreach (array_keys($view->display[$display_id]->display_options['fields']) as $k) {
-        $view->display[$display_id]->display_options['fields'][$k]['element_default_classes'] = 0;
-        $view->display[$display_id]->display_options['fields'][$k]['element_type'] = 0;
+    if (!empty($this->view->display[$this->display_id]->display_options['fields'])) {
+      foreach (array_keys($this->view->display[$this->display_id]->display_options['fields']) as $k) {
+        $this->view->display[$this->display_id]->display_options['fields'][$k]['element_default_classes'] = 0;
+        $this->view->display[$this->display_id]->display_options['fields'][$k]['element_type'] = 0;
       }
     }
 
@@ -84,39 +87,66 @@ class Views {
     $this->view->execute();
 
     module_load_include('inc', 'views', 'theme/theme');
-    $vars['view'] = $this->view;
+    $vars = array('view' => $this->view);
     template_preprocess_views_view($vars);
     return at_container('twig')->render($this->template, $vars);
   }
 
-  public static function render($name, $display_id = 'default') {
-    $args = func_get_args();
-    array_shift($args); // $name
-    if (count($args)) {
-      $a1 = array_shift($args); // $display_id
-
-      if (is_array($a1)) {
-        $display_id = isset($a1['display_id']) ? $a1['display_id'] : 'default';
+  /**
+   * @param  array $options
+   */
+  public function resolveOptions($options) {
+    foreach ($options as $k => $v) {
+      switch ($k) {
+        case 'template':   $this->setTemplate($v);  break;
+        case 'display_id': $this->setDisplayId($v); break;
+        case 'arguments':  $this->setArguments($v); break;
       }
     }
+    return $this;
+  }
 
+  /**
+   * Callback for drupalView filter.
+   *
+   * Two cases:
+   *
+   *    Views::render($name, $display_id, ...$args)
+   *    Views::render($name, $options)
+   *
+   * @param  string $name
+   * @param  string $display_id
+   * @return string
+   */
+  public static function render($name, $display_id = 'default') {
+    $args = func_get_args();
+    array_shift($args);
+
+    // Params may wrong
     try {
-      $me = new self($name, $display_id, $args);
-
-      if (is_array($a1)) {
-        foreach ($a1 as $k => $v) {
-          switch ($k) {
-            case 'template':   $me->setTemplate($v);  break;
-            case 'display_id': $me->setDisplayId($v); break;
-            case 'arguments':  $me->setArguments($v); break;
-          }
-        }
-      }
-
-      return $me->execute();
+      $builder = self::getBuilder($display_id);
+      return call_user_func_array($builder, array($name, $args));
     }
     catch (\Exception $e) {
       return $e->getMessage();
     }
+  }
+
+  /**
+   * Get callback.
+   *
+   * @param  string $a1
+   * @return \Closure
+   */
+  private static function getBuilder($a1) {
+    if (is_string($a1)) {
+      return function ($name, $display_id, $args = array()) {
+        return at_id(new Views($name, $display_id, $args))->execute();
+      };
+    }
+
+    return function ($name, $options) {
+      return at_id(new Views($name))->resolveOptions($options)->execute();
+    };
   }
 }

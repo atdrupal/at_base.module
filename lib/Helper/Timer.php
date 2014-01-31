@@ -29,6 +29,8 @@ class Timer {
   private $callback;
   private $times = 1;
   private $memory = TRUE;
+  private $memory_start = 0;
+  private $memory_peak_start = 0;
   private $xhprof_config = array();
 
   /**
@@ -72,8 +74,8 @@ class Timer {
     // Start timer, memory, profile
     // memory_get_peak_usage
     if ($this->memory) {
-      $memory_start = memory_get_usage();
-      $memory_peak_start = memory_get_peak_usage();
+      $this->memory_start = memory_get_usage();
+      $this->memory_peak_start = memory_get_peak_usage();
     }
 
     timer_start('ATimer');
@@ -89,8 +91,8 @@ class Timer {
     $return += timer_stop('ATimer');
     if ($this->memory) {
       $return += array(
-        'memory' => number_format(memory_get_usage() - $memory_start),
-        'memory_peak' => number_format(memory_get_peak_usage() - $memory_peak_start),
+        'memory' => number_format(memory_get_usage() - $this->memory_start),
+        'memory_peak' => number_format(memory_get_peak_usage() - $this->memory_peak_start),
       );
     }
 

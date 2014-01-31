@@ -1,74 +1,75 @@
 <?php
 namespace Drupal\at_base;
 
-use Drupal\at_base\Container\Definition;
 use Drupal\at_base\Container\Service_Resolver;
+use Drupal\at_base\Container\Argument_Resolver;
 use Drupal\at_base\Helper\Config_Fetcher;
+use Drupal\at_base\Helper\Wrapper\Database as DB_Wrapper;
+use Drupal\at_base\Helper\Wrapper\Cache as Cache_Wrapper;
+use Drupal\at_base\Config\Resolver as Config_Resolver;
+use Drupal\at_base\Config\Config;
+
+require_once at_library('pimple') . '/lib/Pimple.php';
 
 /**
  * Service Container/Locator.
  *
- * @todo support tags
- * @todo support calls
+ * @see  https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container
  */
-class Container {
-  private static $c;
-
-  public function __construct() {
-    if (!self::$c) {
-      require_once at_library('pimple') . '/lib/Pimple.php';
-
-      self::$c = new \Pimple(array(
-        'container' => $this,
-        'service.resolver' => function() { return new Service_Resolver(); },
-        'helper.config_fetcher' => function() { return new Config_Fetcher(); },
-      ));
-    }
-  }
-
-  /**
-   * Get a service by name.
-   *
-   * @param string $name
-   */
-  public function get($name) {
-    if (empty(self::$c[$name])) {
-      $this->set($name);
+class Container extends \Pimple {
+    public function __construct()
+    {
+        parent::__construct(array(
+            'container' => $this,
+            // Dependencies for Container itself
+            'wrapper.db' => function() { return new DB_Wrapper(); },
+            'wrapper.cache' => function() { return new Cache_Wrapper(); },
+            'config' => function() { return new Config(new Config_Resolver()); },
+            'service.resolver' => function() { return new Service_Resolver(); },
+            'argument.resolver' => function() { return new Argument_Resolver(); },
+            'helper.config_fetcher' => function() { return new Config_Fetcher(); },
+        ));
     }
 
-    return self::$c[$name];
-  }
+    /**
+     * Get service by ID.
+     *
+     * @param  string $id Service ID.
+     */
+    public function offsetGet($id)
+    {
+        if (!$this->offsetExists($id)) {
+            if ($value = $this['service.resolver']->getClosure($id)) {
+                $this->offsetSet($id, $value);
+            }
+        }
 
-  /**
-   * Find services by tag
-   *
-   * @param  string  $tag
-   * @todo   Document me.
-   */
-  public function find($tag, $return = 'service_name') {
-    $defs = self::$c['service.resolver']->findDefinitions($tag);
-
-    if ($return === 'service_name') {
-      return $defs;
-    }
-    elseif ($return === 'service') {
-      foreach ($defs as $k => $name) {
-        unset($defs[$k]);
-        $defs[$name] = $this->get($name);
-      }
+        return parent::offsetGet($id);
     }
 
-    return $defs;
-  }
+    /**
+     * Find services by tag
+     *
+     * @param  string  $tag
+     * @param  string  $return Type of returned services,
+     * @return array
+     */
+    public function find($tag, $return = 'service_name')
+    {
+        $defs = at_cache("atc:tag:{$tag}, + 1 year", array($this['service.resolver'], 'fetchDefinitions'), array($tag));
 
-  /**
-   * Main method for configure service in Pimple.
-   *
-   * @param string $name
-   */
-  public function set($name) {
-    if (empty(self::$c[$name])) {
-      self::$c[$name] = self::$c['service.resolver']->getCallback($name);
+        if ($return === 'service_name') {
+            return $defs;
+        }
+
+        if ($return === 'service') {
+            foreach ($defs as $k => $name) {
+                unset($defs[$k]);
+                $defs[$name] = $this[$name];
+            }
+        }
+
+        return $defs;
     }
-  }
+
 }

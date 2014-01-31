@@ -10,6 +10,15 @@ class Cache_Handler implements CacheHandler_Interface {
   protected $options;
   protected $callback;
 
+  /**
+   * Tell the proxy does not cache this page
+   */
+  public function __destruct() {
+    if (!empty($this->options['id']) && user_is_anonymous()) {
+      $GLOBALS['conf']['cache'] = 0;
+    }
+  }
+
   public function setOptions($options) {
     $this->options = $options;
     return $this;
@@ -24,15 +33,16 @@ class Cache_Handler implements CacheHandler_Interface {
     $o       = &$this->options;
     $o['id'] = isset($o['id']) ? $o['id'] : '';
 
-    $cid_parts[] = $o['id'];
+    $cid_parts = array($o['id']);
     $cid_parts = array_merge($cid_parts, drupal_render_cid_parts($o['type']));
 
     return implode(':', $cid_parts);
   }
 
   public function render() {
-    $cacheable = !count(module_implements('node_grants')) && ($_SERVER['REQUEST_METHOD'] == 'GET' || $_SERVER['REQUEST_METHOD'] == 'HEAD');
-    if (!$cacheable) {
+    $cachable = drupal_is_cli() || drupal_page_is_cacheable();
+
+    if (!$cachable) {
       return call_user_func($this->callback);
     }
 
@@ -42,17 +52,12 @@ class Cache_Handler implements CacheHandler_Interface {
       switch ($o['type']) {
         case DRUPAL_CACHE_CUSTOM:
         case DRUPAL_NO_CACHE:
-          return $this->getEngine()->render();
+          return call_user_func($this->callback);
 
         default:
           $o['id'] = $this->getCacheId();
           break;
       }
-    }
-
-    // Tell the proxy does not cache this page
-    if (user_is_anonymous()) {
-      $GLOBALS['conf']['cache'] = 0;
     }
 
     return at_cache($o, $this->callback);

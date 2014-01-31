@@ -1,10 +1,10 @@
 projects:
-  # spyc:
-  #   type: library
-  #   download:
-  #     type: git
-  #     url: https://github.com/mustangostang/spyc.git
-  #     branch: 0.5.1
+  spyc:
+    type: library
+    download:
+      type: git
+      url: https://github.com/mustangostang/spyc.git
+      branch: 0.5.1
 
   pimple:
     type: library
@@ -25,4 +25,4 @@ projects:
     download:
       type: git
       url: https://github.com/symfony/expression-language.git
-      branch: v2.4.0
+      branch: v2.4.1

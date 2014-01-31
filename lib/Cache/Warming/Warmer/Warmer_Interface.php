@@ -19,6 +19,7 @@ interface Warmer_Interface {
    * Logic to flush cached-items which tagged with $tag.
    *
    * @param  string $tag
+   * @return string|null
    */
-  public function processTag($tag);
+  public function processTag($tag, $context = array());
 }

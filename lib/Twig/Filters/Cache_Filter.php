@@ -14,15 +14,11 @@ class Cache_Filter {
       $callback = $callback['callback'];
     }
 
-    $this->callback = at_container('controller.resolver')->get($callback);
+    $this->callback = at_container('helper.controller.resolver')->get($callback);
     $this->options = $options;
   }
 
-  public static function render($callback, $options) {
-    return at_id(new self($callback, $options))->execute();
-  }
-
-  public function execute() {
+  public function render() {
     return at_cache($this->options, $this->callback, $this->arguments);
   }
 }

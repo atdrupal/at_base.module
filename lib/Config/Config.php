@@ -45,6 +45,8 @@ class Config {
     }
 
     $this->id = $id;
+
+    return $this;
   }
 
   public function getModule() {
@@ -61,6 +63,8 @@ class Config {
     }
 
     $this->module = $module;
+
+    return $this;
   }
 
   public function getPath() {
@@ -72,7 +76,8 @@ class Config {
    */
   private function fetchData() {
     $resolver = $this->resolver;
-    $options['cache_id'] = "ATConfig:{$this->module}:{$this->id}";
+    
+    $options = array('id' => "ATConfig:{$this->module}:{$this->id}");
     $options['ttl'] = '+ 1 year';
     $options['tags'] = array('at-config');
 

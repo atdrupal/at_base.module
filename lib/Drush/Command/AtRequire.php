@@ -2,7 +2,7 @@
 
 namespace Drupal\at_base\Drush\Command;
 
-use \Drupal\at_base\Drush\Command\AtRequire\DependenciesFetcher;
+use \Drupal\at_base\Drush\Command\AtRequire\DependencyFetcher;
 
 class AtRequire {
   private $module;
@@ -11,20 +11,23 @@ class AtRequire {
     $this->module = $module;
   }
 
-  /**
-   * Get supported modules.
-   */
-  private function getModules() {
+  public function execute() {
+    $modules = array($this->module);
+
     if ($this->module === 'all') {
-      return at_modules('at_base', 'require');
+      $modules = at_modules('at_base', 'require');
     }
 
-    return array($this->module);
+    foreach ($modules as $module) {
+      $this->fetchDependencies($module);
+    }
   }
 
-  public function execute() {
-    foreach ($this->getModules() as $module) {
-      at_id(new DependenciesFetcher($module))->fetch();
+  private function fetchDependencies($module) {
+    $data = at_config($module, 'require')->get('projects');
+
+    foreach ($data as $name => $info) {
+      at_id(new DependencyFetcher($name, $info))->fetch();
     }
   }
 }

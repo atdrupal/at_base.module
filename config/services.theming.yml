@@ -1,0 +1,33 @@
+services:
+  twig.core:
+    class: '\Twig_Environment'
+    factory_class: '\Drupal\at_base\Twig\Environment_Factory'
+    factory_method: getObject
+
+  twig.file_loader:
+    class: '\Twig_Loader_Filesystem'
+    factory_class: '\Drupal\at_base\Twig\Environment_Factory'
+    factory_method: getFileLoader
+
+  twig.string_loader:
+    class: '\Twig_Loader_String'
+
+  twig:
+    class: '\Twig_Environment'
+    factory_class: '\Drupal\at_base\Twig\Environment_Factory'
+    factory_method: getFileService
+    arguments: ['@twig.core']
+    calls:
+      - ['setLoader', ['@twig.file_loader']]
+
+  twig_string:
+    class: '\Twig_Environment'
+    factory_class: '\Drupal\at_base\Twig\Environment_Factory'
+    factory_method: getStringService
+    arguments: ['@twig.core']
+    calls:
+      - ['setLoader', ['@twig.string_loader']]
+
+  twig_controller:
+    class: 'Drupal\at_base\Helper\Controller_Resolver\Twig_Controller'
+    arguments: ['@twig_string']

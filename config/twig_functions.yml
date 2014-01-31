@@ -1,4 +1,7 @@
 twig_functions:
-  - element_children
-  - node_load
-  - get_defined_vars
+  element_children: element_children
+  entity_view: entity_view
+  node_load: node_load
+  get_defined_vars: get_defined_vars
+  user_is_logged_in: user_is_logged_in
+  user_is_anonymous: user_is_anonymous

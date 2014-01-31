@@ -57,16 +57,7 @@ class Cache {
   private $arguments;
 
   public function __construct($options, $callback, $arguments = array()) {
-    $_keys = array(
-      'bin' => 'cache',
-      'id' => '',
-      'ttl' => '+ 15 minutes',
-      'reset' => FALSE,
-      'tags' => array());
-
-    foreach ($_keys as $k => $v) {
-      $this->{$k} = isset($options[$k]) ? $options[$k] : $v;
-    }
+    $this->setOptions($options);
 
     $this->callback = $callback;
     $this->arguments = $arguments;
@@ -74,6 +65,19 @@ class Cache {
     // No cache_id, can not fetch, can not write, this function is useless.
     if (empty($this->id) || !is_string($this->id)) {
       throw new \InvalidArgumentException('Please provide a valid cache ID');
+    }
+  }
+
+  public function setOptions($options) {
+    $defaults = array(
+      'bin' => 'cache',
+      'id' => '',
+      'ttl' => '+ 15 minutes',
+      'reset' => FALSE,
+      'tags' => array());
+
+    foreach ($defaults as $k => $v) {
+      $this->{$k} = isset($options[$k]) ? $options[$k] : $v;
     }
 
     // Allow dev to force rebuilding all caches on page
@@ -88,9 +92,10 @@ class Cache {
    * @return  mixed
    */
   public function get() {
-    if (!$this->reset && $cache = cache_get($this->id, $this->bin)) {
-      if (!empty($cache->data)) return $cache->data;
-      if ($this->allow_empty)   return $cache->data;
+    if (!$this->reset && $cache = at_container('wrapper.cache')->get($this->id, $this->bin)) {
+      if (!empty($cache->data) || $this->allow_empty) {
+        return $cache->data;
+      }
     }
 
     return $this->fetch();
@@ -117,7 +122,7 @@ class Cache {
    * @param  mixed $data
    */
   protected function write($data) {
-    if (FALSE !== cache_set($this->id, $data, $this->bin, strtotime($this->ttl))) {
+    if (FALSE !== at_container('wrapper.cache')->set($this->id, $data, $this->bin, strtotime($this->ttl))) {
       if (!empty($this->tags)) {
         $this->removeAllTags();
         foreach ($this->tags as $tag) {
@@ -134,7 +139,7 @@ class Cache {
    * @see   at_base_flush_caches()
    */
   public function addTag($tag) {
-    return db_insert('at_base_cache_tag')
+    return at_container('wrapper.db')->insert('at_base_cache_tag')
       ->fields(array(
           'bin' => $this->bin,
           'cid' => $this->id,
@@ -145,7 +150,7 @@ class Cache {
   }
 
   public function removeAllTags() {
-    return db_delete('at_base_cache_tag')
+    return at_container('wrapper.db')->delete('at_base_cache_tag')
       ->condition('bin', $this->bin)
       ->condition('cid', $this->id)
       ->execute()
@@ -158,7 +163,7 @@ class Cache {
    * @param  string $tag
    */
   public function removeTag($tag) {
-    return db_delete('at_base_cache_tag')
+    return at_container('wrapper.db')->delete('at_base_cache_tag')
       ->condition('bin', $this->bin)
       ->condition('cid', $this->id)
       ->condition('tag', $tag)

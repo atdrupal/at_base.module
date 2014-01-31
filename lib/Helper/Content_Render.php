@@ -3,6 +3,7 @@
 namespace Drupal\at_base\Helper;
 
 use Drupal\at_base\Helper\Content_Render\CacheHandler_Interface;
+use Drupal\at_base\Helper\Content_Render\Process;
 
 /**
  * Helper class for rendering data:
@@ -33,38 +34,17 @@ class Content_Render {
   private $data;
 
   /**
-   * Render engine (String, Template, Template String, Form, …)
-   */
-  private $engine;
-
-  /**
    * @var CacheHandler_Interface
    */
   private $cache_handler;
 
-  /**
-   * Get render engine.
-   *
-   * @todo  Remove hardcode -- Let other module can define custom engine.
-   */
-  private function getEngine() {
-    if     (is_string($this->data))                $engine = 'Drupal\at_base\Helper\Content_Render\String_Engine';
-    elseif (isset($this->data['template_string'])) $engine = 'Drupal\at_base\Helper\Content_Render\TemplateString_Engine';
-    elseif (isset($this->data['template']))        $engine = 'Drupal\at_base\Helper\Content_Render\TemplateFile_Engine';
-    elseif (isset($this->data['controller']))      $engine = 'Drupal\at_base\Helper\Content_Render\Controller_Engine';
-    elseif (isset($this->data['function']))        $engine = 'Drupal\at_base\Helper\Content_Render\Function_Engine';
-    elseif (isset($this->data['form']))            $engine = 'Drupal\at_base\Helper\Content_Render\Form_Engine';
-
-    if (!empty($engine)) {
-      return $this->engine = new $engine($this);
-    }
-
-    // Invalid structure
-    throw new \Exception('Invalid data structure.');
-  }
-
   public function setData($data) {
     $this->data = $data;
+
+    if (is_array($this->data) && empty($this->data['variables'])) {
+      $this->data['variables'] = array();
+    }
+
     return $this;
   }
 
@@ -81,18 +61,95 @@ class Content_Render {
     return $this->cache_handler;
   }
 
-  public function render() {
-    $no_cache = !empty($this->data['cache']) && is_null($this->cache_handler);
-    $no_cache = $no_cache || empty($this->data['cache']);
-    if ($no_cache) {
-      return $this->getEngine()->render();
+  public function render($data = NULL) {
+    if (!is_null($data)) {
+      $this->setdata($data);
     }
 
-    return $this
-      ->getCacheHandler()
-      ->setOptions($this->data['cache'])
-      ->setCallback(array($this->getEngine(), 'render'))
-      ->render()
-    ;
+    return (empty($this->data['cache']) || is_null($this->cache_handler))
+      ? $this->build()
+      : $this
+          ->getCacheHandler()
+          ->setOptions($this->data['cache'])
+          ->setCallback(array($this, 'build'))
+          ->render();
+  }
+
+  public function build() {
+    if (is_string($this->data)) {
+      return $this->data;
+    }
+
+    $args = $this->getVariables();
+    $return = at_id(new Process($this->data, $args))->execute();
+
+    // Attach assets
+    if (is_array($this->data) && !empty($this->data['attached'])) {
+      $return = is_array($return) ?: array('#markup' => $return);
+
+      if (isset($return['#attached'])) {
+        $return['#attached'] = array_merge_recursive($return['#attached'], $this->buildAttached());
+      }
+      else {
+        $return['#attached'] = $this->buildAttached();
+      }
+    }
+
+    return $return;
+  }
+
+  /**
+   * @return array
+   */
+  private function getVariables() {
+    if (isset($this->data['arguments'])) {
+      return $this->data['arguments'];
+    }
+
+    if (TRUE === $this->getDynamicVariables()) {
+      return $this->data['variables'];
+    }
+
+    if (TRUE === $this->getStaticVariables()) {
+      return $this->data['variables'];
+    }
+  }
+
+  private function getStaticVariables() {
+    if (!empty($this->data['variables'])) {
+      $v = &$this->data['variables'];
+
+      $k = array_keys($v);
+      if (is_numeric($k[0])) {
+        $msg  = 'Expected keyed-array for $variables.';
+        throw new \Exception($msg);
+      }
+
+      return TRUE;
+    }
+  }
+
+  private function getDynamicVariables() {
+    if (!empty($this->data['variables'])) {
+      $v = &$this->data['variables'];
+
+      $dyn = is_string($v);
+      $dyn = $dyn || (($k = array_keys($v)) && is_numeric($k[0]));
+      if ($dyn && $callback = at_container('helper.controller.resolver')->get($v)) {
+        $this->data['variables'] = call_user_func($callback);
+        return $this->getStaticVariables();
+      }
+    }
+  }
+
+  protected function buildAttached() {
+    foreach (array_keys($this->data['attached']) as $type) {
+      foreach ($this->data['attached'][$type] as $k => $item) {
+        if (is_string($item)) {
+          $this->data['attached'][$type][$k] = at_container('helper.real_path')->get($item);
+        }
+      }
+    }
+    return $this->data['attached'];
   }
 }

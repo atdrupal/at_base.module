@@ -11,17 +11,39 @@ class SubRequest {
   private $path;
   private $original_path;
 
-  public function __construct($path) {
-    $this->path = $path;
+  /**
+   * @param string $path
+   */
+  public function __construct($path = '') {
     $this->original_path = $_GET['q'];
-    $_GET['q'] = $path;
+
+    if (!empty($path)) {
+      $this->setPath($path);
+    }
   }
 
   public function __destruct() {
     $_GET['q'] = $this->original_path;
   }
 
-  public function request() {
+  /**
+   * @param string $path
+   */
+  public function setPath($path) {
+    $this->path = $path;
+    $_GET['q'] = $path;
+  }
+
+  /**
+   * @param string $path
+   *
+   * @return mixed Return string or render array.
+   */
+  public function request($path = NULL) {
+    if (!empty($path)) {
+      $this->setPath($path);
+    }
+
     return menu_execute_active_handler($this->path, $deliver = FALSE);
   }
 }

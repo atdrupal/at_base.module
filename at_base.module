@@ -5,89 +5,111 @@
  * Include custom functions.
  */
 
-use \Drupal\at_base\Autoloader;
-use \Drupal\at_base\Config\Resolver as ConfigResolver;
-use \Drupal\at_base\Config\Config;
+use \Drupal\at_base\Cache;
+use \Drupal\at_base\Helper\ModulesFetcher;
 
 require_once dirname(__FILE__) . '/lib/AT.php';
-require_once dirname(__FILE__) . '/at_base.hooks.inc';
 require_once dirname(__FILE__) . '/lib/Autoloader.php';
-at_id(new Autoloader())->register();
+require_once dirname(__FILE__) . '/at_base.hooks.inc';
+require_once dirname(__FILE__) . '/at_base.hack.inc';
 
 /**
- * Identity function, returns its argument unmodified.
- *
- * This is useful almost exclusively as a workaround to an oddity in the PHP
- * grammar -- this is a syntax error:
- *
- *    COUNTEREXAMPLE
+ * Can not:
  *    new Thing()->doStuff();
  *
- * ...but this works fine:
- *
+ * Can:
  *    at_id(new Thing())->doStuff();
- *
- * @param   wild Anything.
- * @return  wild Unmodified argument.
  */
 function at_id($x) {
   return $x;
 }
 
 /**
- * Service container.
+ * Invokes the "new" operator with a vector of arguments. There is no way to
+ * call_user_func_array() on a class constructor, so you can instead use this
+ * function:
+ *
+ * $obj = newv($class_name, $argv);
+ *
+ * That is, these two statements are equivalent:
+ *
+ * $pancake = new Pancake('Blueberry', 'Maple Syrup', true);
+ * $pancake = newv('Pancake', array('Blueberry', 'Maple Syrup', true));
+ *
+ * @param  string  The name of a class.
+ * @param  list    Array of arguments to pass to its constructor.
+ * @return obj     A new object of the specified class, constructed by passing
+ *                  the argument vector to its constructor.
  */
-function at_container($service_name) {
-  return at_id(new \Drupal\at_base\Container())->get($service_name);
+function at_newv($class_name, $argv = array()) {
+  $reflector = new ReflectionClass($class_name);
+  if ($argv) {
+    return $reflector->newInstanceArgs($argv);
+  }
+  return $reflector->newInstance();
 }
 
 /**
- * Helper function for quick cache get/set.
+ * Service container.
  *
- * @code
- *   $nid = $vid = 1;
+ * @staticvar \Drupal\at_base\Container $container
+ * @param string $id
+ * @return mixed
  *
- *   $options['ttl'] = '+ 15 minutes';
- *   $options['cache_id'] = "node:{$nid}";
- *   # Same to
- *   $options['id'] = "node:{$nid}";
- *   $options['file'] = '/path/to/file.php;
- *   $options['reset'] = FALSE;
- *   $options['allow_empty'] = TRUE;
- *   $options['tags'] = array('demo', 'testing');
+ * @see https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container
+ */
+function at_container($id) {
+  static $container = NULL;
+
+  if (!$container) {
+    $container = new \Drupal\at_base\Container();
+  }
+
+  $args = func_get_args();
+  if (1 !== count($args)) {
+    array_shift($args);
+    $container["{$id}:arguments"] = $args;
+  }
+
+  return $container[$id];
+}
+
+/**
+ * Care about site caching.
  *
- *   // Use case 1:
- *   $data = at_cache($options, function() use ($nid, $vid) {
- *     return node_load($nid, $vid);
- *   });
- *
- *   // Use case 2:
- *   $data = at_cache($options, 'node_load', array($nid, $vid));
- *
- * @endcode
- *
- * If GODEV constant is defined, at_cache() is by passed rebuild the cache if
- * $_GET['nocache'] is not empty.
- *
- * Tags can be flushed by config. See \Drupal\at_base\Cache\Warming\Entity.php
- *
- * @param  array $options
+ * @param  array|string $options
  * @param  Closure|string $callback
  * @param  array  $arguments
  * @return mixed
  * @see    at_cache_flush_by_tag()
  * @see    https://github.com/andytruong/at_base/wiki/7.x-2.x-cache-warming
- * @todo   Note about AT_DEV constant
+ * @see    https://github.com/andytruong/at_base/wiki/7.x-2.x-Function:-at_cache
  */
-function at_cache($options, $callback, $arguments = array()) {
-  require_once dirname(__FILE__) . '/lib/Cache.php';
+function at_cache($options, $callback = NULL, $arguments = array()) {
+  // User prefer string as cache options
+  // Style: $id OR $id,$ttl OR $id,~,$bin OR $id,~,~ OR $id,$ttl,$bin
+  if (is_string($options)) {
+    @list($id, $ttl, $bin) = explode(',', $options);
+
+    $options = array(
+      'id' => $id,
+      'ttl' => is_null($ttl) ? NULL : ('~' === $ttl ? NULL : $ttl),
+      'bin' => is_null($bin) ? NULL : ('~' === $bin ? NULL : $bin),
+    );
+  }
 
   if (isset($options['cache_id'])) {
     $options['id'] = $options['cache_id'];
     unset($options['cache_id']);
   }
 
-  return at_id(new \Drupal\at_base\Cache($options, $callback, $arguments))->get();
+  foreach (array('callback', 'options') as $k) {
+    if (!empty($kk) && isset($options[$k])) {
+      $kk = $options[$k];
+    }
+  }
+
+  return at_id(new Cache($options, $callback, $arguments))->get();
 }
 
 /**
@@ -97,10 +119,7 @@ function at_cache($options, $callback, $arguments = array()) {
  * @param  array  $tags
  */
 function at_cache_flush_by_tags($tags = array()) {
-  at_container('cache.tag_flusher')
-    ->setTags($tags)
-    ->flush()
-  ;
+  at_container('cache.tag_flusher')->flush($tags);
 }
 
 /**
@@ -115,37 +134,30 @@ function at_cache_flush_by_tags($tags = array()) {
  * @param  string  $module    Module name
  * @param  string  $id        Config ID
  * @param  boolean $refresh   Build new cache
- * @return Config
- * @todo   Will remove when at_di.module is ready.
+ * @return Drupal\at_base\Config\Config
  */
 function at_config($module, $id = 'config', $refresh = FALSE) {
-  static $config;
-
-  if (!$config) {
-    $config = new \Drupal\at_base\Config\Config(new ConfigResolver);
-  }
-
-  $config->setModule($module);
-  $config->setId($id);
-
-  return $config;
+  return at_container('config')
+    ->setModule($module)
+    ->setId($id);
 }
 
 /**
- * Get modules that depends on at.module — found
- * `requirements[] = at_base` in .info file
- *
+ * Get modules that depends on a specific module.
+ * @param string $base_module
+ * @param string $config_file
+ * @return array
  * @see system_list()
  */
-function at_modules($base_module = 'at_base', $config_file = '', $reset = FALSE) {
-  $options['ttl'] = '+ 1 year';
-  $options['bin'] = 'cache_bootstrap';
-  $options['cache_id'] = "at_modules:{$base_module}:{$config_file}";
-  $options['reset'] = $reset;
+function at_modules($base_module = 'at_base', $config_file = '') {
+  $o['ttl'] = '+ 1 year';
+  $o['bin'] = 'cache_bootstrap';
+  $o['id']  = "atmodules:{$base_module}:{$config_file}";
 
-  return at_cache($options, function() use ($base_module, $config_file) {
-    require_once dirname(__FILE__) . '/lib/Helper/ModulesFetcher.php';
-    return at_id(new \Drupal\at_base\Helper\ModulesFetcher($base_module, $config_file))->fetch();
+  return at_cache($o, function() use ($base_module, $config_file) {
+    $module_enabled = system_list('module_enabled');
+    return at_id(new ModulesFetcher($base_module, $config_file))
+            ->fetch($module_enabled);
   });
 }
 
@@ -170,87 +182,4 @@ function at_library($name, $version = 'default') {
   }
 
   throw new Exception("Missing library: {$name} (version {$version})");
-}
-
-/**
- * Check is Drupal system on dev or not.
- *
- * @return boolean
- */
-function at_debug() {
-  return defined('AT_DEBUG');
-}
-
-/**
- * Return if key|upercase/variable is not FALSE|NULL|0.
- */
-function at_valid($key, $get_value = FALSE) {
-  $c = strtoupper($key);
-  if (defined($c)) $return = constant($c);
-  else $return = variable_get($key, FALSE);
-  return $get_value ? $return : (boolean)($return);
-}
-
-/**
- * Wrapper for class based forms.
- */
-function at_form($form, &$form_state) {
-  // Get the variables from arguments
-  $args       = func_get_args();
-  $form       = array_shift($args);
-  $form_state = array_shift($args);
-  $class      = array_shift($args);
-  $args       = reset($args);
-
-  // Build the form
-  $class = new \ReflectionClass($class);
-  $obj = $class->newInstanceArgs($args);
-  $obj->setForm($form);
-  $obj->setFormState($form_state);
-
-  $form = $obj->get();
-  $form['#at_form'] = array($class->getName(), $args);
-
-  return $form;
-}
-
-/**
- * Wrapper for class based forms.
- */
-function at_form_validate($form, &$form_state) {
-  // Build the form
-  list($class, $args) = $form['#at_form'];
-  $class = new \ReflectionClass($class);
-  $obj = $class->newInstanceArgs($args);
-  $obj->setForm($form);
-  $obj->setFormState($form_state);
-
-  // Do validate
-  $obj->validate();
-}
-
-/**
- * Wrapper for class based forms.
- */
-function at_form_submit($form, &$form_state) {
-  // Build the form
-  list($class, $args) = $form['#at_form'];
-  $class = new \ReflectionClass($class);
-  $obj = $class->newInstanceArgs($args);
-  $obj->setForm($form);
-  $obj->setFormState($form_state);
-
-  // Do validate
-  $obj->submit();
-}
-
-/**
- * Page callback for routes.
- *
- * @see \Drupal\at_base\Route\RouteToMenu
- */
-function at_route() {
-  $args = func_get_args();
-  $route = array_pop($args);
-  return at_id(new \Drupal\at_base\Route\Controller())->setRoute($route)->execute();
 }

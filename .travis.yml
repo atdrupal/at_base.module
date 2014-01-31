@@ -1,19 +1,33 @@
+# Ref:
+#   - https://github.com/sonnym/travis-ci-drupal-module-example/blob/master/.travis.yml
 language: php
 php:
   - 5.3
   - 5.4
   - 5.5
-  - hhvm
+  # - hhvm
 
-matrix:
-  allow_failures:
-    - php: 5.5
-    - php: hhvm
+# matrix:
+#   allow_failures:
+#     - php: hhvm
 
 mysql:
   database: drupal
   username: root
   encoding: utf8
+
+install:
+  # ---------------------
+  # Install Drush
+  # ---------------------
+  - pear channel-discover pear.drush.org
+  - pear install drush/drush-5.8.0
+  - phpenv rehash
+
+  # ---------------------
+  # Setup DB
+  # ---------------------
+  - mysql -e 'create database drupal;'
 
 before_script:
   # ---------------------
@@ -21,18 +35,6 @@ before_script:
   # ---------------------
   - cd ../..
   - export DRUPAL=`pwd`'/drupal/'
-
-  # ---------------------
-  # Setup DB
-  # ---------------------
-  - mysql -e 'create database drupal;'
-  - pear channel-discover pear.drush.org
-
-  # ---------------------
-  # Install Drush
-  # ---------------------
-  - pear install drush/drush-5.8.0
-  - phpenv rehash
 
   # ---------------------
   # Download the codebase
@@ -48,11 +50,13 @@ before_script:
   # Prepare env for the module
   # ---------------------
   - drush vset --yes file_temporary_path /tmp
-  - drush en -y simpletest at_base
+  - drush en -y simpletest at_base atest_base
 
   # ---------------------
   # No cache data
   # ---------------------
   - drush cc all
 
-script: drush test-run --dirty 'AT Base'
+script:
+  - drush test-run --dirty 'AT Unit'
+  - drush test-run --dirty 'AT Web'
