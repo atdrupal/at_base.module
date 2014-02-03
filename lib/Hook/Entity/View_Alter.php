@@ -76,7 +76,7 @@ class View_Alter {
         $config['template'] = $this->resolveTokens($config['template']);
       }
 
-      return at_container('helper.content_render')->setData($config)->render();
+      return at_container('helper.content_render')->render($config);
     }
   }
 
@@ -88,7 +88,7 @@ class View_Alter {
         '#view_mode' => $this->view_mode,
         '#language' => $this->build['#language'],
         '#contextual_links ' => !empty($this->build['#contextual_links']) ? $this->build['#contextual_links'] : NULL,
-        'at_base' => $build,
+        'at_base' => is_string($build) ? array('#markup' => $build) : $build,
         '#build' => $this->build,
       );
     }
