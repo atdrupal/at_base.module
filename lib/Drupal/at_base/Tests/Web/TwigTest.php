@@ -36,9 +36,9 @@ class TwigTest extends \DrupalWebTestCase {
    * Test easy block definition.
    */
   public function testEasyBlocks() {
-    $block_1 = \AT::twig_string()->render("{{ 'at_base:atest_base|hi_s'  | drupalBlock(TRUE) }}");
-    $block_2 = \AT::twig_string()->render("{{ 'at_base:atest_base|hi_t'  | drupalBlock(TRUE) }}");
-    $block_3 = \AT::twig_string()->render("{{ 'at_base:atest_base|hi_ts' | drupalBlock(TRUE) }}");
+    $block_1 = \AT::twig_string()->render("{{ 'atest_base:hi_s'  | drupalBlock(TRUE) }}");
+    $block_2 = \AT::twig_string()->render("{{ 'atest_base:hi_t'  | drupalBlock(TRUE) }}");
+    $block_3 = \AT::twig_string()->render("{{ 'atest_base:hi_ts' | drupalBlock(TRUE) }}");
 
     $expected = 'Hello Andy Truong';
     $this->assertEqual($expected, trim($block_1));
