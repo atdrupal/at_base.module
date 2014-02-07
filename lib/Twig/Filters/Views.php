@@ -89,6 +89,7 @@ class Views {
     module_load_include('inc', 'views', 'theme/theme');
     $vars = array('view' => $this->view);
     template_preprocess_views_view($vars);
+
     return at_container('twig')->render($this->template, $vars);
   }
 
@@ -98,9 +99,9 @@ class Views {
   public function resolveOptions($options) {
     foreach ($options as $k => $v) {
       switch ($k) {
-        case 'template':   $this->setTemplate($v);  break;
-        case 'display_id': $this->setDisplayId($v); break;
-        case 'arguments':  $this->setArguments($v); break;
+        case 'template':   $this->setTemplate($v['template']);  break;
+        case 'display_id': $this->setDisplayId($v['display_id']); break;
+        case 'arguments':  $this->setArguments($v['arguments']); break;
       }
     }
     return $this;
