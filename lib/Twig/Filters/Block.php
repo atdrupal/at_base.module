@@ -57,15 +57,19 @@ class Block {
       throw new \Exception('Invalid module');
     }
 
+    // Case of modules which use at_base to define the blocks
+    if (!function_exists("{$module}_block_info")) {
+      $delta = "{$module}|{$delta}";
+      $module = 'at_base';
+    }
+
     if (!$block = block_load($module, $delta)) {
       throw new \Exception('Block not found');
     }
 
     // Make sure properties are set
-    $block->region = -1;
-    if (!isset($block->title)) {
-      $block->title = '';
-    }
+    $block->region = isset($block->region) ? $block->region : -1;
+    $block->title = isset($block->title) ? $block->title : '';
 
     return $block;
   }
