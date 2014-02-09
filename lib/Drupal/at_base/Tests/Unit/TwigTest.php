@@ -30,6 +30,34 @@ class TwigTest extends UnitTestCase {
     }
   }
 
+  public function testLazyFilters() {
+    $twig = at_container('twig_string');
+
+    // Use trim() function
+    $this->assertEqual(
+      'Drupal 7',
+      $twig->render("{{  '  Drupal 7  '|fn__trim  }}")
+    );
+
+    // Use At_Base_Test_Class::helloStatic()
+    $this->assertEqual(
+      'Hello Drupal 8',
+      $twig->render("{{  'Drupal 8'|At_Base_Test_Class__class__helloStatic  }}")
+    );
+
+    // Use At_Base_Test_Class::helloProperty()
+    $this->assertEqual(
+      'Hello PHP',
+      $twig->render("{{  'PHP'|At_Base_Test_Class__obj__helloProperty  }}")
+    );
+
+    // Namespace
+    $this->assertEqual(
+      'Hello Namespace',
+      $twig->render("{{  'Namespace'|ns_Drupal__atest_base__Service_1__class__helloStatic  }}")
+    );
+  }
+
   public function testTwigStringLoader() {
     $output = \AT::twig_string()->render('Hello {{ name }}', array('name' => 'Andy Truong'));
     $this->assertEqual('Hello Andy Truong', $output, 'Template string is rendered correctly.');

@@ -19,6 +19,31 @@ class Filter_Fetcher {
       $filters[] = $this->makeFilter($name, $def);
     }
 
+    return array_merge($filters, $this->getMagicFilters());
+  }
+
+  private function getMagicFilters() {
+    $filters = array();
+
+    $filters[] = new \Twig_SimpleFilter('fn__*', function ($name, $arguments) {
+      return call_user_func($name, $arguments);
+    });
+
+    $filters[] = new \Twig_SimpleFilter('*__class__*', function ($class, $method, $args) {
+      if ('ns_' === substr($class, 0, 3)) {
+        $class = str_replace('__', '\\', substr($class, 3));
+      }
+
+      return call_user_func("{$class}::{$method}", $args);
+    });
+
+    $filters[] = new \Twig_SimpleFilter('*__obj__*', function ($class, $method, $args) {
+      if ('ns_' === substr($class, 0, 3)) {
+        $class = str_replace('__', '\\', substr($class, 3));
+      }
+      return at_newv($class, is_array($args) ? $args : array($args))->{$method}();
+    });
+
     return $filters;
   }
 
