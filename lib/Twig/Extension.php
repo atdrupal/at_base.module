@@ -23,9 +23,11 @@ class Extension extends \Twig_Extension {
   }
 
   function getFunctions() {
-    return at_cache('at:twig:fns', function() {
+    $return = at_cache('at:twig:fns', function() {
       return at_id(new Function_Fetcher())->fetch();
     });
+
+    return array_merge($return, $this->getMagicItems('Twig_SimpleFunction'));
   }
 
   function getGlobals() {

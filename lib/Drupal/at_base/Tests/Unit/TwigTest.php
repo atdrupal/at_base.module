@@ -30,32 +30,24 @@ class TwigTest extends UnitTestCase {
     }
   }
 
-  public function testLazyFilters() {
+  public function testLazyFiltersFunctions() {
     $twig = at_container('twig_string');
 
     // Use trim() function
-    $this->assertEqual(
-      'Drupal 7',
-      $twig->render("{{  '  Drupal 7  '|fn__trim  }}")
-    );
+    $this->assertEqual($twig->render("{{  '  Drupal 7  '|fn__trim  }}"),  'Drupal 7');
+    $this->assertEqual($twig->render("{{  fn__trim('  Drupal 7  ')  }}"), 'Drupal 7');
 
     // Use At_Base_Test_Class::helloStatic()
-    $this->assertEqual(
-      'Hello Drupal 8',
-      $twig->render("{{  'Drupal 8'|At_Base_Test_Class__class__helloStatic  }}")
-    );
+    $this->assertEqual($twig->render("{{  'Drupal 8'|At_Base_Test_Class__class__helloStatic  }}"),  'Hello Drupal 8');
+    $this->assertEqual($twig->render("{{  At_Base_Test_Class__class__helloStatic('Drupal 8')  }}"), 'Hello Drupal 8');
 
     // Use At_Base_Test_Class::helloProperty()
-    $this->assertEqual(
-      'Hello PHP',
-      $twig->render("{{  'PHP'|At_Base_Test_Class__obj__helloProperty  }}")
-    );
+    $this->assertEqual($twig->render("{{  'PHP'|At_Base_Test_Class__obj__helloProperty  }}"), 'Hello PHP');
+    $this->assertEqual($twig->render("{{  At_Base_Test_Class__obj__helloProperty('PHP')  }}"), 'Hello PHP');
 
     // Namespace
-    $this->assertEqual(
-      'Hello Namespace',
-      $twig->render("{{  'Namespace'|ns_Drupal__atest_base__Service_1__class__helloStatic  }}")
-    );
+    $this->assertEqual($twig->render("{{  'Namespace'|ns_Drupal__atest_base__Service_1__class__helloStatic  }}"),  'Hello Namespace');
+    $this->assertEqual($twig->render("{{  ns_Drupal__atest_base__Service_1__class__helloStatic('Namespace')  }}"), 'Hello Namespace');
   }
 
   public function testTwigStringLoader() {
