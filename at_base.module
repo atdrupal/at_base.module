@@ -29,7 +29,7 @@ function at_id($x) {
  * call_user_func_array() on a class constructor, so you can instead use this
  * function:
  *
- * $obj = newv($class_name, $argv);
+ * $obj = at_newv($class_name, $argv);
  *
  * That is, these two statements are equivalent:
  *
