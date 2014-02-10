@@ -3,7 +3,7 @@
 namespace Drupal\at_base\Tests\Web;
 
 /**
- * cache_get()/cache_set() does not work on unit test cases.
+ * drush test-run --dirty 'Drupal\at_base\Tests\Web\TwigTest'
  */
 class TwigTest extends \DrupalWebTestCase {
   public function getInfo() {
@@ -44,6 +44,16 @@ class TwigTest extends \DrupalWebTestCase {
     $this->assertEqual($expected, trim($block_1));
     $this->assertEqual($expected, trim($block_2));
     $this->assertEqual($expected, trim($block_3));
+  }
+
+  public function testDrupalView() {
+    $twig = at_container('twig_string');
+
+    $output = $twig->render("{{ 'atest_theming_user'|drupalView({arguments: [1]}) }}");
+    $this->assertTrue(strpos($output, 'views-field views-field-name') !== FALSE);
+
+    $output = $twig->render("{{ 'atest_theming_user'|drupalView({arguments: [11111]}) }}");
+    $this->assertTrue(strpos($output, 'views-field views-field-name') === FALSE);
   }
 }
 
