@@ -39,7 +39,6 @@ class Views {
     $this->arguments = $arguments;
 
     if (is_array($this->arguments)) {
-      dsm($this->arguments);
       $this->view->set_arguments($this->arguments);
     }
   }
