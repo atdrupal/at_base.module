@@ -49,8 +49,14 @@ class TwigTest extends \DrupalWebTestCase {
   public function testDrupalView() {
     $twig = at_container('twig_string');
 
+    $output = $twig->render("{{ 'atest_theming_user'|drupalView('default', 1) }}");
+    $this->assertTrue(strpos($output, 'views-field views-field-name') !== FALSE);
+
     $output = $twig->render("{{ 'atest_theming_user'|drupalView({arguments: [1]}) }}");
     $this->assertTrue(strpos($output, 'views-field views-field-name') !== FALSE);
+
+    $output = $twig->render("{{ 'atest_theming_user'|drupalView('default', 11111) }}");
+    $this->assertTrue(strpos($output, 'views-field views-field-name') === FALSE);
 
     $output = $twig->render("{{ 'atest_theming_user'|drupalView({arguments: [11111]}) }}");
     $this->assertTrue(strpos($output, 'views-field views-field-name') === FALSE);

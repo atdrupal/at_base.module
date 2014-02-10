@@ -122,10 +122,11 @@ class Views {
   public static function render($name, $display_id = 'default') {
     $args = func_get_args();
     array_shift($args);
+
     // Params may wrong
     try {
       $builder = self::getBuilder($display_id);
-      return call_user_func_array($builder, array($name, $args));
+      return call_user_func_array($builder, array_merge(array($name), $args));
     }
     catch (\Exception $e) {
       return $e->getMessage();
@@ -140,13 +141,15 @@ class Views {
    */
   private static function getBuilder($a1) {
     if (is_string($a1)) {
-      return function ($name, $display_id, $args = array()) {
+      return function () {
+        $args = func_get_args();
+        $name = array_shift($args);
+        $display_id = array_shift($args);
         return at_id(new Views($name, $display_id, $args))->execute();
       };
     }
 
     return function ($name, $options) {
-      $options = isset($options[0]) ? $options[0] : $options;
       return at_id(new Views($name))->resolveOptions($options)->execute();
     };
   }
