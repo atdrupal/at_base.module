@@ -5,6 +5,7 @@ core = 7.x
 hidden = TRUE
 
 dependencies[] = at_base
+dependencies[] = views
 
 files[] = atest_base.module
 

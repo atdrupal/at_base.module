@@ -39,6 +39,7 @@ class Views {
     $this->arguments = $arguments;
 
     if (is_array($this->arguments)) {
+      dsm($this->arguments);
       $this->view->set_arguments($this->arguments);
     }
   }
@@ -99,9 +100,9 @@ class Views {
   public function resolveOptions($options) {
     foreach ($options as $k => $v) {
       switch ($k) {
-        case 'template':   $this->setTemplate($v['template']);  break;
-        case 'display_id': $this->setDisplayId($v['display_id']); break;
-        case 'arguments':  $this->setArguments($v['arguments']); break;
+        case 'template':   $this->setTemplate($v);  break;
+        case 'display_id': $this->setDisplayId($v); break;
+        case 'arguments':  $this->setArguments($v); break;
       }
     }
     return $this;
@@ -122,7 +123,6 @@ class Views {
   public static function render($name, $display_id = 'default') {
     $args = func_get_args();
     array_shift($args);
-
     // Params may wrong
     try {
       $builder = self::getBuilder($display_id);
@@ -147,6 +147,7 @@ class Views {
     }
 
     return function ($name, $options) {
+      $options = isset($options[0]) ? $options[0] : $options;
       return at_id(new Views($name))->resolveOptions($options)->execute();
     };
   }
