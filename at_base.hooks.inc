@@ -121,3 +121,10 @@ function at_base_user_logout($account) {
     ->warm()
   ;
 }
+
+/**
+ * Attach blocks that defined with route.
+ */
+function at_base_hook_page_alter(&$page) {
+  // at working…
+}
