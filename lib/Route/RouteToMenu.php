@@ -53,7 +53,7 @@ class RouteToMenu {
     }
 
     $this->menu_item['page callback'] = 'Drupal\at_base\Route\Controller::pageCallback';
-    $this->menu_item['page arguments'] = is_array($this->menu_item['page arguments']) ? $this->menu_item['page arguments'] : array();
+    $this->menu_item['page arguments'] = isset($this->menu_item['page arguments']) ? $this->menu_item['page arguments'] : array();
     array_unshift($this->menu_item['page arguments'], $this->menu_item);
 
     return $this->menu_item;
