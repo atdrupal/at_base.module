@@ -42,8 +42,9 @@ class Controller
      */
     public static function pageCallback() {
         $args = func_get_args();
-        $route = array_pop($args);
+        $route = array_shift($args);
 
+        array_shift($route['page arguments']);
         $render = at_container('helper.content_render');
 
         return at_id(new self($render, filter_input(INPUT_GET, 'q', FILTER_SANITIZE_STRING)))
