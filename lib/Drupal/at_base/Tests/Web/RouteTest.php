@@ -75,4 +75,28 @@ class RouteTest extends \DrupalWebTestCase {
     $response_1 = trim($request->request('atest_route/cache/1'));
     $this->assertEqual($response_0, $response_1);
   }
+
+  public function testRouteBlock() {
+    at_container('container')
+      ->offsetSet('page.blocks', array(
+        'help' => array(
+          'system:powered-by',
+          array('at_base:atest_base|hi_s', array('title' => 'Hello block!', 'weight' => -100)),
+        )
+      ));
+
+    // Render the page array
+    $page = array();
+    at_base_page_build($page);
+    $output = drupal_render($page);
+
+    // Found two blocks
+    $this->assertTrue(FALSE !== strpos($output, 'Powered by'));
+    $this->assertTrue(FALSE !== strpos($output, 'Hello block!'));
+
+    // Check weight
+    $p1 = strpos($output, 'Powered by');
+    $p2 = strpos($output, 'Hello block!');
+    $this->assertTrue($p1 > $p2);
+  }
 }
