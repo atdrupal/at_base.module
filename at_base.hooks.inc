@@ -127,6 +127,8 @@ function at_base_user_logout($account) {
  * Implements hook_page_build().
  *
  * Renders blocks into their regions.
+ *
+ * @see Drupal\at_base\Route\Controller::prepareContextBlocks()
  */
 function at_base_page_build(&$page) {
   if (at_container('container')->offsetExists('page.blocks')) {

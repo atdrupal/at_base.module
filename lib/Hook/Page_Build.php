@@ -1,6 +1,11 @@
 <?php
 namespace Drupal\at_base\Hook;
 
+/**
+ * Details for hook_page_build().
+ *
+ * Parse block configuration, build attached-blocks to page structure.
+ */
 class Page_Build {
   private $page;
   private $blocks;

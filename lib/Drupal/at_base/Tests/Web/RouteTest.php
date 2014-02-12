@@ -4,6 +4,8 @@ namespace Drupal\at_base\Tests\Web;
 
 /**
  * Test cases for routing feature.
+ *
+ * drush test-run --dirty 'Drupal\at_base\Tests\Web\RouteTest'
  */
 class RouteTest extends \DrupalWebTestCase {
   public function getInfo() {
