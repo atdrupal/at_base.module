@@ -7,6 +7,7 @@
 
 use \Drupal\at_base\Route\Importer as RouteImporter;
 use \Drupal\at_base\Hook\Menu as HookMenu;
+use \Drupal\at_base\Hook\Page_Build as Hook_Page_Build;
 
 /**
  * Implements hook_menu()
@@ -123,8 +124,12 @@ function at_base_user_logout($account) {
 }
 
 /**
- * Attach blocks that defined with route.
+ * Implements hook_page_build().
+ *
+ * Renders blocks into their regions.
  */
-function at_base_hook_page_alter(&$page) {
-  // at working…
+function at_base_page_build(&$page) {
+  if (at_container('container')->offsetExists('page.blocks')) {
+    at_id(new Hook_Page_Build($page, at_container('page.blocks')))->execute();
+  }
 }

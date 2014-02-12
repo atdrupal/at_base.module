@@ -5,3 +5,4 @@ imports:
   - { resource: routes.template_string.yml }
   - { resource: routes.form.yml }
   - { resource: routes.cache.yml }
+  - { resource: routes.blocks.yml }
