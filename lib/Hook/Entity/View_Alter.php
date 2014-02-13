@@ -68,7 +68,7 @@ class View_Alter {
 
   protected function build() {
     if ($config = $this->getConfig()) {
-      $config['variables']  = isset($config['variables']) ? $config['variables'] : array();
+      $config['variables'] = isset($config['variables']) ? $config['variables'] : array();
       $config['variables'] += array('build' => $this->build);
 
       // Support token in template
@@ -76,6 +76,11 @@ class View_Alter {
         $config['template'] = $this->resolveTokens($config['template']);
       }
 
+      // Attach block
+      if (!empty($config['blocks'][$GLOBALS['theme']])) {
+        at_container('container')->offsetSet('page.blocks', $config['blocks'][$GLOBALS['theme']]);
+        unset($config['blocks'][$GLOBALS['theme']]);
+      }
       return at_container('helper.content_render')->render($config);
     }
   }
