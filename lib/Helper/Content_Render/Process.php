@@ -81,8 +81,13 @@ class Process {
   }
 
   private function processTemplateString() {
-    if (isset($this->data['template_string'])) {
-      $tpl = $this->data['template_string'];
+    $k = isset($this->data['template_string'])
+          ? 'template_string'
+          : (isset($this->data['content']) ? 'content' : NULL)
+    ;
+
+    if (!empty($k)) {
+      $tpl = $this->data[$k];
       return at_container('twig_string')->render($tpl, $this->args);
     }
   }
