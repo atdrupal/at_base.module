@@ -25,11 +25,11 @@ before_script:
   # ---------------------
   # Install Drush
   # ---------------------
-  - wget https://github.com/drush-ops/drush/archive/5.10.0.tar.gz
-  - tar zxf 5.10.0.tar.gz
-  - mv drush-5.10.0/ ~/drush
+  - wget 'https://github.com/drush-ops/drush/archive/5.10.0.tar.gz'
+  - tar zxf '5.*'
+  - mv 'drush-5.*' ~/drush
   - alias drush="~/drush/drush"
-
+  
   # ---------------------
   # Variables
   # ---------------------
@@ -37,7 +37,7 @@ before_script:
   - export VENDOR=`pwd`
   - cd ..
   - export DRUPAL=`pwd`'/drupal/'
-
+  
   # ---------------------
   # Download the codebase
   # ---------------------
