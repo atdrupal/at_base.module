@@ -20,9 +20,10 @@ install:
   # ---------------------
   # Install Drush
   # ---------------------
-  - pear channel-discover pear.drush.org
-  - pear install drush/drush-5.8.0
-  - phpenv rehash
+  - wget https://github.com/drush-ops/drush/archive/5.10.0.tar.gz
+  - tar zxf 5.10.0.tar.gz
+  - mv drush-5.10.0/ ~/drush
+  - alias drush="~/drush/drush"
 
   # ---------------------
   # Setup DB
