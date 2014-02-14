@@ -16,7 +16,12 @@ mysql:
   username: root
   encoding: utf8
 
-install:
+  # ---------------------
+  # Setup DB
+  # ---------------------
+  - mysql -e 'create database drupal;'
+
+before_script:
   # ---------------------
   # Install Drush
   # ---------------------
@@ -25,12 +30,6 @@ install:
   - mv drush-5.10.0/ ~/drush
   - alias drush="~/drush/drush"
 
-  # ---------------------
-  # Setup DB
-  # ---------------------
-  - mysql -e 'create database drupal;'
-
-before_script:
   # ---------------------
   # Variables
   # ---------------------
