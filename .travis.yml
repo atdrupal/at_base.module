@@ -28,7 +28,7 @@ before_script:
   # ---------------------
   - wget 'https://github.com/drush-ops/drush/archive/5.10.0.tar.gz'
   - tar zxf '5.10.0.tar.gz'
-  - mv 'drush-5.*' ~/drush
+  - mv 'drush-5.10.0' ~/drush
   - alias drush="~/drush/drush"
   
   # ---------------------
