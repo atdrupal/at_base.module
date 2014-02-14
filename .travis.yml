@@ -16,6 +16,7 @@ mysql:
   username: root
   encoding: utf8
 
+install:
   # ---------------------
   # Setup DB
   # ---------------------
