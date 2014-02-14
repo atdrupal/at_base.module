@@ -21,6 +21,8 @@ install:
   # Install Drush
   # ---------------------
   - composer global require drush/drush:6.*
+  - export PATH=`pwd`/bin:$PATH;
+  - export DRUSH_PHP=`dirname $(which drush)`/composer-php;
 
   # ---------------------
   # Setup DB
