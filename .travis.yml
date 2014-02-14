@@ -20,9 +20,8 @@ install:
   # ---------------------
   # Install Drush
   # ---------------------
-  - pear channel-discover pear.drush.org
-  - pear install drush/drush-5.8.0
-  - phpenv rehash
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - composer global require drush/drush:6.*
 
   # ---------------------
   # Setup DB
@@ -37,11 +36,11 @@ before_script:
   - export VENDOR=`pwd`
   - cd ..
   - export DRUPAL=`pwd`'/drupal/'
-
+  
   # ---------------------
   # Download the codebase
   # ---------------------
-  - wget https://github.com/andytruong/atest_profile/archive/master.zip
+  - wget 'https://github.com/andytruong/atest_profile/archive/master.zip'
   - unzip -qq master
   - mv atest_profile-master $DRUPAL
   - cd $DRUPAL
