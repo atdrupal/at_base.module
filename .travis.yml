@@ -27,7 +27,7 @@ before_script:
   # Install Drush
   # ---------------------
   - wget 'https://github.com/drush-ops/drush/archive/5.10.0.tar.gz'
-  - tar zxf '5.*'
+  - tar zxf '5.10.0.tar.gz'
   - mv 'drush-5.*' ~/drush
   - alias drush="~/drush/drush"
   
@@ -42,7 +42,7 @@ before_script:
   # ---------------------
   # Download the codebase
   # ---------------------
-  - wget https://github.com/andytruong/atest_profile/archive/master.zip
+  - wget 'https://github.com/andytruong/atest_profile/archive/master.zip'
   - unzip -qq master
   - mv atest_profile-master $DRUPAL
   - cd $DRUPAL
