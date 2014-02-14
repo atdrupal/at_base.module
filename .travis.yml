@@ -18,19 +18,16 @@ mysql:
 
 install:
   # ---------------------
+  # Install Drush
+  # ---------------------
+  - composer global require drush/drush:6.*
+
+  # ---------------------
   # Setup DB
   # ---------------------
   - mysql -e 'create database drupal;'
 
 before_script:
-  # ---------------------
-  # Install Drush
-  # ---------------------
-  - wget 'https://github.com/drush-ops/drush/archive/5.10.0.tar.gz'
-  - tar zxf '5.10.0.tar.gz'
-  - mv 'drush-5.10.0' ~/drush
-  - alias drush="~/drush/drush"
-  
   # ---------------------
   # Variables
   # ---------------------
