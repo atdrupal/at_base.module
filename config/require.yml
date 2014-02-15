@@ -18,7 +18,7 @@ projects:
     download:
       type: git
       url: https://github.com/fabpot/Twig.git
-      branch: v1.15.0
+      branch: v1.15.1
 
   expression_language:
     type: library
