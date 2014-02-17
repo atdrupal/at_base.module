@@ -35,6 +35,13 @@ class Page_Build {
 
   private function loadBlock($config) {
     list($module, $delta) = explode(':', is_string($config) ? $config : $config[0]);
+    
+    // Case of modules which use at_base to define the blocks
+    if (!function_exists("{$module}_block_info")) {
+      $delta = "{$module}|{$delta}";
+      $module = 'at_base';
+    }
+
     $block = block_load($module, $delta);
 
     if (is_array($config)) {
