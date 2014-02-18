@@ -105,14 +105,9 @@ class Views {
         case 'display_id': $this->setDisplayId($v); break;
         case 'arguments':  $this->setArguments($v); break;
         case 'items_per_page': $this->view->set_items_per_page($v); break;
-        case 'pager': $this->setPagerType($v); break;
       }
     }
     return $this;
-  }
-  
-  private function setPagerType($type = 'some') {
-    $this->view->display[$this->display_id]->display_options['pager']['type'] = $type;
   }
 
   /**
