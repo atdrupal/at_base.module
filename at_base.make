@@ -9,7 +9,7 @@ libraries[spyc][download][branch] = '0.5.1'
 
 libraries[pimple][download][type] = 'git'
 libraries[pimple][download][url] = 'https://github.com/fabpot/Pimple.git'
-libraries[pimple][download][revision] = 'dc03a407f20cbd4eaf55472875ad47ee96d921ea'
+libraries[pimple][download][branch] = 'v2.0.0'
 
 libraries[twig][download][type] = 'git'
 libraries[twig][download][url] = 'https://github.com/fabpot/Twig.git'
