@@ -3,26 +3,26 @@ projects:
     type: library
     download:
       type: git
-      url: https://github.com/mustangostang/spyc.git
-      branch: 0.5.1
+      url: 'https://github.com/mustangostang/spyc.git'
+      branch: '0.5.1'
 
   pimple:
     type: library
     download:
       type: git
-      url: https://github.com/fabpot/Pimple.git
-      revision: dc03a407f20cbd4eaf55472875ad47ee96d921ea
+      url: 'https://github.com/fabpot/Pimple.git'
+      branch: 'v2.0.0'
 
   twig:
     type: library
     download:
       type: git
-      url: https://github.com/fabpot/Twig.git
-      branch: v1.15.1
+      url: 'https://github.com/fabpot/Twig.git'
+      branch: 'v1.15.1'
 
   expression_language:
     type: library
     download:
       type: git
-      url: https://github.com/symfony/expression-language.git
-      branch: v2.4.1
+      url: 'https://github.com/symfony/expression-language.git'
+      branch: 'v2.4.1'
