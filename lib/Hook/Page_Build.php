@@ -26,11 +26,10 @@ class Page_Build {
       $block = $this->loadBlock($block);
     }
 
-    usort($blocks, function($a, $b) { return ($a->weight < $b->weight) ? -1 : 1; });
-
     $output = _block_render_blocks($blocks);
 
     $this->page[$region][] = _block_get_renderable_array($output);
+    $this->page[$region]['#sorted'] = FALSE;
   }
 
   private function loadBlock($config) {
