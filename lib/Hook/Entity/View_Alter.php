@@ -47,7 +47,7 @@ class View_Alter {
     $this->build = &$build;
     $this->entity_type = $entity_type;
     $this->bundle = $build['#bundle'];
-    $this->id = entity_id($build['#' . $entity_type]);
+    $this->id = entity_id($build['#' . $entity_type], $build['#entity']);
     $this->view_mode = $build['#view_mode'];
   }
 
