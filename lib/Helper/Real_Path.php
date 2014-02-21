@@ -18,7 +18,7 @@ class Real_Path {
    * @param  string $path
    * @return string
    */
-  public function get($path, $include_drupal_root = FALSE) {
+  public function get($path, $include_drupal_root = TRUE) {
     foreach (array('Module', 'Theme', 'Library') as $k) {
       $method = "replace{$k}Token";
       if ($real_path = $this->{$method}($path, $include_drupal_root)) {
