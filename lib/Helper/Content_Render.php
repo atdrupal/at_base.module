@@ -146,7 +146,7 @@ class Content_Render {
     foreach (array_keys($this->data['attached']) as $type) {
       foreach ($this->data['attached'][$type] as $k => $item) {
         if (is_string($item)) {
-          $this->data['attached'][$type][$k] = at_container('helper.real_path')->get($item);
+          $this->data['attached'][$type][$k] = at_container('helper.real_path')->get($item, FALSE);
         }
       }
     }
