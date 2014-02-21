@@ -98,8 +98,12 @@ class Views {
 
     module_load_include('inc', 'views', 'theme/theme');
     $vars = array('view' => $this->view);
-    template_preprocess_views_view($vars);
 
+    if (empty($this->view->style_plugin)) {
+      $this->view->init_style();
+    }
+
+    template_preprocess_views_view($vars);
     return at_container('twig')->render($this->template, $vars);
   }
 
