@@ -14,9 +14,13 @@ class Views {
   private $template;
   private $arguments = array();
 
-  public function __construct($name, $display_id = 'default', $arguments = array()) {
+  public function __construct($name, $display_id = 'default', $arguments = array(), $pager_type = '') {
     if (!$this->view = views_get_view($name)) {
       throw new \Exception('View not found: '. $this->name);
+    }
+
+    if (!empty($pager_type)) {
+      $this->view->display[$this->display_id]->display_options['pager']['type'] = $pager_type;
     }
 
     $this->name = $name;
@@ -99,9 +103,10 @@ class Views {
   public function resolveOptions($options) {
     foreach ($options as $k => $v) {
       switch ($k) {
-        case 'template':   $this->setTemplate($v);  break;
-        case 'display_id': $this->setDisplayId($v); break;
-        case 'arguments':  $this->setArguments($v); break;
+        case 'template':       $this->setTemplate($v);  break;
+        case 'display_id':     $this->setDisplayId($v); break;
+        case 'arguments':      $this->setArguments($v); break;
+        case 'items_per_page': $this->view->set_items_per_page($v); break;
       }
     }
     return $this;
@@ -150,7 +155,10 @@ class Views {
     }
 
     return function ($name, $options) {
-      return at_id(new Views($name))->resolveOptions($options)->execute();
+      $pager = isset($options['pager']) ? $options['pager'] : '';
+      return at_id(new Views($name, 'default', array(), $pager))
+        ->resolveOptions($options)
+        ->execute();
     };
   }
 }
