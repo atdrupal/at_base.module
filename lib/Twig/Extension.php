@@ -44,14 +44,14 @@ class Extension extends \Twig_Extension {
 
     // fn__*
     $items[] = at_newv($base_class, array(
-      'fn__*', function ($name, $arguments) {
+      'fn__*', function ($name, $arguments = array()) {
         return call_user_func($name, $arguments);
       }
     ));
 
     // *__class__*
     $items[] = at_newv($base_class, array(
-      '*__class__*', function ($class, $method, $args) {
+      '*__class__*', function ($class, $method, $args = array()) {
         if ('ns_' === substr($class, 0, 3)) {
           $class = str_replace('__', '\\', substr($class, 3));
         }
@@ -61,7 +61,7 @@ class Extension extends \Twig_Extension {
 
     // *__obj__*
     $items[] = at_newv($base_class, array(
-      '*__obj__*', function ($class, $method, $args) {
+      '*__obj__*', function ($class, $method, $args = array()) {
         if ('ns_' === substr($class, 0, 3)) {
           $class = str_replace('__', '\\', substr($class, 3));
         }
