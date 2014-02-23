@@ -135,3 +135,17 @@ function at_base_page_build(&$page) {
     at_id(new Hook_Page_Build($page, at_container('page.blocks')))->execute();
   }
 }
+
+/**
+ * Implements hook_node_insert()
+ */
+function at_base_node_insert($node) {
+  module_invoke_all('node_save', $node);
+}
+
+/**
+ * Implements hook_node_update()
+ */
+function at_base_node_update($node) {
+  module_invoke_all('node_save', $node);
+}

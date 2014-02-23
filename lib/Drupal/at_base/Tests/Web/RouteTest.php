@@ -93,10 +93,5 @@ class RouteTest extends \DrupalWebTestCase {
     // Found two blocks
     $this->assertTrue(FALSE !== strpos($output, 'Powered by'));
     $this->assertTrue(FALSE !== strpos($output, 'Hello block!'));
-
-    // Check weight
-    $p1 = strpos($output, 'Powered by');
-    $p2 = strpos($output, 'Hello block!');
-    $this->assertTrue($p1 > $p2);
   }
 }
