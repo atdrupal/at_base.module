@@ -18,10 +18,10 @@ class Real_Path {
    * @param  string $path
    * @return string
    */
-  public function get($path) {
+  public function get($path, $include_drupal_root = TRUE) {
     foreach (array('Module', 'Theme', 'Library') as $k) {
       $method = "replace{$k}Token";
-      if ($real_path = $this->{$method}($path)) {
+      if ($real_path = $this->{$method}($path, $include_drupal_root)) {
         return $real_path;
       }
     }
@@ -64,12 +64,12 @@ class Real_Path {
    *
    * @return string|null
    */
-  private function replaceLibraryToken($path) {
+  private function replaceLibraryToken($path, $include_drupal_root) {
     if ('%' === substr($path, 0, 1)) {
       preg_match('/%([a-z_]+)/i', $path, $matches);
       if (!empty($matches)) {
         $library = $matches[1];
-        if ($library_path = at_library($library)) {
+        if ($library_path = at_library($library, NULL, $include_drupal_root)) {
           return str_replace("%{$library}/", $library_path . '/', $path);
         }
       }
