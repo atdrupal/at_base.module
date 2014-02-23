@@ -19,3 +19,40 @@ function at_base_schema() {
   );
   return $schema;
 }
+
+/**
+ * Implements hook_requirements()
+ */
+function at_base_requirements($phase) {
+  $requirements = array();
+  $t = get_t();
+
+  $requirements['at_base_debug'] = array(
+    'title' => '<strong>at_base.module</strong> AT_DEBUG',
+    'value' => defined('AT_DEBUG') ? 'TRUE' : 'FALSE',
+    'description' => $t('AT_DEBUG should only be enabled on Dev environment.'),
+    'severity' => defined('AT_DEBUG') ? REQUIREMENT_WARNING : REQUIREMENT_OK,
+    'weight' => -1000
+  );
+
+  # ---------------------
+  # YAML Reader
+  # ---------------------
+  $fn = 'yaml_parse';
+  if (!function_exists('yaml_parse')) {
+    require_once DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php';
+    $fn = 'spyc_load_file';
+  }
+
+  $requirements['at_base_yaml'] = array(
+    'title' => '<strong>at_base.module</strong> YAML Reader',
+    'value' => function_exists('drupal_get_path') 
+      ? ($fn == 'yaml_parse' ? 'yaml extension' : 'spyc')
+      : $t('Unavailable'),
+    'description' => $t('There is no YAML reader available. Please install yaml pecl extension or run drush atr to download spyc library.'),
+    'severity' => !function_exists('drupal_get_path') ? REQUIREMENT_WARNING : REQUIREMENT_OK,
+    'weight' => -1000
+  );
+
+  return $requirements;
+}

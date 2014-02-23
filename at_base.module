@@ -168,7 +168,7 @@ function at_modules($base_module = 'at_base', $config_file = '') {
  * @param  string $version
  * @return string
  */
-function at_library($name, $version = 'default') {
+function at_library($name, $version = 'default', $include_drupal_root = TRUE) {
   $paths = array(conf_path(), 'sites/all');
   foreach ($paths as $path) {
     $return = DRUPAL_ROOT . "/{$path}/libraries/{$name}";
@@ -177,7 +177,7 @@ function at_library($name, $version = 'default') {
     }
 
     if (FALSE !== @fileowner($return)) {
-      return $return;
+      return $include_drupal_root ? $return : substr($return, strlen(DRUPAL_ROOT) + 1);
     }
   }
 

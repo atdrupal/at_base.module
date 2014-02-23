@@ -47,7 +47,7 @@ class View_Alter {
     $this->build = &$build;
     $this->entity_type = $entity_type;
     $this->bundle = $build['#bundle'];
-    $this->id = entity_id($build['#' . $entity_type]);
+    $this->id = entity_id($build['#' . $entity_type], $build['#entity']);
     $this->view_mode = $build['#view_mode'];
   }
 
@@ -67,6 +67,8 @@ class View_Alter {
   }
 
   protected function build() {
+    global $theme;
+
     if ($config = $this->getConfig()) {
       $config['variables']  = isset($config['variables']) ? $config['variables'] : array();
       $config['variables'] += array('build' => $this->build);
@@ -74,6 +76,12 @@ class View_Alter {
       // Support token in template
       if (!empty($config['template'])) {
         $config['template'] = $this->resolveTokens($config['template']);
+      }
+
+      // Attach block
+      if (!empty($config['blocks'][$theme])) {
+        at_container('container')->offsetSet('page.blocks', $config['blocks'][$theme]);
+        unset($config['blocks']);
       }
 
       return at_container('helper.content_render')->render($config);

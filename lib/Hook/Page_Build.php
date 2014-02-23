@@ -26,15 +26,21 @@ class Page_Build {
       $block = $this->loadBlock($block);
     }
 
-    usort($blocks, function($a, $b) { return ($a->weight < $b->weight) ? -1 : 1; });
-
     $output = _block_render_blocks($blocks);
 
     $this->page[$region][] = _block_get_renderable_array($output);
+    $this->page[$region]['#sorted'] = FALSE;
   }
 
   private function loadBlock($config) {
     list($module, $delta) = explode(':', is_string($config) ? $config : $config[0]);
+    
+    // Case of modules which use at_base to define the blocks
+    if (!function_exists("{$module}_block_info")) {
+      $delta = "{$module}|{$delta}";
+      $module = 'at_base';
+    }
+
     $block = block_load($module, $delta);
 
     if (is_array($config)) {
