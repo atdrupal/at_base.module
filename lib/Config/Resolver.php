@@ -82,7 +82,9 @@ class Resolver implements ResolverInterface {
    * @param string $path
    */
   private function fetchFile($path) {
-    $return = yaml_parse_file($path);
+    if (!$return = yaml_parse_file($path)) {
+      throw new \Exception('Can not parse file: ' . $path);
+    }
 
     if (!empty($return['imports'])) {
       return $this->resolveDataImports($return);
