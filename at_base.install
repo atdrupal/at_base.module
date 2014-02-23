@@ -19,3 +19,18 @@ function at_base_schema() {
   );
   return $schema;
 }
+
+/**
+ * Implements hook_requirements()
+ */
+function at_base_requirements($phase) {
+  $requirements = array();
+  $t = get_t();
+
+  if (defined('AT_DEBUG')) {
+    $requirements['php']['description'] = $t('AT_DEBUG should only be enabled on Dev environment.');
+    $requirements['php']['severity'] = REQUIREMENT_WARNING;
+  }
+
+  return $requirements;
+}
