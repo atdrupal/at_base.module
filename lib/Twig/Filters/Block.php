@@ -46,7 +46,20 @@ class Block {
    *
    * @param string $string Format %module:%delta
    */
-  private static function load($string) {
+  private function load($string) {
+    list($module, $delta) = $this->findLoadKeys($string);
+    if (!$block = block_load($module, $delta)) {
+      throw new \Exception('Block not found');
+    }
+
+    // Make sure properties are set
+    $block->region = isset($block->region) ? $block->region : -1;
+    $block->title = isset($block->title) ? $block->title : '';
+
+    return $block;
+  }
+
+  private function findLoadKeys($string) {
     $string = explode(':', $string);
     if (2 !== count($string)) {
       throw new \Exception('Wrong param');
@@ -63,14 +76,6 @@ class Block {
       $module = 'at_base';
     }
 
-    if (!$block = block_load($module, $delta)) {
-      throw new \Exception('Block not found');
-    }
-
-    // Make sure properties are set
-    $block->region = isset($block->region) ? $block->region : -1;
-    $block->title = isset($block->title) ? $block->title : '';
-
-    return $block;
+    return array($module, $delta);
   }
 }

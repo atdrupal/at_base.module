@@ -76,9 +76,10 @@ class Views {
       return $this->view->preview($this->display_id, $this->arguments);
     }
 
-    // ---------------------
-    // With template
-    // ---------------------
+    return $this->executeTemplate();
+  }
+
+  private function executeTemplate() {
     // Many tags rendered by views, we get rid of them
     if (!empty($this->view->display[$this->display_id]->display_options['fields'])) {
       foreach (array_keys($this->view->display[$this->display_id]->display_options['fields']) as $k) {
