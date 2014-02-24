@@ -72,9 +72,10 @@ class Views {
       return $this->view->preview($this->display_id, $this->arguments);
     }
 
-    // ---------------------
-    // With template
-    // ---------------------
+    return $this->executeTemplate();
+  }
+
+  private function executeTemplate() {
     // Many tags rendered by views, we get rid of them
     if (!empty($this->view->display[$this->display_id]->display_options['fields'])) {
       foreach (array_keys($this->view->display[$this->display_id]->display_options['fields']) as $k) {
@@ -84,12 +85,17 @@ class Views {
     }
 
     $this->view->pre_execute();
-    $this->view->execute();
+
+    if (0 === strpos($this->view->base_table, 'search_api_index_')) {
+      $this->view->preview($this->display_id, $this->arguments);
+    }
+    else {
+      $this->view->execute();
+    }
 
     module_load_include('inc', 'views', 'theme/theme');
     $vars = array('view' => $this->view);
     template_preprocess_views_view($vars);
-
     return at_container('twig')->render($this->template, $vars);
   }
 
