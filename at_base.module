@@ -177,7 +177,7 @@ function at_library($name, $version = 'default', $include_drupal_root = TRUE) {
     }
 
     if (FALSE !== @fileowner($return)) {
-      return $include_drupal_root ? $return : substr($return, strlen(DRUPAL_ROOT) + 1);
+      return rtrim($include_drupal_root ? $return : substr($return, strlen(DRUPAL_ROOT) + 1), '/');
     }
   }
 
