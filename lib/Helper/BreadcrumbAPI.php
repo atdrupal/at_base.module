@@ -43,8 +43,6 @@ class BreadcrumbAPI {
     $cache_callback = array($this, 'fetchEntityConfig');
     $cache_arguments = func_get_args();
 
-    $cache_options['reset'] = TRUE;
-
     if ($config = at_cache($cache_options, $cache_callback, $cache_arguments)) {
       $config['context'] = array('type' => 'entity', 'arguments' => $cache_arguments);
       $this->set($config);
