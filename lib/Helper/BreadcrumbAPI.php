@@ -91,6 +91,31 @@ class BreadcrumbAPI {
       $bc = $config['breadcrumbs'];
     }
 
-    dsm($config);
+    switch ($config['context']['type']) {
+      case 'entity':
+        return $this->buildEntityBreadcrumbs($bc, $config['tokens'], $config['context']['arguments']);
+    }
+  }
+
+  private function buildEntityBreadcrumbs($bc = array(), $tokens = array(), $args = array()) {
+    global $user;
+
+    $token_data = array('user' => $user);
+    switch ($args[1]) {
+      case 'node':
+      case 'user':
+        $token_data[$args[1]] = $args[0];
+        break;
+    }
+
+    foreach ($bc as &$item) {
+      foreach ($item as &$item_e) {
+        $item_e = token_replace($item_e, $token_data);
+      }
+
+      $item = count($item) == 2 ? l($item[0], $item[1]) : reset($item);
+    }
+
+    drupal_set_breadcrumb($bc);
   }
 }
