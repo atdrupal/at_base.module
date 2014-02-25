@@ -59,6 +59,29 @@ class BreadcrumbAPI {
     }
   }
 
+  public function checkPathConfig() {
+    $path_config = at_cache('atbc:paths', function(){
+      $items = array();
+      foreach (at_modules('at_base', 'breadcrumb') as $module) {
+        $config = at_config($module, 'breadcrumb')->get('breadcrumb');
+        if (!empty($config['paths'])) {
+          $items = array_merge($items, $config['paths']);
+        }
+      }
+      return $items;
+    });
+
+    // Convert the Drupal path to lowercase
+    $current_path = drupal_strtolower(drupal_get_path_alias($_GET['q']));
+
+    foreach ($path_config as $path => $config) {
+      if (drupal_match_path($current_path, $path)) {
+        $config['context'] = array('type' => 'path');
+        $this->set($config);
+      }
+    }
+  }
+
   /**
    * Set a breacrumb configuration to service container.
    *
@@ -69,8 +92,8 @@ class BreadcrumbAPI {
       $old_weight = isset($_config['weight']) ? $_config['weight'] : 0;
       $new_weight = isset($config['weight'])  ? $config['weight']  : 0;
       if ($new_weight <= $old_weight) {
-    at_container('container')->offsetSet('breadcrumb', $config);
-  }
+        at_container('container')->offsetSet('breadcrumb', $config);
+      }
     }
     else {
       at_container('container')->offsetSet('breadcrumb', $config);
@@ -88,31 +111,35 @@ class BreadcrumbAPI {
     }
   }
 
+
   /**
-   * Apply breadcrumb configuration to page.
+   * @see at_base_page_build()
    */
-  public function execute($config) {
-    $bc = array();
+  public function pageBuild() {
+    $this->checkPathConfig();
 
-    if (!empty($config['breadcrumbs'])) {
-      $bc = $config['breadcrumbs'];
-    }
+    if ($config = $this->get()) {
+      $bc = !empty($config['breadcrumbs']) ? $config['breadcrumbs'] : array();
 
-    switch ($config['context']['type']) {
-      case 'entity':
-        return $this->buildEntityBreadcrumbs($bc, $config['tokens'], $config['context']['arguments']);
+      switch ($config['context']['type']) {
+        case 'entity':
+        case 'path':
+          return $this->buildBreadcrumbs($bc, $config['tokens'], $config['context']['arguments']);
+      }
     }
   }
 
-  private function buildEntityBreadcrumbs($bc = array(), $tokens = array(), $args = array()) {
+  private function buildBreadcrumbs($bc = array(), $tokens = array(), $args = array()) {
     global $user;
 
     $token_data = array('user' => $user);
-    switch ($args[1]) {
-      case 'node':
-      case 'user':
-        $token_data[$args[1]] = $args[0];
-        break;
+    if (!empty($args[1])) {
+      switch ($args[1]) {
+        case 'node':
+        case 'user':
+          $token_data[$args[1]] = $args[0];
+          break;
+      }
     }
 
     foreach ($bc as &$item) {
