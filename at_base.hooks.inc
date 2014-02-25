@@ -69,6 +69,15 @@ function at_base_admin_paths() {
 ###############################################################
 
 /**
+ * Implements hook_entity_view()
+ */
+function at_base_entity_view($entity, $type, $view_mode, $langcode) {
+  if (!empty($_GET['aa'])) {
+    at_container('breadcrumb_api')->checkEntityConfig($entity, $type, $view_mode, $langcode);
+  }
+}
+
+/**
  * Implements hook_entity_insert()
  */
 function at_base_entity_update($entity, $type) {
