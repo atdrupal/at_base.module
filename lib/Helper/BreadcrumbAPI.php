@@ -121,6 +121,10 @@ class BreadcrumbAPI {
     if ($config = $this->get()) {
       $bc = !empty($config['breadcrumbs']) ? $config['breadcrumbs'] : array();
 
+      if (empty($bc)) {
+        $bc = at_container('helper.content_render')->render($config);
+      }
+
       switch ($config['context']['type']) {
         case 'entity':
         case 'path':
