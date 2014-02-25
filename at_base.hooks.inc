@@ -72,7 +72,7 @@ function at_base_admin_paths() {
  * Implements hook_entity_view()
  */
 function at_base_entity_view($entity, $type, $view_mode, $langcode) {
-  if (!empty($_GET['aa'])) {
+  if (!empty($_GET['aa'])) { // @todo Remove debug code
     at_container('breadcrumb_api')->checkEntityConfig($entity, $type, $view_mode, $langcode);
   }
 }
