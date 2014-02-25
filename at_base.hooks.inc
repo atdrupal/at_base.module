@@ -143,4 +143,8 @@ function at_base_page_build(&$page) {
   if (at_container('container')->offsetExists('page.blocks')) {
     at_id(new Hook_Page_Build($page, at_container('page.blocks')))->execute();
   }
+
+  if (at_container('container')->offsetExists('breadcrumb')) {
+    at_container('breadcrumb_api')->execute(at_container('breadcrumb'));
+  }
 }

@@ -46,7 +46,7 @@ class BreadcrumbAPI {
     $cache_options['reset'] = TRUE;
 
     if ($config = at_cache($cache_options, $cache_callback, $cache_arguments)) {
-      $config['context'] = $cache_arguments;
+      $config['context'] = array('type' => 'entity', 'arguments' => $cache_arguments);
       $this->set($config);
     }
   }
@@ -79,5 +79,18 @@ class BreadcrumbAPI {
     if (at_container('container')->offsetExists('breadcrumb')) {
       return at_container('breadcrumb');
     }
+  }
+
+  /**
+   * Apply breadcrumb configuration to page.
+   */
+  public function execute($config) {
+    $bc = array();
+
+    if (!empty($config['breadcrumbs'])) {
+      $bc = $config['breadcrumbs'];
+    }
+
+    dsm($config);
   }
 }
