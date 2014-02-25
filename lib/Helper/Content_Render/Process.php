@@ -39,6 +39,11 @@ class Process {
     if (isset($this->data['controller'])) {
       @list($class, $method, $args) = $this->data['controller'];
       $obj = new $class();
+
+      if (empty($args) && !empty($this->data['arguments'])) {
+        $args = $this->data['arguments'];
+      }
+
       return call_user_func_array(
         array($obj, $method),
         $this->getControllerArguments($args, $obj)
