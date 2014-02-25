@@ -25,7 +25,7 @@ class BreadcrumbAPI {
    *         controller:       # <-- dynamic breadcrumbs, rendered by a controller.
    *           - class_name
    *           - method_name
-   *           - [%entity, %entity_type, %bundle, %view_mode, %langcode]
+   *           - ['%entity', '%entity_type', '%bundle', '%view_mode', '%langcode']
    *     gallery:              # <-- bundle
    *       full:               # <-- view mode
    *         function:  my_fn  # <-- dynamic breadcrumbs, rendered by a controller.
@@ -46,19 +46,17 @@ class BreadcrumbAPI {
     $cache_options['reset'] = TRUE;
 
     if ($config = at_cache($cache_options, $cache_callback, $cache_arguments)) {
-      dsm($config);
+      $config['context'] = $cache_arguments;
       $this->set($config);
     }
   }
 
   public function fetchEntityConfig($entity, $type, $view_mode, $langcode) {
-    if ($type === 'node' && $entity->type === 'resource') { // @todo Remove debug code
-      foreach (at_modules('at_base', 'breadcrumb') as $module) {
-        $config = at_config($module, 'breadcrumb')->get('breadcrumb');
-        $bundle = entity_bundle($type, $entity);
-        if (isset($config[$type][$bundle][$view_mode])) {
-          return $config[$type][$bundle][$view_mode];
-        }
+    foreach (at_modules('at_base', 'breadcrumb') as $module) {
+      $config = at_config($module, 'breadcrumb')->get('breadcrumb');
+      $bundle = entity_bundle($type, $entity);
+      if (isset($config[$type][$bundle][$view_mode])) {
+        return $config[$type][$bundle][$view_mode];
       }
     }
   }
