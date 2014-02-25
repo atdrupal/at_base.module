@@ -65,7 +65,16 @@ class BreadcrumbAPI {
    * @param array $config
    */
   public function set(array $config) {
+    if ($_config = $this->get()) {
+      $old_weight = isset($_config['weight']) ? $_config['weight'] : 0;
+      $new_weight = isset($config['weight'])  ? $config['weight']  : 0;
+      if ($new_weight <= $old_weight) {
     at_container('container')->offsetSet('breadcrumb', $config);
+  }
+    }
+    else {
+      at_container('container')->offsetSet('breadcrumb', $config);
+    }
   }
 
   /**
