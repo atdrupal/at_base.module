@@ -25,6 +25,7 @@ Provide some more API for developer to work with Drupal 7.
 - [Config](https://github.com/andytruong/at_base/wiki/7.x-2.x-config)
 - [Service Container](https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container)
 - [Easy Routing](https://github.com/andytruong/at_base/wiki/7.x-2.x-easy-routing)
+- [Easy Breadcrumb](https://github.com/andytruong/at_base/wiki/7.x-2.x-easy-breadcrumb)
 - [Easy Block](https://github.com/andytruong/at_base/wiki/7.x-2.x-easy-routing)
 - [Useful functions](https://github.com/andytruong/at_base/wiki/7.x-2.x-functions)
 - [Twig template](https://github.com/andytruong/at_base/wiki/7.x-2.x-twig-recipes)

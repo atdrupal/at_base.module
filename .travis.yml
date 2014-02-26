@@ -36,7 +36,7 @@ before_script:
   - export VENDOR=`pwd`
   - cd ..
   - export DRUPAL=`pwd`'/drupal/'
-  
+
   # ---------------------
   # Download the codebase
   # ---------------------
