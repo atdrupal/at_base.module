@@ -11,6 +11,7 @@ use \Drupal\at_base\Helper\ModulesFetcher;
 require_once dirname(__FILE__) . '/lib/AT.php';
 require_once dirname(__FILE__) . '/lib/Autoloader.php';
 require_once dirname(__FILE__) . '/at_base.hooks.inc';
+require_once dirname(__FILE__) . '/at_base.missing.inc';
 require_once dirname(__FILE__) . '/at_base.hack.inc';
 
 /**
