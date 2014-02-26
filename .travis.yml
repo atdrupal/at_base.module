@@ -21,7 +21,7 @@ install:
   # Install Drush
   # ---------------------
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - composer global require drush/drush:6.*
+  - composer global require drush/drush:dev-master
 
   # ---------------------
   # Setup DB
