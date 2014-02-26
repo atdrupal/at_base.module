@@ -28,7 +28,6 @@ class BreadcrumbTest extends UnitTestCase {
     at_fn_fake('token_replace', function($input) { return $input; });
     at_fn_fake('drupal_get_path_alias', function($input) { return $input; });
     at_fn_fake('l', function($text, $url) { return '<a href="/'. $url .'">'. $text .'</a>'; });
-    at_fn_fake('request_path', function() { return 'test/path/breadcrumb'; });
   }
 
   public function testNodeStatic() {
@@ -46,5 +45,29 @@ class BreadcrumbTest extends UnitTestCase {
   }
 
   public function testPath() {
+    // Current path is /test/path/foo
+    // Active breadcrumb should be 'test/path/foo'
+    at_fn_fake('request_path', function() { return 'test/path/foo'; });
+    $this->api->pageBuild();
+    $bc = drupal_set_breadcrumb();
+    $this->assertEqual(at_fn('l', 'Foo 1', 'foo/1'), $bc[0]);
+    $this->assertEqual(at_fn('l', 'Foo 2', 'foo/2'), $bc[1]);
+
+    // Current path is /test/path/wildcard
+    // Active breadcrumb should be 'test/path/*'
+    at_fn_fake('request_path', function() { return 'test/path/wildcard'; });
+    $this->api->pageBuild();
+    $bc = drupal_set_breadcrumb();
+    $this->assertEqual(at_fn('l', 'Wildcard 1', 'wildcard/1'), $bc[0]);
+    $this->assertEqual(at_fn('l', 'Wildcard 2', 'wildcard/2'), $bc[1]);
+
+    // Current path is /test/path/bar
+    // Active breadcrumb should not be 'test/path/bar', per weight of it is
+    // lower priority then 'test/path/*'
+    at_fn_fake('request_path', function() { return 'test/path/bar'; });
+    $this->api->pageBuild();
+    $bc = drupal_set_breadcrumb();
+    $this->assertEqual(at_fn('l', 'Wildcard 1', 'wildcard/1'), $bc[0]);
+    $this->assertEqual(at_fn('l', 'Wildcard 2', 'wildcard/2'), $bc[1]);
   }
 }
