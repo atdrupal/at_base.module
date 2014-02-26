@@ -39,12 +39,11 @@ class BreadcrumbAPI {
    * @return null
    */
   public function checkEntityConfig($entity, $type, $view_mode, $langcode) {
-    $cache_options = array('id' => "atbc:{$type}:{$view_mode}");
+    $cache_options = array('id' => "atbc:{$type}:". at_fn('entity_bundle', $type, $entity) .":{$view_mode}");
     $cache_callback = array($this, 'fetchEntityConfig');
     $cache_arguments = func_get_args();
 
     if ($config = at_cache($cache_options, $cache_callback, $cache_arguments)) {
-      $config['context'] = array('type' => 'entity', 'arguments' => $cache_arguments);
       $this->set($config);
     }
   }
@@ -52,9 +51,13 @@ class BreadcrumbAPI {
   public function fetchEntityConfig($entity, $type, $view_mode, $langcode) {
     foreach (at_modules('at_base', 'breadcrumb') as $module) {
       $config = at_config($module, 'breadcrumb')->get('breadcrumb');
-      $bundle = entity_bundle($type, $entity);
-      if (isset($config[$type][$bundle][$view_mode])) {
-        return $config[$type][$bundle][$view_mode];
+
+      $bundle = at_fn('entity_bundle', $type, $entity);
+
+      if (isset($config['entity'][$type][$bundle][$view_mode])) {
+        $return = $config['entity'][$type][$bundle][$view_mode];
+        $return['context'] = array('type' => 'entity', 'arguments' => func_get_args());
+        return $return;
       }
     }
   }
@@ -148,10 +151,10 @@ class BreadcrumbAPI {
 
     foreach ($bc as &$item) {
       foreach ($item as &$item_e) {
-        $item_e = token_replace($item_e, $token_data);
+        $item_e = at_fn('token_replace', $item_e, $token_data);
       }
 
-      $item = count($item) == 2 ? l($item[0], $item[1]) : reset($item);
+      $item = count($item) == 2 ? at_fn('l', $item[0], $item[1]) : reset($item);
     }
 
     drupal_set_breadcrumb($bc);
