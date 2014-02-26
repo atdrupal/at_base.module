@@ -20,18 +20,18 @@ class BreadcrumbTest extends UnitTestCase {
   protected function setUpModules() {
     parent::setUpModules();
 
-    at_container('wrapper.cache')
-      ->set('atmodules:at_base:breadcrumb', array('atest_base'), 'cache_bootstrap');
+    // Fake at_modules('at_base', 'breadcrumb');
+    at_container('wrapper.cache')->set('atmodules:at_base:breadcrumb', array('atest_base'), 'cache_bootstrap');
+
+    // Fake entity_bundle(), token_replace(), l() functions
+    at_fn_fake('entity_bundle', function($type, $entity) { return $entity->type; });
+    at_fn_fake('token_replace', function($input) { return $input; });
+    at_fn_fake('drupal_get_path_alias', function($input) { return $input; });
+    at_fn_fake('l', function($text, $url) { return '<a href="/'. $url .'">'. $text .'</a>'; });
+    at_fn_fake('request_path', function() { return 'test/path/breadcrumb'; });
   }
 
   public function testNodeStatic() {
-    global $conf;
-
-    // Override entity_bundle(), token_replace(), l()
-    $conf['atfn:entity_bundle'] = function($type, $entity) { return $entity->type; };
-    $conf['atfn:token_replace'] = function($input) { return $input; };
-    $conf['atfn:l'] = function($text, $url) { return '<a href="/'. $url .'">'. $text .'</a>'; };
-
     $node = (object) array('type' => 'page', 'nid' => 1, 'title' => 'Test page', 'status' => 1);
 
     // Direct set without hook_entity_view() implementation
