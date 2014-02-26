@@ -1,0 +1,8 @@
+breadcrumb:
+  entity:
+    node:
+      page:
+        full:
+          breadcrumbs:
+            - ['Home', 'home']
+
