@@ -85,6 +85,8 @@ function at_container($id) {
  *
  *  Call replacable entity_bundle function:
  *    at_fn('entity_bundle', 'node', $node);
+ *
+ *  @see  at_fn_fake()
  */
 function at_fn() {
   $args = func_get_args();
