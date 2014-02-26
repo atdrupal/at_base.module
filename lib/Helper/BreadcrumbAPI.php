@@ -131,12 +131,12 @@ class BreadcrumbAPI {
       switch ($config['context']['type']) {
         case 'entity':
         case 'path':
-          return $this->buildBreadcrumbs($bc, $config['tokens'], $config['context']['arguments']);
+          return $this->buildBreadcrumbs($bc, $config['context']['arguments']);
       }
     }
   }
 
-  private function buildBreadcrumbs($bc = array(), $tokens = array(), $args = array()) {
+  private function buildBreadcrumbs($bc = array(), $args = array()) {
     global $user;
 
     $token_data = array('user' => $user);
