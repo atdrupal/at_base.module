@@ -131,7 +131,8 @@ class BreadcrumbAPI {
       switch ($config['context']['type']) {
         case 'entity':
         case 'path':
-          return $this->buildBreadcrumbs($bc, $config['context']['arguments']);
+          $args = isset($config['context']['arguments']) ? $config['context']['arguments'] : array();
+          return $this->buildBreadcrumbs($bc, $args);
       }
     }
   }
