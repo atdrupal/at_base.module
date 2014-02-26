@@ -67,4 +67,15 @@ class CommonTest extends UnitTestCase {
     $actual = $engine->evaluate("constant('MENU_CONTEXT_PAGE') | constant('MENU_CONTEXT_INLINE')");
     $this->assertEqual($expected, $actual);
   }
+
+  /**
+   * Test at_fn()
+   */
+  public function testAtFn() {
+    // Fake the function
+    $GLOBALS['conf']['atfn:entity_bundle'] = function($type, $entity) { return $entity->type; };
+
+    // Make sure the fake function is executed
+    $this->assertEqual('page', at_fn('entity_bundle', 'node', (object)array('type' => 'page')));
+  }
 }

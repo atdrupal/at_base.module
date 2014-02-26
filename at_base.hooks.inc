@@ -69,6 +69,13 @@ function at_base_admin_paths() {
 ###############################################################
 
 /**
+ * Implements hook_entity_view()
+ */
+function at_base_entity_view($entity, $type, $view_mode, $langcode) {
+  at_container('breadcrumb_api')->checkEntityConfig($entity, $type, $view_mode, $langcode);
+}
+
+/**
  * Implements hook_entity_insert()
  */
 function at_base_entity_update($entity, $type) {
@@ -134,18 +141,6 @@ function at_base_page_build(&$page) {
   if (at_container('container')->offsetExists('page.blocks')) {
     at_id(new Hook_Page_Build($page, at_container('page.blocks')))->execute();
   }
-}
 
-/**
- * Implements hook_node_insert()
- */
-function at_base_node_insert($node) {
-  module_invoke_all('node_save', $node);
-}
-
-/**
- * Implements hook_node_update()
- */
-function at_base_node_update($node) {
-  module_invoke_all('node_save', $node);
+  at_container('breadcrumb_api')->pageBuild();
 }
