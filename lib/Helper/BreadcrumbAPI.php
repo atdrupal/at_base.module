@@ -75,7 +75,7 @@ class BreadcrumbAPI {
     });
 
     // Convert the Drupal path to lowercase
-    $current_path = drupal_strtolower(drupal_get_path_alias($_GET['q']));
+    $current_path = drupal_strtolower(at_fn('drupal_get_path_alias', at_fn('request_path')));
 
     foreach ($path_config as $path => $config) {
       if (drupal_match_path($current_path, $path)) {
