@@ -57,9 +57,7 @@ class Page_Build {
    * @return [type]         [description]
    */
   private function loadBlock($slug, $config) {
-    $is_tradition = is_string($config) || is_numeric(reset(array_keys($config)));
-
-    if ($is_tradition) {
+    if ($this->detectTraditionBlock($config)) {
       if ($block = $this->loadTraditionBlock($config)) {
         return $block;
       }
@@ -67,6 +65,16 @@ class Page_Build {
     elseif ($block = $this->loadFancyBlock($slug, $config)) {
       return $block;
     }
+  }
+
+  private function detectTraditionBlock($config) {
+    if (is_string($config)) {
+      return TRUE;
+    }
+
+    $keys = array_keys($config);
+    $first_key = reset($keys);
+    return is_numeric($first_key);
   }
 
   /**
