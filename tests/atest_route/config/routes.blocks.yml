@@ -1,9 +1,16 @@
 routes:
   atest_route/blocks:
+    title: Hello Blocks
     access arguments: ['access content']
-    template_string: 'Hello!'
+    content: >
+      <h1>Main content here!</h1>
+      Hello!
     blocks:
       seven:
         help:
           - 'system:powered-by'
           - ['user:online', {title: "Online users", weight: -100}]
+          - delta: atest-route-fake-block
+            subject: 'Fake block'
+            content: 'Hey Andy!'
+            weight: 1000
