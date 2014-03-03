@@ -99,6 +99,5 @@ class RouteTest extends \DrupalWebTestCase {
     $this->assertTrue(FALSE !== strpos($output, 'Hello block!'));
     $this->assertTrue(FALSE !== strpos($output, 'Fancy block'));
     $this->assertTrue(FALSE !== strpos($output, 'Hey Andy!'));
-    drush_print_r($output);
   }
 }

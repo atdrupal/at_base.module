@@ -157,9 +157,7 @@ function at_cache_flush_by_tags($tags = array()) {
  * @return Drupal\at_base\Config\Config
  */
 function at_config($module, $id = 'config', $refresh = FALSE) {
-  return at_container('config')
-    ->setModule($module)
-    ->setId($id);
+  return at_container('config')->setModule($module)->setId($id);
 }
 
 /**
