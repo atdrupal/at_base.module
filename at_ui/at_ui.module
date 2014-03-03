@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * Add custom assets to /devel/php form to support php syntax.
+ */
+function at_ui_form_devel_execute_form_alter(&$form, $form_state) {
+  $path = 'sites/all/libraries/code.mirror';
+  drupal_add_js($path . '/lib/codemirror.js');
+  drupal_add_js($path . '/mode/clike/clike.js');
+  drupal_add_js($path . '/mode/php/php.js');
+  drupal_add_css($path . '/lib/codemirror.css');
+  drupal_add_js(drupal_get_path('module', 'at_ui') . '/misc/js/devel.php.js');
+}
