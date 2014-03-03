@@ -53,3 +53,28 @@ function at_ui_form_at_form_alter(&$form, $form_state) {
     drupal_add_css(drupal_get_path('module', 'at_ui') . '/misc/css/cm.css');
   }
 }
+
+function at_ui_route_form($form, $form_state, $route) {
+  $form['code'] = array(
+    '#type' => 'textarea',
+    '#title' => 'Route',
+    '#required' => TRUE,
+    '#resizable' => FALSE,
+    '#default_value' => yaml_emit($route),
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+  );
+
+  $path = 'sites/all/libraries/code.mirror';
+  drupal_add_js($path . '/lib/codemirror.js');
+  drupal_add_js($path . '/mode/yaml/yaml.js');
+  drupal_add_css($path . '/lib/codemirror.css');
+  drupal_add_css($path . '/theme/monokai.css');
+  drupal_add_js(drupal_get_path('module', 'at_ui') . '/misc/js/route.edit.js');
+  drupal_add_css(drupal_get_path('module', 'at_ui') . '/misc/css/cm.css');
+
+  return $form;
+}

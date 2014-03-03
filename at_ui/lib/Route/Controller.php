@@ -11,6 +11,11 @@ class Controller extends \Drupal\at_base\Route\Controller {
    * @return array
    */
   public function execute() {
+    // @todo Check permission
+    if (!empty($_GET['edit'])) {
+      return drupal_get_form('at_ui_route_form', $this->route);
+    }
+
     $this->prepareCache();
     $this->prepareFunctionCallback();
     $this->prepareContextBlocks();
