@@ -11,21 +11,21 @@ class Controller
      *
      * @var Content_Render
      */
-    private $render;
+    protected $render;
 
     /**
      * Route definition.
      *
      * @var array
      */
-    private $route;
+    protected $route;
 
     /**
      * Menu item for request.
      *
      * @var array
      */
-    private $menu_item;
+    protected $menu_item;
 
     /**
      * @param Content_Render $content_render
@@ -64,7 +64,7 @@ class Controller
      * @param int $position
      * @return array
      */
-    private function repairArguments($array, $position) {
+    protected function repairArguments($array, $position) {
         foreach ($array as $k => $v) {
             if (is_numeric($v) && $v == $position) {
                 $array[$k] = $this->menu_item['map'][$position];
@@ -112,7 +112,7 @@ class Controller
         return $this->render->render($this->route);
     }
 
-    private function prepareCache() {
+    protected function prepareCache() {
         // User want cache the page
         if (!empty($this->route['cache'])) {
             $this->render->setCacheHandler(new Cache_Handler());
@@ -124,14 +124,14 @@ class Controller
         }
     }
 
-    private function prepareFunctionCallback() {
+    protected function prepareFunctionCallback() {
         if (!empty($this->route['function'])) {
             $this->route['arguments'] = $this->route['page arguments'];
             unset($this->route['page arguments']);
         }
     }
 
-    private function prepareContextBlocks() {
+    protected function prepareContextBlocks() {
         global $theme;
 
         if (!empty($this->route['blocks'][$theme])) {

@@ -1,6 +1,17 @@
 <?php
 
 /**
+ * Implements hook_menu_alter().
+ */
+function at_ui_menu_alter(&$menu) {
+  foreach ($menu as &$item) {
+    if ($item['page callback'] === 'Drupal\at_base\Route\Controller::pageCallback') {
+      $item['page callback'] = 'Drupal\at_ui\Route\Controller::pageCallback';
+    }
+  }
+}
+
+/**
  * Add custom assets to /devel/php form to support php syntax.
  */
 function at_ui_form_devel_execute_form_alter(&$form, $form_state) {
