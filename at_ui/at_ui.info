@@ -1,0 +1,6 @@
+name = AT UI
+version = 7.x-1.0-dev
+description = Provide some tools for developers on dev enviroment.
+core = 7.x
+
+dependencies[] = at_base
