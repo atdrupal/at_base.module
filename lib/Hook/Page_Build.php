@@ -53,8 +53,8 @@ class Page_Build {
   }
 
   /**
-   * @param  [type] $config [description]
-   * @return [type]         [description]
+   * @param  array $config
+   * @return stdClass
    */
   private function loadBlock($config) {
     if ($this->detectTraditionBlock($config)) {
@@ -91,7 +91,7 @@ class Page_Build {
       $key = isset($config['delta']) ? $config['delta'] : md5(serialize($config)),
       $config
     );
-    return (object)array('module' => 'at_base', 'delta' => "dyn_{$key}");
+    return (object)array('module' => 'at_base', 'delta' => "dyn_{$key}", 'region' => '');
   }
 
   /**
@@ -100,8 +100,8 @@ class Page_Build {
    *  - system:powered-by
    *  - ['user:online', {title: "Online users", weight: -100}]
    *
-   * @param  [type] $config [description]
-   * @return [type]         [description]
+   * @param  array $config
+   * @return \stdClass
    */
   private function loadTraditionBlock($config) {
     list($module, $delta) = explode(':', is_string($config) ? $config : $config[0]);
