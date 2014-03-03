@@ -91,7 +91,12 @@ class Page_Build {
       $key = isset($config['delta']) ? $config['delta'] : md5(serialize($config)),
       $config
     );
-    return (object)array('module' => 'at_base', 'delta' => "dyn_{$key}", 'region' => '');
+    return (object)array(
+      'module' => 'at_base',
+      'delta' => "dyn_{$key}",
+      'region' => '',
+      'title' => '',
+    );
   }
 
   /**
