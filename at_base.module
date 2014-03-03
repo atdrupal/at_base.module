@@ -11,6 +11,7 @@ use \Drupal\at_base\Helper\ModulesFetcher;
 require_once dirname(__FILE__) . '/lib/AT.php';
 require_once dirname(__FILE__) . '/lib/Autoloader.php';
 require_once dirname(__FILE__) . '/at_base.hooks.inc';
+require_once dirname(__FILE__) . '/at_base.missing.inc';
 require_once dirname(__FILE__) . '/at_base.hack.inc';
 
 /**
@@ -72,6 +73,25 @@ function at_container($id) {
   }
 
   return $container[$id];
+}
+
+/**
+ * Make function easier to be replaced by an other one.
+ *
+ * For example:
+ *
+ *  // Override entity_bundle function
+ *  $GLOBALS['conf']['atfn:entity_bundle'] = function($type, $entity) { return $entity->type; };
+ *
+ *  Call replacable entity_bundle function:
+ *    at_fn('entity_bundle', 'node', $node);
+ *
+ *  @see  at_fn_fake()
+ */
+function at_fn() {
+  $args = func_get_args();
+  $fn   = array_shift($args);
+  return call_user_func_array(variable_get("atfn:{$fn}", $fn), $args);
 }
 
 /**
@@ -177,7 +197,7 @@ function at_library($name, $version = 'default', $include_drupal_root = TRUE) {
     }
 
     if (FALSE !== @fileowner($return)) {
-      return rtrim($include_drupal_root ? $return : substr($return, strlen(DRUPAL_ROOT) + 1), '/');
+      return $include_drupal_root ? rtrim($return, '/') : substr($return, strlen(DRUPAL_ROOT) + 1);
     }
   }
 
