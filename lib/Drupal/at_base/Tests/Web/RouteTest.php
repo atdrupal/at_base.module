@@ -83,7 +83,7 @@ class RouteTest extends \DrupalWebTestCase {
     $blocks['help'][] = array(
       'delta'   => 'fancy-block',
       'subject' => 'Fancy block',
-      'content' => 'Hey Andy!',
+      'content' => array('content' => 'Hey Andy!'),
       'weight'  => 1000,
     );
 
@@ -99,6 +99,6 @@ class RouteTest extends \DrupalWebTestCase {
     $this->assertTrue(FALSE !== strpos($output, 'Hello block!'));
     $this->assertTrue(FALSE !== strpos($output, 'Fancy block'));
     $this->assertTrue(FALSE !== strpos($output, 'Hey Andy!'));
-    drush_print_r($output); exit;
+    drush_print_r($output);
   }
 }

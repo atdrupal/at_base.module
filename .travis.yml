@@ -59,6 +59,5 @@ before_script:
   - drush cc all
 
 script:
-  # - drush test-run --dirty 'AT Unit'
-  # - drush test-run --dirty 'AT Web'
-  - drush test-run --dirty 'Drupal\at_base\Tests\Web\RouteTest' --methods='testRouteBlock'
+  - drush test-run --dirty 'AT Unit'
+  - drush test-run --dirty 'AT Web'

@@ -12,5 +12,5 @@ routes:
           - ['user:online', {title: "Online users", weight: -100}]
           - delta: fancy-block
             subject: 'Fancy block'
-            content: 'Hey Andy!'
+            content: { content: 'Hey Andy!' }
             weight: 1000
