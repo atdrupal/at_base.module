@@ -11,6 +11,6 @@ routes:
           - 'system:powered-by'
           - ['user:online', {title: "Online users", weight: -100}]
           - delta: fancy-block
-            subject: 'Fake block'
+            subject: 'Fancy block'
             content: 'Hey Andy!'
             weight: 1000

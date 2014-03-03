@@ -77,13 +77,17 @@ class RouteTest extends \DrupalWebTestCase {
   }
 
   public function testRouteBlock() {
-    at_container('container')
-      ->offsetSet('page.blocks', array(
-        'help' => array(
-          'system:powered-by',
-          array('at_base:atest_base|hi_s', array('title' => 'Hello block!', 'weight' => -100)),
-        )
-      ));
+    $blocks['help'] = array();
+    $blocks['help'][] = 'system:powered-by';
+    $blocks['help'][] = array('at_base:atest_base|hi_s', array('title' => 'Hello block!', 'weight' => -100));
+    $blocks['help'][] = array(
+      'delta'   => 'fancy-block',
+      'subject' => 'Fancy block',
+      'content' => 'Hey Andy!',
+      'weight'  => 1000,
+    );
+
+    at_container('container')->offsetSet('page.blocks', $blocks);
 
     // Render the page array
     $page = array();
@@ -93,5 +97,7 @@ class RouteTest extends \DrupalWebTestCase {
     // Found two blocks
     $this->assertTrue(FALSE !== strpos($output, 'Powered by'));
     $this->assertTrue(FALSE !== strpos($output, 'Hello block!'));
+    $this->assertTrue(FALSE !== strpos($output, 'Fancy block'));
+    $this->assertTrue(FALSE !== strpos($output, 'Hey Andy!'));
   }
 }
