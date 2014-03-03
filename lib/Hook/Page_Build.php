@@ -35,8 +35,8 @@ class Page_Build {
   }
 
   private function renderRegion($region, $blocks) {
-    foreach ($blocks as $slug => &$block) {
-      $block = $this->loadBlock($slug, $block);
+    foreach ($blocks as &$block) {
+      $block = $this->loadBlock($block);
     }
 
     $output = _block_render_blocks($blocks);
@@ -56,13 +56,13 @@ class Page_Build {
    * @param  [type] $config [description]
    * @return [type]         [description]
    */
-  private function loadBlock($slug, $config) {
+  private function loadBlock($config) {
     if ($this->detectTraditionBlock($config)) {
       if ($block = $this->loadTraditionBlock($config)) {
         return $block;
       }
     }
-    elseif ($block = $this->loadFancyBlock($slug, $config)) {
+    elseif ($block = $this->loadFancyBlock($config)) {
       return $block;
     }
   }
@@ -86,7 +86,7 @@ class Page_Build {
    * @param  [type] $config [description]
    * @return [type]         [description]
    */
-  private function loadFancyBlock($slug, $config) {
+  private function loadFancyBlock($config) {
     BlockView::setDynamicData(
       $key = isset($config['delta']) ? $config['delta'] : md5(serialize($config)),
       $config
