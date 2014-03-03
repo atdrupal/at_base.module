@@ -1,6 +1,9 @@
 (function($){
 
 setTimeout(function(){
+  var save = function() {
+    $('#edit-string').parents('form').trigger('submit');
+  };
 
   CodeMirror.defineMode("mustache", function(config, parserConfig) {
     var mustacheOverlay = {
@@ -25,6 +28,7 @@ setTimeout(function(){
     lineNumbers: true
     , viewportMargin: Infinity
     , theme: 'monokai'
+    , extraKeys: {"Cmd-S": save , "Ctrl-S": save}
     , mode: "mustache"
   });
 
