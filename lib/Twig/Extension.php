@@ -44,8 +44,10 @@ class Extension extends \Twig_Extension {
 
     // fn__*
     $items[] = at_newv($base_class, array(
-      'fn__*', function ($name, $arguments = array()) {
-        return call_user_func($name, $arguments);
+      'fn__*', function () {
+        $args = func_get_args();
+        $name = array_shift($args);
+        return call_user_func_array($name, $args);
       }
     ));
 

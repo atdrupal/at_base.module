@@ -4,14 +4,9 @@ namespace Drupal\at_base\Hook\Entity;
 /**
  * This is helper class allow modules to use Twig template for rendering entity.
  *
- * To use this, in YOURMODULE, implements hook_entity_view_alter():
+ * To use this, in settings.php add this line:
  *
- * @code
- * function YOURMODULE_entity_view_alter(&$build, $entity_type) {
- *   at_id(new \Drupal\at_base\Hook\Entity\View_Alter($build, $entity_type))
- *     ->execute();
- * }
- * @code
+ *  define('AT_BASE_ENTITY_TEMPLATE', 1);
  *
  * Configure entity template to be used:
  *
