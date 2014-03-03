@@ -86,3 +86,29 @@ function at_form($form, &$form_state) {
 
   return $form;
 }
+
+if (!function_exists('yaml_parse')) {
+  /**
+   * Read YAML file.
+   *
+   * @param  string $path Path to yaml file.
+   * @return mixed
+   */
+  function yaml_parse_file($path) {
+    if (!is_file(DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php')) {
+      throw new \RuntimeException('Missing library: spyc');
+    }
+
+    if (!function_exists('spyc_load_file')) {
+      require_once DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php';
+    }
+
+    return spyc_load_file($path);
+  }
+}
+
+if (!function_exists('yaml_emit')) {
+  function yaml_emit($data) {
+    return spyc_dump($data);
+  }
+}
