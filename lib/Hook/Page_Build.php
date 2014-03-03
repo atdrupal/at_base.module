@@ -7,7 +7,18 @@ namespace Drupal\at_base\Hook;
  * Parse block configuration, build attached-blocks to page structure.
  */
 class Page_Build {
+  /**
+   * Structure of page.
+   *
+   * @var array
+   */
   private $page;
+
+  /**
+   * Configuration of blocks for context page.
+   *
+   * @var array
+   */
   private $blocks;
 
   public function __construct(&$page, $blocks) {
@@ -34,7 +45,7 @@ class Page_Build {
 
   private function loadBlock($config) {
     list($module, $delta) = explode(':', is_string($config) ? $config : $config[0]);
-    
+
     // Case of modules which use at_base to define the blocks
     if (!function_exists("{$module}_block_info")) {
       $delta = "{$module}|{$delta}";
