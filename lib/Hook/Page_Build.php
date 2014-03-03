@@ -1,6 +1,8 @@
 <?php
 namespace Drupal\at_base\Hook;
 
+use Drupal\at_base\Hook\BlockView;
+
 /**
  * Details for hook_page_build().
  *
@@ -33,17 +35,67 @@ class Page_Build {
   }
 
   private function renderRegion($region, $blocks) {
-    foreach ($blocks as $i => &$block) {
-      $block = $this->loadBlock($block);
+    foreach ($blocks as $slug => &$block) {
+      $block = $this->loadBlock($slug, $block);
     }
 
     $output = _block_render_blocks($blocks);
 
-    $this->page[$region][] = _block_get_renderable_array($output);
-    $this->page[$region]['#sorted'] = FALSE;
+    if ($blocks = _block_get_renderable_array($output)) {
+      $this->page[$region] = isset($this->page[$region]) ? $this->page[$region] : array();
+      $this->page[$region] = array_merge($this->page[$region], $blocks);
+      $this->page[$region]['#sorted'] = FALSE;
+    }
+
+    # @todo: The sorting is not working
+    # dsm($this->page['help'][0]);
+    # dsm($this->page);
   }
 
-  private function loadBlock($config) {
+  /**
+   * @param  [type] $config [description]
+   * @return [type]         [description]
+   */
+  private function loadBlock($slug, $config) {
+    $is_tradition = is_string($config) || is_numeric(reset(array_keys($config)));
+
+    if ($is_tradition) {
+      if ($block = $this->loadTraditionBlock($config)) {
+        return $block;
+      }
+    }
+    elseif ($block = $this->loadFancyBlock($slug, $config)) {
+      return $block;
+    }
+  }
+
+  /**
+   * Fancy blocks:
+   *
+   *  - { content: " 2 = {{ 1 + 1 }} " }
+   *  - [ {template: '@my_module/templates/fancy_block.html.twig'}, { title: 'Block title', weight: 1000} ]
+   *
+   * @param  [type] $config [description]
+   * @return [type]         [description]
+   */
+  private function loadFancyBlock($slug, $config) {
+    BlockView::setDynamicData(
+      $key = isset($config['delta']) ? $config['delta'] : md5(serialize($config)),
+      $config
+    );
+    return (object)array('module' => 'at_base', 'delta' => "dyn_{$key}");
+  }
+
+  /**
+   * Tradition blocks:
+   *
+   *  - system:powered-by
+   *  - ['user:online', {title: "Online users", weight: -100}]
+   *
+   * @param  [type] $config [description]
+   * @return [type]         [description]
+   */
+  private function loadTraditionBlock($config) {
     list($module, $delta) = explode(':', is_string($config) ? $config : $config[0]);
 
     // Case of modules which use at_base to define the blocks
@@ -52,14 +104,19 @@ class Page_Build {
       $module = 'at_base';
     }
 
-    $block = block_load($module, $delta);
+    if ($block = block_load($module, $delta)) {
+      if (is_array($config) && isset($config[1])) {
+        $block = $this->overrideBlock($block, $config[1]);
+      }
 
-    if (is_array($config)) {
-      $options = array_pop($config);
-      foreach ($options as $k => $v) {
-        if (isset($block->{$k})) {
-          $block->{$k} = $v;
-        }
+      return $block;
+    }
+  }
+
+  private function overrideBlock($block, $options) {
+    foreach ($options as $k => $v) {
+      if (isset($block->{$k})) {
+        $block->{$k} = $v;
       }
     }
 
