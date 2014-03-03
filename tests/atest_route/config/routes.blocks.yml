@@ -10,7 +10,7 @@ routes:
         help:
           - 'system:powered-by'
           - ['user:online', {title: "Online users", weight: -100}]
-          - delta: atest-route-fake-block
+          - delta: fancy-block
             subject: 'Fake block'
             content: 'Hey Andy!'
             weight: 1000
