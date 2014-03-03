@@ -20,7 +20,7 @@ class Menu {
    */
   public function getMenuItems() {
     $items = array();
-    foreach (array('at_base' => 'at_base') + at_modules('at_base', 'routes') as $module) {
+    foreach (at_modules('at_base', 'routes') as $module) {
       $items += $this->importer->setModule($module)->import();
     }
     return $items;
