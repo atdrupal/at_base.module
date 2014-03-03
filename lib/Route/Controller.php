@@ -1,13 +1,15 @@
 <?php
 
 namespace Drupal\at_base\Route;
+use Drupal\at_base\Helper\Content_Render;
 
 class Controller
 {
 
     /**
      * Content render
-     * @var \Drupal\at_base\Helper\Content_Render
+     *
+     * @var Content_Render
      */
     private $render;
 
@@ -26,7 +28,7 @@ class Controller
     private $menu_item;
 
     /**
-     * @param \Drupal\at_base\Helper\Content_Render $content_render
+     * @param Content_Render $content_render
      * @param string $request_path Request path — Example: user/login
      */
     public function __construct($content_render, $request_path)
@@ -38,7 +40,7 @@ class Controller
     /**
      * Page callback for routes.
      *
-     * @see \Drupal\at_base\Route\RouteToMenu
+     * @see RouteToMenu
      */
     public static function pageCallback() {
         $args = func_get_args();
@@ -75,7 +77,7 @@ class Controller
      * Apply reoute definition to the controller.
      *
      * @param array $route
-     * @return \Drupal\at_base\Route\Controller
+     * @return Controller
      */
     public function setRoute($route) {
         foreach (explode('/', $route['pattern']) as $position => $part) {
