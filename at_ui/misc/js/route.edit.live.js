@@ -107,20 +107,6 @@ Drupal.behaviors.atUiLiveEditableRouteInit = {
                    .parent().append(ui.pane.tpl.links);
             Drupal.attachBehaviors($(this).closest('.atui-pane-wrapper'), settings);
       });
-
-      // ---------------------
-      // Just for test
-      // ---------------------
-      setTimeout(function(){
-          $('.atui-pane-wrapper .atui-pane-links')
-            // add content before
-            .find('a:eq(2)').trigger('click').end()
-            // add content after
-            .find('a:eq(3)').trigger('click').end()
-            // Edit content
-            .find('a:eq(1)').trigger('click').end()
-          ;
-      }, 500);
     });
   }
 };
