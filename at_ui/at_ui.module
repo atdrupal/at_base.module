@@ -12,7 +12,8 @@ function at_ui_menu_alter(&$menu) {
 }
 
 function at_ui_include_code_mirror($extras = array(), $theme = 'monokai') {
-  $path = at_library('code.mirror');
+  $path = at_library('code.mirror', NULL, FALSE);
+
   drupal_add_js($path . '/lib/codemirror.js');
   drupal_add_css($path . '/lib/codemirror.css');
   drupal_add_css($path . '/theme/'. $theme .'.css');
