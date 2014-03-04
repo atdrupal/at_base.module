@@ -87,13 +87,13 @@ function at_ui_route_form($form, $form_state, $route) {
     }
   }
 
-  // $form['route'] = array(
-  //   '#type' => 'textarea',
-  //   '#title' => 'Route',
-  //   '#required' => TRUE,
-  //   '#resizable' => FALSE,
-  //   '#default_value' => yaml_emit($route),
-  // );
+  $form['route'] = array(
+    '#type' => 'textarea',
+    '#title' => 'Route',
+    '#required' => TRUE,
+    '#resizable' => FALSE,
+    '#default_value' => yaml_emit($route),
+  );
 
   if (isset($content)) {
     $form['#prefix']  = '<div id="editable-route-preview">';
@@ -115,13 +115,13 @@ function at_ui_route_form($form, $form_state, $route) {
 
   foreach ($parts as $k => $label) {
     if (isset($$k)) {
-      // $form[$k] = array(
-      //   '#type' => 'textarea',
-      //   '#title' => $label,
-      //   '#required' => TRUE,
-      //   '#resizable' => FALSE,
-      //   '#default_value' => yaml_emit($$k),
-      // );
+      $form[$k] = array(
+        '#type' => 'textarea',
+        '#title' => $label,
+        '#required' => TRUE,
+        '#resizable' => FALSE,
+        '#default_value' => yaml_emit($$k),
+      );
     }
   }
 
