@@ -1,0 +1,18 @@
+.atui-pane-wrapper {
+  position: relative;
+  background: lightyellow;
+  border: 1px dotted gray;
+  margin: 10px;
+  padding: 10px;
+}
+
+.atui-pane-placeholder {
+  color: grey;
+}
+
+.atui-pane-placeholder:hover {
+  color: #777;
+}
+
+.atui-pane-links { float: right ;}
+.atui-pane-links li { display: block; float: left; }

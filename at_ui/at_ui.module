@@ -55,11 +55,25 @@ function at_ui_form_at_form_alter(&$form, $form_state) {
 }
 
 function at_ui_route_form($form, $form_state, $route) {
+  $path = 'sites/all/libraries/code.mirror';
+  drupal_add_js($path . '/lib/codemirror.js');
+  drupal_add_js($path . '/mode/yaml/yaml.js');
+  drupal_add_js($path . '/mode/xml/xml.js');
+  drupal_add_js($path . '/mode/css/css.js');
+  drupal_add_js($path . '/mode/htmlmixed/htmlmixed.js');
+
+  drupal_add_css($path . '/lib/codemirror.css');
+  drupal_add_css($path . '/theme/monokai.css');
+  drupal_add_js(drupal_get_path('module', 'at_ui') . '/misc/js/route.edit.js');
+  drupal_add_css(drupal_get_path('module', 'at_ui') . '/misc/css/cm.css');
+
   $parts = array(
+    'content' => 'Content',
     'blocks' => 'Blocks',
     'attached' => 'Attached',
     'cache' => 'Cache',
   );
+
   foreach ($parts as $k => $v) {
     if (isset($route[$k])) {
       $$k = $route[$k];
@@ -67,23 +81,41 @@ function at_ui_route_form($form, $form_state, $route) {
     }
   }
 
-  $form['route'] = array(
-    '#type' => 'textarea',
-    '#title' => 'Route',
-    '#required' => TRUE,
-    '#resizable' => FALSE,
-    '#default_value' => yaml_emit($route),
-  );
+  // $form['route'] = array(
+  //   '#type' => 'textarea',
+  //   '#title' => 'Route',
+  //   '#required' => TRUE,
+  //   '#resizable' => FALSE,
+  //   '#default_value' => yaml_emit($route),
+  // );
+
+  if (isset($content)) {
+    $form['#prefix']  = '<div id="editable-route-preview">';
+    $form['#prefix'] .= ' ' . $content;
+    $form['#prefix'] .= '</div>';
+
+    drupal_add_js(drupal_get_path('module', 'at_ui') . '/misc/js/route.edit.live.js');
+    drupal_add_css(drupal_get_path('module', 'at_ui') . '/misc/css/route.edit.live.css');
+
+    $form['content'] = array(
+      '#type' => 'textarea',
+      '#title' => 'Content',
+      '#required' => TRUE,
+      '#resizable' => FALSE,
+      '#default_value' => at_container('twig_string')->render($content),
+    );
+    unset($content);
+  }
 
   foreach ($parts as $k => $label) {
     if (isset($$k)) {
-      $form[$k] = array(
-        '#type' => 'textarea',
-        '#title' => $label,
-        '#required' => TRUE,
-        '#resizable' => FALSE,
-        '#default_value' => yaml_emit($$k),
-      );
+      // $form[$k] = array(
+      //   '#type' => 'textarea',
+      //   '#title' => $label,
+      //   '#required' => TRUE,
+      //   '#resizable' => FALSE,
+      //   '#default_value' => yaml_emit($$k),
+      // );
     }
   }
 
@@ -91,14 +123,6 @@ function at_ui_route_form($form, $form_state, $route) {
     '#type' => 'submit',
     '#value' => t('Save'),
   );
-
-  $path = 'sites/all/libraries/code.mirror';
-  drupal_add_js($path . '/lib/codemirror.js');
-  drupal_add_js($path . '/mode/yaml/yaml.js');
-  drupal_add_css($path . '/lib/codemirror.css');
-  drupal_add_css($path . '/theme/monokai.css');
-  drupal_add_js(drupal_get_path('module', 'at_ui') . '/misc/js/route.edit.js');
-  drupal_add_css(drupal_get_path('module', 'at_ui') . '/misc/css/cm.css');
 
   return $form;
 }
