@@ -39,7 +39,8 @@ class BreadcrumbAPI {
    * @return null
    */
   public function checkEntityConfig($entity, $type, $view_mode, $langcode) {
-    $cache_options = array('id' => "atbc:{$type}:". at_fn('entity_bundle', $type, $entity) .":{$view_mode}");
+    $cache_options = array();
+    $cache_options['id'] = "atbc:{$type}:". at_fn('entity_bundle', $type, $entity) .":{$view_mode}:{$langcode}";
     $cache_callback = array($this, 'fetchEntityConfig');
     $cache_arguments = func_get_args();
 
