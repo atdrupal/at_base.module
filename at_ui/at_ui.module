@@ -63,7 +63,12 @@ function at_ui_form_at_form_alter(&$form, $form_state) {
 }
 
 /**
- * @todo Vertical tab-group for route, blocks, …
+ * Editing form for editable-route.
+ *
+ * @todo  Vertical tab-group for route, blocks, …
+ * @todo  Case developer edit a template route…
+ * @todo  Warning if route configuration file is not editable.
+ * @todo  Backup configuration file before saving…
  */
 function at_ui_route_form($form, $form_state, $route) {
   at_ui_include_code_mirror(array(
