@@ -1,5 +1,9 @@
 (function($){
 
+/**
+ * @todo  Need field to config pane classes.
+ */
+
 var cm_mixed_mode = {
     name: 'htmlmixed'
   , scriptTypes: [
