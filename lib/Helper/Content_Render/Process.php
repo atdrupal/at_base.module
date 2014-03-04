@@ -69,6 +69,9 @@ class Process {
     }
   }
 
+  /**
+   *  @param string $tpl
+   */
   private function __templateSingle($tpl) {
     $tpl = at_container('helper.real_path')->get($tpl);
     return at_container('twig')->render($tpl, $this->args);
