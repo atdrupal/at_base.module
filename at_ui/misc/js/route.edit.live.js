@@ -102,13 +102,10 @@ var ui = {
 Drupal.behaviors.atUiLiveEditableRouteInit = {
   attach: function(context, settings) {
     $('#editable-route-preview', context).once('atUiLiveEditableRoute', function() {
-      // Make sure the region wrapper able to container contextual links
-      $(this).closest('.region').addClass('atui-pane-links-region');
-
       // Add links to panes
       $(this).children().each(function(){
             $(this).wrap(ui.pane.tpl.pane_wrapper)
-                   .parent().append(ui.pane.tpl.links);
+                   .parent().prepend(ui.pane.tpl.links);
             Drupal.attachBehaviors($(this).closest('.atui-pane-wrapper'), settings);
       });
     });
