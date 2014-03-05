@@ -4,3 +4,4 @@ description = Provide some tools for developers on dev enviroment.
 core = 7.x
 
 dependencies[] = at_base
+dependencies[] = devel
