@@ -73,9 +73,11 @@ class View_Alter {
         $config['template'] = $this->resolveTokens($config['template']);
       }
 
-      // Attach block
+      // Attach block if context block is empty
       if (!empty($config['blocks'][$theme])) {
-        at_container('container')->offsetSet('page.blocks', $config['blocks'][$theme]);
+        if (!at_container('container')->offsetExists('page.blocks')) {
+          at_container('container')->offsetSet('page.blocks', $config['blocks'][$theme]);
+        }
         unset($config['blocks']);
       }
 
