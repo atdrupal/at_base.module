@@ -11,8 +11,8 @@ class Process_Call {
   }
 
   public function callBefore($key = 'before') {
-    if (!empty($this->data[$key])) {
-      $this->runCallbacks($this->data[$key]);
+    if (!empty($this->$key)) {
+      $this->runCallbacks($this->$key);
     }
   }
 
@@ -25,7 +25,20 @@ class Process_Call {
     foreach ($calls as $call) {
       $call = is_string($call) ? array($call, array()) : $call;
       if ($controller = $cr->get($call[0])) {
-        call_user_func_array($controller, isset($call[1]) ? $call[1] : array());
+        $args = isset($call[1]) ? $call[1] : array();
+        $this->prepareArguments($args);
+        call_user_func_array($controller, $args);
+      }
+    }
+  }
+
+  private function prepareArguments(&$args) {
+    foreach ($args as &$arg) {
+      if (is_array($arg)) {
+        $this->prepareArguments($arg);
+      }
+      elseif (is_string($arg) && preg_match('/^[@%].+/', $arg)) {
+        $arg = at_container('helper.real_path')->get($arg);
       }
     }
   }

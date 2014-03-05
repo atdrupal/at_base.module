@@ -17,7 +17,7 @@ class Process {
     $this->data = $data;
     $this->args = $args ? $args : array();
 
-    if (!empty($data['before']) && !empty($data['after'])) {
+    if (!empty($data['before']) || !empty($data['after'])) {
       $this->caller = new Process_Call(
         !empty($data['before']) ? $data['before'] : array(),
         !empty($data['after']) ? $data['after'] : array()
