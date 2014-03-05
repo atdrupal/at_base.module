@@ -1,12 +1,18 @@
 #editable-route-preview {
   border: 1px dotted gray;
+  padding: 10px;
 }
 
 #editable-route-preview:before {
-  content: '[route content]';
+  content: 'Content';
   font-size: 0.85em;
   display: block;
-  margin-top: -20px;
+  background: lightgray;
+  float: left;
+  position: relative;
+  z-index: 100;
+  margin-top: -21px;
+  margin-left: -21px;
 }
 
 .atui-pane-wrapper {
@@ -22,10 +28,15 @@
 }
 
 .atui-pane-wrapper:before {
-  content: '[pane]';
+  content: 'Pane';
   font-size: 0.85em;
   display: block;
-  margin-top: -20px;
+  background: lightgray;
+  float: left;
+  position: relative;
+  z-index: 100;
+  margin-top: -21px;
+  margin-left: -21px;
 }
 
 .atui-pane-placeholder:hover {
