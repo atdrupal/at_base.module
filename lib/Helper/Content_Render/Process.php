@@ -1,6 +1,9 @@
 <?php
 namespace Drupal\at_base\Helper\Content_Render;
 
+/**
+ * @todo  Doc & Test for $data['before'], $data['after']
+ */
 class Process {
   private $data;
   private $args;
@@ -11,11 +14,35 @@ class Process {
   }
 
   public function execute() {
+    $this->runBefore();
+
     foreach (get_class_methods(get_class($this)) as $method) {
       if ('process' === substr($method, 0, 7)) {
         if ($return = $this->{$method}()) {
           return $return;
         }
+      }
+    }
+
+    $this->runAfter();
+  }
+
+  private function runAfter() {
+    $this->runBefore('after');
+  }
+
+  private function runBefore($key = 'before') {
+    if (!empty($this->data[$key])) {
+      $this->runCallbacks($this->data[$key]);
+    }
+  }
+
+  private function runCallbacks($calls) {
+    $cr = at_container('helper.controller.resolver');
+    foreach ($calls as $call) {
+      $call = is_string($call) ? array($call, array()) : $call;
+      if ($controller = $cr->get($call[0])) {
+        call_user_func_array($controller, isset($call[1]) ? $call[1] : array());
       }
     }
   }
