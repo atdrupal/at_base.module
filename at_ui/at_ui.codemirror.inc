@@ -18,6 +18,12 @@ function at_ui_include_codemirror($extras = array(), $theme = 'monokai') {
 }
 
 /**
+ * @return string.
+ */
+function at_ui_codemirror_submit_shortcut_hint() {
+  return 'Use <code>Ctrl+s</code> or <code>Cmd+s</code> to submit the form.';
+}
+
  * Add custom assets to /devel/php form to support php syntax.
  */
 function at_ui_form_devel_execute_form_alter(&$form, $form_state) {
