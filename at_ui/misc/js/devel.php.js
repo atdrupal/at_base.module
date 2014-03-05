@@ -1,8 +1,14 @@
 (function($){
 
 $(function(){
-  var save = function() {
-    $('#edit-code').parents('form').trigger('submit');
+  // Hide the form submit button
+  $('#devel-execute-form').find('.form-submit').hide();
+
+  var save = function(cm) {
+    $('#edit-code')
+      .val(cm.getValue())
+      .trigger('change')
+    ;
   };
 
   var editor = CodeMirror.fromTextArea(document.getElementById('edit-code'), {
