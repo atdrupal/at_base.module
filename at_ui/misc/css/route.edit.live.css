@@ -1,3 +1,14 @@
+#editable-route-preview {
+  border: 1px dotted gray;
+}
+
+#editable-route-preview:before {
+  content: '[route content]';
+  font-size: 0.85em;
+  display: block;
+  margin-top: -20px;
+}
+
 .atui-pane-wrapper {
   position: relative;
   background: lightyellow;
@@ -8,6 +19,13 @@
 
 .atui-pane-placeholder {
   color: grey;
+}
+
+.atui-pane-wrapper:before {
+  content: '[pane]';
+  font-size: 0.85em;
+  display: block;
+  margin-top: -20px;
 }
 
 .atui-pane-placeholder:hover {
