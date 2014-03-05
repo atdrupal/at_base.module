@@ -6,6 +6,6 @@ routes:
     form: 'Drupal\at_ui\Controller\TwigFormController'
     form arguments: []
     before:
-      - [at_ui_include_codemirror, ['mode/htmlmixed/htmlmixed.js', 'mode/xml/xml.js', 'addon/mode/overlay.js']]
+      - [at_ui_include_codemirror, [['mode/htmlmixed/htmlmixed.js', 'mode/xml/xml.js', 'addon/mode/overlay.js']]]
       - [drupal_add_js, ['@at_ui/misc/js/at.twig.js']]
       - [drupal_add_css, ['@at_ui/misc/css/cm.css']]
