@@ -1,3 +1,28 @@
 <?php
 
-require_once dirname(__FILE__) . '/at_ui.codemirror.inc';
+require_once dirname(__FILE__) . '/at_ui.codemirror.develphp.inc';
+require_once dirname(__FILE__) . '/at_ui.codemirror.attwig.inc';
+
+/**
+ * Include CodeMirror assets.
+ *
+ * @param  array  $extras
+ * @param  string $theme
+ */
+function at_ui_include_codemirror($extras = array(), $theme = 'monokai') {
+  $path = at_library('code.mirror', NULL, FALSE);
+
+  drupal_add_js($path . '/lib/codemirror.js');
+  drupal_add_css($path . '/lib/codemirror.css');
+  drupal_add_css($path . '/theme/'. $theme .'.css');
+  foreach ($extras as $extra) {
+    drupal_add_js($path . '/' . $extra);
+  }
+}
+
+/**
+ * @return string.
+ */
+function at_ui_codemirror_submit_shortcut_hint() {
+  return 'Use <code>Ctrl+s</code> or <code>Cmd+s</code> to submit the form.';
+}
