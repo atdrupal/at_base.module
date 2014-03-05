@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * Add custom assets to /devel/php form to support php syntax.
+ */
+function at_ui_form_devel_execute_form_alter(&$form, $form_state) {
+  $form['execute']['code']['#resizable'] = FALSE;
+  $form['execute']['code']['#description']  = isset($form['string']['#description']) ? ($form['string']['#description'] . '<br />') : '';
+  $form['execute']['code']['#description'] .= 'Use <code>Ctrl+s</code> or <code>Cmd+s</code> to submit the form.';
+
+  $path = 'sites/all/libraries/code.mirror';
+  drupal_add_js($path . '/lib/codemirror.js');
+  drupal_add_js($path . '/mode/clike/clike.js');
+  drupal_add_js($path . '/mode/php/php.js');
+  drupal_add_css($path . '/lib/codemirror.css');
+  drupal_add_css($path . '/theme/monokai.css');
+  drupal_add_js(drupal_get_path('module', 'at_ui') . '/misc/js/devel.php.js');
+  drupal_add_css(drupal_get_path('module', 'at_ui') . '/misc/css/cm.css');
+}
+
+/**
+ * Add custom assets to /devel/php form to support php syntax.
+ *
+ * @link https://github.com/marijnh/CodeMirror/issues/103
+ * @link http://codemirror.net/demo/mustache.html
+ */
+function at_ui_form_at_form_alter(&$form, $form_state) {
+  if ($form['#at_form'][0] === 'Drupal\at_ui\Controller\TwigFormController') {
+    $form['string']['#resizable'] = FALSE;
+    $form['string']['#description']  = isset($form['string']['#description']) ? ($form['string']['#description'] . '<br />') : '';
+    $form['string']['#description'] .= 'Use <code>Ctrl+s</code> or <code>Cmd+s</code> to submit the form.';
+
+    $path = 'sites/all/libraries/code.mirror';
+    drupal_add_css($path . '/lib/codemirror.css');
+    drupal_add_css($path . '/theme/monokai.css');
+    drupal_add_js($path . '/lib/codemirror.js');
+    drupal_add_js($path . '/mode/htmlmixed/htmlmixed.js');
+    drupal_add_js($path . '/mode/xml/xml.js');
+    drupal_add_js($path . '/addon/mode/overlay.js');
+
+    drupal_add_js(drupal_get_path('module', 'at_ui') . '/misc/js/at.twig.js');
+    drupal_add_css(drupal_get_path('module', 'at_ui') . '/misc/css/cm.css');
+  }
+}
