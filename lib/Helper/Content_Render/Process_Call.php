@@ -17,7 +17,7 @@ class Process_Call {
   }
 
   public function callAfter() {
-    $this->runBefore('after');
+    $this->callBefore('after');
   }
 
   private function runCallbacks($calls) {
