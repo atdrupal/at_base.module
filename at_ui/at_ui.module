@@ -1,7 +1,6 @@
 <?php
 
 require_once dirname(__FILE__) . '/at_ui.codemirror.develphp.inc';
-require_once dirname(__FILE__) . '/at_ui.codemirror.attwig.inc';
 
 /**
  * Include CodeMirror assets.
