@@ -7,7 +7,7 @@ function at_ui_form_devel_execute_form_alter(&$form, $form_state) {
   $form['execute']['code']['#resizable'] = FALSE;
   $form['execute']['code']['#default_value']
     = !empty($form['execute']['code']['#default_value'])
-        ?: (!empty($_SESSION['sql_execute_code']) ? $_SESSION['sql_execute_code'] : '');
+        ?: (!empty($_SESSION['php_execute_code']) ? $_SESSION['php_execute_code'] : "return at_container('twig_string')->render('{{ \"Hello \"  ~ \"Drupal!\" }}');");
   $form['execute']['code']['#description'] .= ' ' . at_ui_codemirror_submit_shortcut_hint();
   $form['execute']['code']['#ajax'] = array(
     'event' => 'change',
@@ -27,7 +27,7 @@ function at_ui_form_devel_execute_form_alter(&$form, $form_state) {
 }
 
 function at_ui_form_devel_execute_form_alter_ajax_callback($form, &$form_state) {
-  $_SESSION['sql_execute_code'] = $code = $form_state['values']['code'];
+  $_SESSION['php_execute_code'] = $code = $form_state['values']['code'];
 
   // Execute the code
   ob_start();
