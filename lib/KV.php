@@ -19,7 +19,7 @@ class KV extends \Drupal\at_base\KV\StorageBase {
     $this->db = at_container('wrapper.db');
   }
 
-  public function getMultiple() {
+  public function getMultiple($keys) {
     $values = $this->db
       ->query(
         'SELECT name, value'
@@ -27,7 +27,6 @@ class KV extends \Drupal\at_base\KV\StorageBase {
           . '  WHERE name IN (:keys) AND collection = :collection'
         ,
         array(
-          ':now' => REQUEST_TIME,
           ':keys' => $keys,
           ':collection' => $this->collection,
         ))
@@ -42,10 +41,7 @@ class KV extends \Drupal\at_base\KV\StorageBase {
           . ' FROM {' . $this->table . '}'
           . ' WHERE collection = :collection'
         ,
-        array(
-          ':collection' => $this->collection,
-          ':now' => REQUEST_TIME,
-        )
+        array(':collection' => $this->collection)
       )->fetchAllKeyed();
     return array_map('unserialize', $values);
   }
@@ -58,7 +54,7 @@ class KV extends \Drupal\at_base\KV\StorageBase {
     ;
   }
 
-  public function setIfNotExists() {
+  public function setIfNotExists($key, $value) {
     return \MergeQuery::STATUS_INSERT == $this->db->merge($this->table)
       ->insertFields(array(
         'collection' => $this->collection,
