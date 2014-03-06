@@ -3,5 +3,11 @@ routes:
     title: Twig Form
     # Permisison defined by devel.module
     access arguments: ['execute php code']
+    page callback: drupal_get_form
+    page arguments: ['at_ui_twig_form']
     form: 'Drupal\at_ui\Controller\TwigFormController'
     form arguments: []
+    before:
+      - [at_ui_include_codemirror, [['mode/htmlmixed/htmlmixed.js', 'mode/xml/xml.js', 'addon/mode/overlay.js']]]
+      - [drupal_add_js, ['@at_ui/misc/js/at.twig.js']]
+      - [drupal_add_css, ['@at_ui/misc/css/cm.css']]
