@@ -3,6 +3,7 @@ routes:
     title: Twig Form
     # Permisison defined by devel.module
     access arguments: ['execute php code']
+    file: at_ui.codemirror.attwig.inc
     page callback: drupal_get_form
     page arguments: ['at_ui_twig_form']
     form: 'Drupal\at_ui\Controller\TwigFormController'
