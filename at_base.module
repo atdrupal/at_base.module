@@ -3,6 +3,10 @@
  * @file at_base.module
  *
  * Include custom functions.
+ *
+ * @todo  Next release:
+ *
+ *  - Remove at_fn(), at_fn_fake()
  */
 
 use \Drupal\at_base\Cache;
@@ -87,11 +91,23 @@ function at_container($id) {
  *    at_fn('entity_bundle', 'node', $node);
  *
  *  @see  at_fn_fake()
+ *  @todo Use at_fn class, remove in next release.
  */
 function at_fn() {
   $args = func_get_args();
   $fn   = array_shift($args);
   return call_user_func_array(variable_get("atfn:{$fn}", $fn), $args);
+}
+
+/**
+ * Similar to at_fn(). Usage:
+ *
+ *  \at_fn::entity_bundle('node', $node);
+ */
+class at_fn {
+  public static function __callStatic($fn, $args) {
+    return call_user_func_array(variable_get("atfn:{$fn}", $fn), $args);
+  }
 }
 
 /**
