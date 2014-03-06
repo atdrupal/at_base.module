@@ -17,4 +17,8 @@ class Database {
   public function insert($table, array $options = array()) {
     return db_insert($table, $options);
   }
+
+  public function merge($table, array $options) {
+    return db_merge($table, $options);
+  }
 }

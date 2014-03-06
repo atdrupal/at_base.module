@@ -8,7 +8,7 @@
  */
 function at_base_schema() {
   $schema['at_base_cache_tag'] = array(
-    'description' => '',
+    'description' => 'Pairs of cacheID & tag',
     'fields' => array(
       'bin' => array('type' => 'varchar', 'length' => 255, 'not null' => TRUE),
       'cid' => array('type' => 'varchar', 'length' => 255, 'not null' => TRUE),

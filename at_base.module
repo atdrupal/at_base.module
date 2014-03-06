@@ -3,6 +3,11 @@
  * @file at_base.module
  *
  * Include custom functions.
+ *
+ * @todo  Next release:
+ *
+ *  - Remove at_fn(), at_fn_fake()
+ *  - Update docs for service container > reuse option.
  */
 
 use \Drupal\at_base\Cache;
@@ -59,7 +64,7 @@ function at_newv($class_name, $argv = array()) {
  *
  * @see https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container
  */
-function at_container($id) {
+function at_container($id = 'container') {
   static $container = NULL;
 
   if (!$container) {
@@ -106,11 +111,23 @@ function at_kv($bin, $options = array(), $engine_name = 'array') {
  *    at_fn('entity_bundle', 'node', $node);
  *
  *  @see  at_fn_fake()
+ *  @todo Use at_fn class, remove in next release.
  */
 function at_fn() {
   $args = func_get_args();
   $fn   = array_shift($args);
   return call_user_func_array(variable_get("atfn:{$fn}", $fn), $args);
+}
+
+/**
+ * Similar to at_fn(). Usage:
+ *
+ *  \at_fn::entity_bundle('node', $node);
+ */
+class at_fn {
+  public static function __callStatic($fn, $args) {
+    return call_user_func_array(variable_get("atfn:{$fn}", $fn), $args);
+  }
 }
 
 /**
