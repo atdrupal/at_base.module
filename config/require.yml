@@ -26,3 +26,17 @@ projects:
       type: git
       url: 'https://github.com/symfony/expression-language.git'
       branch: 'v2.4.1'
+
+  doctrine_common:
+    type: library
+    download:
+      type: git
+      url: 'https://github.com/doctrine/common.git'
+      branch: 'v2.4.1'
+
+  doctrine_cache:
+    type: library
+    download:
+      type: git
+      url: 'https://github.com/doctrine/cache.git'
+      branch: 'v1.3.0'

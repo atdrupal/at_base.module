@@ -1,0 +1,9 @@
+services:
+  kv.engine.array:
+    class: 'Doctrine\Common\Cache\ArrayCache'
+
+  kv.engine.file:
+    class: 'Doctrine\Common\Cache\FilesystemCache'
+    arguments:
+      directory: '%at_base:settings:kv.file.directory'
+      extension: '.cache'
