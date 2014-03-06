@@ -4,9 +4,8 @@ $(function(){
   // Hide the form submit button
   $('#at-ui-twig-form').find('.form-submit').hide();
 
-  var save = function() {
-    $('#edit-string').parents('form').trigger('submit');
-    $('#edit-code').val(cm.getValue()).trigger('change');
+  var save = function(cm) {
+    $('#edit-string').val(cm.getValue()).trigger('change');
   };
 
   CodeMirror.defineMode('mustache', function(config, parserConfig) {

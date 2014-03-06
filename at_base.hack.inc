@@ -33,8 +33,24 @@ function at_debug() {
  */
 function at_fn_fake($fn, $callback) {
   global $conf;
-
   $conf["atfn:{$fn}"] = $callback;
+}
+
+/**
+ * Similar to at_fn_fake(). Usage:
+ *
+ *  $time = time();
+ *  at_fake::time(function() use ($time) { return $time; });
+ *  echo at_fn::time(); // same to $time
+ *
+ *  // Next 1 hour
+ *  at_fake::time(function() use ($time) { return $time + 3600; });
+ *  echo at_fn::time(); // same to $time + 3600
+ */
+class at_fake {
+  public static function __callStatic($fn, $args) {
+    $GLOBALS['conf']["atfn:{$fn}"] = $args[0];
+  }
 }
 
 /**

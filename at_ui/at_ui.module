@@ -1,7 +1,6 @@
 <?php
 
 require_once dirname(__FILE__) . '/at_ui.codemirror.develphp.inc';
-require_once dirname(__FILE__) . '/at_ui.codemirror.attwig.inc';
 
 /**
  * Implements hook_menu_alter().
@@ -127,4 +126,14 @@ function at_ui_route_form($form, $form_state, $route) {
   );
 
   return $form;
+}
+
+/**
+ * Implements hook_init()
+ */
+function at_ui_init() {
+  if (at_debug() && !defined('AT_DISABLE_DEVELOPMENT_INDICATOR')) {
+    drupal_add_css(drupal_get_path('module', 'at_ui') . '/misc/css/dev.indicator.css');
+    drupal_add_js(drupal_get_path('module', 'at_ui') . '/misc/js/dev.indicator.js');
+  }
 }
