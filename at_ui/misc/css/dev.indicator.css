@@ -1,7 +1,7 @@
 
 #environment-indicator {
   background-color: rgb(208, 12, 12);
-  position: absolute; top: 0px; bottom: 0px; left: 0px;
+  position: fixed; top: 0px; bottom: 0px; left: 0px;
   width: 30px;
   color: #FFFFFF;
   text-align: center;
