@@ -25,6 +25,19 @@ function at_debug() {
 }
 
 /**
+ * Override default callback of $fn.
+ *
+ * @see  at_fn()
+ * @param  string   $fn
+ * @param  callable $callback
+ */
+function at_fn_fake($fn, $callback) {
+  global $conf;
+
+  $conf["atfn:{$fn}"] = $callback;
+}
+
+/**
  * Wrapper for class based forms.
  */
 function at_form_validate($form, &$form_state) {

@@ -11,6 +11,7 @@ use \Drupal\at_base\Helper\ModulesFetcher;
 require_once dirname(__FILE__) . '/lib/AT.php';
 require_once dirname(__FILE__) . '/lib/Autoloader.php';
 require_once dirname(__FILE__) . '/at_base.hooks.inc';
+require_once dirname(__FILE__) . '/at_base.missing.inc';
 require_once dirname(__FILE__) . '/at_base.hack.inc';
 
 /**
@@ -29,7 +30,7 @@ function at_id($x) {
  * call_user_func_array() on a class constructor, so you can instead use this
  * function:
  *
- * $obj = newv($class_name, $argv);
+ * $obj = at_newv($class_name, $argv);
  *
  * That is, these two statements are equivalent:
  *
@@ -91,6 +92,25 @@ function at_kv($bin, $options = array(), $engine_name = 'array') {
   $engine->setOptions($options);
 
   return $engine;
+}
+
+/**
+ * Make function easier to be replaced by an other one.
+ *
+ * For example:
+ *
+ *  // Override entity_bundle function
+ *  $GLOBALS['conf']['atfn:entity_bundle'] = function($type, $entity) { return $entity->type; };
+ *
+ *  Call replacable entity_bundle function:
+ *    at_fn('entity_bundle', 'node', $node);
+ *
+ *  @see  at_fn_fake()
+ */
+function at_fn() {
+  $args = func_get_args();
+  $fn   = array_shift($args);
+  return call_user_func_array(variable_get("atfn:{$fn}", $fn), $args);
 }
 
 /**
@@ -156,9 +176,7 @@ function at_cache_flush_by_tags($tags = array()) {
  * @return Drupal\at_base\Config\Config
  */
 function at_config($module, $id = 'config', $refresh = FALSE) {
-  return at_container('config')
-    ->setModule($module)
-    ->setId($id);
+  return at_container('config')->setModule($module)->setId($id);
 }
 
 /**
@@ -187,7 +205,7 @@ function at_modules($base_module = 'at_base', $config_file = '') {
  * @param  string $version
  * @return string
  */
-function at_library($name, $version = 'default') {
+function at_library($name, $version = 'default', $include_drupal_root = TRUE) {
   $paths = array(conf_path(), 'sites/all');
   foreach ($paths as $path) {
     $return = DRUPAL_ROOT . "/{$path}/libraries/{$name}";
@@ -196,7 +214,7 @@ function at_library($name, $version = 'default') {
     }
 
     if (FALSE !== @fileowner($return)) {
-      return $return;
+      return $include_drupal_root ? rtrim($return, '/') : substr($return, strlen(DRUPAL_ROOT) + 1);
     }
   }
 

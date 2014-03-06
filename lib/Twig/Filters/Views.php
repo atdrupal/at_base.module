@@ -72,9 +72,10 @@ class Views {
       return $this->view->preview($this->display_id, $this->arguments);
     }
 
-    // ---------------------
-    // With template
-    // ---------------------
+    return $this->executeTemplate();
+  }
+
+  private function executeTemplate() {
     // Many tags rendered by views, we get rid of them
     if (!empty($this->view->display[$this->display_id]->display_options['fields'])) {
       foreach (array_keys($this->view->display[$this->display_id]->display_options['fields']) as $k) {
@@ -84,7 +85,13 @@ class Views {
     }
 
     $this->view->pre_execute();
-    $this->view->execute();
+
+    if (0 === strpos($this->view->base_table, 'search_api_index_')) {
+      $this->view->preview($this->display_id, $this->arguments);
+    }
+    else {
+      $this->view->execute();
+    }
 
     module_load_include('inc', 'views', 'theme/theme');
     $vars = array('view' => $this->view);
@@ -125,7 +132,7 @@ class Views {
     // Params may wrong
     try {
       $builder = self::getBuilder($display_id);
-      return call_user_func_array($builder, array($name, $args));
+      return call_user_func_array($builder, array_merge(array($name), $args));
     }
     catch (\Exception $e) {
       return $e->getMessage();
@@ -140,7 +147,10 @@ class Views {
    */
   private static function getBuilder($a1) {
     if (is_string($a1)) {
-      return function ($name, $display_id, $args = array()) {
+      return function () {
+        $args = func_get_args();
+        $name = array_shift($args);
+        $display_id = array_shift($args);
         return at_id(new Views($name, $display_id, $args))->execute();
       };
     }

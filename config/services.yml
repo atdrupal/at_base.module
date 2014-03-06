@@ -16,3 +16,6 @@ services:
     class: 'Symfony\Component\ExpressionLanguage\ExpressionLanguage'
     factory_class: 'AT'
     factory_method: getExpressionLanguage
+
+  breadcrumb_api:
+    class: 'Drupal\at_base\Helper\BreadcrumbAPI'

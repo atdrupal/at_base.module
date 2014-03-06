@@ -20,9 +20,8 @@ install:
   # ---------------------
   # Install Drush
   # ---------------------
-  - pear channel-discover pear.drush.org
-  - pear install drush/drush-5.8.0
-  - phpenv rehash
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - composer global require drush/drush:dev-master
 
   # ---------------------
   # Setup DB

@@ -82,7 +82,9 @@ class Resolver implements ResolverInterface {
    * @param string $path
    */
   private function fetchFile($path) {
-    $return = yaml_parse_file($path);
+    if (!$return = yaml_parse_file($path)) {
+      throw new \Exception('Can not parse file: ' . $path);
+    }
 
     if (!empty($return['imports'])) {
       return $this->resolveDataImports($return);
@@ -91,11 +93,32 @@ class Resolver implements ResolverInterface {
     return $return;
   }
 
+  private function resolveDataImportResources($imports) {
+    foreach ($imports as $i => $import) {
+      if (FALSE !== strpos($import['resource'], '*')) {
+        unset($imports[$i]);
+        $resource = DRUPAL_ROOT . '/' . drupal_get_path('module', $this->config->getModule()) . '/config/' . $import['resource'];
+        $dir = dirname($resource);
+        $name = basename($resource);
+        $pattern = str_replace('*', '/.*/', $name);
+
+        $files = file_scan_directory($dir, $pattern);
+        if (!empty($files)) {
+          foreach ($files as $file) {
+            $imports[] = $file->uri;
+          }
+        }
+      }
+      else {
+        $imports[$i] = DRUPAL_ROOT . '/' . drupal_get_path('module', $this->config->getModule()) . '/config/' . $import['resource'];
+      }
+    }
+    return $imports;
+  }
+
   private function resolveDataImports($return) {
     $_return = array();
-    foreach ($return['imports'] as $i => $import) {
-      $resource = $import['resource'];
-      $resource = DRUPAL_ROOT . '/' . drupal_get_path('module', $this->config->getModule()) . '/config/' . $resource;
+    foreach ($this->resolveDataImportResources($return['imports']) as $i => $resource) {
       $data = $this->fetchFile($resource);
       foreach ($data as $k => $v) {
         $_return[$k] = !isset($_return[$k]) ? $v : array_merge($_return[$k], $v);

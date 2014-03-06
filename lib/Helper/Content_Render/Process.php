@@ -1,16 +1,33 @@
 <?php
 namespace Drupal\at_base\Helper\Content_Render;
 
+/**
+ * @todo  Doc & Test for $data['before'], $data['after']
+ */
 class Process {
   private $data;
   private $args;
 
+  /**
+   * @var Process_Call
+   */
+  private $caller;
+
   public function __construct($data, $args) {
     $this->data = $data;
     $this->args = $args ? $args : array();
+
+    if (!empty($data['before']) || !empty($data['after'])) {
+      $this->caller = new Process_Call(
+        !empty($data['before']) ? $data['before'] : array(),
+        !empty($data['after']) ? $data['after'] : array()
+      );
+    }
   }
 
   public function execute() {
+    !empty($this->caller) && $this->caller->callBefore();
+
     foreach (get_class_methods(get_class($this)) as $method) {
       if ('process' === substr($method, 0, 7)) {
         if ($return = $this->{$method}()) {
@@ -18,6 +35,8 @@ class Process {
         }
       }
     }
+
+    !empty($this->caller) && $this->caller->callAfter();
   }
 
   private function processFunction() {
@@ -39,6 +58,11 @@ class Process {
     if (isset($this->data['controller'])) {
       @list($class, $method, $args) = $this->data['controller'];
       $obj = new $class();
+
+      if (empty($args) && !empty($this->data['arguments'])) {
+        $args = $this->data['arguments'];
+      }
+
       return call_user_func_array(
         array($obj, $method),
         $this->getControllerArguments($args, $obj)
@@ -81,8 +105,13 @@ class Process {
   }
 
   private function processTemplateString() {
-    if (isset($this->data['template_string'])) {
-      $tpl = $this->data['template_string'];
+    $k = isset($this->data['template_string'])
+          ? 'template_string'
+          : (isset($this->data['content']) ? 'content' : NULL)
+    ;
+
+    if (!empty($k)) {
+      $tpl = $this->data[$k];
       return at_container('twig_string')->render($tpl, $this->args);
     }
   }
