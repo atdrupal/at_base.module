@@ -28,6 +28,10 @@ class Database {
     return $this->methodCall('insert', $table, $options);
   }
 
+  public function merge($table, array $options = array()) {
+    return $this->methodCall('merge', $table, $options);
+  }
+
   /**
    * @param string $method
    */
