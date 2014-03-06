@@ -1,19 +1,8 @@
 services:
-  kv.engine.database:
-    class: 'Drupal\at_base\Helper\KV\DatabaseCache'
+  kv:
+    reuse: false
+    class: Drupal\at_base\KV
 
-  kv.engine.base:
-    abstract: true
-    factory_class: 'Drupal\at_base\Helper\KV\Factory'
-    factory_method: getDoctrineClass
-
-  kv.engine.array:
-    parent: '@kv.engine.base'
-    class: 'Doctrine\Common\Cache\ArrayCache'
-    arguments: ['Doctrine\Common\Cache\ArrayCache']
-
-  kv.engine.file:
-    class: 'Doctrine\Common\Cache\FilesystemCache'
-    arguments:
-      directory: '%at_base:settings:kv.file.directory'
-      extension: '.cache'
+  kv.expirable:
+    reuse: false
+    class: Drupal\at_base\KV\Expirable
