@@ -1,8 +1,12 @@
 (function($){
 
 $(function(){
+  // Hide the form submit button
+  $('#at-ui-twig-form').find('.form-submit').hide();
+
   var save = function() {
     $('#edit-string').parents('form').trigger('submit');
+    $('#edit-code').val(cm.getValue()).trigger('change');
   };
 
   CodeMirror.defineMode('mustache', function(config, parserConfig) {
@@ -20,9 +24,7 @@ $(function(){
       }
     };
 
-    return CodeMirror.overlayMode(
-            CodeMirror.getMode(config, parserConfig.backdrop || 'text/html'),
-            mustacheOverlay);
+    return CodeMirror.overlayMode(CodeMirror.getMode(config, parserConfig.backdrop || 'text/html'), mustacheOverlay);
   });
 
   var editor = CodeMirror.fromTextArea(document.getElementById('edit-string'), {

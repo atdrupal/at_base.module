@@ -5,10 +5,7 @@ $(function(){
   $('#devel-execute-form').find('.form-submit').hide();
 
   var save = function(cm) {
-    $('#edit-code')
-      .val(cm.getValue())
-      .trigger('change')
-    ;
+    $('#edit-code').val(cm.getValue()).trigger('change');
   };
 
   var editor = CodeMirror.fromTextArea(document.getElementById('edit-code'), {
