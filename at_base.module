@@ -63,7 +63,7 @@ function at_newv($class_name, $argv = array()) {
  *
  * @see https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container
  */
-function at_container($id) {
+function at_container($id = 'container') {
   static $container = NULL;
 
   if (!$container) {
