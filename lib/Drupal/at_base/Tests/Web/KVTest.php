@@ -1,18 +1,19 @@
 <?php
 
-namespace Drupal\at_base\Tests\Unit;
-
-use Drupal\at_base\Helper\Test\UnitTestCase;
-use Drupal\at_base\Helper\Test\Cache;
+namespace Drupal\at_base\Tests\Web;
 
 /**
  * Test case for Key-Value storage
  *
  *    drush test-run --dirty 'Drupal\at_base\Tests\Unit\KVTest'
  */
-class KVTest extends UnitTestCase {
+class KVTest extends \DrupalWebTestCase {
   public function getInfo() {
-    return array('name' => 'AT Unit: Key-Value storage') + parent::getInfo();
+    return array(
+      'name' => 'AT Web: Key-Value storage',
+      'description' => 'Check Key-Value storage functionality',
+      'group' => 'AT Web',
+    );
   }
 
   private function getKV($collection = 'atest') {
@@ -26,19 +27,15 @@ class KVTest extends UnitTestCase {
   public function testInfo() {
     $kv = $this->getKV('atest');
     $this->assertEqual('atest', $kv->getCollectionName());
-    unset($kv);
 
     $kv = $this->getKVExpirable('atest');
     $this->assertEqual('atest', $kv->getCollectionName());
-    unset($kv);
 
     $kv = $this->getKV('atest_other');
     $this->assertNotEqual('atest', $kv->getCollectionName());
-    unset($kv);
 
     $kv = $this->getKVExpirable('atest_other');
     $this->assertNotEqual('atest', $kv->getCollectionName());
-    unset($kv);
   }
 
   public function testSetGetDelete() {
@@ -48,6 +45,7 @@ class KVTest extends UnitTestCase {
     $kv->set('first_name', 'Andy');
     $kv->setIfNotExists('first_name', 'Hong');
     $kv->setIfNotExists('last_name', 'Truong');
+
     $this->assertEqual('Andy', $kv->get('first_name'));
     $this->assertEqual('Truong', $kv->get('last_name'));
     $kv->delete('first_name');
