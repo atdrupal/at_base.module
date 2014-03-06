@@ -42,8 +42,9 @@ class Controller
      */
     public static function pageCallback() {
         $args = func_get_args();
-        $route = array_pop($args);
+        $route = array_shift($args);
 
+        array_shift($route['page arguments']);
         $render = at_container('helper.content_render');
 
         return at_id(new self($render, filter_input(INPUT_GET, 'q', FILTER_SANITIZE_STRING)))
@@ -103,6 +104,13 @@ class Controller
      * @return array
      */
     public function execute() {
+        $this->prepareCache();
+        $this->prepareFunctionCallback();
+        $this->prepareContextBlocks();
+        return $this->render->render($this->route);
+    }
+
+    private function prepareCache() {
         // User want cache the page
         if (!empty($this->route['cache'])) {
             $this->render->setCacheHandler(new Cache_Handler());
@@ -112,13 +120,22 @@ class Controller
                 $this->route['cache']['id'] = 'atroute:' . $this->menu_item['tab_root_href'];
             }
         }
+    }
 
+    private function prepareFunctionCallback() {
         if (!empty($this->route['function'])) {
             $this->route['arguments'] = $this->route['page arguments'];
             unset($this->route['page arguments']);
         }
+    }
 
-        return $this->render->render($this->route);
+    private function prepareContextBlocks() {
+        global $theme;
+
+        if (!empty($this->route['blocks'][$theme])) {
+            at_container('container')->offsetSet('page.blocks', $this->route['blocks'][$theme]);
+            unset($this->route['blocks'][$theme]);
+        }
     }
 
 }

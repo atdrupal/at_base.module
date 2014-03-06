@@ -1,7 +1,2 @@
 imports:
-  - { resource: routes.old_style.yml }
-  - { resource: routes.controller.yml }
-  - { resource: routes.template.yml }
-  - { resource: routes.template_string.yml }
-  - { resource: routes.form.yml }
-  - { resource: routes.cache.yml }
+  - { resource: routes/* }

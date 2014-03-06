@@ -4,14 +4,9 @@ namespace Drupal\at_base\Hook\Entity;
 /**
  * This is helper class allow modules to use Twig template for rendering entity.
  *
- * To use this, in YOURMODULE, implements hook_entity_view_alter():
+ * To use this, in settings.php add this line:
  *
- * @code
- * function YOURMODULE_entity_view_alter(&$build, $entity_type) {
- *   at_id(new \Drupal\at_base\Hook\Entity\View_Alter($build, $entity_type))
- *     ->execute();
- * }
- * @code
+ *  define('AT_BASE_ENTITY_TEMPLATE', 1);
  *
  * Configure entity template to be used:
  *
@@ -47,7 +42,7 @@ class View_Alter {
     $this->build = &$build;
     $this->entity_type = $entity_type;
     $this->bundle = $build['#bundle'];
-    $this->id = entity_id($build['#' . $entity_type]);
+    $this->id = entity_id($build['#' . $entity_type], $build['#entity']);
     $this->view_mode = $build['#view_mode'];
   }
 
@@ -67,6 +62,8 @@ class View_Alter {
   }
 
   protected function build() {
+    global $theme;
+
     if ($config = $this->getConfig()) {
       $config['variables']  = isset($config['variables']) ? $config['variables'] : array();
       $config['variables'] += array('build' => $this->build);
@@ -76,7 +73,15 @@ class View_Alter {
         $config['template'] = $this->resolveTokens($config['template']);
       }
 
-      return at_container('helper.content_render')->setData($config)->render();
+      // Attach block if context block is empty
+      if (!empty($config['blocks'][$theme])) {
+        if (!at_container('container')->offsetExists('page.blocks')) {
+          at_container('container')->offsetSet('page.blocks', $config['blocks'][$theme]);
+        }
+        unset($config['blocks']);
+      }
+
+      return at_container('helper.content_render')->render($config);
     }
   }
 
@@ -88,7 +93,7 @@ class View_Alter {
         '#view_mode' => $this->view_mode,
         '#language' => $this->build['#language'],
         '#contextual_links ' => !empty($this->build['#contextual_links']) ? $this->build['#contextual_links'] : NULL,
-        'at_base' => $build,
+        'at_base' => is_string($build) ? array('#markup' => $build) : $build,
         '#build' => $this->build,
       );
     }

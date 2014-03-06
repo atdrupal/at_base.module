@@ -5,30 +5,21 @@
  * Include custom functions.
  */
 
-use \Drupal\at_base\Autoloader;
 use \Drupal\at_base\Cache;
 use \Drupal\at_base\Helper\ModulesFetcher;
 
 require_once dirname(__FILE__) . '/lib/AT.php';
-require_once dirname(__FILE__) . '/at_base.hooks.inc';
 require_once dirname(__FILE__) . '/lib/Autoloader.php';
-at_id(new Autoloader())->register();
+require_once dirname(__FILE__) . '/at_base.hooks.inc';
+require_once dirname(__FILE__) . '/at_base.missing.inc';
+require_once dirname(__FILE__) . '/at_base.hack.inc';
 
 /**
- * Identity function, returns its argument unmodified.
- *
- * This is useful almost exclusively as a workaround to an oddity in the PHP
- * grammar -- this is a syntax error:
- *
- *    COUNTEREXAMPLE
+ * Can not:
  *    new Thing()->doStuff();
  *
- * ...but this works fine:
- *
+ * Can:
  *    at_id(new Thing())->doStuff();
- *
- * @param   wild Anything.
- * @return  wild Unmodified argument.
  */
 function at_id($x) {
   return $x;
@@ -39,7 +30,7 @@ function at_id($x) {
  * call_user_func_array() on a class constructor, so you can instead use this
  * function:
  *
- * $obj = newv($class_name, $argv);
+ * $obj = at_newv($class_name, $argv);
  *
  * That is, these two statements are equivalent:
  *
@@ -69,13 +60,38 @@ function at_newv($class_name, $argv = array()) {
  * @see https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container
  */
 function at_container($id) {
-    static $container = NULL;
+  static $container = NULL;
 
-    if (!$container) {
-        $container = new \Drupal\at_base\Container();
-    }
+  if (!$container) {
+    $container = new \Drupal\at_base\Container();
+  }
 
-    return $container[$id];
+  $args = func_get_args();
+  if (1 !== count($args)) {
+    array_shift($args);
+    $container["{$id}:arguments"] = $args;
+  }
+
+  return $container[$id];
+}
+
+/**
+ * Make function easier to be replaced by an other one.
+ *
+ * For example:
+ *
+ *  // Override entity_bundle function
+ *  $GLOBALS['conf']['atfn:entity_bundle'] = function($type, $entity) { return $entity->type; };
+ *
+ *  Call replacable entity_bundle function:
+ *    at_fn('entity_bundle', 'node', $node);
+ *
+ *  @see  at_fn_fake()
+ */
+function at_fn() {
+  $args = func_get_args();
+  $fn   = array_shift($args);
+  return call_user_func_array(variable_get("atfn:{$fn}", $fn), $args);
 }
 
 /**
@@ -160,9 +176,7 @@ function at_cache_flush_by_tags($tags = array()) {
  * @return Drupal\at_base\Config\Config
  */
 function at_config($module, $id = 'config', $refresh = FALSE) {
-  return at_container('config')
-    ->setModule($module)
-    ->setId($id);
+  return at_container('config')->setModule($module)->setId($id);
 }
 
 /**
@@ -191,7 +205,7 @@ function at_modules($base_module = 'at_base', $config_file = '') {
  * @param  string $version
  * @return string
  */
-function at_library($name, $version = 'default') {
+function at_library($name, $version = 'default', $include_drupal_root = TRUE) {
   $paths = array(conf_path(), 'sites/all');
   foreach ($paths as $path) {
     $return = DRUPAL_ROOT . "/{$path}/libraries/{$name}";
@@ -200,78 +214,9 @@ function at_library($name, $version = 'default') {
     }
 
     if (FALSE !== @fileowner($return)) {
-      return $return;
+      return $include_drupal_root ? rtrim($return, '/') : substr($return, strlen(DRUPAL_ROOT) + 1);
     }
   }
 
   throw new Exception("Missing library: {$name} (version {$version})");
-}
-
-/**
- * Check is Drupal system on dev or not.
- *
- * @return boolean
- */
-function at_debug() {
-  return defined('AT_DEBUG');
-}
-
-/**
- * Return if key|upercase/variable is not FALSE|NULL|0.
- */
-function at_valid($key, $get_value = FALSE) {
-  $c = strtoupper($key);
-  if (defined($c)) $return = constant($c);
-  else $return = variable_get($key, FALSE);
-  return $get_value ? $return : (boolean)($return);
-}
-
-/**
- * Wrapper for class based forms.
- *
- * @todo  Test me.
- */
-function at_form($form, &$form_state) {
-  // Get the variables from arguments
-  $args       = func_get_args();
-  $form       = array_shift($args);
-  $form_state = array_shift($args);
-  $class      = array_shift($args);
-  $args       = reset($args);
-
-  // Build the form
-  $obj = at_newv($class, $args);
-  $obj->setForm($form);
-  $obj->setFormState($form_state);
-
-  $form = $obj->get();
-  $form['#at_form'] = array($class, $args);
-
-  return $form;
-}
-
-/**
- * Wrapper for class based forms.
- */
-function at_form_validate($form, &$form_state) {
-  // Build the form
-  list($class, $args) = $form['#at_form'];
-
-  $obj = at_newv($class, $args);
-  $obj->setForm($form);
-  $obj->setFormState($form_state);
-  $obj->validate();
-}
-
-/**
- * Wrapper for class based forms.
- */
-function at_form_submit($form, &$form_state) {
-  // Build the form
-  list($class, $args) = $form['#at_form'];
-
-  $obj = at_newv($class, $args);
-  $obj->setForm($form);
-  $obj->setFormState($form_state);
-  $obj->submit();
 }

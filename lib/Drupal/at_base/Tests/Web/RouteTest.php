@@ -4,6 +4,8 @@ namespace Drupal\at_base\Tests\Web;
 
 /**
  * Test cases for routing feature.
+ *
+ * drush test-run --dirty 'Drupal\at_base\Tests\Web\RouteTest'
  */
 class RouteTest extends \DrupalWebTestCase {
   public function getInfo() {
@@ -72,5 +74,30 @@ class RouteTest extends \DrupalWebTestCase {
     sleep(1);
     $response_1 = trim($request->request('atest_route/cache/1'));
     $this->assertEqual($response_0, $response_1);
+  }
+
+  public function testRouteBlock() {
+    $blocks['help'] = array();
+    $blocks['help'][] = 'system:powered-by';
+    $blocks['help'][] = array('at_base:atest_base|hi_s', array('title' => 'Hello block!', 'weight' => -100));
+    $blocks['help'][] = array(
+      'delta'   => 'fancy-block',
+      'subject' => 'Fancy block',
+      'content' => array('content' => 'Hey Andy!'),
+      'weight'  => 1000,
+    );
+
+    at_container('container')->offsetSet('page.blocks', $blocks);
+
+    // Render the page array
+    $page = array();
+    at_base_page_build($page);
+    $output = drupal_render($page);
+
+    // Found two blocks
+    $this->assertTrue(FALSE !== strpos($output, 'Powered by'));
+    $this->assertTrue(FALSE !== strpos($output, 'Hello block!'));
+    $this->assertTrue(FALSE !== strpos($output, 'Fancy block'));
+    $this->assertTrue(FALSE !== strpos($output, 'Hey Andy!'));
   }
 }

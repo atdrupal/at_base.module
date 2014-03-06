@@ -1,0 +1,22 @@
+breadcrumb:
+  entity:
+    node:
+      page:
+        full:
+          breadcrumbs:
+            - ['Home', 'home']
+
+  paths:
+    'test/path/*':
+      breadcrumbs:
+        - ['Wildcard 1', 'wildcard/1']
+        - ['Wildcard 2', 'wildcard/2']
+    'test/path/foo':
+      breadcrumbs:
+        - ['Foo 1', 'foo/1']
+        - ['Foo 2', 'foo/2']
+    'test/path/bar':
+      weight: 100
+      breadcrumbs:
+        - ['Foo 1', 'foo/1']
+        - ['Foo 2', 'foo/2']

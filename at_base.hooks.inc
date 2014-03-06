@@ -7,6 +7,8 @@
 
 use \Drupal\at_base\Route\Importer as RouteImporter;
 use \Drupal\at_base\Hook\Menu as HookMenu;
+use \Drupal\at_base\Hook\Page_Build as Hook_Page_Build;
+use \Drupal\at_base\Hook\Entity\View_Alter as Hook_Entity_View_Alter;
 
 /**
  * Implements hook_menu()
@@ -68,6 +70,19 @@ function at_base_admin_paths() {
 ###############################################################
 
 /**
+ * Implements hook_entity_view()
+ */
+function at_base_entity_view($entity, $type, $view_mode, $langcode) {
+  at_container('breadcrumb_api')->checkEntityConfig($entity, $type, $view_mode, $langcode);
+}
+
+if (defined('AT_BASE_ENTITY_TEMPLATE') && constant('AT_BASE_ENTITY_TEMPLATE')) {
+  function at_base_entity_view_alter(&$build, $entity_type) {
+    at_id(new Hook_Entity_View_Alter($build, $entity_type))->execute();
+  }
+}
+
+/**
  * Implements hook_entity_insert()
  */
 function at_base_entity_update($entity, $type) {
@@ -120,4 +135,19 @@ function at_base_user_logout($account) {
     ->setContext(array('entity_type' => 'user', 'entity' => $account))
     ->warm()
   ;
+}
+
+/**
+ * Implements hook_page_build().
+ *
+ * Renders blocks into their regions.
+ *
+ * @see Drupal\at_base\Route\Controller::prepareContextBlocks()
+ */
+function at_base_page_build(&$page) {
+  if (at_container('container')->offsetExists('page.blocks')) {
+    at_id(new Hook_Page_Build($page, at_container('page.blocks')))->execute();
+  }
+
+  at_container('breadcrumb_api')->pageBuild();
 }

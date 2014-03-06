@@ -9,11 +9,11 @@ libraries[spyc][download][branch] = '0.5.1'
 
 libraries[pimple][download][type] = 'git'
 libraries[pimple][download][url] = 'https://github.com/fabpot/Pimple.git'
-libraries[pimple][download][revision] = 'dc03a407f20cbd4eaf55472875ad47ee96d921ea'
+libraries[pimple][download][branch] = 'v2.0.0'
 
 libraries[twig][download][type] = 'git'
 libraries[twig][download][url] = 'https://github.com/fabpot/Twig.git'
-libraries[twig][download][branch] = 'v1.15.0'
+libraries[twig][download][branch] = 'v1.15.1'
 
 libraries[expression_language][download][type] = 'git'
 libraries[expression_language][download][url] = 'https://github.com/symfony/expression-language.git'

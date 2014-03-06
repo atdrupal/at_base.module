@@ -13,21 +13,21 @@ namespace Drupal\at_base\Helper;
  * @todo  Support expression_language:evaluate() — check \Drupal\at_base\Hook\BlockInfo
  */
 class Config_Fetcher {
-  public function getItems($module, $id, $key, $include_at_base = FALSE, $reset = FALSE) {
+  public function getItems($module, $id, $key, $include_base = FALSE, $reset = FALSE) {
     $o = array(
       'ttl' => '+ 1 year',
-      'id' => "ATConfig:{$module}:{$id}:{$key}:" . ($include_at_base ? 1 : 0),
+      'id' => "ATConfig:{$module}:{$id}:{$key}:" . ($include_base ? 1 : 0),
       'reset' => $reset,
     );
 
-    return at_cache($o, array($this, 'fetchItems'), array($module, $id, $key, $include_at_base));
+    return at_cache($o, array($this, 'fetchItems'), array($module, $id, $key, $include_base));
   }
 
-  public function fetchItems($module, $id, $key, $include_at_base) {
+  public function fetchItems($module, $id, $key, $include_base) {
     $modules = at_modules($module, $id);
 
-    if ($include_at_base) {
-      $modules = array_merge(array('at_base'), $modules);
+    if ($include_base) {
+      $modules = array_merge(array($module), $modules);
     }
 
     $items = array();
@@ -38,18 +38,18 @@ class Config_Fetcher {
     return $items;
   }
 
-  public function getItem($module, $id, $key, $item_key, $include_at_base = FALSE, $reset = FALSE) {
+  public function getItem($module, $id, $key, $item_key, $include_base = FALSE, $reset = FALSE) {
     $o = array(
       'ttl' => '+ 1 year',
-      'id' => "ATConfig:{$module}:{$id}:{$key}:{$item_key}:" . ($include_at_base ? 1 : 0),
+      'id' => "ATConfig:{$module}:{$id}:{$key}:{$item_key}:" . ($include_base ? 1 : 0),
       'reset' => $reset,
     );
 
-    return at_cache($o, array($this, 'fetchItem'), array($module, $id, $key, $item_key, $include_at_base));
+    return at_cache($o, array($this, 'fetchItem'), array($module, $id, $key, $item_key, $include_base));
   }
 
-  public function fetchItem($module, $id, $key, $item_key, $include_at_base) {
-    if ($items = $this->getItems($module, $id, $key, $include_at_base)) {
+  public function fetchItem($module, $id, $key, $item_key, $include_base) {
+    if ($items = $this->getItems($module, $id, $key, $include_base)) {
       if (!empty($items[$item_key])) {
         return $items[$item_key];
       }

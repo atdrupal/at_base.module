@@ -2,6 +2,8 @@
 
 namespace Drupal\at_base\Helper\Test;
 
+use Drupal\at_base\Autoloader;
+
 require_once dirname(__FILE__) . '/Cache.php';
 require_once dirname(__FILE__) . '/Database.php';
 
@@ -32,8 +34,14 @@ abstract class UnitTestCase extends \DrupalUnitTestCase {
     // Make our autoloader run first — drush_print_r(spl_autoload_functions());
     spl_autoload_unregister('drupal_autoload_class');
     spl_autoload_unregister('drupal_autoload_interface');
-    at_id(new \Drupal\at_base\Autoloader())->register(FALSE, TRUE);
+    at_id(new Autoloader('Drupal'))->register(FALSE, TRUE);
 
+    $this->setUpModules();
+
+    parent::setUp('at_base', 'atest_base');
+  }
+
+  protected function setUpModules() {
     // at_modules() > system_list() > need db, fake it!
     // 'id' => "ATConfig:{$module}:{$id}:{$key}:" . ($include_at_base ? 1 : 0),
     $cids_1 = array('atmodules:at_base:', 'atmodules:at_base:services', 'atmodules:at_base:twig_functions');
@@ -47,7 +55,5 @@ abstract class UnitTestCase extends \DrupalUnitTestCase {
     foreach ($cids_2 as $cid) {
       at_container('wrapper.cache')->set($cid, $data_2, 'cache_bootstrap');
     }
-
-    parent::setUp('at_base', 'atest_base');
   }
 }

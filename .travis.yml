@@ -20,9 +20,8 @@ install:
   # ---------------------
   # Install Drush
   # ---------------------
-  - pear channel-discover pear.drush.org
-  - pear install drush/drush-5.8.0
-  - phpenv rehash
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - composer global require drush/drush:dev-master
 
   # ---------------------
   # Setup DB
@@ -33,7 +32,9 @@ before_script:
   # ---------------------
   # Variables
   # ---------------------
-  - cd ../..
+  - cd ..
+  - export VENDOR=`pwd`
+  - cd ..
   - export DRUPAL=`pwd`'/drupal/'
 
   # ---------------------
@@ -44,7 +45,7 @@ before_script:
   - mv atest_profile-master $DRUPAL
   - cd $DRUPAL
   - drush si testing --db-url=mysql://root:@localhost/drupal --yes
-  - mv ../andytruong/* sites/all/modules/
+  - mv $VENDOR/* sites/all/modules/
 
   # ---------------------
   # Prepare env for the module
