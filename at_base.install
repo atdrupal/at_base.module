@@ -17,7 +17,42 @@ function at_base_schema() {
     'primary key' => array('bin', 'cid', 'tag'),
     'indexes' => array('tag' => array('tag')),
   );
+
+  $schema['at_kv'] = array(
+    'description' => 'Key-Value storage table',
+    'fields' => array(
+      'collection' => array('type' => 'varchar', 'length' => 128, 'not null' => TRUE, 'default' => ''),
+      'name'       => array('type' => 'varchar', 'length' => 128, 'not null' => TRUE, 'default' => ''),
+      'value'      => array('type' => 'blob',                     'not null' => TRUE, 'size' => 'big'),
+    ),
+    'primary key' => array('collection', 'name'),
+  );
+
+  $schema['at_kv_expire'] = array(
+    'description' => 'Key-Value storage table with an expiration',
+    'fields' => array(
+      'collection' => array('type' => 'varchar', 'length' => 128, 'not null' => TRUE, 'default' => ''),
+      'name'       => array('type' => 'varchar', 'length' => 128, 'not null' => TRUE, 'default' => ''),
+      'value'      => array('type' => 'blob',                     'not null' => TRUE, 'size' => 'big'),
+      'expire'     => array('type' => 'int',                      'not null' => TRUE, 'default' => 2147483647),
+    ),
+    'primary key' => array('collection', 'name'),
+    'indexes' => array(
+      'all' => array('name', 'collection', 'expire'),
+      'expire' => array('expire'),
+    ),
+  );
+
   return $schema;
+}
+
+/**
+ * Implements hook_update_N()
+ */
+function at_base_update_7201() {
+  $schema = at_base_schema();
+  db_create_table('at_kv',        $schema['at_kv']);
+  db_create_table('at_kv_expire', $schema['at_kv_expire']);
 }
 
 /**
@@ -46,7 +81,7 @@ function at_base_requirements($phase) {
 
   $requirements['at_base_yaml'] = array(
     'title' => '<strong>at_base.module</strong> YAML Reader',
-    'value' => function_exists('drupal_get_path') 
+    'value' => function_exists('drupal_get_path')
       ? ($fn == 'yaml_parse' ? 'yaml extension' : 'spyc')
       : $t('Unavailable'),
     'description' => $t('There is no YAML reader available. Please install yaml pecl extension or run drush atr to download spyc library.'),
