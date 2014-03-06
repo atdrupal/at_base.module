@@ -8,13 +8,25 @@ class Process {
   private $data;
   private $args;
 
+  /**
+   * @var Process_Call
+   */
+  private $caller;
+
   public function __construct($data, $args) {
     $this->data = $data;
     $this->args = $args ? $args : array();
+
+    if (!empty($data['before']) || !empty($data['after'])) {
+      $this->caller = new Process_Call(
+        !empty($data['before']) ? $data['before'] : array(),
+        !empty($data['after']) ? $data['after'] : array()
+      );
+    }
   }
 
   public function execute() {
-    $this->runBefore();
+    !empty($this->caller) && $this->caller->callBefore();
 
     foreach (get_class_methods(get_class($this)) as $method) {
       if ('process' === substr($method, 0, 7)) {
@@ -24,27 +36,7 @@ class Process {
       }
     }
 
-    $this->runAfter();
-  }
-
-  private function runAfter() {
-    $this->runBefore('after');
-  }
-
-  private function runBefore($key = 'before') {
-    if (!empty($this->data[$key])) {
-      $this->runCallbacks($this->data[$key]);
-    }
-  }
-
-  private function runCallbacks($calls) {
-    $cr = at_container('helper.controller.resolver');
-    foreach ($calls as $call) {
-      $call = is_string($call) ? array($call, array()) : $call;
-      if ($controller = $cr->get($call[0])) {
-        call_user_func_array($controller, isset($call[1]) ? $call[1] : array());
-      }
-    }
+    !empty($this->caller) && $this->caller->callAfter();
   }
 
   private function processFunction() {
