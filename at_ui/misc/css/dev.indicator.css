@@ -1,19 +1,17 @@
 
 #environment-indicator {
-  background-color: rgb(208, 12, 12);
-  position: fixed; top: 0px; bottom: 0px; left: 0px;
-  width: 30px;
+  /*background-color: rgb(208, 12, 12); Red */
+  /*background-color: rgb(0, 88, 142); Drupal blue */
+  background-color: rgb(73, 171, 191); /* GO1 light blue */
+  position: fixed; top: 0; bottom: 0; right: 0;
+  width: 20px;
   color: #FFFFFF;
   text-align: center;
-  font-weight: bold;
-  z-index: 1000;
-  padding-top: 5px;
+  font-weight: normal;
+  z-index: 200;
+  padding-top: 120px;
 }
 
 body.environment-indicator-adjust.environment-indicator-left {
-  margin-left: 30px;
-}
-
-body.environment-indicator-adjust.environment-indicator-left #toolbar {
-  margin-left: 10px;
+  /*margin-left: 20px;*/
 }
