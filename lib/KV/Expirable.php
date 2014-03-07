@@ -2,6 +2,11 @@
 
 namespace Drupal\at_base\KV;
 
+/**
+ * Callback for kv.expirable service.
+ *
+ * Mostly copied from Drupal\Core\KeyValueStore\DatabaseStorageExpirable
+ */
 class Expirable extends \Drupal\at_base\KV {
   public function __construct($collection, $table = 'at_kv_expire') {
     parent::__construct($collection, $table);

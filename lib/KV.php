@@ -2,6 +2,11 @@
 
 namespace Drupal\at_base;
 
+/**
+ * Callback for kv service.
+ *
+ * Mostly copied from Drupal\Core\KeyValueStore\DatabaseStorage
+ */
 class KV extends \Drupal\at_base\KV\StorageBase {
   /**
    * @var string
