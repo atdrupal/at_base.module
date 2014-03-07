@@ -5,7 +5,7 @@ namespace Drupal\at_base\Tests\Web;
 /**
  * Test case for Key-Value storage
  *
- *    drush test-run --dirty 'Drupal\at_base\Tests\Unit\KVTest'
+ *    drush test-run --dirty 'Drupal\at_base\Tests\Web\KVTest'
  */
 class KVTest extends \DrupalWebTestCase {
   public function getInfo() {
@@ -14,6 +14,11 @@ class KVTest extends \DrupalWebTestCase {
       'description' => 'Check Key-Value storage functionality',
       'group' => 'AT Web',
     );
+  }
+
+  public function setUp() {
+    $this->profile = 'testing';
+    parent::setUp('atest_base', 'atest_route');
   }
 
   private function getKV($collection = 'atest') {
@@ -64,10 +69,13 @@ class KVTest extends \DrupalWebTestCase {
   public function testSetGetDeleteMultiple() {
     $kv = $this->getKV();
 
+    // Clean everything
+    $kv->deleteAll();
+
     $kv->setMultiple(array('first_name' => 'Andy', 'last_name' => 'Truong'));
-    list($first_name, $last_name) = $kv->getMultiple(array('first_name', 'last_name'));
-    $this->assertEqual('Andy', $first_name);
-    $this->assertEqual('Truong', $last_name);
+    $values = $kv->getMultiple(array('first_name', 'last_name'));
+    $this->assertEqual('Andy', $values['first_name']);
+    $this->assertEqual('Truong', $values['last_name']);
   }
 
   public function testGetDeleteAll() {
@@ -78,9 +86,9 @@ class KVTest extends \DrupalWebTestCase {
 
     // Check getAll()
     $kv->setMultiple(array('first_name' => 'Andy', 'last_name' => 'Truong'));
-    list($first_name, $last_name) = $kv->getAll();
-    $this->assertEqual('Andy', $first_name);
-    $this->assertEqual('Truong', $last_name);
+    $values = $kv->getAll();
+    $this->assertEqual('Andy', $values['first_name']);
+    $this->assertEqual('Truong', $values['last_name']);
 
     // Check deleteAll()
     $kv->deleteAll();
@@ -95,21 +103,22 @@ class KVTest extends \DrupalWebTestCase {
     $time = time();
 
     // Setup value now $time
-    at_fn_fake('time', function() use ($time) { return $time; });
-    $kv->setWithExpire('minute', date('m'), 60);
+    \at_fake::time(function() use ($time) { return $time; });
+    $kv->setWithExpire('minute', 60, 60);
     $this->assertEqual(60, $kv->get('minute'));
 
     // $time after 61 seconds
-    at_fn_fake('time', function() use ($time) { return $time; });
+    \at_fake::time(function() use ($time) { return $time + 61; });
     $this->assertNull($kv->get('minute'));
 
     // Back to $time
-    at_fn_fake('time', function() use ($time) { return $time; });
+    \at_fake::time(function() use ($time) { return $time; });
     $kv->setMultipleWithExpire(array('hour' => 3600, 'day' => 86400), 60);
     $this->assertEqual(3600,  $kv->get('hour'));
     $this->assertEqual(86400, $kv->get('day'));
 
     // $time after 61 seconds
+    \at_fake::time(function() use ($time) { return $time + 61; });
     $this->assertNull($kv->get('hour'));
     $this->assertNull($kv->get('day'));
   }

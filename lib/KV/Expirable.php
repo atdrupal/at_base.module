@@ -4,10 +4,10 @@ namespace Drupal\at_base\KV;
 
 class Expirable extends \Drupal\at_base\KV {
   public function __construct($collection, $table = 'at_kv_expire') {
-    parent::__construct($collection, $connection, $table);
+    parent::__construct($collection, $table);
   }
 
-  public function getMultiple() {
+  public function getMultiple($keys) {
     $values = $this->db
       ->query(
         'SELECT name, value'
@@ -15,7 +15,7 @@ class Expirable extends \Drupal\at_base\KV {
           . '  WHERE expire > :now AND name IN (:keys) AND collection = :collection'
         ,
         array(
-          ':now' => REQUEST_TIME,
+          ':now' => \at_fn::time(),
           ':keys' => $keys,
           ':collection' => $this->collection,
         ))
@@ -32,27 +32,27 @@ class Expirable extends \Drupal\at_base\KV {
         ,
         array(
           ':collection' => $this->collection,
-          ':now' => REQUEST_TIME,
+          ':now' => \at_fn::time(),
         )
       )->fetchAllKeyed();
     return array_map('unserialize', $values);
   }
 
-  public function setWithExpire() {
+  public function setWithExpire($key, $value, $expire) {
     $this->db->merge($this->table)
-      ->keys(array('name' => $key, 'collection' => $this->collection))
-      ->fields(array('value' => serialize($value), 'expire' => REQUEST_TIME + $expire))
+      ->key(array('name' => $key, 'collection' => $this->collection))
+      ->fields(array('value' => serialize($value), 'expire' => \at_fn::time() + $expire))
       ->execute()
     ;
   }
 
-  public function setWithExpireIfNotExists() {
+  public function setWithExpireIfNotExists($key, $value, $expire) {
     return \MergeQuery::STATUS_INSERT == $this->db->merge($this->table)
       ->insertFields(array(
         'collection' => $this->collection,
         'name' => $key,
         'value' => serialize($value),
-        'expire' => REQUEST_TIME + $expire,
+        'expire' => \at_fn::time() + $expire,
       ))
       ->condition('collection', $this->collection)
       ->condition('name', $key)
