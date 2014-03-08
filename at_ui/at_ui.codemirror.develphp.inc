@@ -29,16 +29,22 @@ function at_ui_form_devel_execute_form_alter(&$form, $form_state) {
 function at_ui_form_devel_execute_form_alter_ajax_callback($form, &$form_state) {
   $_SESSION['php_execute_code'] = $code = $form_state['values']['code'];
 
-  try {
-    ob_start();
-    print eval($code);
-    $output = ob_get_clean();
+  if (FALSE !== strpos($code, 'return ')) {
+    atsm(eval($code));
   }
-  catch (Exception $e) {
-    $output = $e->getMessage();
+  else {
+    try {
+      ob_start();
+      print eval($code);
+      $output = ob_get_clean();
+    }
+    catch (Exception $e) {
+      $output = $e->getMessage();
+    }
+
+    // Render
+    $form['result']['#markup'] = kprint_r($output, TRUE);
   }
 
-  // Render
-  $form['result']['#markup'] = kprint_r($output, TRUE);
   return $form['result'];
 }
