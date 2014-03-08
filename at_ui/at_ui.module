@@ -60,4 +60,8 @@ function at_ui_menu_alter(&$menu) {
     = $menu['taxonomy/term/%taxonomy_term/devel']['page arguments']
     = $menu['taxonomy/term/%taxonomy_term/devel/render']['page arguments']
     = array(1);
+
+  $menu['taxonomy/term/%taxonomy_term/devel']['page arguments']
+    = $menu['taxonomy/term/%taxonomy_term/devel/render']['page arguments']
+    = array(2);
 }
