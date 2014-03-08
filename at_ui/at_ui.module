@@ -64,4 +64,9 @@ function at_ui_menu_alter(&$menu) {
   $menu['taxonomy/term/%taxonomy_term/devel']['page arguments']
     = $menu['taxonomy/term/%taxonomy_term/devel/render']['page arguments']
     = array(2);
+
+  if (isset($menu['block/%bean_delta/devel'])) {
+    $menu['block/%bean_delta/devel']['page callback'] = 'atdr';
+    $menu['block/%bean_delta/devel']['page arguments'] = array(1);
+  }
 }
