@@ -24,9 +24,9 @@ function atdr() {
   }
 }
 
-function at_trace() {
+function at_trace($trace = null) {
   require_once at_library('kint') . '/Kint.class.php';
-  Kint::trace();
+  Kint::trace($trace);
 }
 
 function atd() {
