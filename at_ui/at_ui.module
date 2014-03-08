@@ -67,6 +67,8 @@ function at_ui_menu_alter(&$menu) {
 
   if (isset($menu['block/%bean_delta/devel'])) {
     $menu['block/%bean_delta/devel']['page callback'] = 'atdr';
+    $menu['block/%bean_delta/devel/render']['page callback'] = 'atdr';
     $menu['block/%bean_delta/devel']['page arguments'] = array(1);
+    $menu['block/%bean_delta/devel/render']['page arguments'] = array(1);
   }
 }
