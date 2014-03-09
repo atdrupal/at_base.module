@@ -12,9 +12,13 @@ abstract class Views_Base {
   protected $arguments = array();
   protected $template;
 
-  public function constructTradition($name, $display_id = 'default', $arguments = array()) {
+  public function constructTradition() {
+    $arguments = func_get_args();
+
+    $name = array_shift($arguments);
+    $display_id = array_shift($arguments);
+
     $this->setName($name);
-    $this->name = $name;
     $this->setDisplayId($display_id);
     $this->setArguments($arguments);
   }
