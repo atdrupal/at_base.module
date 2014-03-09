@@ -39,6 +39,8 @@ abstract class Views_Base {
   }
 
   public function setName($name) {
+    $this->name = $name;
+
     if (!$this->view = views_get_view($name)) {
       throw new \Exception('<!-- View not found: '. $this->name . ' -->');
     }
@@ -66,8 +68,10 @@ abstract class Views_Base {
   }
 
   public function setPager($pager) {
-    if (!empty($pager)) {
-      $this->view->display[$this->display_id]->display_options['pager'] = $pager;
-    }
+    $this->view->display[$this->display_id]->display_options['pager'] = $pager;
+    $this->view->display_handler->set_option('pager', $pager);
+
+    unset($this->view->query->pager);
+    $this->view->init_pager();
   }
 }
