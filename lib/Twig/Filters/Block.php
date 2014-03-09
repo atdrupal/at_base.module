@@ -59,6 +59,9 @@ class Block {
     return $block;
   }
 
+  /**
+   * @param string $string
+   */
   private function findLoadKeys($string) {
     $string = explode(':', $string);
     if (2 !== count($string)) {
