@@ -12,6 +12,8 @@ abstract class StorageBase {
     return $this->collection;
   }
 
+  abstract public function getMultiple($keys);
+
   public function get($key, $default = NULL) {
     $values = $this->getMultiple(array($key));
     return isset($values[$key]) ? $values[$key] : $default;
