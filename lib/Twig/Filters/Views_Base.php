@@ -3,8 +3,7 @@
 namespace Drupal\at_base\Twig\Filters;
 
 /**
- * Callback for drupalView Twig filter.
- *
+ * Base class for drupalView twig filter, provide basic get/set methods.
  */
 abstract class Views_Base {
   protected $name;
