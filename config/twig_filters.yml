@@ -24,7 +24,33 @@ twig_filters:
   #   {{ 'viewName'|drupalView('default') }}
   #   {{ 'viewName'|drupalView('default', arg1, arg2, arg3) }}
   #   {{ 'viewName'|drupalView({template: '@at_base/templates/views_view.html.twig'}) }}
-  #   {{ 'viewName'|drupalView({template: '...', display_id: 'default', arguments: [arg1, arg2, arg3]}) }}
+  #   {{ 'viewName'|drupalView({
+  #           template: '…'
+  #           , display_id: 'default'
+  #           , arguments: [arg1, arg2, arg3]
+  #           # ---
+  #           # Pager
+  #           # ---
+  #             # Display a specified number of items
+  #             , pager: some, items_per_page: 10
+  #             # Display all items
+  #             , pager: none
+  #             # Paged output, full pager
+  #               , pager: full
+  #               , offset: 0
+  #               , items_per_page: 10
+  #               # Number of pager links visible, The total number of pages. Leave empty to show all pages.
+  #               , total_pages: 5
+  #               # Number of pager links visible, Specify the number of links to pages to display in the pager.
+  #               , quantity: 5
+  #               # Tags
+  #               , tags.first: '« first', tags.previous: '« first'
+  #               , tags.next: 'next ›', tags.last: 'last »'
+  #             # Paged output, mini pager
+  #             , pager: mini, offset: 0, items_per_page: 10
+  #           , offset: 0
+  #      })
+  #   }}
   drupalView: [\Drupal\at_base\Twig\Filters\Views, render]
 
   # ---------------------
