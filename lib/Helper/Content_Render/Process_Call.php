@@ -3,21 +3,15 @@ namespace Drupal\at_base\Helper\Content_Render;
 
 class Process_Call {
   private $before;
-  private $after;
 
-  public function __construct($before, $after) {
+  public function __construct($before) {
     $this->before = $before;
-    $this->after = $after;
   }
 
   public function callBefore($key = 'before') {
     if (!empty($this->$key)) {
       $this->runCallbacks($this->$key);
     }
-  }
-
-  public function callAfter() {
-    $this->callBefore('after');
   }
 
   private function runCallbacks($calls) {

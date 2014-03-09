@@ -17,10 +17,9 @@ class Process {
     $this->data = $data;
     $this->args = $args ? $args : array();
 
-    if (!empty($data['before']) || !empty($data['after'])) {
+    if (!empty($data['before'])) {
       $this->caller = new Process_Call(
-        !empty($data['before']) ? $data['before'] : array(),
-        !empty($data['after']) ? $data['after'] : array()
+        !empty($data['before']) ? $data['before'] : array()
       );
     }
   }
@@ -30,13 +29,14 @@ class Process {
 
     foreach (get_class_methods(get_class($this)) as $method) {
       if ('process' === substr($method, 0, 7)) {
-        if ($return = $this->{$method}()) {
+        $return = $this->{$method}();
+        if (!is_null($return)) {
           return $return;
         }
       }
     }
 
-    !empty($this->caller) && $this->caller->callAfter();
+    throw new \Exception('Unsupported data structure.');
   }
 
   private function processFunction() {
