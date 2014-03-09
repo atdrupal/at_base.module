@@ -39,6 +39,9 @@ class Extension extends \Twig_Extension {
     );
   }
 
+  /**
+   * @param string $base_class
+   */
   private function getMagicItems($base_class) {
     $items = array();
 

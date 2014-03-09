@@ -42,6 +42,10 @@ class Container extends \Pimple {
     };
   }
 
+  /**
+   * @param  int $id
+   * @param  array $def
+   */
   public function initService($id, $def) {
     $callback = $this->getServiceCallback($id, $def);
 
