@@ -32,22 +32,25 @@ twig_filters:
   #           # Pager
   #           # ---
   #             # Display a specified number of items
-  #             , pager: some, items_per_page: 10
+  #               , pager: { type: some, options: { items_per_page: 10 } }
   #             # Display all items
-  #             , pager: none
+  #               , pager: { type: none }
   #             # Paged output, full pager
-  #               , pager: full
-  #               , offset: 0
-  #               , items_per_page: 10
-  #               # Number of pager links visible, The total number of pages. Leave empty to show all pages.
-  #               , total_pages: 5
-  #               # Number of pager links visible, Specify the number of links to pages to display in the pager.
-  #               , quantity: 5
-  #               # Tags
-  #               , tags.first: '« first', tags.previous: '« first'
-  #               , tags.next: 'next ›', tags.last: 'last »'
+  #               , pager: {
+  #                 type: full
+  #                 options: {
+  #                   , offset: 0 # The number of items to skip. For example, if this field is 3, the first 3 items will be skipped and not displayed.
+  #                   , items_per_page: 10 # Items to display, The number of items to display. Enter 0 for no limit.
+  #                   , total_pages: 5 # Number of pager links visible, The total number of pages. Leave empty to show all pages.
+  #                   , quantity: 5 # Number of pager links visible, Specify the number of links to pages to display in the pager.
+  #                   , tags: { first: '« first', previous: '« first', next: 'next ›' , last: 'last »' }
+  #                 }
+  #               }
   #             # Paged output, mini pager
-  #             , pager: mini, offset: 0, items_per_page: 10
+  #               , pager: {
+  #                 type: mini
+  #                 , options: {} # Similar to full pager
+  #               }
   #           , offset: 0
   #      })
   #   }}
