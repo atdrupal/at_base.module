@@ -1,16 +1,33 @@
 <?php
 namespace Drupal\at_base\Helper\Content_Render;
 
+/**
+ * @todo  Doc & Test for $data['before'], $data['after']
+ */
 class Process {
   private $data;
   private $args;
 
+  /**
+   * @var Process_Call
+   */
+  private $caller;
+
   public function __construct($data, $args) {
     $this->data = $data;
     $this->args = $args ? $args : array();
+
+    if (!empty($data['before']) || !empty($data['after'])) {
+      $this->caller = new Process_Call(
+        !empty($data['before']) ? $data['before'] : array(),
+        !empty($data['after']) ? $data['after'] : array()
+      );
+    }
   }
 
   public function execute() {
+    !empty($this->caller) && $this->caller->callBefore();
+
     foreach (get_class_methods(get_class($this)) as $method) {
       if ('process' === substr($method, 0, 7)) {
         if ($return = $this->{$method}()) {
@@ -18,6 +35,8 @@ class Process {
         }
       }
     }
+
+    !empty($this->caller) && $this->caller->callAfter();
   }
 
   private function processFunction() {

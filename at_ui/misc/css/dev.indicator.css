@@ -1,0 +1,9 @@
+#environment-indicator {
+  background-color: rgb(73, 171, 191);
+  position: fixed; top: 0; bottom: 0; right: 0; z-index: 200;
+  color: #FFFFFF;
+  width: 15px;
+  text-align: center;
+  font-weight: normal; font-size: 0.9em;
+  padding-top: 80px;
+}

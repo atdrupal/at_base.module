@@ -1,0 +1,25 @@
+routes:
+  at/sql:
+    title: Execute SQL Query
+    # Permisison defined by devel.module
+    access arguments: ['execute php code']
+    file: at_ui.atsql.inc
+    page callback: drupal_get_form
+    page arguments: ['at_ui_sql_form']
+    before:
+      - [at_ui_include_codemirror, [['mode/sql/sql.js']]]
+      - [drupal_add_js,  ['@at_ui/misc/js/at.sql.js']]
+      - [drupal_add_css, ['@at_ui/misc/css/cm.css']]
+
+  at/twig:
+    title: Twig Form
+    access arguments: ['execute php code']
+    file: at_ui.codemirror.attwig.inc
+    page callback: drupal_get_form
+    page arguments: ['at_ui_twig_form']
+    form: 'Drupal\at_ui\Controller\TwigFormController'
+    form arguments: []
+    before:
+      - [at_ui_include_codemirror, [['mode/htmlmixed/htmlmixed.js', 'mode/xml/xml.js', 'addon/mode/overlay.js']]]
+      - [drupal_add_js, ['@at_ui/misc/js/at.twig.js']]
+      - [drupal_add_css, ['@at_ui/misc/css/cm.css']]

@@ -1,0 +1,13 @@
+projects:
+  code.mirror:
+    type: library
+    download:
+      type: git
+      url: 'https://github.com/marijnh/CodeMirror.git'
+      branch: 3.22.0
+  kint:
+    type: library
+    download:
+      type: git
+      url: 'https://github.com/raveren/kint.git'
+      branch: v0.9
