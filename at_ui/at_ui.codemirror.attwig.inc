@@ -35,7 +35,14 @@ function at_ui_twig_form_ajax_callback($form, &$form_state) {
   $_SESSION['twig_execute_code'] = $code = $form_state['values']['string'];
 
   ob_start();
-  print at_container('twig_string')->render($code);
+  try {
+    print at_container('twig_string')->render($code);
+  }
+  catch (Exception $e) {
+    drupal_set_message($e->getMessage());
+    at_trace($e->getTrace(), 'message');
+  }
+
   $output = ob_get_clean();
 
   // Render
