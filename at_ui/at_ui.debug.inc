@@ -24,9 +24,26 @@ function atdr() {
   }
 }
 
-function at_trace($trace = null) {
+function at_trace($trace = null, $return = 'print') {
   require_once at_library('kint') . '/Kint.class.php';
+
+  ob_start();
   Kint::trace($trace);
+  $output = ob_get_clean();
+
+  switch ($return) {
+    case 'message';
+      drupal_set_message($output);
+      break;
+
+    case 'return':
+      return $output;
+
+    case 'print':
+    default:
+      echo $output;
+      break;
+  }
 }
 
 function atd() {
