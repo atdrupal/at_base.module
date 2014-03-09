@@ -54,7 +54,7 @@ twig_filters:
   #           , offset: 0
   #      })
   #   }}
-  drupalView: [\Drupal\at_base\Twig\Filters\Views, render]
+  __drupalView: [\Drupal\at_base\Twig\Filters\Views, render]
 
   # ---------------------
   # Contributed modules
