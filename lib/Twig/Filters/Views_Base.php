@@ -16,7 +16,7 @@ abstract class Views_Base {
     $arguments = func_get_args();
 
     $name = array_shift($arguments);
-    $display_id = array_shift($arguments);
+    $display_id = isset($arguments[0]) ? array_shift($arguments) : 'default';
 
     $this->setName($name);
     $this->setDisplayId($display_id);
