@@ -22,6 +22,7 @@ Provide some more API for developer to work with Drupal 7.
 ### Features
 
 - [Autoload](https://github.com/atdrupal/at_base/wiki/7.x-2.x-autoload)
+- [Key-Value storage](https://github.com/atdrupal/at_base/wiki/7.x-2.x-kv)
 - [Config](https://github.com/atdrupal/at_base/wiki/7.x-2.x-config)
 - [Service Container](https://github.com/atdrupal/at_base/wiki/7.x-2.x-service-container)
 - [Easy Routing](https://github.com/atdrupal/at_base/wiki/7.x-2.x-easy-routing)

@@ -1,0 +1,8 @@
+services:
+  kv:
+    reuse: false
+    class: Drupal\at_base\KV
+
+  kv.expirable:
+    reuse: false
+    class: Drupal\at_base\KV\Expirable
