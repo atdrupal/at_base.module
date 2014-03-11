@@ -50,7 +50,6 @@ function at_ui_display_file($form, $form_state, $file, $type = 'unknow') {
 
     case 'yaml':
       at_ui_include_codemirror(array('mode/yaml/yaml.js'));
-      drupal_add_css(drupal_get_path('module', 'at_ui') . '/misc/css/cm.css');
       drupal_add_js('(function(){
         Drupal.behaviors.atuiDisplayFile = {
           attach: function(context, settings) {
@@ -66,7 +65,23 @@ function at_ui_display_file($form, $form_state, $file, $type = 'unknow') {
       })(jQuery);', 'inline');
       break;
 
-    case 'js':
+    case 'javascript':
+      at_ui_include_codemirror(array('mode/javascript/javascript.js'));
+      drupal_add_js('(function(){
+        Drupal.behaviors.atuiDisplayFile = {
+          attach: function(context, settings) {
+            var editor = CodeMirror.fromTextArea(document.getElementById("edit-code"), {
+              lineNumbers: true
+              , viewportMargin: Infinity
+              , readOnly: true
+              , theme: "monokai"
+              , mode: "text/javascript"
+            });
+          }
+        };
+      })(jQuery);', 'inline');
+      break;
+
     case 'php':
       at_ui_include_codemirror(array('mode/clike/clike.js', 'mode/php/php.js'));
       drupal_add_js(drupal_get_path('module', 'at_ui') . '/misc/js/devel.php.js');
