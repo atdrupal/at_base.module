@@ -64,8 +64,8 @@ class Controller extends \Drupal\at_base\Route\Controller {
     }
 
     $blocks['content']['atui_description'] = array(
-      'delta' => "atui_{$region}_description",
-      'subject' => "Region {$all_regions[$region]}",
+      'delta' => "atui_content_description",
+      'subject' => "Region " . $all_regions['content'],
       'content' => array('function' => 'drupal_get_form', 'arguments' => array('at_ui_route_form', $this->route)),
       'weight' => -500,
     );
