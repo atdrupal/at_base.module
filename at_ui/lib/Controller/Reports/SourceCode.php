@@ -93,38 +93,6 @@ class SourceCode {
   }
 
   private function renderModuleFile($file) {
-    switch (pathinfo($file, PATHINFO_EXTENSION)) {
-      case 'module':
-      case 'install':
-      case 'inc':
-      case 'php':
-        $type = 'php';
-        break;
-
-      case 'css':
-      case 'scss':
-      case 'less':
-        $type = 'css';
-        break;
-
-      case 'js':
-        $type = 'javascript';
-        break;
-
-      case 'twig':
-        $type = 'twig';
-        break;
-
-      case 'yml':
-      case 'yaml':
-        $type = 'yaml';
-        break;
-
-      default:
-        $type = 'unknown';
-        break;
-    }
-
     $bc = drupal_get_breadcrumb();
     $bc[] = l('Source', $this->base_path);
     $bc[] = l($this->module . '.module', $this->base_path, array('query' => array('module' => $this->module)));
@@ -134,6 +102,48 @@ class SourceCode {
       )));
     }
     drupal_set_breadcrumb($bc);
+
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mime_type = finfo_file($finfo, $file);
+    atsm($mime_type);
+
+    switch ($mime_type) {
+      case 'text/x-php':
+        $type = 'php'; break;
+
+      case 'image/png':
+      case 'image/jpg':
+      case 'image/jpeg':
+      case 'image/gif':
+        return '<img src="'. $GLOBALS['base_path'] . drupal_get_path('module', $this->module) .'/'. trim($this->path, '/') .'" />';
+
+      default:
+        $type = 'unknown';
+        break;
+    }
+
+    if ('unknown' === $type) {
+      switch (pathinfo($file, PATHINFO_EXTENSION)) {
+        case 'css':
+        case 'scss':
+        case 'less':
+          $type = 'css';
+          break;
+
+        case 'js':
+          $type = 'javascript';
+          break;
+
+        case 'twig':
+          $type = 'twig';
+          break;
+
+        case 'yml':
+        case 'yaml':
+          $type = 'yaml';
+          break;
+      }
+    }
 
     return drupal_get_form('at_ui_display_file', $file, $type);
   }
