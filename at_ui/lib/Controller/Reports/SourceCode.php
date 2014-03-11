@@ -77,14 +77,18 @@ class SourceCode {
 
       $_stats = stat($file);
 
-      $rows[] = array(
-        $_name,
+      $rows[$file] = array(
+        is_dir($file) ? "<strong>{$_name}/</strong>" : $_name,
         $_stats[4],
         $_stats[5],
         $this->formatFileSize($_stats[7]),
         format_date($_stats[9], 'short')
       );
     }
+
+    uksort($rows, function($a, $b) {
+      return is_dir($a) ? -1 : 1;
+    });
 
     return array('#theme' => 'table',
       '#header' => array('Name', 'UID', 'GID', 'Size', 'Modified'),
