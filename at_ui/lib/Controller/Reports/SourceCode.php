@@ -72,7 +72,7 @@ class SourceCode {
         $_name  = l($name, "{$this->base_path}", array('query' => array('module' => $this->module, 'path' => dirname($this->path))));
       }
       else {
-        $_name  = l($name, "{$this->base_path}", array('query' => array('module' => $this->module, 'path' => $this->path . '/' . $name)));
+        $_name  = l($name, "{$this->base_path}", array('query' => array('module' => $this->module, 'path' => trim($this->path . '/' . $name, '/'))));
       }
 
       $_stats = stat($file);
