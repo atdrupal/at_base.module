@@ -9,6 +9,11 @@ namespace Drupal\at_base\Twig\Filters;
  * @todo  Test pager option.
  */
 class Views extends Views_Base {
+  /**
+   * @var \Exception
+   */
+  private $exception;
+
   public function __construct() {
     $args = func_get_args();
 
@@ -17,7 +22,12 @@ class Views extends Views_Base {
       : 'constructFancy'
     ;
 
-    call_user_func_array(array($this, $method), $args);
+    try {
+      call_user_func_array(array($this, $method), $args);
+    }
+    catch (\Exception $e) {
+      $this->exception = $e;
+    }
   }
 
   /**
@@ -37,6 +47,10 @@ class Views extends Views_Base {
   }
 
   public function render() {
+    if (!empty($this->exception)) {
+      return $this->exception->getMessage();
+    }
+
     // No template, use default
     if (!$this->template && (!$this->template = $this->suggestTemplate())) {
       $this->view->pre_execute();

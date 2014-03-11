@@ -33,12 +33,18 @@ abstract class Views_Base {
       'pager'      => NULL,
     );
 
-    foreach ($loop as $k => $default_value) {
-      $method = 'set' . str_replace(' ', '', ucwords(str_replace('_', ' ', $k)));
-      $value = isset($options[$k]) ? $options[$k] : $default_value;
-      if (!is_null($value)) {
-        $this->{$method}($value);
+    try {
+      foreach ($loop as $k => $default_value) {
+        $method = 'set' . str_replace(' ', '', ucwords(str_replace('_', ' ', $k)));
+        $value = isset($options[$k]) ? $options[$k] : $default_value;
+        if (!is_null($value)) {
+          $this->{$method}($value);
+        }
       }
+    }
+    catch (\Exception $e) {
+      atd($e->getMessage());
+      at_trace($e->getTrace());
     }
   }
 
