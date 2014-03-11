@@ -105,7 +105,6 @@ class SourceCode {
 
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
     $mime_type = finfo_file($finfo, $file);
-    atsm($mime_type);
 
     switch ($mime_type) {
       case 'text/x-php':
