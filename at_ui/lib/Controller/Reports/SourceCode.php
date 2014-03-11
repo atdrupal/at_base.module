@@ -66,6 +66,7 @@ class SourceCode {
       if ($name === '.') { continue; }
       if ($name === '.DS_Store') { continue; }
       if ($name === '._.DS_Store') { continue; }
+      if ($name === 'nbproject') { continue; }
 
       $file   = "{$dir}/{$name}";
       if ($name === '..') {
@@ -82,12 +83,16 @@ class SourceCode {
         $_stats[4],
         $_stats[5],
         $this->formatFileSize($_stats[7]),
-        format_date($_stats[9], 'short')
+        format_date($_stats[9], 'short'),
       );
     }
 
     uksort($rows, function($a, $b) {
-      return is_dir($a) ? -1 : 1;
+      if (is_dir($a) && '..' === substr($a, -2)) return -1;
+      if (is_dir($b) && '..' === substr($b, -2)) return  1;
+      if (is_dir($a)) return -1;
+      if (is_dir($b)) return  1;
+      return strcmp(basename($a), basename($b)) < 0 ? -1 : 1;
     });
 
     return array('#theme' => 'table',
