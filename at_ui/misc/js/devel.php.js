@@ -12,6 +12,7 @@ $(function(){
     lineNumbers: true
     , matchBrackets: true
     , viewportMargin: Infinity
+    , readOnly: 0 === document.getElementsByClassName('form-submit').length
     , theme: 'monokai'
     , extraKeys: {'Cmd-S': save , 'Ctrl-S': save}
     , mode: 'text/x-php'

@@ -39,10 +39,11 @@ class View_Alter {
   protected $view_mode;
 
   public function __construct(&$build, $entity_type) {
+    $entity = isset($build['#entity']) ? $build['#entity'] : $build['#' . $entity_type];
     $this->build = &$build;
     $this->entity_type = $entity_type;
     $this->bundle = $build['#bundle'];
-    $this->id = entity_id($build['#' . $entity_type], $build['#entity']);
+    $this->id = entity_id($entity_type, $entity);
     $this->view_mode = $build['#view_mode'];
   }
 
