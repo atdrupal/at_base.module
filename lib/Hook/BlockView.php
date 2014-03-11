@@ -24,10 +24,17 @@ class BlockView {
     $info = $this->getInfo();
     $render = at_container('helper.content_render');
 
-    return array(
-      'subject' => $render->setData($info['subject'])->render(),
-      'content' => $render->setData($info['content'])->render(),
-    );
+    $block = array();
+    foreach (array('subject', 'content') as $k) {
+      try {
+        $block[$k] = $render->render($info[$k]);
+      }
+      catch (\Exception $e) {
+        $block[$k] = $e->getMessage();;
+      }
+    }
+
+    return $block;
   }
 
   private function getInfo() {
