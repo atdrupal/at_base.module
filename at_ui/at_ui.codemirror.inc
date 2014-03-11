@@ -45,7 +45,7 @@ function at_ui_display_file($form, $form_state, $file, $type = 'unknow') {
   switch ($type) {
     case 'twig':
       at_ui_include_codemirror(array('mode/htmlmixed/htmlmixed.js', 'mode/xml/xml.js', 'addon/mode/overlay.js'));
-      drupal_add_js('@at_ui/misc/js/at.twig.js');
+      drupal_add_js(drupal_get_path('module', 'at_ui') . '/misc/js/at.twig.js');
       break;
 
     case 'yaml':
