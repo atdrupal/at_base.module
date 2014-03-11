@@ -77,6 +77,9 @@ function at_base_entity_view($entity, $type, $view_mode, $langcode) {
 }
 
 if (defined('AT_BASE_ENTITY_TEMPLATE') && constant('AT_BASE_ENTITY_TEMPLATE')) {
+  /**
+   * Implements hook_entity_view_alter()
+   */
   function at_base_entity_view_alter(&$build, $entity_type) {
     at_id(new Hook_Entity_View_Alter($build, $entity_type))->execute();
   }
