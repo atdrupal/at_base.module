@@ -99,6 +99,12 @@ class SourceCode {
         $type = 'php';
         break;
 
+      case 'css':
+      case 'scss':
+      case 'less':
+        $type = 'css';
+        break;
+
       case 'js':
         $type = 'javascript';
         break;

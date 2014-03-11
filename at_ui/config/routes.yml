@@ -4,6 +4,7 @@ routes:
     access arguments: ['at-doc access']
     controller: ['Drupal\at_ui\Controller\Reports\Routes', 'render']
     type: constant('MENU_LOCAL_TASK')
+    weight: -200
 
   admin/reports/documentation/at_base/routes:
     title: Routes

@@ -65,6 +65,23 @@ function at_ui_display_file($form, $form_state, $file, $type = 'unknow') {
       })(jQuery);', 'inline');
       break;
 
+    case 'css':
+      at_ui_include_codemirror(array('mode/css/css.js'));
+      drupal_add_js('(function(){
+        Drupal.behaviors.atuiDisplayFile = {
+          attach: function(context, settings) {
+            var editor = CodeMirror.fromTextArea(document.getElementById("edit-code"), {
+              lineNumbers: true
+              , viewportMargin: Infinity
+              , readOnly: true
+              , theme: "monokai"
+              , mode: "text/css"
+            });
+          }
+        };
+      })(jQuery);', 'inline');
+      break;
+
     case 'javascript':
       at_ui_include_codemirror(array('mode/javascript/javascript.js'));
       drupal_add_js('(function(){
