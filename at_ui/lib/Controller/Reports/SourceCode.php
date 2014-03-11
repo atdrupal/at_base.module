@@ -64,6 +64,8 @@ class SourceCode {
 
     foreach (scandir($dir) as $name) {
       if ($name === '.') { continue; }
+      if ($name === '.DS_Store') { continue; }
+      if ($name === '._.DS_Store') { continue; }
 
       $file   = "{$dir}/{$name}";
       if ($name === '..') {
