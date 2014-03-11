@@ -123,6 +123,13 @@ class SourceCode {
 
     if ('unknown' === $type) {
       switch (pathinfo($file, PATHINFO_EXTENSION)) {
+        case 'module':
+        case 'install':
+        case 'inc':
+        case 'php':
+          $type = 'php';
+          break;
+
         case 'css':
         case 'scss':
         case 'less':
