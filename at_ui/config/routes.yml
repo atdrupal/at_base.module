@@ -11,6 +11,13 @@ routes:
     controller: ['Drupal\at_ui\Controller\Reports\Routes', 'render']
     type: constant('MENU_DEFAULT_LOCAL_TASK')
 
+  admin/reports/documentation/at_base/source:
+    title: Source
+    access arguments: ['at-doc access']
+    controller: ['Drupal\at_ui\Controller\Reports\SourceCode', 'render']
+    type: constant('MENU_LOCAL_TASK')
+    weight: 100
+
   admin/reports/documentation/at_base/entity-templates:
     title: Entity templates
     access arguments: ['at-doc access']

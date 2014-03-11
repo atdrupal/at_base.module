@@ -29,6 +29,7 @@ $(function(){
   var editor = CodeMirror.fromTextArea(document.getElementById('edit-string'), {
     lineNumbers: true
     , viewportMargin: Infinity
+    , readOnly: 0 === document.getElementsByClassName('form-submit').length
     , theme: 'monokai'
     , extraKeys: {'Cmd-S': save , 'Ctrl-S': save}
     , mode: 'mustache'
