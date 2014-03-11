@@ -37,7 +37,7 @@ function at_ui_codemirror_submit_shortcut_hint() {
 }
 
 /**
- *
+ * Display source code of a file support CodeMirror.
  */
 function at_ui_display_file($form, $form_state, $file, $type = 'unknow') {
   drupal_add_css(drupal_get_path('module', 'at_ui') . '/misc/css/cm.css');
