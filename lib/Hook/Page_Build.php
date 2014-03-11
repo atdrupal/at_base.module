@@ -37,6 +37,7 @@ class Page_Build {
   private function renderRegion($region, $blocks) {
     foreach ($blocks as &$block) {
       $block = $this->loadBlock($block);
+      $block->region = $region;
     }
 
     $output = _block_render_blocks($blocks);
@@ -83,8 +84,8 @@ class Page_Build {
    *  - { content: " 2 = {{ 1 + 1 }} " }
    *  - [ {template: '@my_module/templates/fancy_block.html.twig'}, { title: 'Block title', weight: 1000} ]
    *
-   * @param  [type] $config [description]
-   * @return [type]         [description]
+   * @param  array $config
+   * @return \stdClass
    */
   private function loadFancyBlock($config) {
     BlockView::setDynamicData(

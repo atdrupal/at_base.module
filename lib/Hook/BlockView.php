@@ -25,8 +25,8 @@ class BlockView {
     $render = at_container('helper.content_render');
 
     return array(
-      'subject' => $render->setData($info['subject'])->render(),
-      'content' => $render->setData($info['content'])->render(),
+      'subject' => $render->render($info['subject']),
+      'content' => $render->render($info['content']),
     );
   }
 

@@ -216,6 +216,26 @@ function at_modules($base_module = 'at_base', $config_file = '') {
 }
 
 /**
+ * Render font-icon. Browse available icons at http://fortawesome.github.io/Font-Awesome/icons/
+ *
+ * @todo  http://drupalcode.org/project/fontello.git/blob/refs/heads/7.x-1.x:/fontello.module
+ *
+ * @param  string $code
+ * @param  string $source Supported fontawesome, fontello
+ * @return string
+ */
+function at_icon($code, $source = 'fontawesome') {
+  static $ran = array();
+
+  if (is_null($ran[$source])) {
+    $ran[$source] = TRUE;
+    drupal_add_css(at_library($source, NULL, FALSE) . '/css/font-awesome.css');
+  }
+
+  return '<i class="fa '. $code .'"></i>';
+}
+
+/**
  * Generate path for library.
  *
  * @param  string $name
