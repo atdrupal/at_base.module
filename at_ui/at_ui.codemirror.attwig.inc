@@ -3,7 +3,7 @@
 function at_ui_twig_form($form, $form_state) {
   $form = array('#redirect' => FALSE);
 
-  $form['string'] = array(
+  $form['code'] = array(
     '#type' => 'textarea',
     '#resizable' => FALSE,
     '#default_value' => (isset($_SESSION['twig_execute_code'])
@@ -32,7 +32,7 @@ function at_ui_twig_form($form, $form_state) {
  * Ajax callback for at_ui_twig_form().
  */
 function at_ui_twig_form_ajax_callback($form, &$form_state) {
-  $_SESSION['twig_execute_code'] = $code = $form_state['values']['string'];
+  $_SESSION['twig_execute_code'] = $code = $form_state['values']['code'];
 
   ob_start();
   try {
