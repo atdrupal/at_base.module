@@ -4,6 +4,7 @@ require_once dirname(__FILE__) . '/at_base.module';
 require_once dirname(__FILE__) . '/drush/at_services.inc';
 require_once dirname(__FILE__) . '/drush/at_cache.inc';
 require_once dirname(__FILE__) . '/drush/at_twig.inc';
+require_once dirname(__FILE__) . '/drush/fontello.inc';
 
 /**
  * Implements hook_drush_command()
@@ -22,6 +23,15 @@ function at_base_drush_command() {
       'drush at_require module_name => Download dependencies for specific module'
     ),
     'aliases' => array('at-require', 'atr'),
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
+  );
+
+  $cmds['fontello'] = array(
+    'callback' => 'drush_fontello',
+    'description' => 'Build Fontello library.',
+    'examples' => array(
+      'drush fontello => Build Fontello library',
+    ),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
   );
 

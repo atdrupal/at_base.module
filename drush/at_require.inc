@@ -47,8 +47,11 @@ if (!function_exists('yaml_parse') && !is_file(DRUPAL_ROOT . '/sites/all/librari
     'download' => array(
       'type' => 'git',
       'url' => 'https://github.com/mustangostang/spyc.git',
-      'branch' => '0.5.1',
+      'branch' => 'master',
     ),
+    'patch' => array(
+      'https://github.com/mustangostang/spyc/pull/32.diff'
+    )
   );
 
   at_id(new DependencyFetcher($name, $info))->fetch();

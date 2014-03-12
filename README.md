@@ -15,7 +15,7 @@ Provide some more API for developer to work with Drupal 7.
   If you do have drush installed on your machine. You can download these libraries
   manually, then at them to ./sites/all/libraries.
 
-  - https://github.com/mustangostang/spyc.git v0.5.1
+  - https://github.com/mustangostang/spyc.git master
   - https://github.com/fabpot/Pimple.git Version v1.1.0
   - https://github.com/symfony/expression-language v2.4.0
 
