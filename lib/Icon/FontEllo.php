@@ -1,8 +1,6 @@
 <?php
 namespace Drupal\at_base\Icon;
 
-require_once DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php';
-
 class FontEllo implements IconInterface {
 
   public function generate($css_code) {
@@ -16,7 +14,7 @@ class FontEllo implements IconInterface {
       foreach ($sub_libs as $config_file => $sub_lib) {
         // Cache parsing config file.
         $config = at_cache("atfont:config_file:{$config_file}, + 1 year", function() use ($config_file) {
-          return \spyc_load_file($config_file);
+          return \yaml_parse_file($config_file);
         });
 
         if (!isset($config['glyphs'])) {
