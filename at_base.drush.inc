@@ -4,6 +4,7 @@ require_once dirname(__FILE__) . '/at_base.module';
 require_once dirname(__FILE__) . '/drush/at_services.inc';
 require_once dirname(__FILE__) . '/drush/at_cache.inc';
 require_once dirname(__FILE__) . '/drush/at_twig.inc';
+require_once dirname(__FILE__) . '/drush/at_entity_template.inc';
 
 /**
  * Implements hook_drush_command()
@@ -54,6 +55,16 @@ function at_base_drush_command() {
       'drush twig:doc drupalView' => 'View details of drupalView filter.'
     ),
     'aliases' => array('twig:doc'),
+  );
+
+  $cmds['at_template'] = array(
+    'callback' => 'drush_at_entity_template',
+    'description' => 'List configuration for entity template',
+    'examples' => array(
+      'drush at_template' => 'List all entity template configurations',
+      'drush at_template node' => 'List all entity template configurations for node entity',
+      'drush at_template node article' => 'List all entity template configurations for node/article entity',
+    ),
   );
 
   return $cmds;

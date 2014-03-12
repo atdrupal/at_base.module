@@ -7,7 +7,7 @@ Drupal.behaviors.atuiDevIndicator = {
         .addClass('environment-indicator-adjust environment-indicator-left')
         .append(
             '<div id="environment-indicator">'
-              + 'DEVELOPMENT ENVIRONMENT'.replace(/(.{1})/g, '$1<br />')
+              + 'DEVELOPMENT ENVIRONMENT  - GO1'.replace(/(.{1})/g, '$1<br />')
             + '</div>'
         )
       ;
