@@ -28,5 +28,7 @@ class FontAwesomeTest extends UnitTestCase {
 
     $css = drupal_static('drupal_add_css', array());
     $this->assertTrue(isset($css[at_library('fontawesome', NULL, FALSE) . '/css/font-awesome.css']), "fontawesome's css is added to page.");
+
+    $this->assertEqual('<i class="fa '. $css_code .'"></i>', at_icon($css_code, 'fontawesome'), 'at_icon return the same markup.');
   }
 }
