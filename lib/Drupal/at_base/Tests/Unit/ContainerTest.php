@@ -10,7 +10,7 @@ use Drupal\at_base\Helper\Test\UnitTestCase;
  *  drush test-run --dirty 'Drupal\at_base\Tests\Unit\ContainerTest'
  */
 class ContainerTest extends UnitTestCase {
-  public function getInfo() {
+  static public function getInfo() {
     return array('name' => 'AT Unit: Container') + parent::getInfo();
   }
 

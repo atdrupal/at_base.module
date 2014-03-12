@@ -8,7 +8,7 @@ use Drupal\at_base\Helper\Test\Cache;
 class BreadcrumbTest extends UnitTestCase {
   private $api;
 
-  public function getInfo() {
+  static public function getInfo() {
     return array('name' => 'AT Unit: Breadcrumb API') + parent::getInfo();
   }
 

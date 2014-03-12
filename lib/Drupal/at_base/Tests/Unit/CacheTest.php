@@ -11,7 +11,7 @@ class CacheTest extends UnitTestCase {
    */
   private $cache;
 
-  public function getInfo() {
+  static public function getInfo() {
     return array('name' => 'AT Unit: Cache') + parent::getInfo();
   }
 

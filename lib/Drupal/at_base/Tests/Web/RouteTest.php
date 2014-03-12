@@ -8,7 +8,7 @@ namespace Drupal\at_base\Tests\Web;
  * drush test-run --dirty 'Drupal\at_base\Tests\Web\RouteTest'
  */
 class RouteTest extends \DrupalWebTestCase {
-  public function getInfo() {
+  static public function getInfo() {
     return array(
       'name' => 'AT Base: Route',
       'description' => 'Make sure the routing feature is working correctly.',

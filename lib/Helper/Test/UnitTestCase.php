@@ -13,7 +13,7 @@ require_once dirname(__FILE__) . '/Database.php';
 abstract class UnitTestCase extends \DrupalUnitTestCase {
   protected $container;
 
-  public function getInfo() {
+  static public function getInfo() {
     return array(
       'name' => 'AT Unit',
       'description' => 'Make sure the at_cache() is working correctly.',
