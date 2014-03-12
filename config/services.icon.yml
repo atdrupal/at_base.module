@@ -1,0 +1,6 @@
+services:
+  icon.fontawesome:
+    class: Drupal\at_base\Icon\FontAwesome
+
+  icon.fontello:
+    class: Drupal\at_base\Icon\FontEllo

@@ -216,6 +216,20 @@ function at_modules($base_module = 'at_base', $config_file = '') {
 }
 
 /**
+ * Render font-icon.
+ * Browse available icons at http://fortawesome.github.io/Font-Awesome/icons/
+ * or http://fontello.com/
+ *
+ * @param string $css_code
+ * @param string $source
+ *   Supported fontawesome, fontello
+ * @return string
+ */
+function at_icon($css_code, $source = 'fontawesome') {
+  return at_container('icon.' . $source)->generate($css_code);
+}
+
+/**
  * Generate path for library.
  *
  * @param  string $name
