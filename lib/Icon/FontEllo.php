@@ -54,7 +54,7 @@ class FontEllo implements IconInterface {
       return '';
     }
 
-    $this->addFontCss($font_path, $font_name);
+    $this->addLoadingFontCss($font_path, $font_name);
 
     // Add css.
     if (empty($css_added[$css_code]) && !empty($code)) {
@@ -70,8 +70,9 @@ class FontEllo implements IconInterface {
 
     // Add library.
     if (!$libraries_added) {
-      drupal_add_css(at_library('fontello', NULL, FALSE) . 'assets/icons/src/css/animation.css');
-      drupal_add_css(at_library('fontello', NULL, FALSE) . 'assets/icons/src/css/icons-ie7.css', array('browsers' => array('IE' => 'IE 7', '!IE' => FALSE)));
+      $fontello_library_path = at_library('fontello', NULL, FALSE);
+      drupal_add_css($fontello_library_path . 'assets/icons/src/css/animation.css');
+      drupal_add_css($fontello_library_path . 'assets/icons/src/css/icons-ie7.css', array('browsers' => array('IE' => 'IE 7', '!IE' => FALSE)));
       $libraries_added = TRUE;
     }
 
@@ -85,7 +86,7 @@ class FontEllo implements IconInterface {
    * @param type $font_path
    * @param type $font_name
    */
-  public function addFontCss($font_path, $font_name) {
+  public function addLoadingFontCss($font_path, $font_name) {
     static $font_added = FALSE;
 
     if (empty($font_added[$font_name])) {
