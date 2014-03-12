@@ -9,7 +9,7 @@ class FontEllo implements IconInterface {
 
     // Cache css code map.
     $code = at_cache("atfont:code_map:{$css_code}, + 1 year", function() use ($css_code) {
-      $sub_libs = file_scan_directory(at_library('fontello', NULL, FALSE) . '/src', '/config.yml$/');
+      $sub_libs = file_scan_directory(at_library('fontello', NULL, FALSE) . 'src', '/config.yml$/');
 
       foreach ($sub_libs as $config_file => $sub_lib) {
         // Cache parsing config file.
@@ -26,7 +26,7 @@ class FontEllo implements IconInterface {
             $code = $glyph['code'];
 
             // Update code map.
-            return $code;
+            return dechex($code);
           }
         }
       }

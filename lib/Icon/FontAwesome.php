@@ -7,7 +7,7 @@ class FontAwesome implements IconInterface {
     static $libraries_added = FALSE;
 
     if (!$libraries_added) {
-      drupal_add_css(at_library('fontawesome', NULL, FALSE) . '/css/font-awesome.css');
+      drupal_add_css(at_library('fontawesome', NULL, FALSE) . 'css/font-awesome.css');
       $libraries_added = TRUE;
     }
 
