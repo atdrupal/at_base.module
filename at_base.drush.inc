@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/at_base.module';
 require_once dirname(__FILE__) . '/drush/at_services.inc';
 require_once dirname(__FILE__) . '/drush/at_cache.inc';
 require_once dirname(__FILE__) . '/drush/at_twig.inc';
-require_once dirname(__FILE__) . '/drush/fontello.inc';
+require_once dirname(__FILE__) . '/drush/at_fontello.inc';
 
 /**
  * Implements hook_drush_command()
