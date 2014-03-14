@@ -4,9 +4,7 @@ projects:
     download:
       type: git
       url: 'https://github.com/mustangostang/spyc.git'
-      branch: 'master'
-    patch:
-      - https://github.com/mustangostang/spyc/pull/32.diff
+      revision: 'b7fd7f7a4ddd70c4d599a023fcda3e2b9a20d4b9'
 
   pimple:
     type: library
