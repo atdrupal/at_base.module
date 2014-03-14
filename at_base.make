@@ -5,8 +5,7 @@ projects[drupal][version] = 7.x
 
 libraries[spyc][download][type] = 'git'
 libraries[spyc][download][url] = 'https://github.com/mustangostang/spyc.git'
-libraries[spyc][download][branch] = 'master'
-projects[addressfield][patch][] = "https://github.com/mustangostang/spyc/pull/32.diff"
+libraries[spyc][download][revision] = 'b7fd7f7a4ddd70c4d599a023fcda3e2b9a20d4b9'
 
 libraries[pimple][download][type] = 'git'
 libraries[pimple][download][url] = 'https://github.com/fabpot/Pimple.git'
