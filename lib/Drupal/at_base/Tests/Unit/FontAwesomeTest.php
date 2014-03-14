@@ -22,13 +22,20 @@ class FontAwesomeTest extends UnitTestCase {
 
   public function testGenerate() {
     $css_code = 'fa-camera-retro';
+    $expected_html = '<i class="fa '. $css_code .'"></i>';
+    $library_added = FALSE;
+    \at_fake::drupal_add_css(function($data = NULL, $options = NULL) use (&$library_added) {
+      $fontawesome_library_path = at_library('fontawesome', NULL, FALSE);
+      if ($data == $fontawesome_library_path . 'css/font-awesome.css') {
+        $library_added = TRUE;
+      }
+    });
 
-    $html = $this->service->generate($css_code);
-    $this->assertEqual('<i class="fa '. $css_code .'"></i>', $html, 'Service font.fontawesome generate the right html for icon.');
+    $icon = $this->service->get($css_code);
+    $this->assertEqual($expected_html, $icon->render(), 'Service icon.fontawesome generate the right html for icon.');
 
-    $css = drupal_static('drupal_add_css', array());
-    $this->assertTrue(isset($css[at_library('fontawesome', NULL, FALSE) . '/css/font-awesome.css']), "fontawesome's css is added to page.");
+    $this->assertEqual($expected_html, at_icon($css_code, 'icon.fontawesome'), 'at_icon return the same markup.');
 
-    $this->assertEqual('<i class="fa '. $css_code .'"></i>', at_icon($css_code, 'fontawesome'), 'at_icon return the same markup.');
+    $this->assertTrue($library_added, "fontawesome's css is added to page.");
   }
 }
