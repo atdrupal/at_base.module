@@ -18,8 +18,8 @@ class FontEllo implements IconInterface {
    *   Contain enough information to generate icon tag.
    */
   public function get($name) {
-    static $libraries_added = FALSE;
-    static $css_added = FALSE;
+    $libraries_added = &drupal_static('fontello_library_added');
+    $css_added = &drupal_static('fontello_inline_css_data_added');
 
     $css = array();
     $tag = 'i';
@@ -130,10 +130,10 @@ class FontEllo implements IconInterface {
    * @param type $font_name
    */
   public function getLoadingFontCss($font_path, $font_name) {
-    static $font_added = FALSE;
+    $css_added = &drupal_static('fontello_inline_css_loading_font_added');
 
-    if (empty($font_added[$font_name])) {
-      $font_added[$font_name] = TRUE;
+    if (empty($css_added[$font_name])) {
+      $css_added[$font_name] = TRUE;
 
       return array(
         'data' => "@font-face {
