@@ -87,7 +87,6 @@ class View_Alter {
       }
       catch (\Exception $e) {
         watchdog_exception(WATCHDOG_CRITICAL, $e);
-        return '<pre><code>' . $e->getMessage() . '</code></pre>';
       }
     }
   }
