@@ -28,6 +28,11 @@ namespace Drupal\at_base\Hook\Entity;
  * The configuration is cached, we need flush cache every time entity template
  * config file get updated.
  *
+ * Drush commands:
+ * 
+ *   - Use `drush at_template` to view templates configuration for all entity types.
+ *   - Use `drush at_template node` to view templates configuration for node bundles.
+ *
  * @todo  Test me
  * @todo  Update wiki
  */
