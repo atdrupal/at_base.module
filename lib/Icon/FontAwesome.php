@@ -16,7 +16,7 @@ class FontAwesome implements IconInterface {
    *   Contain enough information to generate icon tag.
    */
   public function get($name) {
-    static $libraries_added = FALSE;
+    $libraries_added = &drupal_static('fontawesome_library_added');
 
     $css = array();
     $tag = 'i';
