@@ -1,16 +1,36 @@
 <?php
 namespace Drupal\at_base\Icon;
 
+use Drupal\at_base\Icon;
+
 class FontAwesome implements IconInterface {
 
-  public function generate($css_code) {
+  /**
+   * Get Icon instance with information to generate icon tag.
+   *
+   * @staticvar boolean $libraries_added
+   * @param type $name
+   *   The name of icon in fontawesome.
+   *   Browse available icons at http://fortawesome.github.io/Font-Awesome/icons/
+   * @return \Drupal\at_base\Icon
+   *   Contain enough information to generate icon tag.
+   */
+  public function get($name) {
     static $libraries_added = FALSE;
 
+    $css = array();
+    $tag = 'i';
+    $class = 'fa ' . $name;
+    $text = '';
+
     if (!$libraries_added) {
-      drupal_add_css(at_library('fontawesome', NULL, FALSE) . 'css/font-awesome.css');
+      $css[] = array(
+        'data' => at_library('fontawesome', NULL, FALSE) . 'css/font-awesome.css',
+        'options' => NULL,
+      );
       $libraries_added = TRUE;
     }
 
-    return '<i class="fa '. $css_code .'"></i>';
+    return new Icon($css, $tag, $class, $text);
   }
 }

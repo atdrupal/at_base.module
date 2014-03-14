@@ -4,10 +4,10 @@ namespace Drupal\at_base\Icon;
 interface IconInterface {
 
   /**
-   * Generate html from css code.
+   * Get Icon instance with information to generate icon tag.
    *
    * @param string $css_code
-   * @return string
+   * @return \Drupal\at_base\Icon
    */
-  public function generate($css_code);
+  public function get($css_code);
 }
