@@ -82,7 +82,13 @@ class View_Alter {
         unset($config['blocks']);
       }
 
-      return at_container('helper.content_render')->render($config);
+      try {
+        return at_container('helper.content_render')->render($config);
+      }
+      catch (\Exception $e) {
+        watchdog_exception(WATCHDOG_CRITICAL, $e);
+        return '<pre><code>' . $e->getMessage() . '</code></pre>';
+      }
     }
   }
 
