@@ -12,6 +12,7 @@ abstract class Base {
 
   public function setDef($def) {
     $this->def = $def;
+    return $this;
   }
 
   public function setValue($value) {

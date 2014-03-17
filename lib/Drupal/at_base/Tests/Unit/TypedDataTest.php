@@ -144,7 +144,7 @@ class TypedDataTest extends UnitTestCase {
     $this->assertFalse($data->validate());
   }
 
-  public function testMapping() {
+  public function testMappingType() {
     $def = array(
       'type' => 'mapping',
       'mapping' => array(
@@ -174,5 +174,39 @@ class TypedDataTest extends UnitTestCase {
     $this->assertEqual($input['page callback'], $result['page callback']);
     $this->assertEqual($input['page arguments'], $result['page arguments']);
     $this->assertEqual(constant('MENU_NORMAL_ITEM'), $result['type']);
+  }
+
+  public function testMappingTypeWithRequiredProperties() {
+    $def = array(
+      'type' => 'mapping',
+      'mapping' => array(
+        'name'    => array('type' => 'string'),
+        'age'     => array('type' => 'integer'),
+      ),
+      'required_properties' => array('name', 'age'),
+    );
+
+    $data = at_data($def, array('name' => 'Drupal', 'age' => 13));
+    $this->assertTrue($data->validate($error));
+
+    $data = at_data($def, array('name' => 'Backdrop'));
+    $this->assertFalse($data->validate($error));
+    $this->assertEqual('Property age is required.', $error);
+  }
+
+  public function testMappingTypeWithAllowExtraProperties() {
+    $def = array(
+      'type' => 'mapping',
+      'mapping' => array(
+        'name'    => array('type' => 'string'),
+        'age'     => array('type' => 'integer'),
+        'country' => array('type' => 'string')
+      ),
+      'allow_extra_properties' => FALSE,
+    );
+
+    $data = at_data($def, array('name' => 'Drupal', 'age' => 13, 'city' => 'Paris'));
+    $this->assertFalse($data->validate($error));
+    $this->assertEqual('Unexpected key found: city.', $error);
   }
 }

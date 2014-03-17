@@ -5,6 +5,20 @@ class Mapping extends Base {
   protected $required_properties = array();
   protected $allow_extra_properties = TRUE;
 
+  public function setDef($def) {
+    $this->def = $def;
+
+    if (isset($def['required_properties'])) {
+      $this->required_properties = $def['required_properties'];
+    }
+
+    if (isset($def['allow_extra_properties'])) {
+      $this->allow_extra_properties = $def['allow_extra_properties'];
+    }
+
+    return $this;
+  }
+
   public function getValue() {
     if ($this->validate()) {
       $value = array();
@@ -73,8 +87,8 @@ class Mapping extends Base {
   private function validateAllowingExtraProperties(&$error) {
     if (!$this->allow_extra_properties) {
       foreach (array_keys($this->value) as $k) {
-        if (!isset($this->def['mappings'][$k])) {
-          $error = 'Unexpected key found: {$k}.';
+        if (!isset($this->def['mapping'][$k])) {
+          $error = 'Unexpected key found: '. $k .'.';
           return FALSE;
         }
       }
