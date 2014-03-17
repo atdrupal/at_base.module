@@ -49,3 +49,72 @@ function at_ui_twig_form_ajax_callback($form, &$form_state) {
   $form['result']['#markup'] = kprint_r($output, TRUE);
   return $form['result'];
 }
+
+/**
+ * Define form structure for /at/twig/views
+ */
+function at_ui_twig_views_form($form = array(), $form_state) {
+  $view_name = arg(3);
+
+  $names = array('' => '-- Select a view --');
+  foreach (views_get_all_views() as $name => $def) {
+    $names[$name] = $def->human_name;
+  }
+
+  $form['name'] = array(
+    '#type' => 'select',
+    '#title' => 'View name',
+    '#options' => $names,
+    '#default_value' => $view_name,
+  );
+
+  if (!empty($view_name)) {
+    $display_id = arg(4) ? arg(4) : 'default';
+    $display_ids = array();
+    $fields_markup = '';
+
+    if ($view = views_get_view($view_name)) {
+      foreach ($view->display as $name => $def) {
+        $display_ids[$name] = $def->display_title;
+      }
+
+      $form['display_id'] = array(
+        '#prefix' => '<div id="at-ui-displays">',
+        '#suffix' => '</div>',
+        '#type' => 'select',
+        '#title' => 'Display ID',
+        '#default_value' => $display_id,
+        '#options' => $display_ids,
+      );
+
+      $fields = array(
+        'row.item' => array(),
+        'title', 'exposed', 'attachment_before', 'attachment_after', 'rows'
+      );
+
+      if (!empty($display_id)) {
+        $view->preview($display_id, array('all', 'all', 'all', 'all'));
+        foreach ($view->result[0] as $k => $v) {
+          $fields['row.item'][] = $k;
+        }
+        $fields_markup = '<pre><code>' .print_r($fields, TRUE) . '</code></pre>';
+
+        $form['fields'] = array(
+          '#type' => 'item',
+          '#title' => 'Available variables',
+          '#markup' => $fields_markup,
+        );
+      }
+    }
+  }
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Update',
+    '#submit' => array(function($form, &$form_state){
+      drupal_goto("at/twig/views/{$form_state['values']['name']}/{$form_state['values']['display_id']}");
+    })
+  );
+
+  return $form;
+}
