@@ -239,19 +239,18 @@ function at_library($name, $version = 'default', $include_drupal_root = TRUE) {
 }
 
 /**
- * @todo  Document me.
+ * This is wrapper for typped-data, an API to make sure data provided is matched
+ * to its schema.
  *
- * $def = array('type' => 'boolean');
- * $data = at_data($def, TRUE);
+ * Example:
  *
- * // Validate
- * $data->validate($error);
- * if (!empty($error)) {
- *   echo $error;
- * }
+ *   $schema = array('type' => 'constant');
+ *   $input = 'MENU_LOCAL_TASK';
+ *   $data = at_data($schema, $input);
+ *   // Validate
+ *   echo $data->validate($error) ? $data->getValue() : $error;
  *
- * // Get
- * print_r($data->get());
+ * @see https://github.com/atdrupal/at_base/wiki/7.x-2.x-typed-data
  */
 function at_data($def, $value = NULL) {
   if (!is_array($def)) {
