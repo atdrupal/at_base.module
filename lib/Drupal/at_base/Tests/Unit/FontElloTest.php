@@ -14,6 +14,11 @@ class FontElloTest extends UnitTestCase {
   public function setUp() {
     parent::setUp();
     $this->service = at_container('icon.fontello');
+
+    at_container('wrapper.cache')->clearAll('atfont', 'cache', TRUE);
+    drupal_static_reset('fontello_library_added');
+    drupal_static_reset('fontello_inline_data_css_added');
+    drupal_static_reset('fontello_inline_loading_font_css_added');
   }
 
   public function testHtmlGeneration() {
@@ -31,33 +36,72 @@ class FontElloTest extends UnitTestCase {
   }
 
   public function testCaching() {
-    $css_code = 'duckduckgo';
+    $css_code = 'thumbs-up';
+
+    $font_path = '';
+    $font_name = '';
+    $char = '';
+    \at_fake::at_cache(function($options, $callback = NULL, $arguments = array()) use ($css_code, &$font_path, &$font_name, &$char) {
+      if (strpos($options, "atfont:font_path:{$css_code}") !== FALSE) {
+        $font_path = at_cache($options, $callback, $arguments);
+        return $font_path;
+      }
+      if (strpos($options, "atfont:font_name:{$css_code}") !== FALSE) {
+        $font_name = at_cache($options, $callback, $arguments);
+        return $font_name;
+      }
+      if (strpos($options, "atfont:uni_char:{$css_code}") !== FALSE) {
+        $char = at_cache($options, $callback, $arguments);
+        return $char;
+      }
+    });
+
+    at_icon($css_code, 'icon.fontello');
 
     // Font path is cached.
-    $cache = at_container('wrapper.cache')->get("atfont:font_path:{$css_code}", 'cache');
-    $font_path = $cache->data;
     $this->assertNotNull($font_path, 'font path is cached.');
 
     // Font name is cached.
-    $cache = at_container('wrapper.cache')->get("atfont:font_name:{$css_code}", 'cache');
-    $font_name = $cache->data;
     $this->assertNotNull($font_name, 'font name is cached.');
 
     // Unicode character is cached.
-    $cache = at_container('wrapper.cache')->get("atfont:uni_char:{$css_code}", 'cache');
-    $char = $cache->data;
     $this->assertTrue(strpos($char, '\\') === 0, 'Unicode character is cached.');
   }
 
   public function testCssAdded() {
 
-    drupal_static_reset('fontello_library_added');
-
     $css_code = 'github';
-    $fontello_library_path = at_library('fontello', NULL, FALSE);
 
+    // Fake some values.
+    $font_path = 'sites/all/libraries/fontello/src/cool.font/font';
+    $font_name = 'cool';
+    $char = '\\123456';
+    \at_fake::at_cache(function($options, $callback = NULL, $arguments = array()) use ($css_code, $font_path, $font_name, $char) {
+      if (strpos($options, "atfont:font_path:{$css_code}") !== FALSE) {
+        return $font_path;
+      }
+      if (strpos($options, "atfont:font_name:{$css_code}") !== FALSE) {
+        return $font_name;
+      }
+      if (strpos($options, "atfont:uni_char:{$css_code}") !== FALSE) {
+        return $char;
+      }
+    });
+
+    $inline_css_content_added = FALSE;
+    $inline_css_loading_font_added = FALSE;
+    $fontello_library_path = at_library('fontello', NULL, FALSE);
     $css_count = 0;
-    \at_fake::drupal_add_css(function($data = NULL, $options = NULL) use ($fontello_library_path, &$css_count) {
+    \at_fake::drupal_add_css(function($data = NULL, $options = NULL) use ($css_code, $font_path, $font_name, $char, $fontello_library_path, &$inline_css_content_added, &$inline_css_loading_font_added, &$css_count) {
+
+      if ($data == ".icon-$font_name-$css_code:before { content: '$char'; }") {
+        $inline_css_content_added = TRUE;
+      }
+
+      if (strpos($data, $font_path . '/' . $font_name) !== FALSE) {
+        $inline_css_loading_font_added = TRUE;
+      }
+
       if ($data == $fontello_library_path . 'assets/icons/src/css/animation.css' ||
         ($data == $fontello_library_path . 'assets/icons/src/css/icons-ie7.css' && $options['browsers']['IE'] == 'IE 7')) {
         $css_count++;
@@ -68,36 +112,6 @@ class FontElloTest extends UnitTestCase {
 
     // Library is added.
     $this->assertEqual(2, $css_count, "fontello's css is added to page.");
-
-    $cache = at_container('wrapper.cache')->get("atfont:font_path:{$css_code}", 'cache');
-    $font_path = $cache->data;
-
-    $cache = at_container('wrapper.cache')->get("atfont:font_name:{$css_code}", 'cache');
-    $font_name = $cache->data;
-
-    $cache = at_container('wrapper.cache')->get("atfont:uni_char:{$css_code}", 'cache');
-    $char = $cache->data;
-
-    drupal_static_reset('fontello_inline_css_data_added');
-    drupal_static_reset('fontello_inline_css_loading_font_added');
-
-    $inline_css_content_added = FALSE;
-    $inline_css_loading_font_added = FALSE;
-    \at_fake::drupal_add_css(function($data = NULL, $options = NULL) use ($font_path, $font_name, $css_code, $char, &$inline_css_content_added, &$inline_css_loading_font_added) {
-      if ($options['type'] != 'inline') {
-        return;
-      }
-
-      if ($data == ".icon-$font_name-$css_code:before { content: '$char'; }") {
-        $inline_css_content_added = TRUE;
-      }
-
-      if (strpos($data, $font_path . '/' . $font_name) !== FALSE) {
-        $inline_css_loading_font_added = TRUE;
-      }
-    });
-
-    at_icon($css_code, 'icon.fontello');
 
     // Inline css is added.
     $this->assertEqual(TRUE, $inline_css_content_added && $inline_css_loading_font_added, 'inline css is added to page.');
