@@ -17,6 +17,9 @@ services:
   type.constant:
     class: Drupal\at_base\TypedData\DataTypes\Constant
     reuse: false
+  type.list:
+    class: Drupal\at_base\TypedData\DataTypes\ItemList
+    reuse: false
   type.mapping:
     class: Drupal\at_base\TypedData\DataTypes\Mapping
     reuse: false

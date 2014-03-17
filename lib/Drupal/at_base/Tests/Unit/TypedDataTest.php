@@ -119,4 +119,20 @@ class TypedDataTest extends UnitTestCase {
     $data = at_data($def, array('also', 'invalidate'));
     $this->assertFalse($data->validate($error));
   }
+
+  public function testListType() {
+    $def = array('type' => 'list');
+
+    $input = array();
+    $input[] = array(NULL, TRUE, 1, 'one', array('one'), at_id(new \stdClass()));
+    $input[] = array('One', 'Two', 'Three');
+    foreach ($input as $in) {
+      $data = at_data($def, $in);
+      $this->assertTrue($data->validate($error));
+      $this->assertEqual($in, $data->getValue());
+    }
+  }
+
+  public function testMapping() {
+  }
 }
