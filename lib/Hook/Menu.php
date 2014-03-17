@@ -1,8 +1,6 @@
 <?php
 namespace Drupal\at_base\Hook;
 
-use Drupal\at_base\Route\Importer;
-
 class Menu {
   private $items;
 
