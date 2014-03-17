@@ -5,7 +5,6 @@ namespace Drupal\at_base\Tests\Unit;
 use Drupal\at_base\Helper\Test\UnitTestCase;
 
 class FontElloTest extends UnitTestCase {
-  private $service;
 
   static public function getInfo() {
     return array('name' => 'AT Unit: Icon Fontello') + parent::getInfo();
@@ -13,7 +12,6 @@ class FontElloTest extends UnitTestCase {
 
   public function setUp() {
     parent::setUp();
-    $this->service = at_container('icon.fontello');
 
     at_container('wrapper.cache')->clearAll('atfont', 'cache', TRUE);
     drupal_static_reset('fontello_library_added');
@@ -24,15 +22,10 @@ class FontElloTest extends UnitTestCase {
   public function testHtmlGeneration() {
     $css_code = 'duckduckgo';
     $font_name = 'zocial';
-
-    $icon = $this->service->get($css_code);
-
     $expected_html = '<i class="icon-' . $font_name . '-' . $css_code . '"></i>';
 
-    $this->assertEqual($expected_html, $icon->render(), 'Service font.fontello generate the right html for icon.');
-
     // Test at_icon.
-    $this->assertEqual($expected_html, at_icon($css_code, 'icon.fontello'), 'at_icon return the same markup.');
+    $this->assertEqual($expected_html, at_icon($css_code, 'icon.fontello'), 'at_icon return the right html for icon.');
   }
 
   public function testCaching() {

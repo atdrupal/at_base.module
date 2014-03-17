@@ -5,7 +5,6 @@ namespace Drupal\at_base\Tests\Unit;
 use Drupal\at_base\Helper\Test\UnitTestCase;
 
 class FontAwesomeTest extends UnitTestCase {
-  private $service;
 
   static public function getInfo() {
     return array('name' => 'AT Unit: Icon Fontawesome') + parent::getInfo();
@@ -13,7 +12,6 @@ class FontAwesomeTest extends UnitTestCase {
 
   public function setUp() {
     parent::setUp();
-    $this->service = at_container('icon.fontawesome');
 
     drupal_static_reset('fontawesome_library_added');
   }
@@ -22,10 +20,7 @@ class FontAwesomeTest extends UnitTestCase {
     $css_code = 'fa-camera-retro';
     $expected_html = '<i class="fa '. $css_code .'"></i>';
 
-    $icon = $this->service->get($css_code);
-    $this->assertEqual($expected_html, $icon->render(), 'Service icon.fontawesome generate the right html for icon.');
-
-    $this->assertEqual($expected_html, at_icon($css_code, 'icon.fontawesome'), 'at_icon return the same markup.');
+    $this->assertEqual($expected_html, at_icon($css_code, 'icon.fontawesome'), 'at_icon return the the right html for icon.');
   }
 
   public function testCssAdded() {
