@@ -145,5 +145,34 @@ class TypedDataTest extends UnitTestCase {
   }
 
   public function testMapping() {
+    $def = array(
+      'type' => 'mapping',
+      'mapping' => array(
+        'title'            => array('type' => 'string'),
+        'access arguments' => array('type' => 'list<string>'),
+        'page callback'    => array('type' => 'function'),
+        'page arguments'   => array('type' => 'list<string>'),
+        'type'             => array('type' => 'constant'),
+      )
+    );
+
+    $input = array(
+      'title'            => 'Menu item',
+      'access arguments' => array('access content'),
+      'page callback'    => 't',
+      'page arguments'   => array('Drupal'),
+      'type'             => 'MENU_NORMAL_ITEM',
+    );
+
+    $data = at_data($def, $input);
+
+    $this->assertTrue($data->validate());
+    $result = $data->getValue();
+
+    $this->assertEqual($input['title'], $result['title']);
+    $this->assertEqual($input['access arguments'], $result['access arguments']);
+    $this->assertEqual($input['page callback'], $result['page callback']);
+    $this->assertEqual($input['page arguments'], $result['page arguments']);
+    $this->assertEqual(constant('MENU_NORMAL_ITEM'), $result['type']);
   }
 }
