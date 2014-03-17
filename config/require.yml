@@ -39,3 +39,5 @@ projects:
       type: git
       url: https://github.com/fontello/fontello.git
       branch: '5.1.0'
+    options:
+      working-copy: true
