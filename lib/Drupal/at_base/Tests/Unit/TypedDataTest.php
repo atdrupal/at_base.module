@@ -107,6 +107,16 @@ class TypedDataTest extends UnitTestCase {
     $data = at_data($def, 'MENU_DEFAULT_LOCAL_TASK');
     $this->assertTrue($data->validate($error));
     $this->assertEqual(constant('MENU_DEFAULT_LOCAL_TASK'), $data->getValue());
-    drush_print_r($error);
+
+    $data = at_data($def, 'NON_VALID_CONSTANT_THIS_IS');
+    $this->assertFalse($data->validate($error));
+    $this->assertEqual('Constant is not defined.', $error);
+    $this->assertNull($data->getValue());
+
+    $data = at_data($def, 'in valid ^^');
+    $this->assertFalse($data->validate($error));
+
+    $data = at_data($def, array('also', 'invalidate'));
+    $this->assertFalse($data->validate($error));
   }
 }
