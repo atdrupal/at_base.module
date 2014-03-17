@@ -261,5 +261,12 @@ function at_data($def, $value = NULL) {
   }
 
   $service = strpos($def['type'], 'type.') === 0 ? $def['type'] : ('type.' . $def['type']);
+
+  // Special type: list<element_type>
+  if (strpos($service, 'type.list<') === 0) {
+    $def['element_type'] = substr($service, 10, -1);
+    $service = 'type.list';
+  }
+
   return at_container($service, $def, $value);
 }

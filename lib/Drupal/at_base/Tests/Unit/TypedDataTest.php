@@ -133,6 +133,17 @@ class TypedDataTest extends UnitTestCase {
     }
   }
 
+  public function testListStrictType() {
+    $def = array('type' => 'list<integer>');
+
+    $data = at_data($def, array(1, 2));
+    $this->assertTrue($data->validate());
+    $this->assertEqual(array(1, 2), $data->getValue());
+
+    $data = at_data($def, array(1, 'Two'));
+    $this->assertFalse($data->validate());
+  }
+
   public function testMapping() {
   }
 }

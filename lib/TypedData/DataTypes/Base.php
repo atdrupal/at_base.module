@@ -6,8 +6,12 @@ abstract class Base {
   protected $value;
 
   public function __construct($def, $value = NULL) {
-    $this->def = $def;
+    $this->setDef($def);
     $this->setValue($value);
+  }
+
+  public function setDef($def) {
+    $this->def = $def;
   }
 
   public function setValue($value) {

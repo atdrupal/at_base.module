@@ -13,6 +13,14 @@ class ItemList extends Base {
     }
   }
 
+  public function setDef($def) {
+    $this->def = $def;
+
+    if (!empty($def['element_type'])) {
+      $this->element_type = $def['element_type'];
+    }
+  }
+
   public function validate(&$error = NULL) {
     if (!is_array($this->value)) {
       $error = 'Input must be an array';
@@ -20,14 +28,23 @@ class ItemList extends Base {
     }
 
     if (!is_null($this->element_type)) {
-      $data = at_data(array('type' => $this->element_type));
+      $this->validateElementType($error);
+      if (!empty($error)) {
+        return FALSE;
+      }
+    }
 
-      foreach ($this->element as $k => $v) {
-        $data->setValue($v);
-        if (!$data->validate()) {
-          $error = "{$k} is not type of {$this->element_type}";
-          return FALSE;
-        }
+    return TRUE;
+  }
+
+  private function validateElementType(&$error = NULL) {
+    $data = at_data(array('type' => $this->element_type));
+
+    foreach ($this->value as $k => $v) {
+      $data->setValue($v);
+      if (!$data->validate()) {
+        $error = "Element <strong>{$k}</strong> is not type of {$this->element_type}";
+        return FALSE;
       }
     }
 
