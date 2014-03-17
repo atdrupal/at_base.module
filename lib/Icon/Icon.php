@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\at_base;
+namespace Drupal\at_base\Icon;
 
 class Icon {
 

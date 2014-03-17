@@ -12,7 +12,6 @@
 
 use \Drupal\at_base\Cache;
 use \Drupal\at_base\Helper\ModulesFetcher;
-use \Drupal\at_base\Icon;
 
 require_once dirname(__FILE__) . '/lib/AT.php';
 require_once dirname(__FILE__) . '/lib/Autoloader.php';
@@ -224,7 +223,7 @@ function at_icon($name, $source = 'icon.fontawesome') {
     /** @type $service Drupal\at_base\Icon\IconInterface **/
     $service = at_container($source);
 
-    /** @type $icon Drupal\at_base\Icon **/
+    /** @type $icon Drupal\at_base\Icon\Icon **/
     $icon = $service->get($name);
     return $icon->render();
   }

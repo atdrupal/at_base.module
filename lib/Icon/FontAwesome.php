@@ -1,8 +1,6 @@
 <?php
 namespace Drupal\at_base\Icon;
 
-use Drupal\at_base\Icon;
-
 class FontAwesome implements IconInterface {
 
   /**
@@ -12,7 +10,7 @@ class FontAwesome implements IconInterface {
    * @param type $name
    *   The name of icon in fontawesome.
    *   Browse available icons at http://fortawesome.github.io/Font-Awesome/icons/
-   * @return \Drupal\at_base\Icon
+   * @return \Drupal\at_base\Icon\Icon
    *   Contain enough information to generate icon tag.
    */
   public function get($name) {

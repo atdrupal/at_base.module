@@ -1,9 +1,6 @@
 <?php
 namespace Drupal\at_base\Icon;
 
-use Drupal\at_base\Icon;
-use Drupal\at_base\EmptyIcon;
-
 class FontEllo implements IconInterface {
 
   /**
@@ -12,7 +9,7 @@ class FontEllo implements IconInterface {
    * @param type $name
    *   The name of icon in fontello.
    *   Browse available icons at http://fontello.com/
-   * @return \Drupal\at_base\Icon
+   * @return \Drupal\at_base\Icon\Icon
    *   Contain enough information to generate icon tag.
    */
   public function get($name) {
