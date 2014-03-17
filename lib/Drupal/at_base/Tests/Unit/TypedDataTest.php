@@ -84,4 +84,20 @@ class TypedDataTest extends UnitTestCase {
     $this->assertFalse($data->validate());
     $this->assertNull($data->getValue());
   }
+
+  public function testFunctionValue() {
+    $def = array('type' => 'function');
+
+    $data = at_data($def, 't');
+    $this->assertTrue($data->validate());
+    $this->assertEqual('t', $data->getValue());
+
+    $data = at_data($def, 'this_is_invalid_function');
+    $this->assertFalse($data->validate($error));
+    $this->assertEqual('Function does not exist.', $error);
+
+    $data = at_data($def, array('I am array'));
+    $this->assertFalse($data->validate($error));
+    $this->assertEqual('Function name must be a string.', $error);
+  }
 }

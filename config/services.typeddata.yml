@@ -12,7 +12,7 @@ services:
     class: Drupal\at_base\TypedData\DataTypes\String
     reuse: false
   type.function:
-    class: Drupal\at_base\TypedData\DataTypes\Function
+    class: Drupal\at_base\TypedData\DataTypes\Fn
     reuse: false
   type.constant:
     class: Drupal\at_base\TypedData\DataTypes\Constant
