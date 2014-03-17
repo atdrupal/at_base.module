@@ -239,6 +239,8 @@ function at_library($name, $version = 'default', $include_drupal_root = TRUE) {
 }
 
 /**
+ * @todo  Document me.
+ *
  * $def = array('type' => 'boolean');
  * $data = at_data($def, TRUE);
  *
