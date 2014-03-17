@@ -9,9 +9,15 @@ namespace Drupal\at_base\TypedData\DataTypes;
  *
  * @param  string $v
  */
-class Constant extends String {
+class Constant extends Base {
+  public function getValue() {
+    if ($this->validate()) {
+      return constant($this->value);
+    }
+  }
+
   public function validate(&$error = NULL) {
-    if (is_string($this->value)) {
+    if (!is_string($this->value)) {
       $error = 'Input must be a string.';
       return FALSE;
     }

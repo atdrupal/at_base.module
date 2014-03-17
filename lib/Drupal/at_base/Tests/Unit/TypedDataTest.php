@@ -85,7 +85,7 @@ class TypedDataTest extends UnitTestCase {
     $this->assertNull($data->getValue());
   }
 
-  public function testFunctionValue() {
+  public function testFunctionType() {
     $def = array('type' => 'function');
 
     $data = at_data($def, 't');
@@ -99,5 +99,14 @@ class TypedDataTest extends UnitTestCase {
     $data = at_data($def, array('I am array'));
     $this->assertFalse($data->validate($error));
     $this->assertEqual('Function name must be a string.', $error);
+  }
+
+  public function testConstantType() {
+    $def = array('type' => 'constant');
+
+    $data = at_data($def, 'MENU_DEFAULT_LOCAL_TASK');
+    $this->assertTrue($data->validate($error));
+    $this->assertEqual(constant('MENU_DEFAULT_LOCAL_TASK'), $data->getValue());
+    drush_print_r($error);
   }
 }
