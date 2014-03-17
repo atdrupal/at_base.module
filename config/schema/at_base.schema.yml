@@ -9,7 +9,7 @@ routes:
       type: 'function'
       label: 'title callback'
     title arguments:
-      type: 'ItemList<any>'
+      type: 'list<any>'
       label: 'title arguments'
     description:
       type: 'string'
@@ -18,13 +18,13 @@ routes:
       type: 'callbale'
       label: 'page callback'
     page arguments:
-      type: 'ItemList<any>'
+      type: 'list<string>'
       label: 'page arguments'
     access callback:
       type: 'function'
       label: 'access callback'
     access arguments:
-      type: 'ItemList<string>'
+      type: 'list<string>'
       label: 'Access arguments'
     theme callback:
       type: 'function'
