@@ -139,21 +139,32 @@ class FontEllo implements IconInterface {
   /**
    * Get all css of fontello.
    *
-   * @staticvar boolean $libraries_added
-   * @staticvar boolean $inline_data_css_added
-   * @staticvar boolean $loading_font_css_added
    * @param string $name
    * @param string $unicode_char
    * @param string $font_path
    * @param string $font_name
    */
   public function getCss($name, $unicode_char, $font_path, $font_name) {
-    $libraries_added = &drupal_static('fontello_library_added');
-    $inline_data_css_added = &drupal_static('fontello_inline_data_css_added');
-    $inline_loading_font_css_added = &drupal_static('fontello_inline_loading_font_css_added');
     $css = array();
 
-    // Add css.
+    $css = array_merge($css, $this->getInlineDataCss($name, $unicode_char, $font_name));
+    $css = array_merge($css, $this->getLibrariesCss());
+    $css = array_merge($css, $this->getInlineLoadingFontCss($font_path, $font_name));
+
+    return $css;
+  }
+
+  /**
+   * Get inline data css.
+   *
+   * @param type $name
+   * @param type $unicode_char
+   * @param type $font_name
+   */
+  public function getInlineDataCss($name, $unicode_char, $font_name) {
+    $inline_data_css_added = &drupal_static('fontello_inline_data_css_added');
+    $css = array();
+
     if (empty($inline_data_css_added[$name]) && !empty($unicode_char)) {
       $inline_data_css_added[$name] = TRUE;
 
@@ -164,6 +175,18 @@ class FontEllo implements IconInterface {
         )
       );
     }
+
+    return $css;
+  }
+
+  /**
+   * Get fontello library css.
+   *
+   * @return array
+   */
+  public function getLibrariesCss() {
+    $libraries_added = &drupal_static('fontello_library_added');
+    $css = array();
 
     // Add library.
     if (!$libraries_added) {
@@ -179,6 +202,20 @@ class FontEllo implements IconInterface {
 
       $libraries_added = TRUE;
     }
+
+    return $css;
+  }
+
+  /**
+   * Get inline loading font css.
+   *
+   * @param type $font_path
+   * @param type $font_name
+   * @return type
+   */
+  public function getInlineLoadingFontCss($font_path, $font_name) {
+    $inline_loading_font_css_added = &drupal_static('fontello_inline_loading_font_css_added');
+    $css = array();
 
     // Add inline css code that load the right font base on font name.
     if (empty($inline_loading_font_css_added[$font_name])) {
