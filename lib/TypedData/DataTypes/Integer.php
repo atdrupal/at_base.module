@@ -8,7 +8,11 @@ class Integer extends Base {
     }
   }
 
-  public function validate() {
-    return is_int($this->value);
+  public function validate(&$error) {
+    if (!is_int($this->value)) {
+      $error = 'Input is not an integer value.';
+      return FALSE;
+    }
+    return TRUE;
   }
 }
