@@ -2,6 +2,12 @@
 namespace Drupal\at_base\TypedData\DataTypes;
 
 class Integer extends Base {
+  public function isEmpty() {
+    if (!is_null($this->value)) {
+      return $this->value === 0;
+    }
+  }
+
   public function validate() {
     return is_int($this->value);
   }

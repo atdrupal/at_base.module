@@ -61,4 +61,27 @@ class TypedDataTest extends UnitTestCase {
     $this->assertFalse($data->validate());
     $this->assertNull($data->getValue());
   }
+
+  public function testIntegerType() {
+    $def = array('type' => 'integer');
+
+    $data = at_data($def, 1);
+    $this->assertTrue($data->validate());
+    $this->assertEqual(1, $data->getValue());
+    $this->assertFalse($data->isEmpty());
+
+    $data = at_data($def, -1);
+    $this->assertTrue($data->validate());
+    $this->assertEqual(-1, $data->getValue());
+    $this->assertFalse($data->isEmpty());
+
+    $data = at_data($def, 0);
+    $this->assertTrue($data->validate());
+    $this->assertEqual(0, $data->getValue());
+    $this->assertTrue($data->isEmpty());
+
+    $data = at_data($def, 'I am string');
+    $this->assertFalse($data->validate());
+    $this->assertNull($data->getValue());
+  }
 }
