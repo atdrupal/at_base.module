@@ -59,10 +59,10 @@ class FontElloTest extends UnitTestCase {
     at_icon($css_code, 'icon.fontello');
 
     // Font path is cached.
-    $this->assertNotNull($font_path, 'font path is cached.');
+    $this->assertTrue(!empty($font_path), 'font path is cached.');
 
     // Font name is cached.
-    $this->assertNotNull($font_name, 'font name is cached.');
+    $this->assertTrue(!empty($font_name), 'font name is cached.');
 
     // Unicode character is cached.
     $this->assertTrue(strpos($char, '\\') === 0, 'Unicode character is cached.');
