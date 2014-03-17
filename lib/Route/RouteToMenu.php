@@ -72,4 +72,7 @@ class RouteToMenu {
       $this->menu_item['cache']['type'] = $el->evaluate($this->menu_item['cache']['type']);
     }
   }
+
+  private function validate() {
+  }
 }
