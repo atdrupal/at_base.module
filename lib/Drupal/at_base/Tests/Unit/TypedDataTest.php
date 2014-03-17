@@ -12,7 +12,7 @@ class TypedDataTest extends UnitTestCase {
     return array('name' => 'AT Unit: TypedData') + parent::getInfo();
   }
 
-  public function testAny() {
+  public function testAnyType() {
     $def = array('type' => 'any');
 
     $input = array();
@@ -44,7 +44,7 @@ class TypedDataTest extends UnitTestCase {
     $this->assertNull($data->getValue());
   }
 
-  public function testStringValue() {
+  public function testStringType() {
     $def = array('type' => 'string');
 
     $data = at_data($def, 'I am string');
