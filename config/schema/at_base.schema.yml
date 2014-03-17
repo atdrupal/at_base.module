@@ -30,7 +30,7 @@ routes:
       type: 'function'
       label: 'Theme callback'
     file:
-      type: 'file_path'
+      type: 'string'
       label: 'File'
     weight:
       type: 'integer'
