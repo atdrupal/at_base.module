@@ -5,7 +5,7 @@ class ItemList extends Base {
   /**
    * @var string
    */
-  protected $elemen_type = NULL;
+  protected $element_type = NULL;
 
   public function isEmpty() {
     if (!is_null($this->value)) {
