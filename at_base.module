@@ -237,3 +237,29 @@ function at_library($name, $version = 'default', $include_drupal_root = TRUE) {
 
   throw new Exception("Missing library: {$name} (version {$version})");
 }
+
+/**
+ * $def = array('type' => 'boolean');
+ * $data = at_data($def, TRUE);
+ *
+ * // Validate
+ * $data->validate($error);
+ * if (!empty($error)) {
+ *   echo $error;
+ * }
+ *
+ * // Get
+ * print_r($data->get());
+ */
+function at_data($def, $value = NULL) {
+  if (!is_array($def)) {
+    throw new \Exception('Definition must be an array.');
+  }
+
+  if (!isset($def['type'])) {
+    throw new \Exception('Missing type key');
+  }
+
+  $service = strpos($def['type'], 'type.') === 0 ? $def['type'] : ('type.' . $def['type']);
+  return at_container($service, $def, $value);
+}

@@ -1,0 +1,46 @@
+routes:
+  type: mapping
+  label: Route
+  mapping:
+    title:
+      type: string
+      label: Page title
+    title callback:
+      type: 'function'
+      label: 'title callback'
+    title arguments:
+      type: 'ItemList<any>'
+      label: 'title arguments'
+    description:
+      type: 'string'
+      label: ''
+    page callback:
+      type: 'callbale'
+      label: 'page callback'
+    page arguments:
+      type: 'ItemList<any>'
+      label: 'page arguments'
+    access callback:
+      type: 'function'
+      label: 'access callback'
+    access arguments:
+      type: 'ItemList<string>'
+      label: 'Access arguments'
+    theme callback:
+      type: 'function'
+      label: 'Theme callback'
+    file:
+      type: 'file_path'
+      label: 'File'
+    weight:
+      type: 'integer'
+      label: 'weight'
+    menu name:
+      type: 'string'
+      label: 'menu name'
+    expanded:
+      type: 'boolean'
+      label: 'expanded'
+    type:
+      type: 'constant'
+      label: 'type'
