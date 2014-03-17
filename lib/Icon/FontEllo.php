@@ -47,44 +47,93 @@ class FontEllo implements IconInterface {
    *   Unicode character.
    */
   public function getUnicodeChar($name) {
-    $char = \at_fn::at_cache("atfont:uni_char:{$name}, + 1 year", function() use ($name) {
-      $sub_libs = file_scan_directory(at_library('fontello', NULL, FALSE) . 'src', '/config.yml$/');
+    $callback = array($this, 'scanDirectory');
+    $directory = at_library('fontello', NULL, FALSE) . 'src';
+    $arguments = array($directory, $name);
 
-      foreach ($sub_libs as $config_file => $sub_lib) {
-        // Cache parsing config file.
-        $config = at_cache("atfont:config_file:{$config_file}, + 1 year", function() use ($config_file) {
-          return \yaml_parse_file($config_file);
-        });
-
-        if (!isset($config['glyphs'])) {
-          continue;
-        }
-
-        foreach ($config['glyphs'] as $glyph) {
-          if ($glyph['css'] == $name) {
-
-            // Cache font path.
-            \at_fn::at_cache("atfont:font_path:{$name}, + 1 year", function() use ($config_file) {
-              global $base_root;
-              return $base_root . '/' . str_replace('config.yml', '', $config_file) . 'font';
-            });
-
-            // Cache font name.
-            \at_fn::at_cache("atfont:font_name:{$name}, + 1 year", function() use ($config) {
-              return $config['font']['fontname'];
-            });
-
-            $code = $glyph['code'];
-
-            return '\\' . dechex($code);
-          }
-        }
-      }
-
-      return NULL;
-    });
+    $char = \at_fn::at_cache("atfont:uni_char:{$name}, + 1 year", $callback, $arguments);
 
     return $char;
+  }
+
+  /**
+   * Scan directory for unicode character of icon name.
+   *
+   * @param type $directory
+   * @param type $name
+   * @return string
+   *   Unicode character of icon name.
+   */
+  public function scanDirectory($directory, $name) {
+    $sub_libs = file_scan_directory($directory, '/config.yml$/');
+
+    // Loop through each font.
+    foreach ($sub_libs as $config_file => $sub_lib) {
+      // Cache parsing config file.
+      $config = $this->parseConfigFile($config_file);
+
+      if (!isset($config['glyphs'])) {
+        continue;
+      }
+
+      foreach ($config['glyphs'] as $glyph) {
+        if ($glyph['css'] == $name) {
+
+          // We font the font, cache font path and name, no need to look up again.
+          $this->cacheFontPath($config_file, $name);
+          $this->cacheFontName($config, $name);
+
+          $code = $glyph['code'];
+          return '\\' . dechex($code);
+        }
+      }
+    }
+
+    return NULL;
+  }
+
+  /**
+   * Cache config path of icon name.
+   *
+   * @param type $config_path
+   * @param type $name
+   * @return type
+   */
+  public function cacheFontPath($config_path, $name) {
+
+    // Cache font path.
+    \at_fn::at_cache("atfont:font_path:{$name}, + 1 year", function() use ($config_path) {
+      global $base_root;
+      return $base_root . '/' . str_replace('config.yml', '', $config_path) . 'font';
+    });
+  }
+
+  /**
+   * Cache font name of icon name.
+   *
+   * @param type $config
+   * @param type $name
+   * @return type
+   */
+  public function cacheFontName($config, $name) {
+
+    // Cache font name.
+    \at_fn::at_cache("atfont:font_name:{$name}, + 1 year", function() use ($config) {
+      return $config['font']['fontname'];
+    });
+  }
+
+  /**
+   * Parse yml config file. Cache the result.
+   *
+   * @param string $file_path
+   * @return array
+   *   Parsed array.
+   */
+  public function parseConfigFile($file_path) {
+    return at_cache("atfont:config_file:{$file_path}, + 1 year", function() use ($file_path) {
+      return \yaml_parse_file($file_path);
+    });
   }
 
   /**
