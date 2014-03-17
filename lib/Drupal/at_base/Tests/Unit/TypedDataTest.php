@@ -12,6 +12,20 @@ class TypedDataTest extends UnitTestCase {
     return array('name' => 'AT Unit: TypedData') + parent::getInfo();
   }
 
+  public function testAny() {
+    $def = array('type' => 'any');
+
+    $input = array();
+    $input[] = NULL;
+    $input[] = 'String';
+    $input[] = array('Array Input');
+    foreach ($input as $in) {
+      $data = at_data($def, $in);
+      $this->assertTrue($data->validate());
+      $this->assertEqual($in, $data->getValue());
+    }
+  }
+
   public function testBooleanType() {
     $def = array('type' => 'boolean');
 
