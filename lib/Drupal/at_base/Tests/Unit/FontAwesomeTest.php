@@ -14,6 +14,8 @@ class FontAwesomeTest extends UnitTestCase {
   public function setUp() {
     parent::setUp();
     $this->service = at_container('icon.fontawesome');
+
+    drupal_static_reset('fontawesome_library_added');
   }
 
   public function testHtmlGeneration() {
@@ -27,7 +29,6 @@ class FontAwesomeTest extends UnitTestCase {
   }
 
   public function testCssAdded() {
-    drupal_static_reset('fontawesome_library_added');
     $library_added = FALSE;
     $fontawesome_library_path = at_library('fontawesome', NULL, FALSE);
 
