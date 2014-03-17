@@ -9,8 +9,6 @@ class FontEllo implements IconInterface {
   /**
    * Get Icon instance with information to generate icon tag.
    *
-   * @staticvar boolean $libraries_added
-   * @staticvar boolean $css_added
    * @param type $name
    *   The name of icon in fontello.
    *   Browse available icons at http://fontello.com/
@@ -18,8 +16,6 @@ class FontEllo implements IconInterface {
    *   Contain enough information to generate icon tag.
    */
   public function get($name) {
-    $libraries_added = &drupal_static('fontello_library_added');
-    $css_added = &drupal_static('fontello_inline_css_data_added');
 
     $css = array();
     $tag = 'i';
@@ -29,23 +25,91 @@ class FontEllo implements IconInterface {
     $unicode_char = $this->getUnicodeChar($name);
 
     // Load font path and font name cache base on icon name.
-    $cache = at_container('wrapper.cache')->get("atfont:font_path:{$name}", 'cache');
-    $font_path = $cache->data;
-    $cache = at_container('wrapper.cache')->get("atfont:font_name:{$name}", 'cache');
-    $font_name = $cache->data;
+    $font_path = \at_fn::at_cache("atfont:font_path:{$name}", function () {
+      return '';
+    });
+    $font_name = \at_fn::at_cache("atfont:font_name:{$name}", function() {
+      return '';
+    });
     if (empty($font_path) || empty($font_name)) {
       return new EmptyIcon($css, $tag, $class, $text);
     }
 
+    $css = $this->getCss($name, $unicode_char, $font_path, $font_name);
     $class = 'icon-' . $font_name . '-' . $name;
 
-    if ($loading_font_css = $this->getLoadingFontCss($font_path, $font_name)) {
-      $css[] = $loading_font_css;
-    }
+    return new Icon($css, $tag, $class, $text);
+  }
+
+  /**
+   * Translate icon name to unicode character.
+   *
+   * @param type $name
+   *   Icon name.
+   * @return string
+   *   Unicode character.
+   */
+  public function getUnicodeChar($name) {
+    $char = \at_fn::at_cache("atfont:uni_char:{$name}, + 1 year", function() use ($name) {
+      $sub_libs = file_scan_directory(at_library('fontello', NULL, FALSE) . 'src', '/config.yml$/');
+
+      foreach ($sub_libs as $config_file => $sub_lib) {
+        // Cache parsing config file.
+        $config = at_cache("atfont:config_file:{$config_file}, + 1 year", function() use ($config_file) {
+          return \yaml_parse_file($config_file);
+        });
+
+        if (!isset($config['glyphs'])) {
+          continue;
+        }
+
+        foreach ($config['glyphs'] as $glyph) {
+          if ($glyph['css'] == $name) {
+
+            // Cache font path.
+            \at_fn::at_cache("atfont:font_path:{$name}, + 1 year", function() use ($config_file) {
+              global $base_root;
+              return $base_root . '/' . str_replace('config.yml', '', $config_file) . 'font';
+            });
+
+            // Cache font name.
+            \at_fn::at_cache("atfont:font_name:{$name}, + 1 year", function() use ($config) {
+              return $config['font']['fontname'];
+            });
+
+            $code = $glyph['code'];
+
+            return '\\' . dechex($code);
+          }
+        }
+      }
+
+      return NULL;
+    });
+
+    return $char;
+  }
+
+  /**
+   * Get all css of fontello.
+   *
+   * @staticvar boolean $libraries_added
+   * @staticvar boolean $inline_data_css_added
+   * @staticvar boolean $loading_font_css_added
+   * @param string $name
+   * @param string $unicode_char
+   * @param string $font_path
+   * @param string $font_name
+   */
+  public function getCss($name, $unicode_char, $font_path, $font_name) {
+    $libraries_added = &drupal_static('fontello_library_added');
+    $inline_data_css_added = &drupal_static('fontello_inline_data_css_added');
+    $inline_loading_font_css_added = &drupal_static('fontello_inline_loading_font_css_added');
+    $css = array();
 
     // Add css.
-    if (empty($css_added[$name]) && !empty($unicode_char)) {
-      $css_added[$name] = TRUE;
+    if (empty($inline_data_css_added[$name]) && !empty($unicode_char)) {
+      $inline_data_css_added[$name] = TRUE;
 
       $css[] = array(
         'data' => ".icon-$font_name-$name:before { content: '$unicode_char'; }",
@@ -70,72 +134,11 @@ class FontEllo implements IconInterface {
       $libraries_added = TRUE;
     }
 
-    return new Icon($css, $tag, $class, $text);
-  }
+    // Add inline css code that load the right font base on font name.
+    if (empty($inline_loading_font_css_added[$font_name])) {
+      $inline_loading_font_css_added[$font_name] = TRUE;
 
-  /**
-   * Translate icon name to unicode character.
-   *
-   * @param type $name
-   *   Icon name.
-   * @return string
-   *   Unicode character.
-   */
-  public function getUnicodeChar($name) {
-    $char = at_cache("atfont:uni_char:{$name}, + 1 year", function() use ($name) {
-      $sub_libs = file_scan_directory(at_library('fontello', NULL, FALSE) . 'src', '/config.yml$/');
-
-      foreach ($sub_libs as $config_file => $sub_lib) {
-        // Cache parsing config file.
-        $config = at_cache("atfont:config_file:{$config_file}, + 1 year", function() use ($config_file) {
-          return \yaml_parse_file($config_file);
-        });
-
-        if (!isset($config['glyphs'])) {
-          continue;
-        }
-
-        foreach ($config['glyphs'] as $glyph) {
-          if ($glyph['css'] == $name) {
-
-            // Cache font path.
-            at_cache("atfont:font_path:{$name}, + 1 year", function() use ($config_file) {
-              global $base_root;
-              return $base_root . '/' . str_replace('config.yml', '', $config_file) . 'font';
-            });
-
-            // Cache font name.
-            at_cache("atfont:font_name:{$name}, + 1 year", function() use ($config) {
-              return $config['font']['fontname'];
-            });
-
-            $code = $glyph['code'];
-
-            return '\\' . dechex($code);
-          }
-        }
-      }
-
-      return NULL;
-    });
-
-    return $char;
-  }
-
-  /**
-   * Add inline css code that load the right font base on font name.
-   *
-   * @staticvar boolean $font_added
-   * @param type $font_path
-   * @param type $font_name
-   */
-  public function getLoadingFontCss($font_path, $font_name) {
-    $css_added = &drupal_static('fontello_inline_css_loading_font_added');
-
-    if (empty($css_added[$font_name])) {
-      $css_added[$font_name] = TRUE;
-
-      return array(
+      $css[] = array(
         'data' => "@font-face {
           font-family: '{$font_name}';
           src: url('{$font_path}/{$font_name}.eot');
@@ -191,6 +194,6 @@ class FontEllo implements IconInterface {
       );
     }
 
-    return array();
+    return $css;
   }
 }
