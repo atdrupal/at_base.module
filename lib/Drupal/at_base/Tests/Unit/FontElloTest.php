@@ -66,7 +66,7 @@ class FontElloTest extends UnitTestCase {
     $css_code = 'github';
 
     // Fake some values.
-    $font_path = 'sites/all/libraries/fontello/src/cool.font/font';
+    $font_path = at_library('fontello') . 'src/cool.font/font';
     $font_name = 'cool';
     $char = '\\123456';
     \at_fake::at_cache(function($options, $callback = NULL, $arguments = array()) use ($css_code, $font_path, $font_name, $char) {
