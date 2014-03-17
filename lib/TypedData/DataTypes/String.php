@@ -8,7 +8,11 @@ class String extends Base {
     }
   }
 
-  public function validate() {
-    return is_string($this->value);
+  public function validate(&$error = NULL) {
+    if (!is_string($this->value)) {
+      $error = 'Input is not a string value.';
+      return FALSE;
+    }
+    return TRUE;
   }
 }
