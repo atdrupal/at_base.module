@@ -3,6 +3,7 @@ imports:
   - { resource: services.cache.yml }
   - { resource: services.theming.yml }
   - { resource: services.helper.yml }
+  - { resource: services.typeddata.yml }
   - { resource: services.icon.yml }
 
 services:
