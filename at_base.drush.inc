@@ -24,6 +24,9 @@ function at_base_drush_command() {
     ),
     'aliases' => array('at-require', 'atr'),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
+    'options' => array(
+      'working-copy' => 'Preserves VCS directories, like .git, for projects downloaded using such methods.',
+    )
   );
 
   $cmds['fontello'] = array(
