@@ -49,6 +49,7 @@ abstract class Base {
       $error = 'Data definition must be an array.';
       return FALSE;
     }
+    return TRUE;
   }
 
   protected function validateInput(&$error) {
