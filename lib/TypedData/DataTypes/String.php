@@ -8,11 +8,11 @@ class String extends Base {
     }
   }
 
-  public function validate(&$error = NULL) {
+  protected function validateInput(&$error = NULL) {
     if (!is_string($this->value)) {
       $error = 'Input is not a string value.';
       return FALSE;
     }
-    return TRUE;
+    return parent::validateInput($error);
   }
 }
