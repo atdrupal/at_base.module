@@ -2,7 +2,7 @@
 namespace Drupal\at_base\TypedData\DataTypes;
 
 class Mapping extends Mapping_Base {
-  private function validateDefinition(&$error) {
+  protected function validateDefinition(&$error) {
     if (!parent::validateDefinition($error)) {
       return FALSE;
     }
@@ -28,11 +28,11 @@ class Mapping extends Mapping_Base {
 
     return $this->validateRequiredProperties($error)
       && $this->validateAllowingExtraProperties($error)
-      && parent::validate($error)
+      && parent::validateInput($error)
     ;
   }
 
-  private function validateRequiredProperties(&$error) {
+  protected function validateRequiredProperties(&$error) {
     foreach ($this->def['mapping'] as $k => $item_def) {
       if (!empty($item_def['required']) && !isset($this->value[$k])) {
         $error = "Property {$k} is required.";
