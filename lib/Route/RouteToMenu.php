@@ -43,11 +43,8 @@ class RouteToMenu {
       'file path' => drupal_get_path('module', $this->module)
     );
 
-    // @todo Remove this in flavor it typed-data
     // Parse constants
-    if (!empty($this->menu_item['context']))       $this->menu_item['context']       = at_eval($this->menu_item['context']);
-    if (!empty($this->menu_item['type']))          $this->menu_item['type']          = at_eval($this->menu_item['type']);
-    if (!empty($this->menu_item['cache']['type'])) $this->menu_item['cache']['type'] = at_eval($this->menu_item['cache']['type']);
+    $this->parseConstants();
 
     if (!empty($this->menu_item['page callback'])) {
       $this->menu_item['function'] = $this->menu_item['page callback'];
@@ -58,5 +55,27 @@ class RouteToMenu {
     array_unshift($this->menu_item['page arguments'], $this->menu_item);
 
     return $this->menu_item;
+  }
+
+  /**
+   * @todo Remove this in flavor it typed-data
+   */
+  private function parseConstants() {
+    $el = at_container('expression_language');
+
+    if (!empty($this->menu_item['context'])) {
+      $this->menu_item['context'] = $el->evaluate($this->menu_item['context']);
+    }
+
+    if (!empty($this->menu_item['type'])) {
+      $this->menu_item['type'] = $el->evaluate($this->menu_item['type']);
+    }
+
+    if (!empty($this->menu_item['cache']['type'])) {
+      $this->menu_item['cache']['type'] = $el->evaluate($this->menu_item['cache']['type']);
+    }
+  }
+
+  private function validate() {
   }
 }
