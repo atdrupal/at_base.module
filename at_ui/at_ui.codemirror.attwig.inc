@@ -47,6 +47,7 @@ function at_ui_twig_form_ajax_callback($form, &$form_state) {
 
   // Render
   $form['result']['#markup'] = kprint_r($output, TRUE);
+
   return $form['result'];
 }
 
@@ -58,7 +59,11 @@ function at_ui_twig_views_form($form = array(), $form_state) {
 
   $names = array('' => '-- Select a view --');
   foreach (views_get_all_views() as $name => $def) {
-    $names[$name] = $def->human_name;
+    $names[$def->base_table][$name] = $def->human_name . ' ('. $name .')';
+  }
+
+  foreach ($names as $k => &$_names) {
+    ksort($_names);
   }
 
   $form['name'] = array(
@@ -101,7 +106,7 @@ function at_ui_twig_views_form($form = array(), $form_state) {
 
         $form['fields'] = array(
           '#type' => 'item',
-          '#title' => 'Available variables',
+          '#title' => 'Available variables for view (Twig) template',
           '#markup' => $fields_markup,
         );
       }
