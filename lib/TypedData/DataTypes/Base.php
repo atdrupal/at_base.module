@@ -39,12 +39,31 @@ abstract class Base {
   }
 
   public function validate(&$error = NULL) {
-    if (!empty($this->def['validate'])) {
-      foreach ($this->def['validate'] as $callback) {
-        if (is_callable($callback)) {
-          if (!$callback($this->value, $error)) {
-            return FALSE;
-          }
+    return $this->validateDefinition($error)
+      && $this->validateInput($error)
+    ;
+  }
+
+  protected function validateDefinition(&$error) {
+    if (!is_array($this->def)) {
+      $error = 'Data definition must be an array.';
+      return FALSE;
+    }
+  }
+
+  protected function validateInput(&$error) {
+    return $this->validateUserCallacks($error);
+  }
+
+  protected function validateUserCallacks(&$error) {
+    if (empty($this->def['validate'])) {
+      return TRUE;
+    }
+
+    foreach ($this->def['validate'] as $callback) {
+      if (is_callable($callback)) {
+        if (!$callback($this->value, $error)) {
+          return FALSE;
         }
       }
     }
