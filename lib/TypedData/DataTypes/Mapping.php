@@ -102,6 +102,12 @@ class Mapping extends Mapping_Base {
     return TRUE;
   }
 
+  /**
+   * Supported require_one_of:
+   *
+   *  Example 1: ['key 1', 'key 2']
+   *  Example 1: [['key 1.1', 'key 1.2'], 'key 2']
+   */
   protected function validateRequireOne(&$error) {
     if (empty($this->def['require_one_of'])) {
       return TRUE;
