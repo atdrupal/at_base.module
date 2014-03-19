@@ -5,9 +5,9 @@ abstract class Base {
   protected $def;
   protected $value;
 
-  public function __construct($def, $value = NULL) {
-    $this->setDef($def);
-    $this->setValue($value);
+  public function __construct($def = NULL, $val = NULL) {
+    !is_null($def) && $this->setDef($def);
+    !is_null($val) && $this->setValue($val);
   }
 
   public function setDef($def) {

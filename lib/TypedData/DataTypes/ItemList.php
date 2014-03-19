@@ -19,6 +19,8 @@ class ItemList extends Base {
     if (!empty($def['element_type'])) {
       $this->element_type = $def['element_type'];
     }
+
+    return $this;
   }
 
   public function validate(&$error = NULL) {
