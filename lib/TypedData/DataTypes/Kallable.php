@@ -1,7 +1,7 @@
 <?php
 namespace Drupal\at_base\TypedData\DataTypes;
 
-class Callable extends String {
+class Kallable extends String {
   public function isEmpty() {
     return is_null($this->value) || empty($this->value);
   }
