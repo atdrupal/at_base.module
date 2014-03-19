@@ -23,7 +23,7 @@ class ItemList extends Base {
 
   public function validate(&$error = NULL) {
     if (!is_array($this->value)) {
-      $error = 'Input must be an array';
+      $error = 'Input must be an array.';
       return FALSE;
     }
 

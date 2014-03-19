@@ -1,17 +1,38 @@
-routes:
-  type: mapping
-  mapping:
-    title:            { type: string, required: true }
-    title callback:   { type: 'function'             }
-    title arguments:  { type: 'list<any>'            }
-    description:      { type: 'string'               }
-    page callback:    { type: 'callbale'             }
-    page arguments:   { type: 'list<string>'         }
-    access callback:  { type: 'function'             }
-    access arguments: { type: 'list<string>'         }
-    theme callback:   { type: 'function'             }
-    file:             { type: 'string'               }
-    weight:           { type: 'integer'              }
-    menu name:        { type: 'string'               }
-    expanded:         { type: 'boolean'              }
-    type:             { type: 'constant'             }
+# @todo
+#   This is validate manually in Drupal\at_base\Route\RouteToMenu::validate()
+#   not yet smart enough to auto validation like Drupal 8.
+type: mapping
+required_properties:
+  - content
+  - template
+  - template_string
+  - form
+  - controller
+mapping:
+  # Drupal core's properties
+  title:            { type: string, required: true }
+  title callback:   { type: 'function'     }
+  title arguments:  { type: 'list<any>'    }
+  description:      { type: 'string'       }
+  page callback:    { type: 'callbale'     }
+  page arguments:   { type: 'list<string>' }
+  access callback:  { type: 'function'     }
+  access arguments: { type: 'list<string>' }
+  theme callback:   { type: 'function'     }
+  file:             { type: 'string'       }
+  weight:           { type: 'integer'      }
+  menu name:        { type: 'string'       }
+  expanded:         { type: 'boolean'      }
+  # @todo Use constant, now route is using expression-language to parse constants
+  type:             { type: 'integer'          }
+
+  # at_base's properties
+  template:         { type: 'string'    }
+  template_string:  { type: 'string'    }
+  content:          { type: 'string'    }
+  form:             { type: 'string'    }
+  # @todo: Update when API is improved
+  #     list<class, method, list>
+  controller:       { type: 'list<any>' }
+  arguments:        { type: 'list<any>' }
+  variables:        { type: 'list<any>' }
