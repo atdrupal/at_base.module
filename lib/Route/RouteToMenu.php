@@ -86,23 +86,4 @@ class RouteToMenu {
               $this->menu_item)
             ->validate($error);
   }
-
-  private function parseConstants() {
-    $el = at_container('expression_language');
-
-    if (!empty($this->menu_item['context'])) {
-      $this->menu_item['context'] = $el->evaluate($this->menu_item['context']);
-    }
-
-    if (!empty($this->menu_item['type'])) {
-      $this->menu_item['type'] = $el->evaluate($this->menu_item['type']);
-    }
-
-    if (!empty($this->menu_item['cache']['type'])) {
-      $this->menu_item['cache']['type'] = $el->evaluate($this->menu_item['cache']['type']);
-    }
-  }
-
-  private function validate() {
-  }
 }
