@@ -49,3 +49,10 @@ routes:
       - [at_ui_include_codemirror, [['mode/htmlmixed/htmlmixed.js', 'mode/xml/xml.js', 'addon/mode/overlay.js']]]
       - [drupal_add_js, ['@at_ui/misc/js/at.twig.js']]
       - [drupal_add_css, ['@at_ui/misc/css/cm.css']]
+
+  'at/twig/views':
+    title: drupalView
+    access arguments: ['execute php code']
+    file: at_ui.codemirror.attwig.inc
+    page callback: drupal_get_form
+    page arguments: ['at_ui_twig_views_form']

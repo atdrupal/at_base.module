@@ -104,6 +104,8 @@ class Process {
           return at_container('twig')->render($file, $this->args);
         }
       }
+
+      throw new \Exception('No template available:' . print_r($tpls, TRUE));
     }
   }
 

@@ -9,10 +9,8 @@ class Entity_Templates {
       foreach (at_config($module, 'entity_template')->get('entity_templates') as $entity_type => $entity_config) {
         foreach ($entity_config as $bundle => $bundle_config) {
           foreach ($bundle_config as $view_mode => $config) {
-            $blocks = isset($config['blocks']) ? $config['blocks'] : NULL;
-            $attached = isset($config['attached']) ? $config['attached'] : NULL;
-
-            $rows[] = array($entity_type, $bundle, $view_mode, atdr($config), atdr($attached), atdr($blocks));
+            unset($config['blocks']);
+            $rows[] = array($entity_type, $bundle, $view_mode, atdr($config));
           }
         }
       }
