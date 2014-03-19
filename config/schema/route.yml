@@ -42,4 +42,4 @@ mapping:
   #     list<class, method, list>
   controller:       { type: 'list<any>' }
   arguments:        { type: 'list<any>' }
-  variables:        { type: 'list<any>' }
+  variables:        { type: 'any'      } # This cal be list<string>, callbacks, …
