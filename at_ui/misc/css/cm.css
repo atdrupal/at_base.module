@@ -1,6 +1,0 @@
-body .CodeMirror { min-height: 50px; font-size: 1.2em;}
-body .CodeMirror,
-body .CodeMirror-scroll { height: auto; }
-body .CodeMirror-scroll { overflow-y: hidden; overflow-x: auto; }
-
-#at-ui-results { border: 1px #777 dotted; padding: 10px; }
