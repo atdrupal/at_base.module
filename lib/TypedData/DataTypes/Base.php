@@ -53,14 +53,13 @@ abstract class Base {
   }
 
   protected function validateInput(&$error) {
-    return $this->validateUserCallacks($error);
+    if (!empty($this->def['validate'])) {
+      return $this->validateUserCallacks($error);
+    }
+    return TRUE;
   }
 
   protected function validateUserCallacks(&$error) {
-    if (empty($this->def['validate'])) {
-      return TRUE;
-    }
-
     foreach ($this->def['validate'] as $callback) {
       if (is_callable($callback)) {
         if (!$callback($this->value, $error)) {
