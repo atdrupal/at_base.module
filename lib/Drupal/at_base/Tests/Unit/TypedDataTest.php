@@ -176,6 +176,21 @@ class TypedDataTest extends UnitTestCase {
     $this->assertEqual(constant('MENU_NORMAL_ITEM'), $result['type']);
   }
 
+  public function testMappingWrongType() {
+    $schema = array(
+      'type' => 'mapping',
+      'mapping' => array(
+        'name' => array('type' => 'string', 'required' => TRUE),
+        'girl' => array('type' => 'boolean'),
+      ),
+    );
+
+    $input = array('name' => array('wrong'), 'girl' => FALSE);
+
+    $data = at_data($schema, $input);
+    $this->assertFalse($data->validate($error));
+  }
+
   public function testMappingTypeWithRequiredProperties() {
     $schema = array(
       'type' => 'mapping',
