@@ -1,6 +1,11 @@
 <?php
 namespace Drupal\at_base\TypedData\DataTypes;
 
+/**
+ * at_data($schema, $input)->validate($error);
+ *
+ * Example schema, check `at_base/config/schema/route.yml`
+ */
 class Mapping extends Mapping_Base {
   protected function validateDefinition(&$error) {
     if (!parent::validateDefinition($error)) {
@@ -57,6 +62,7 @@ class Mapping extends Mapping_Base {
     return $this->validateRequiredProperties($error)
       && $this->validateAllowingExtraProperties($error)
       && $this->validateElementType($error)
+      && $this->validateRequireOne($error)
       && parent::validateInput($error)
     ;
   }
@@ -94,5 +100,36 @@ class Mapping extends Mapping_Base {
       }
     }
     return TRUE;
+  }
+
+  protected function validateRequireOne(&$error) {
+    if (empty($this->def['require_one_of'])) {
+      return TRUE;
+    }
+
+    foreach ($this->def['require_one_of'] as $keys) {
+      if ($this->validateRequireOneKeys($keys)) {
+        return TRUE;
+      }
+    }
+
+    $error = 'Missing one of  required keys: ' . print_r($this->def['require_one_of'], TRUE);
+
+    return FALSE;
+  }
+
+  private function validateRequireOneKeys($keys) {
+    is_string($keys) && $keys = array($keys);
+
+    $provided = TRUE;
+
+    foreach ($keys as $k) {
+      if (!isset($this->value[$k])) {
+        $provided = FALSE;
+        break;
+      }
+    }
+
+    return $provided;
   }
 }

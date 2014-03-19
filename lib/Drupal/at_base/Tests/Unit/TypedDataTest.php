@@ -208,6 +208,28 @@ class TypedDataTest extends UnitTestCase {
     $this->assertEqual('Property age is required.', $error);
   }
 
+  public function testMappingTypeWithRequiredOneOf() {
+    $schema = array(
+      'type' => 'mapping',
+      'require_one_of' => array('name', 'id'),
+      'mapping' => array(
+        'branch' => array('type' => 'string'),
+        'name'   => array('type' => 'string'),
+        'id'     => array('type' => 'integer'),
+      ),
+    );
+
+    $data = at_data($schema, array('name' => 'go_support'));
+    $this->assertTrue($data->validate($error));
+
+    $data = at_data($schema, array('id' => 1));
+    $this->assertTrue($data->validate($error));
+
+    $data = at_data($schema, array('branch' => 'Acquia'));
+    $this->assertFalse($data->validate($error));
+    $this->assertTrue(FALSE !== strpos($error, 'Missing one of  required keys: '));
+  }
+
   public function testMappingTypeWithAllowExtraProperties() {
     $schema = array(
       'type' => 'mapping',
