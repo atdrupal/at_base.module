@@ -3,7 +3,10 @@ namespace Drupal\at_base\TypedData\DataTypes;
 
 class Mapping extends Mapping_Base {
   public function validate(&$error = NULL) {
-    return $this->validateDefinition($error) && $this->validateInput($error);
+    return $this->validateDefinition($error)
+      && $this->validateInput($error)
+      && parent::validate($error)
+    ;
   }
 
   private function validateDefinition(&$error) {

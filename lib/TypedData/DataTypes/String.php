@@ -13,6 +13,6 @@ class String extends Base {
       $error = 'Input is not a string value.';
       return FALSE;
     }
-    return TRUE;
+    return parent::validate($error);
   }
 }

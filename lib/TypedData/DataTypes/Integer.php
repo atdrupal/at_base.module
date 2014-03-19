@@ -13,6 +13,6 @@ class Integer extends Base {
       $error = 'Input is not an integer value.';
       return FALSE;
     }
-    return TRUE;
+    return parent::validate($error);
   }
 }

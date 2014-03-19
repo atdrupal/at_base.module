@@ -32,6 +32,6 @@ class Constant extends Base {
       return FALSE;
     }
 
-    return TRUE;
+    return parent::validate($error);
   }
 }

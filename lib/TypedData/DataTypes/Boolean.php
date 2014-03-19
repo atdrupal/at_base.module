@@ -13,6 +13,6 @@ class Boolean extends Base {
       $error = 'Input is not a boolean value.';
       return FALSE;
     }
-    return TRUE;
+    return parent::validate($error);
   }
 }

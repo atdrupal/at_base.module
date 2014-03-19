@@ -17,6 +17,6 @@ class Fn extends String {
       return FALSE;
     }
 
-    return TRUE;
+    return parent::validate($error);
   }
 }

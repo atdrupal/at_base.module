@@ -34,7 +34,7 @@ class ItemList extends Base {
       }
     }
 
-    return TRUE;
+    return parent::validate($error);
   }
 
   private function validateElementType(&$error = NULL) {

@@ -39,6 +39,16 @@ abstract class Base {
   }
 
   public function validate(&$error = NULL) {
+    if (!empty($this->def['validate'])) {
+      foreach ($this->def['validate'] as $callback) {
+        if (is_callable($callback)) {
+          if (!$callback($this->value, $error)) {
+            return FALSE;
+          }
+        }
+      }
+    }
+
     return TRUE;
   }
 }

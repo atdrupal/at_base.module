@@ -208,4 +208,22 @@ class TypedDataTest extends UnitTestCase {
     $this->assertFalse($data->validate($error));
     $this->assertEqual('Unexpected key found: city.', $error);
   }
+
+  public function testAnonymousValidator() {
+    $def = array('type' => 'any');
+    $def['validate'][] = function($input, &$error = '') {
+      if (!is_numeric($input) || 1 !== $input) {
+        $error = 'I only accept 1';
+        return FALSE;
+      }
+      return TRUE;
+    };
+
+    $data = at_data($def, 0);
+    $this->assertFalse($data->validate($error));
+    $this->assertEqual('I only accept 1', $error);
+
+    $data = at_data($def, 1);
+    $this->assertTrue($data->validate());
+  }
 }
