@@ -2,16 +2,8 @@
 namespace Drupal\at_base\TypedData\DataTypes;
 
 class Mapping extends Mapping_Base {
-  public function validate(&$error = NULL) {
-    return $this->validateDefinition($error)
-      && $this->validateInput($error)
-      && parent::validate($error)
-    ;
-  }
-
   private function validateDefinition(&$error) {
-    if (!is_array($this->def)) {
-      $error = 'Data definition must be an array';
+    if (!parent::validateDefinition($error)) {
       return FALSE;
     }
 
@@ -28,7 +20,7 @@ class Mapping extends Mapping_Base {
     return TRUE;
   }
 
-  private function validateInput(&$error) {
+  protected function validateInput(&$error) {
     if (!is_array($this->value)) {
       $error = 'Input must be an array.';
       return FALSE;
@@ -36,6 +28,7 @@ class Mapping extends Mapping_Base {
 
     return $this->validateRequiredProperties($error)
       && $this->validateAllowingExtraProperties($error)
+      && parent::validate($error)
     ;
   }
 
