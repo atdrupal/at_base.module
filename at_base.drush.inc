@@ -48,6 +48,9 @@ function drush_at_base_pre_cache_clear() {
   cache_clear_all('*', 'cache');
 }
 
+/**
+ * Drush make is not inluded in version 4, which leading to fatal errors.
+ */
 if (class_exists('DrushMakeProject_Library')) {
   require_once dirname(__FILE__) . '/drush/at_require.inc';
 }
