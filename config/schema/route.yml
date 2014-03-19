@@ -1,0 +1,17 @@
+routes:
+  type: mapping
+  mapping:
+    title:            { type: string, required: true }
+    title callback:   { type: 'function'             }
+    title arguments:  { type: 'list<any>'            }
+    description:      { type: 'string'               }
+    page callback:    { type: 'callbale'             }
+    page arguments:   { type: 'list<string>'         }
+    access callback:  { type: 'function'             }
+    access arguments: { type: 'list<string>'         }
+    theme callback:   { type: 'function'             }
+    file:             { type: 'string'               }
+    weight:           { type: 'integer'              }
+    menu name:        { type: 'string'               }
+    expanded:         { type: 'boolean'              }
+    type:             { type: 'constant'             }
