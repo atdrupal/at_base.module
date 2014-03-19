@@ -62,7 +62,8 @@ class SourceCode {
     }
     drupal_set_breadcrumb($bc);
 
-    foreach (scandir($dir) as $name) {
+    $items = scandir($dir);
+    foreach ($items as $name) {
       if ($name === '.') { continue; }
       if ($name === '.DS_Store') { continue; }
       if ($name === '._.DS_Store') { continue; }
@@ -88,10 +89,17 @@ class SourceCode {
     }
 
     uksort($rows, function($a, $b) {
+      // Parent directory first.
       if (is_dir($a) && '..' === substr($a, -2)) return -1;
       if (is_dir($b) && '..' === substr($b, -2)) return  1;
-      if (is_dir($a)) return -1;
-      if (is_dir($b)) return  1;
+
+      if (is_dir($a) xor is_dir($b)) {
+        // And then directory if the type is difference.
+        if (is_dir($a)) return -1;
+        if (is_dir($b)) return  1;
+      }
+
+      // Compare by basename, if the type is the same.
       return strcmp(basename($a), basename($b)) < 0 ? -1 : 1;
     });
 

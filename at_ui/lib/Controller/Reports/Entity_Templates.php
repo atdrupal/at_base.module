@@ -9,6 +9,7 @@ class Entity_Templates {
       foreach (at_config($module, 'entity_template')->get('entity_templates') as $entity_type => $entity_config) {
         foreach ($entity_config as $bundle => $bundle_config) {
           foreach ($bundle_config as $view_mode => $config) {
+            unset($config['blocks']);
             $rows[] = array($entity_type, $bundle, $view_mode, atdr($config));
           }
         }

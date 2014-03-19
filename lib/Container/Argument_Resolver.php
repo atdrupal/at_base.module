@@ -55,19 +55,21 @@ class Argument_Resolver
         return $items;
     }
 
-    public function prepareItems($items) {
+    public function prepareItems($items, $loop = TRUE) {
         foreach ($items as $k => $item) {
-            $items[$k] = $this->prepareItem($item);
+            $items[$k] = $this->prepareItem($item, $loop);
         }
+
         return $items;
     }
 
-    public function prepareItem($item) {
+    public function prepareItem($item, $loop = TRUE) {
         if (is_array($item)) {
-            return $this->prepareItems($item);
+            if ($loop) {
+                return $this->prepareItems($item, FALSE);
+            }
         }
-
-        if (is_string($item)) {
+        elseif (is_string($item)) {
             return $this->replaceItem($item);
         }
 
