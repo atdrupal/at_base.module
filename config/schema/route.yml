@@ -3,6 +3,7 @@
 #   not yet smart enough to auto validation like Drupal 8.
 type: mapping
 require_one_of:
+  - page callback
   - content
   - template
   - template_string
@@ -16,11 +17,11 @@ mapping:
   title callback:   { type: 'function'     }
   title arguments:  { type: 'list<any>'    }
   description:      { type: 'string'       }
-  page callback:    { type: 'callable'      }
-  page arguments:   { type: 'list<string>' }
+  page callback:    { type: 'string'       } # function > not always available
+  page arguments:   { type: 'list'         } # list<string|integer>
   access callback:  { type: 'function'     }
   access arguments: { type: 'list<string>' }
-  theme callback:   { type: 'function'     }
+  theme callback:   { type: 'string'       } # function > not always available
   file:             { type: 'string'       }
   weight:           { type: 'integer'      }
   menu name:        { type: 'string'       }
