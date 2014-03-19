@@ -7,14 +7,42 @@ class Mapping extends Mapping_Base {
       return FALSE;
     }
 
+    if (empty($this->def['skip validate mapping'])) {
+      if (!$this->validateDefMapping($error)) {
+       return FALSE;
+      }
+    }
+
+    return TRUE;
+  }
+
+  protected function validateDefMapping(&$error) {
     if (!isset($this->def['mapping'])) {
-      $error = 'Missing mappaping property for data definition.';
+      $error = 'Wrong schema: Missing mapping property';
       return FALSE;
     }
 
     if (!is_array($this->def['mapping'])) {
       $error = 'Mapping property of data definition must be an array.';
       return FALSE;
+    }
+
+    $element_schema = array(
+      'type' => 'mapping',
+      'skip validate mapping' => TRUE,
+      'mapping' => array(
+        'type'        => array('type' => 'string', 'required' => TRUE),
+        'required'    => array('type' => 'boolean'),
+        'label'       => array('type' => 'string'),
+        'description' => array('type' => 'string'),
+      )
+    );
+
+    foreach ($this->def['mapping'] as $k => $e) {
+      if (!at_data($element_schema, $e)->validate($error)) {
+        $error = "Wrong schema: {$error}";
+        return FALSE;
+      }
     }
 
     return TRUE;
@@ -28,6 +56,7 @@ class Mapping extends Mapping_Base {
 
     return $this->validateRequiredProperties($error)
       && $this->validateAllowingExtraProperties($error)
+      && $this->validateElementType($error)
       && parent::validateInput($error)
     ;
   }
@@ -52,6 +81,18 @@ class Mapping extends Mapping_Base {
       }
     }
 
+    return TRUE;
+  }
+
+  protected function validateElementType(&$error) {
+    foreach ($this->value as $k => $v) {
+      if (!empty($this->def['mapping'][$k])) {
+        if (!at_data($this->def['mapping'][$k], $v)->validate($error)) {
+          $error = "Invalid property `{$k}`: {$error}";
+          return FALSE;
+        }
+      }
+    }
     return TRUE;
   }
 }
