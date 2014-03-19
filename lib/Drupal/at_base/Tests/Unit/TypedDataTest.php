@@ -180,10 +180,9 @@ class TypedDataTest extends UnitTestCase {
     $def = array(
       'type' => 'mapping',
       'mapping' => array(
-        'name'    => array('type' => 'string'),
-        'age'     => array('type' => 'integer'),
+        'name'    => array('type' => 'string',  'required' => TRUE),
+        'age'     => array('type' => 'integer', 'required' => TRUE),
       ),
-      'required_properties' => array('name', 'age'),
     );
 
     $data = at_data($def, array('name' => 'Drupal', 'age' => 13));

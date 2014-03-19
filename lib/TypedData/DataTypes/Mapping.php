@@ -1,48 +1,7 @@
 <?php
 namespace Drupal\at_base\TypedData\DataTypes;
 
-class Mapping extends Base {
-  protected $required_properties = array();
-  protected $allow_extra_properties = TRUE;
-
-  public function setDef($def) {
-    $this->def = $def;
-
-    if (isset($def['required_properties'])) {
-      $this->required_properties = $def['required_properties'];
-    }
-
-    if (isset($def['allow_extra_properties'])) {
-      $this->allow_extra_properties = $def['allow_extra_properties'];
-    }
-
-    return $this;
-  }
-
-  public function getValue() {
-    if ($this->validate()) {
-      $value = array();
-
-      foreach ($this->value as $k => $v) {
-        $value[$k] = $this->getItemValue($k, $v);
-      }
-
-      return $value;
-    }
-  }
-
-  private function getItemValue($k, $v) {
-    $return = $v;
-
-    if (isset($this->def['mapping'][$k]['type'])) {
-      $def = array('type' => $this->def['mapping'][$k]['type']);
-      $data = at_data($def, $v);
-      $return = $data->getValue();
-    }
-
-    return $return;
-  }
-
+class Mapping extends Mapping_Base {
   public function validate(&$error = NULL) {
     return $this->validateDefinition($error) && $this->validateInput($error);
   }
@@ -67,18 +26,21 @@ class Mapping extends Base {
   }
 
   private function validateInput(&$error) {
+    if (!is_array($this->value)) {
+      $error = 'Input must be an array.';
+      return FALSE;
+    }
+
     return $this->validateRequiredProperties($error)
       && $this->validateAllowingExtraProperties($error)
     ;
   }
 
   private function validateRequiredProperties(&$error) {
-    if (!empty($this->required_properties)) {
-      foreach ($this->required_properties as $k) {
-        if (!isset($this->value[$k])) {
-          $error = "Property {$k} is required.";
-          return FALSE;
-        }
+    foreach ($this->def['mapping'] as $k => $item_def) {
+      if (!empty($item_def['required']) && !isset($this->value[$k])) {
+        $error = "Property {$k} is required.";
+        return FALSE;
       }
     }
     return TRUE;
