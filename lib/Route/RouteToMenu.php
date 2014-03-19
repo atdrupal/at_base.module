@@ -43,6 +43,7 @@ class RouteToMenu {
       'file path' => drupal_get_path('module', $this->module)
     );
 
+    // @todo Remove this in flavor it typed-data
     // Parse constants
     if (!empty($this->menu_item['context']))       $this->menu_item['context']       = at_eval($this->menu_item['context']);
     if (!empty($this->menu_item['type']))          $this->menu_item['type']          = at_eval($this->menu_item['type']);
