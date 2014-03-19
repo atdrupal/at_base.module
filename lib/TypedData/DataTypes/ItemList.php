@@ -23,7 +23,7 @@ class ItemList extends Base {
     return $this;
   }
 
-  public function validate(&$error = NULL) {
+  public function validateInput(&$error = NULL) {
     if (!is_array($this->value)) {
       $error = 'Input must be an array.';
       return FALSE;
@@ -36,7 +36,7 @@ class ItemList extends Base {
       }
     }
 
-    return parent::validate($error);
+    return parent::validateInput($error);
   }
 
   private function validateElementType(&$error = NULL) {

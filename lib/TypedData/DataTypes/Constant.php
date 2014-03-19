@@ -16,7 +16,7 @@ class Constant extends Base {
     }
   }
 
-  public function validate(&$error = NULL) {
+  public function validateInput(&$error = NULL) {
     if (!is_string($this->value)) {
       $error = 'Input must be a string.';
       return FALSE;
@@ -32,6 +32,6 @@ class Constant extends Base {
       return FALSE;
     }
 
-    return parent::validate($error);
+    return parent::validateInput($error);
   }
 }
