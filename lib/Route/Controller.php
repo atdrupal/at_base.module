@@ -107,6 +107,7 @@ class Controller
         $this->prepareCache();
         $this->prepareFunctionCallback();
         $this->prepareContextBlocks();
+        $this->prepareContextBreadcrumbs();
         return $this->render->render($this->route);
     }
 
@@ -135,6 +136,14 @@ class Controller
         if (!empty($this->route['blocks'][$theme])) {
             at_container('container')->offsetSet('page.blocks', $this->route['blocks'][$theme]);
             unset($this->route['blocks'][$theme]);
+        }
+    }
+
+    private function prepareContextBreadcrumbs() {
+        if (!empty($this->route['breadcrumbs'])) {
+            $bc = $this->route['breadcrumbs'];
+            unset($this->route['breadcrumbs']);
+            at_container('breadcrumb_api')->buildBreadcrumbs($bc);
         }
     }
 
