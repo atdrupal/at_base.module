@@ -14,7 +14,7 @@ mapping:
   title callback:   { type: 'function'     }
   title arguments:  { type: 'list<any>'    }
   description:      { type: 'string'       }
-  page callback:    { type: 'callbale'     }
+  page callback:    { type: 'callbal'      }
   page arguments:   { type: 'list<string>' }
   access callback:  { type: 'function'     }
   access arguments: { type: 'list<string>' }
