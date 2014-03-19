@@ -5,9 +5,9 @@ abstract class Base {
   protected $def;
   protected $value;
 
-  public function __construct($def, $value = NULL) {
-    $this->setDef($def);
-    $this->setValue($value);
+  public function __construct($def = NULL, $val = NULL) {
+    !is_null($def) && $this->setDef($def);
+    !is_null($val) && $this->setValue($val);
   }
 
   public function setDef($def) {
@@ -39,6 +39,35 @@ abstract class Base {
   }
 
   public function validate(&$error = NULL) {
+    return $this->validateDefinition($error)
+      && $this->validateInput($error)
+    ;
+  }
+
+  protected function validateDefinition(&$error) {
+    if (!is_array($this->def)) {
+      $error = 'Data definition must be an array.';
+      return FALSE;
+    }
+    return TRUE;
+  }
+
+  protected function validateInput(&$error) {
+    if (!empty($this->def['validate'])) {
+      return $this->validateUserCallacks($error);
+    }
+    return TRUE;
+  }
+
+  protected function validateUserCallacks(&$error) {
+    foreach ($this->def['validate'] as $callback) {
+      if (is_callable($callback)) {
+        if (!$callback($this->value, $error)) {
+          return FALSE;
+        }
+      }
+    }
+
     return TRUE;
   }
 }

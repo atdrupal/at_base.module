@@ -6,7 +6,7 @@ class Fn extends String {
     return FALSE;
   }
 
-  public function validate(&$error = NULL) {
+  public function validateInput(&$error = NULL) {
     if (!is_string($this->value)) {
       $error = 'Function name must be a string.';
       return FALSE;
@@ -17,6 +17,6 @@ class Fn extends String {
       return FALSE;
     }
 
-    return TRUE;
+    return parent::validateInput($error);
   }
 }

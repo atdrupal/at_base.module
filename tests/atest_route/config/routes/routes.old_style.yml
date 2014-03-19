@@ -9,7 +9,6 @@ routes:
   atest_route/drupal:
     title: Hello
     title callback: t
-    title arguments: []
     description: 'Description for the page'
     page callback: atest_route_page_callback
     page arguments: ['Andy Truong']
@@ -18,7 +17,6 @@ routes:
     theme callback: trim # function_to_detect_theme_name
     theme arguments: [seven]
     file: atest_route.pages.inc
-    load arguments: []
     weight: 0
     menu_name: navigation
     expanded: TRUE
