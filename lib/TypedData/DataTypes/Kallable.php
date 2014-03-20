@@ -1,18 +1,17 @@
 <?php
 namespace Drupal\at_base\TypedData\DataTypes;
 
-class String extends Base {
+class Kallable extends String {
   public function isEmpty() {
-    if (!is_null($this->value)) {
-      return $this->value === '';
-    }
+    return is_null($this->value) || empty($this->value);
   }
 
   protected function validateInput(&$error = NULL) {
-    if (!is_string($this->value)) {
-      $error = 'Input is not a string value.';
+    if (!is_callable($this->value)) {
+      $error = 'Function does not exist.';
       return FALSE;
     }
+
     return parent::validateInput($error);
   }
 }

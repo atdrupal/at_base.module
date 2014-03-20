@@ -286,5 +286,8 @@ function at_data($def, $value = NULL) {
     $service = 'type.list';
   }
 
-  return at_container($service, $def, $value);
+  return at_container($service)
+    ->setDef($def)
+    ->setValue($value)
+  ;
 }

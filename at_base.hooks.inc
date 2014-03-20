@@ -15,10 +15,7 @@ use \Drupal\at_base\Hook\Entity\View_Alter as Hook_Entity_View_Alter;
  */
 function at_base_menu() {
   require_once dirname(__FILE__) . '/lib/Hook/Menu.php';
-  require_once dirname(__FILE__) . '/lib/Route/Importer.php';
-
-  return at_id(new HookMenu($importer = new RouteImporter()))
-          ->getMenuItems();
+  return at_id(new HookMenu())->getMenuItems();
 }
 
 /**

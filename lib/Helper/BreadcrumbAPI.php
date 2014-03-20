@@ -137,7 +137,7 @@ class BreadcrumbAPI {
     }
   }
 
-  private function buildBreadcrumbs($bc = array(), $args = array()) {
+  public function buildBreadcrumbs($bc = array(), $args = array()) {
     global $user;
 
     $token_data = array('user' => $user);

@@ -8,11 +8,11 @@ class Boolean extends Base {
     }
   }
 
-  public function validate(&$error = NULL) {
+  public function validateInput(&$error = NULL) {
     if (!is_bool($this->value)) {
       $error = 'Input is not a boolean value.';
       return FALSE;
     }
-    return TRUE;
+    return parent::validateInput($error);
   }
 }

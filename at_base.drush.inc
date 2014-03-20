@@ -1,9 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/at_base.module';
-require_once dirname(__FILE__) . '/drush/at_services.inc';
 require_once dirname(__FILE__) . '/drush/at_cache.inc';
-require_once dirname(__FILE__) . '/drush/at_twig.inc';
 require_once dirname(__FILE__) . '/drush/at_fontello.inc';
 
 /**
@@ -29,26 +27,6 @@ function at_base_drush_command() {
     )
   );
 
-  $cmds['fontello'] = array(
-    'callback' => 'drush_fontello',
-    'description' => 'Build Fontello library.',
-    'examples' => array(
-      'drush fontello => Build Fontello library',
-    ),
-    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
-  );
-
-  $cmds['at_service'] = array(
-    'callback' => 'drush_at_services',
-    'description' => 'List all services',
-    'examples' => array(
-      'drush at_service' => 'List all services',
-      'drush at_service server_name' => 'View definition of service_name.',
-    ),
-    'aliases' => array('at-service', 'ats'),
-    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
-  );
-
   $cmds['at_cache_clear'] = array(
     'callback' => 'drush_at_cache_clear',
     'description' => 'Flush cache by tags',
@@ -59,14 +37,13 @@ function at_base_drush_command() {
     'aliases' => array('cache:clear', 'atcc', 'at_cache:clear'),
   );
 
-  $cmds['at_doc_twig'] = array(
-    'callback' => 'drush_at_twig_doc',
-    'description' => 'Lists twig functions, filters, globals and tests present in the current project',
+  $cmds['fontello'] = array(
+    'callback' => 'drush_fontello',
+    'description' => 'Build Fontello library.',
     'examples' => array(
-      'drush twig:doc' => 'Display all Twig functions/filters',
-      'drush twig:doc drupalView' => 'View details of drupalView filter.'
+      'drush fontello => Build Fontello library',
     ),
-    'aliases' => array('twig:doc'),
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
   );
 
   return $cmds;
@@ -81,6 +58,9 @@ function drush_at_base_pre_cache_clear() {
   cache_clear_all('*', 'cache');
 }
 
+/**
+ * Drush make is not inluded in version 4, which leading to fatal errors.
+ */
 if (class_exists('DrushMakeProject_Library')) {
   require_once dirname(__FILE__) . '/drush/at_require.inc';
 }

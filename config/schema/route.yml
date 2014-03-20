@@ -1,0 +1,45 @@
+# @todo
+#   This is validate manually in Drupal\at_base\Route\RouteToMenu::validate()
+#   not yet smart enough to auto validation like Drupal 8.
+type: mapping
+require_one_of:
+  - page callback
+  - content
+  - template
+  - template_string
+  - form
+  - controller
+mapping:
+  # -------
+  # Drupal core's properties
+  # -------
+  title:            { type: string, required: true }
+  title callback:   { type: 'function'     }
+  title arguments:  { type: 'list<any>'    }
+  description:      { type: 'string'       }
+  page callback:    { type: 'string'       } # function > not always available
+  page arguments:   { type: 'list'         } # list<string|integer>
+  access callback:  { type: 'function'     }
+  access arguments: { type: 'list<string>' }
+  theme callback:   { type: 'string'       } # function > not always available
+  file:             { type: 'string'       }
+  weight:           { type: 'integer'      }
+  menu name:        { type: 'string'       }
+  expanded:         { type: 'boolean'      }
+  # @todo Use constant, now route is using expression-language to parse constants
+  type:             { type: 'integer'      }
+
+  # -------
+  # at_base's properties
+  # -------
+  # @todo: string or list<string>
+  #     or provide templates: { type: list<string> }
+  template:         { type: 'any'       }
+  template_string:  { type: 'string'    }
+  content:          { type: 'string'    }
+  form:             { type: 'string'    }
+  # @todo: Update when API is improved
+  #     list<class, method, list>
+  controller:       { type: 'list<any>' }
+  arguments:        { type: 'list<any>' }
+  variables:        { type: 'any'      } # This cal be list<string>, callbacks, …
