@@ -1,0 +1,10 @@
+routes:
+  atest_route/breadcrumb:
+    title: Hello Blocks
+    access arguments: ['access content']
+    content: >
+      <h1>Main content here!</h1>
+      Hello!
+    breadcrumbs:
+      - ['[site:name]', '[site:url]']
+      - ['Admin', 'admin']

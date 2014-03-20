@@ -19,11 +19,13 @@ class ItemList extends Base {
     if (!empty($def['element_type'])) {
       $this->element_type = $def['element_type'];
     }
+
+    return $this;
   }
 
-  public function validate(&$error = NULL) {
+  public function validateInput(&$error = NULL) {
     if (!is_array($this->value)) {
-      $error = 'Input must be an array';
+      $error = 'Input must be an array.';
       return FALSE;
     }
 
@@ -34,7 +36,7 @@ class ItemList extends Base {
       }
     }
 
-    return TRUE;
+    return parent::validateInput($error);
   }
 
   private function validateElementType(&$error = NULL) {
