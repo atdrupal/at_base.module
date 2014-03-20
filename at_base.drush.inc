@@ -1,10 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . '/at_base.module';
-require_once dirname(__FILE__) . '/drush/at_services.inc';
 require_once dirname(__FILE__) . '/drush/at_cache.inc';
-require_once dirname(__FILE__) . '/drush/at_twig.inc';
-require_once dirname(__FILE__) . '/drush/at_entity_template.inc';
 
 /**
  * Implements hook_drush_command()
@@ -29,17 +26,6 @@ function at_base_drush_command() {
     )
   );
 
-  $cmds['at_service'] = array(
-    'callback' => 'drush_at_services',
-    'description' => 'List all services',
-    'examples' => array(
-      'drush at_service' => 'List all services',
-      'drush at_service server_name' => 'View definition of service_name.',
-    ),
-    'aliases' => array('at-service', 'ats'),
-    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
-  );
-
   $cmds['at_cache_clear'] = array(
     'callback' => 'drush_at_cache_clear',
     'description' => 'Flush cache by tags',
@@ -48,26 +34,6 @@ function at_base_drush_command() {
       'drush atcc node user' => 'Flush cached content tagged with node or user',
     ),
     'aliases' => array('cache:clear', 'atcc', 'at_cache:clear'),
-  );
-
-  $cmds['at_doc_twig'] = array(
-    'callback' => 'drush_at_twig_doc',
-    'description' => 'Lists twig functions, filters, globals and tests present in the current project',
-    'examples' => array(
-      'drush twig:doc' => 'Display all Twig functions/filters',
-      'drush twig:doc drupalView' => 'View details of drupalView filter.'
-    ),
-    'aliases' => array('twig:doc'),
-  );
-
-  $cmds['at_template'] = array(
-    'callback' => 'drush_at_entity_template',
-    'description' => 'List configuration for entity template',
-    'examples' => array(
-      'drush at_template' => 'List all entity template configurations',
-      'drush at_template node' => 'List all entity template configurations for node entity',
-      'drush at_template node article' => 'List all entity template configurations for node/article entity',
-    ),
   );
 
   return $cmds;
@@ -82,6 +48,9 @@ function drush_at_base_pre_cache_clear() {
   cache_clear_all('*', 'cache');
 }
 
+/**
+ * Drush make is not inluded in version 4, which leading to fatal errors.
+ */
 if (class_exists('DrushMakeProject_Library')) {
   require_once dirname(__FILE__) . '/drush/at_require.inc';
 }

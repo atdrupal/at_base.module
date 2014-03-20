@@ -105,7 +105,7 @@ class Process {
         }
       }
 
-      throw new \Exception('No template available:' . print_r($tpls, TRUE));
+      throw new \Exception('No template available: ' . print_r($tpls, TRUE));
     }
   }
 
