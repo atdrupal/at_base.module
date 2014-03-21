@@ -44,12 +44,8 @@ class Page_Build {
     if ($blocks = _block_get_renderable_array($output)) {
       $this->page[$region] = isset($this->page[$region]) ? $this->page[$region] : array();
       $this->page[$region] = array_merge($this->page[$region], $blocks);
-      $this->page[$region]['#sorted'] = FALSE;
+      element_children($this->page[$region], TRUE);
     }
-
-    # @todo: The sorting is not working
-    # dsm($this->page['help'][0]);
-    # dsm($this->page);
   }
 
   /**
