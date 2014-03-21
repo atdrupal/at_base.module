@@ -8,7 +8,7 @@ namespace Drupal\at_base\Tests\Web;
  *    drush test-run --dirty 'Drupal\at_base\Tests\Web\KVTest'
  */
 class KVTest extends \DrupalWebTestCase {
-  public function getInfo() {
+  static public function getInfo() {
     return array(
       'name' => 'AT Web: Key-Value storage',
       'description' => 'Check Key-Value storage functionality',

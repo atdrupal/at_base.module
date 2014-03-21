@@ -216,6 +216,23 @@ function at_modules($base_module = 'at_base', $config_file = '') {
 }
 
 /**
+ * Shortcut to render to icon.
+ */
+function at_icon($name, $source = 'icon.fontawesome') {
+  try {
+    /** @type $service Drupal\at_base\Icon\IconInterface **/
+    $service = at_container($source);
+
+    /** @type $icon Drupal\at_base\Icon\Icon **/
+    $icon = $service->get($name);
+    return $icon->render();
+  }
+  catch (Exception $e) {
+    return $e->getMessage();
+  }
+}
+
+/**
  * Generate path for library.
  *
  * @param  string $name

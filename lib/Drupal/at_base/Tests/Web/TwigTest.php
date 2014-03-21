@@ -6,7 +6,7 @@ namespace Drupal\at_base\Tests\Web;
  * drush test-run --dirty 'Drupal\at_base\Tests\Web\TwigTest'
  */
 class TwigTest extends \DrupalWebTestCase {
-  public function getInfo() {
+  static public function getInfo() {
     return array(
       'name' => 'AT Base: Twig Service',
       'description' => 'Test Twig service',

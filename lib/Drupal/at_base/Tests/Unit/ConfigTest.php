@@ -6,7 +6,7 @@ use \Drupal\at_base\Helper\Test\UnitTestCase;
 use \Drupal\at_base\Helper\ModulesFetcher;
 
 class ConfigTest extends UnitTestCase {
-  public function getInfo() {
+  static public function getInfo() {
     return array('name' => 'AT Unit: Config') + parent::getInfo();
   }
 
