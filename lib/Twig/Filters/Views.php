@@ -46,7 +46,7 @@ class Views extends Views_Base {
     }
   }
 
-  public function render() {
+  protected function renderEditLink() {
     $edit_link = '';
 
     if (user_access('administer views') && module_exists('views_ui')) {
@@ -62,6 +62,12 @@ class Views extends Views_Base {
 
       $edit_link = drupal_render($edit_link);
     }
+
+    return $edit_link;
+  }
+
+  public function render() {
+    $edit_link = $this->renderEditLink();
 
     if (!empty($this->exception)) {
       return $edit_link . $this->exception->getMessage();
