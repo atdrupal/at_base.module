@@ -57,7 +57,12 @@ class Views extends Views_Base {
         '#title' => 'Manage',
         '#links' => array(
           array('title' => t('Edit'), 'href' => $edit_link),
-        )
+        ),
+        '#attached' => array(
+          'js' => array(
+            drupal_get_path('module', 'at_base') . '/misc/js/twig-filter.views-links.js'
+          )
+        ),
       );
 
       $edit_link = drupal_render($edit_link);
