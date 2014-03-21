@@ -47,8 +47,24 @@ class Views extends Views_Base {
   }
 
   public function render() {
+    $edit_link = '';
+
+    if (user_access('administer views') && module_exists('views_ui')) {
+      $edit_link = 'admin/structure/views/view/' . $this->view->name . '/edit/' . $this->view->current_display;
+
+      $edit_link = array(
+        '#theme' => 'ctools_dropdown',
+        '#title' => 'Manage',
+        '#links' => array(
+          array('title' => t('Edit'), 'href' => $edit_link),
+        )
+      );
+
+      $edit_link = drupal_render($edit_link);
+    }
+
     if (!empty($this->exception)) {
-      return $this->exception->getMessage();
+      return $edit_link . $this->exception->getMessage();
     }
 
     // No template, use default
@@ -57,7 +73,7 @@ class Views extends Views_Base {
       return $this->view->preview($this->display_id, $this->arguments);
     }
 
-    return $this->renderTemplate();
+    return $edit_link . $this->renderTemplate();
   }
 
   protected function beforeRenderTemplate() {
