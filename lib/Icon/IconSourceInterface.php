@@ -1,7 +1,7 @@
 <?php
 namespace Drupal\at_base\Icon;
 
-interface IconInterface {
+interface IconSourceInterface {
 
   /**
    * Get Icon instance with information to generate icon tag.
@@ -10,4 +10,13 @@ interface IconInterface {
    * @return \Drupal\at_base\Icon\Icon
    */
   public function get($css_code);
+
+  /**
+   * Get icon-sets.
+   *
+   * @return [type] [description]
+   */
+  public function getIconSets();
+
+  public function getIconList($set_name);
 }
