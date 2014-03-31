@@ -216,6 +216,18 @@ function at_modules($base_module = 'at_base', $config_file = '') {
 }
 
 /**
+ * Shortcut to render to icon.
+ */
+function at_icon($name, $source = 'icon.fontawesome') {
+  try {
+    return at_container($source)->get($name)->render();
+  }
+  catch (Exception $e) {
+    return $e->getMessage();
+  }
+}
+
+/**
  * Generate path for library.
  *
  * @param  string $name

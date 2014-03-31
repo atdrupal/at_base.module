@@ -4,7 +4,7 @@ projects:
     download:
       type: git
       url: 'https://github.com/mustangostang/spyc.git'
-      branch: '0.5.1'
+      revision: 'b7fd7f7a4ddd70c4d599a023fcda3e2b9a20d4b9'
 
   pimple:
     type: library
@@ -26,3 +26,18 @@ projects:
       type: git
       url: 'https://github.com/symfony/expression-language.git'
       branch: 'v2.4.1'
+
+  fontawesome:
+    type: library
+    download:
+      type: file
+      url: 'http://fortawesome.github.io/Font-Awesome/assets/font-awesome-4.0.3.zip'
+
+  fontello:
+    type: library
+    download:
+      type: git
+      url: https://github.com/fontello/fontello.git
+      branch: '5.1.0'
+    options:
+      working-copy: true
