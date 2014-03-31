@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__) . '/at_base.module';
 require_once dirname(__FILE__) . '/drush/at_cache.inc';
+require_once dirname(__FILE__) . '/drush/at_fontello.inc';
 
 /**
  * Implements hook_drush_command()
@@ -34,6 +35,15 @@ function at_base_drush_command() {
       'drush atcc node user' => 'Flush cached content tagged with node or user',
     ),
     'aliases' => array('cache:clear', 'atcc', 'at_cache:clear'),
+  );
+
+  $cmds['fontello'] = array(
+    'callback' => 'drush_fontello',
+    'description' => 'Build Fontello library.',
+    'examples' => array(
+      'drush fontello => Build Fontello library',
+    ),
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
   );
 
   return $cmds;
