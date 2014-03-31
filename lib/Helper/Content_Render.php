@@ -85,7 +85,7 @@ class Content_Render {
 
     // Attach assets
     if (is_array($this->data) && !empty($this->data['attached'])) {
-      $return = is_array($return) ?: array('#markup' => $return);
+      $return = is_array($return) ? $return : array('#markup' => $return);
 
       if (isset($return['#attached'])) {
         $return['#attached'] = array_merge_recursive($return['#attached'], $this->buildAttached());

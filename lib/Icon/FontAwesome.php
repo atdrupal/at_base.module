@@ -1,7 +1,7 @@
 <?php
 namespace Drupal\at_base\Icon;
 
-class FontAwesome implements IconInterface {
+class FontAwesome implements IconSourceInterface {
   public function __construct() {
     \at_fn::drupal_add_css(at_library('fontawesome', NULL, FALSE) . 'css/font-awesome.css');
   }
@@ -17,5 +17,13 @@ class FontAwesome implements IconInterface {
    */
   public function get($name) {
     return new Icon($class = "fa {$name}");
+  }
+
+  public function getIconSets() {
+    return array('default');
+  }
+
+  public function getIconList($set_name = 'default') {
+    return array();
   }
 }
