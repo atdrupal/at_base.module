@@ -46,4 +46,12 @@ class FontAwesome implements IconSourceInterface {
     preg_match_all('/\.fa-([a-z-_]+):before/', $css, $matches);
     return isset($matches[1]) ? $matches[1] : array();
   }
+
+  public function getIconSets() {
+    return array('default');
+  }
+
+  public function getIconList($set_name = 'default') {
+    return array();
+  }
 }
