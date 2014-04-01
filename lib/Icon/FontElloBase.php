@@ -9,7 +9,7 @@ abstract class FontElloBase implements IconSourceInterface {
 
   public function getIconConfig($set_name, $icon_name) {
     if ($v = at_container('kv', 'aticon.fontello')->get("{$set_name}/{$icon_name}")) {
-      # return $v;
+      return $v;
     }
 
     // Fetch and save config
