@@ -37,13 +37,14 @@ function at_base_drush_command() {
     'aliases' => array('cache:clear', 'atcc', 'at_cache:clear'),
   );
 
-  $cmds['fontello'] = array(
+  $cmds['at_fontello'] = array(
     'callback' => 'drush_fontello',
     'description' => 'Build Fontello library.',
     'examples' => array(
       'drush fontello => Build Fontello library',
     ),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_FULL,
+    'aliases' => array('atft'),
   );
 
   return $cmds;

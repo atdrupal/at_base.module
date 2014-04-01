@@ -29,8 +29,7 @@ class Controller
      * @param \Drupal\at_base\Helper\Content_Render $content_render
      * @param string $request_path Request path — Example: user/login
      */
-    public function __construct($content_render, $request_path)
-    {
+    public function __construct($content_render, $request_path) {
         $this->render = $content_render;
         $this->menu_item = menu_get_item($request_path);
     }
@@ -74,28 +73,37 @@ class Controller
     /**
      * Apply reoute definition to the controller.
      *
-     * @param array $route
+     * @param  array $route
      * @return \Drupal\at_base\Route\Controller
      */
     public function setRoute($route) {
-        foreach (explode('/', $route['pattern']) as $position => $part) {
-            if (strpos($part, '%') !== 0) {
-                continue;
+        $pattern = explode('/', $route['pattern']);
+        foreach ($pattern as $position => $part) {
+            if (strpos($part, '%') === 0) {
+                $part = $part === '%' ? $position : substr($part, 1);
+                $this->prepareRoutePart($route, $part, $position);
             }
-
-            $part = substr($part, 1);
-            $route['variables'][$part] = $this->menu_item['map'][$position];
-
-            !empty($route['page arguments'])
-                && ($route['page arguments'] = $this->repairArguments($route['page arguments'], $position));
-
-            !empty($route['controller'][2])
-                && ($route['controller'][2] = $this->repairArguments($route['controller'][2], $position));
         }
-
         $this->route = $route;
-
         return $this;
+    }
+
+    /**
+     * If pattern of route is /node/%node, we try to make node as key of
+     *     route varibales.
+     * If pattern of route is /hi/%, we try to make position of % (this case
+     *     it is 1) as a key of route variables.
+     */
+    private function prepareRoutePart(&$route, $part, $position) {
+        if (!empty($route['page arguments'])) {
+            $route['page arguments'] = $this->repairArguments($route['page arguments'], $position);
+        }
+        elseif (!empty($route['controller'][2])) {
+            $route['controller'][2] = $this->repairArguments($route['controller'][2], $position);
+        }
+        else {
+            $route['variables'][$part] = $this->menu_item['map'][$position];
+        }
     }
 
     /**

@@ -15,7 +15,7 @@ class AtRequire {
     $modules = array($this->module);
 
     if ($this->module === 'all') {
-      $modules = at_modules('at_base', 'require');
+      $modules = array('at_base' => 'at_base') + at_modules('at_base', 'require');
     }
 
     foreach ($modules as $module) {
