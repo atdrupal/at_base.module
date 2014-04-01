@@ -1,0 +1,8 @@
+services:
+  icon.fontawesome:
+    class: Drupal\at_base\Icon\FontAwesome
+    tags: [{ name: 'at.icon', weight: -10 }]
+
+  icon.fontello:
+    class: Drupal\at_base\Icon\FontEllo
+    tags: [{ name: 'at.icon' }]
