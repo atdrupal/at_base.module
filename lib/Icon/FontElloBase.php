@@ -133,7 +133,8 @@ abstract class FontElloBase implements IconSourceInterface {
    * @return array
    */
   public function getLibrariesCSS() {
-    $included = &drupal_static('fontello_library_added');
+    static $included;
+
     $css = array();
 
     // Add library.
