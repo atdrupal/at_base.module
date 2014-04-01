@@ -20,7 +20,7 @@ class FontAwesome implements IconSourceInterface {
    *   Contain enough information to generate icon tag.
    */
   public function get($id) {
-    if (strpos('/', $id)) {
+    if (strpos($id, '/')) {
       list(, $name) = explode('/', $id);
     }
     else {
