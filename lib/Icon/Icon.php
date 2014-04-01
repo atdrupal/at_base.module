@@ -1,5 +1,4 @@
 <?php
-
 namespace Drupal\at_base\Icon;
 
 class Icon {
@@ -9,12 +8,15 @@ class Icon {
 
   public function __construct($class = '', $tag = 'i', $text = '') {
     $this->class = $class;
-    $this->tag = $tag;
-    $this->text = $text;
+    $this->tag   = $tag;
+    $this->text  = $text;
   }
 
   public function render() {
+    if (empty($this->class)) {
+      return '';
+    }
+
     return "<{$this->tag} class=\"{$this->class}\">{$this->text}</$this->tag>";
   }
-
 }

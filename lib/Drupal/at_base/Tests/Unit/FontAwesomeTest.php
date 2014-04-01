@@ -13,7 +13,7 @@ class FontAwesomeTest extends UnitTestCase {
   }
 
   public function testIconRendering() {
-    $css_code = 'fa-camera-retro';
+    $css_code = 'camera-retro';
 
     \at_fake::drupal_add_css(function($data = NULL, $options = NULL) {
       static $included = array();
@@ -25,7 +25,7 @@ class FontAwesomeTest extends UnitTestCase {
       return $included;
     });
 
-    $expected = '<i class="fa '. $css_code .'"></i>';
+    $expected = '<i class="fa fa-'. $css_code .'"></i>';
     $actual = at_icon($css_code, 'icon.fontawesome');
     $included_css = \at_fn::drupal_add_css();
 
