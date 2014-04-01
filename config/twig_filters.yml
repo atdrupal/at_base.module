@@ -34,10 +34,10 @@ twig_filters:
   #             # Display a specified number of items
   #               , pager: { type: some, options: { items_per_page: 10 } }
   #             # Display all items
-  #               , pager: { type: none }
+  #               , pager: { type: 'none' }
   #             # Paged output, full pager
   #               , pager: {
-  #                 type: full
+  #                 type: 'full'
   #                 options: {
   #                   , offset: 0 # The number of items to skip. For example, if this field is 3, the first 3 items will be skipped and not displayed.
   #                   , items_per_page: 10 # Items to display, The number of items to display. Enter 0 for no limit.
@@ -48,7 +48,7 @@ twig_filters:
   #               }
   #             # Paged output, mini pager
   #               , pager: {
-  #                 type: mini
+  #                 type: 'mini'
   #                 , options: {} # Similar to full pager
   #               }
   #           , offset: 0
