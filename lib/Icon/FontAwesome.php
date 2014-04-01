@@ -47,10 +47,6 @@ class FontAwesome implements IconSourceInterface {
     return isset($matches[1]) ? $matches[1] : array();
   }
 
-  public function getIconSets() {
-    return array('default');
-  }
-
   public function getIconList($set_name = 'default') {
     return array();
   }
