@@ -20,7 +20,13 @@ class FontAwesome implements IconSourceInterface {
    *   Contain enough information to generate icon tag.
    */
   public function get($id) {
-    list(, $name) = explode('/', $id);
+    if (strpos('/', $id)) {
+      list(, $name) = explode('/', $id);
+    }
+    else {
+      $name = $id;
+    }
+
     return new Icon($class = "fa fa-{$name}");
   }
 
@@ -45,9 +51,5 @@ class FontAwesome implements IconSourceInterface {
     $css = file_get_contents($css);
     preg_match_all('/\.fa-([a-z-_]+):before/', $css, $matches);
     return isset($matches[1]) ? $matches[1] : array();
-  }
-
-  public function getIconList($set_name = 'default') {
-    return array();
   }
 }
