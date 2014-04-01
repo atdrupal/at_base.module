@@ -2,6 +2,11 @@
 namespace Drupal\at_base\Icon;
 
 interface IconSourceInterface {
+  /**
+   * Return the name of source.
+   * @return string
+   */
+  public function getName();
 
   /**
    * Get Icon instance with information to generate icon tag.

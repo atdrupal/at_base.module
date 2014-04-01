@@ -2,6 +2,10 @@
 namespace Drupal\at_base\Icon;
 
 class FontAwesome implements IconSourceInterface {
+  public function getName() {
+    return 'FontAwesome';
+  }
+
   public function __construct() {
     \at_fn::drupal_add_css(at_library('fontawesome', NULL, FALSE) . 'css/font-awesome.css');
   }
