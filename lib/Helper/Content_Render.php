@@ -26,6 +26,7 @@ use Drupal\at_base\Helper\Content_Render\Process;
  * @see  \At_Twig_TestCase::testContentRender()
  */
 class Content_Render {
+
   /**
    * Data to be rendered.
    *
@@ -66,13 +67,11 @@ class Content_Render {
       $this->setdata($data);
     }
 
-    return (empty($this->data['cache']) || is_null($this->cache_handler))
-      ? $this->build()
-      : $this
-          ->getCacheHandler()
-          ->setOptions($this->data['cache'])
-          ->setCallback(array($this, 'build'))
-          ->render();
+    return (empty($this->data['cache']) || is_null($this->cache_handler)) ? $this->build() : $this
+        ->getCacheHandler()
+        ->setOptions($this->data['cache'])
+        ->setCallback(array($this, 'build'))
+        ->render();
   }
 
   public function build() {
@@ -121,7 +120,7 @@ class Content_Render {
 
       $k = array_keys($v);
       if (is_numeric($k[0])) {
-        $msg  = 'Expected keyed-array for $variables.';
+        $msg = 'Expected keyed-array for $variables.';
         throw new \Exception($msg);
       }
 
@@ -143,7 +142,7 @@ class Content_Render {
   }
 
   protected function buildAttached() {
-    if (is_array($this->attached) && !empty($this->attached)) {
+    if (isset($this->attached) && is_array($this->attached) && !empty($this->attached)) {
       foreach (array_keys($this->data['attached']) as $type) {
         foreach ($this->data['attached'][$type] as $k => $item) {
           if (is_string($item)) {
