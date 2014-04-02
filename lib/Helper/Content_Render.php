@@ -84,7 +84,7 @@ class Content_Render {
     $return = at_id(new Process($this->data, $args))->execute();
 
     // Attach assets
-    if (is_array($this->data) && !empty($this->data['attached'])) {
+    if (is_array($this->data)) {
       $return = is_array($return) ? $return : array('#markup' => $return);
 
       if (isset($return['#attached'])) {
@@ -143,13 +143,16 @@ class Content_Render {
   }
 
   protected function buildAttached() {
-    foreach (array_keys($this->data['attached']) as $type) {
-      foreach ($this->data['attached'][$type] as $k => $item) {
-        if (is_string($item)) {
-          $this->data['attached'][$type][$k] = at_container('helper.real_path')->get($item, FALSE);
+    if (is_array($this->attached) && !empty($this->attached)) {
+      foreach (array_keys($this->data['attached']) as $type) {
+        foreach ($this->data['attached'][$type] as $k => $item) {
+          if (is_string($item)) {
+            $this->data['attached'][$type][$k] = at_container('helper.real_path')->get($item, FALSE);
+          }
         }
       }
     }
     return $this->data['attached'];
   }
+
 }
