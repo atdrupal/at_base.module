@@ -151,7 +151,7 @@ class Content_Render {
         }
       }
     }
-    return $this->data['attached'] ? $this->data['attached'] : array();
+    return isset($this->data['attached']) && is_array($this->data['attached']) ? $this->data['attached'] : array();
   }
 
 }
