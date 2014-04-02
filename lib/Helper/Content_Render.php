@@ -142,8 +142,7 @@ class Content_Render {
   }
 
   protected function buildAttached() {
-    $this->data['attached'] = array();
-    if (isset($this->attached) && is_array($this->attached) && !empty($this->attached)) {
+    if (isset($this->data['attached']) && is_array($this->data['attached']) && !empty($this->data['attached'])) {
       foreach (array_keys($this->data['attached']) as $type) {
         foreach ($this->data['attached'][$type] as $k => $item) {
           if (is_string($item)) {
@@ -152,7 +151,7 @@ class Content_Render {
         }
       }
     }
-    return $this->data['attached'];
+    return $this->data['attached'] ? $this->data['attached'] : array();
   }
 
 }
