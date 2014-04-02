@@ -142,6 +142,7 @@ class Content_Render {
   }
 
   protected function buildAttached() {
+    $this->data['attached'] = array();
     if (isset($this->attached) && is_array($this->attached) && !empty($this->attached)) {
       foreach (array_keys($this->data['attached']) as $type) {
         foreach ($this->data['attached'][$type] as $k => $item) {
