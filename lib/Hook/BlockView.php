@@ -27,7 +27,9 @@ class BlockView {
     $block = array();
     foreach (array('subject', 'content') as $k) {
       try {
-        $block[$k] = $render->render($info[$k]);
+        if ($output = $render->render($info[$k])) {
+          $block[$k] = $output;
+        }
       }
       catch (\Exception $e) {
         $block[$k] = $e->getMessage();;
