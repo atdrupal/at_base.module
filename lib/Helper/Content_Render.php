@@ -26,6 +26,7 @@ use Drupal\at_base\Helper\Content_Render\Process;
  * @see  \At_Twig_TestCase::testContentRender()
  */
 class Content_Render {
+
   /**
    * Data to be rendered.
    *
@@ -66,13 +67,11 @@ class Content_Render {
       $this->setdata($data);
     }
 
-    return (empty($this->data['cache']) || is_null($this->cache_handler))
-      ? $this->build()
-      : $this
-          ->getCacheHandler()
-          ->setOptions($this->data['cache'])
-          ->setCallback(array($this, 'build'))
-          ->render();
+    return (empty($this->data['cache']) || is_null($this->cache_handler)) ? $this->build() : $this
+        ->getCacheHandler()
+        ->setOptions($this->data['cache'])
+        ->setCallback(array($this, 'build'))
+        ->render();
   }
 
   public function build() {
@@ -84,7 +83,7 @@ class Content_Render {
     $return = at_id(new Process($this->data, $args))->execute();
 
     // Attach assets
-    if (is_array($this->data) && !empty($this->data['attached'])) {
+    if (is_array($this->data)) {
       $return = is_array($return) ? $return : array('#markup' => $return);
 
       if (isset($return['#attached'])) {
@@ -121,7 +120,7 @@ class Content_Render {
 
       $k = array_keys($v);
       if (is_numeric($k[0])) {
-        $msg  = 'Expected keyed-array for $variables.';
+        $msg = 'Expected keyed-array for $variables.';
         throw new \Exception($msg);
       }
 
@@ -143,13 +142,16 @@ class Content_Render {
   }
 
   protected function buildAttached() {
-    foreach (array_keys($this->data['attached']) as $type) {
-      foreach ($this->data['attached'][$type] as $k => $item) {
-        if (is_string($item)) {
-          $this->data['attached'][$type][$k] = at_container('helper.real_path')->get($item, FALSE);
+    if (isset($this->data['attached']) && is_array($this->data['attached']) && !empty($this->data['attached'])) {
+      foreach (array_keys($this->data['attached']) as $type) {
+        foreach ($this->data['attached'][$type] as $k => $item) {
+          if (is_string($item)) {
+            $this->data['attached'][$type][$k] = at_container('helper.real_path')->get($item, FALSE);
+          }
         }
       }
     }
-    return $this->data['attached'];
+    return isset($this->data['attached']) && is_array($this->data['attached']) ? $this->data['attached'] : array();
   }
+
 }
