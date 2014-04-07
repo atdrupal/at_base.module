@@ -5,7 +5,7 @@ namespace Drupal\at_base\Tests\Unit;
 use Drupal\at_base\Helper\Test\UnitTestCase;
 
 class ServiceContentRenderTest extends UnitTestCase {
-  public function getInfo() {
+  public static function getInfo() {
     return array('name' => 'AT Unit: Test helper.content_render service') + parent::getInfo();
   }
 

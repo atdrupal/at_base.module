@@ -10,7 +10,7 @@ use Drupal\at_base\Helper\Test\UnitTestCase;
 class ControllerResolverTest extends UnitTestCase {
   private $resolver;
 
-  public function getInfo() {
+  public static function getInfo() {
     return array('name' => 'AT Unit: Controller Resolver') + parent::getInfo();
   }
 

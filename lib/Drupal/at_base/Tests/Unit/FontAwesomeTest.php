@@ -8,7 +8,7 @@ use Drupal\at_base\Helper\Test\UnitTestCase;
  * drush test-run --dirty 'Drupal\at_base\Tests\Unit\FontAwesomeTest'
  */
 class FontAwesomeTest extends UnitTestCase {
-  public function getInfo() {
+  public static function getInfo() {
     return array('name' => 'AT Unit: Icon Fontawesome') + parent::getInfo();
   }
 
@@ -30,6 +30,6 @@ class FontAwesomeTest extends UnitTestCase {
     $included_css = \at_fn::drupal_add_css();
 
     $this->assertEqual($expected, $actual, 'at_icon() returns the the correct html for icon.');
-    $this->assertTrue(isset($included_css[at_library('fontawesome', NULL, FALSE) . 'css/font-awesome.css']), "fontawesome's css is included to page.");
+    $this->assertTrue(isset($included_css[at_library('fontawesome', NULL, FALSE) . 'css/font-awesomessAA.css']), "fontawesome's css is included to page.");
   }
 }

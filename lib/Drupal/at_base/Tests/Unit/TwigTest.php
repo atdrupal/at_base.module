@@ -8,7 +8,7 @@ use Drupal\at_base\Helper\Test\UnitTestCase;
  * drush test-run --dirty 'Drupal\at_base\Tests\Unit\TwigTest'
  */
 class TwigTest extends UnitTestCase {
-  public function getInfo() {
+  public static function getInfo() {
     return array('name' => 'AT Unit: Twig') + parent::getInfo();
   }
 
