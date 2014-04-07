@@ -30,6 +30,9 @@ class FontAwesomeTest extends UnitTestCase {
     $included_css = \at_fn::drupal_add_css();
 
     $this->assertEqual($expected, $actual, 'at_icon() returns the the correct html for icon.');
-    $this->assertTrue(isset($included_css[at_library('fontawesome', NULL, FALSE) . 'css/font-awesomess.css']), "fontawesome's css is included to page.");
+    $this->assertTrue(isset($included_css[at_library('fontawesome', NULL, FALSE) . 'css/font-awesome.css']), "fontawesome's css is included to page.");
+  }
+  public function testRenderPrefix(){
+    return 1;
   }
 }
