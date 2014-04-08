@@ -77,9 +77,8 @@ class ServiceContentRenderTest extends UnitTestCase {
 
   /**
    * Conten render Support prefix, suffix
-   * @return html
    */
-  public function testRenderPrefix() {
+  public function testPrefixSuffix() {
     $data = array();
     $data['template']  = '@atest_base/templates/block/render_template.html.twig';
     $data['variables'] = array(
