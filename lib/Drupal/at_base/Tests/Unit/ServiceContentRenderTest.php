@@ -21,12 +21,13 @@ class ServiceContentRenderTest extends UnitTestCase {
   }
 
   public function testFunction() {
-    $output = $this->render->render(array('function' => 'atest_base_hello'));
-    $this->assertEqual('Hello Andy Truong', $output);
+    $name = 'xxx';
+    $output = $this->render->render(array('function' => 'atest_base_hello','arguments' => array($name)));
+    $this->assertEqual('Hello '.$name, $output);
   }
 
   public function testStaticMethod() {
-		$name = 'xxxx';
+    $name = 'xxx';
     $output = $this->render->render(array('controller' => array('At_Base_Test_Class','hello', array($name))));
     $this->assertEqual('Hello '.$name, $output);
   }
