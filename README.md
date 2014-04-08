@@ -1,7 +1,7 @@
 at_base
 =======
 
-[![Build Status](https://secure.travis-ci.org/andytruong/at_base.png?branch=v6.2)](http://travis-ci.org/andytruong/at_base) [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/andytruong/at_base/badges/quality-score.png?s=39af17d2e4d93781aa543a306eb9f5b264dc839a)](https://scrutinizer-ci.com/g/andytruong/at_base/) [![Latest Stable Version](https://poser.pugx.org/andytruong/at_base/v/stable.png)](https://packagist.org/packages/andytruong/at_base) [![Latest Unstable Version](https://poser.pugx.org/andytruong/at_base/v/unstable.png)](https://packagist.org/packages/andytruong/at_base) [![Downloads](https://poser.pugx.org/andytruong/at_base/downloads.png)](https://packagist.org/packages/andytruong/at_base) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/andytruong/at_base/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Build Status](https://secure.travis-ci.org/atdrupal/at_base.png?branch=v6.2)](http://travis-ci.org/atdrupal/at_base) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/atdrupal/at_base/badges/quality-score.png?s=f287f3ed102cedb11091668e5f6cb61b7603348a)](https://scrutinizer-ci.com/g/atdrupal/at_base/) [![Latest Stable Version](https://poser.pugx.org/andytruong/at_base/v/stable.png)](https://packagist.org/packages/andytruong/at_base) [![Latest Unstable Version](https://poser.pugx.org/andytruong/at_base/v/unstable.png)](https://packagist.org/packages/andytruong/at_base)
 
 Base module to provide helper functions for at_* modules.
 
