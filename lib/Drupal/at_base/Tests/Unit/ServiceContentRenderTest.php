@@ -74,4 +74,21 @@ class ServiceContentRenderTest extends UnitTestCase {
     $data['controller'] = array('At_Base_Test_Class', 'hi');
     $this->assertEqual($expected, $this->render->render($data));
   }
+
+  /**
+   * Conten render Support prefix, suffix
+   * @return html
+   */
+  public function testRenderPrefix() {
+    $data = array();
+    $data['template'] = '@atest_base/templates/block/render_template.html.twig';
+    $data['variables'] = array(
+        'name' => 'Drupal',
+        'prefix' => '<div id="abc">',
+        'suffix' => '</div>'
+    );
+    
+    $output =strip_tags($this->render->render($data),'<div>');
+    $this->assertEqual('<div id="abc">Drupal</div>', $output);
+  }
 }
