@@ -76,5 +76,3 @@ class ServiceContentRenderTest extends UnitTestCase {
     $this->assertEqual($expected, $this->render->render($data));
   }
 }
-
-

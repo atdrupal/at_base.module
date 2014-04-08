@@ -132,6 +132,3 @@ class Process {
     }
   }
 }
-function atest_base_hello($name = 'Andy Truong') {
-  return "Hello {$name}";
-}
