@@ -83,8 +83,7 @@ class Content_Render {
   }
 
   public function checkConditions() {
-    $args = $this->getVariables();
-    return at_id(new Condition($this->data, $args))->check();
+    return at_id(new Condition($this->data))->check();
   }
 
   public function build() {

@@ -6,11 +6,9 @@ namespace Drupal\at_base\Helper\Content_Render;
  */
 class Condition {
   private $data;
-  private $args;
 
-  public function __construct($data, $args) {
+  public function __construct($data) {
     $this->data = $data;
-    $this->args = $args ? $args : array();
   }
 
   public function check() {
