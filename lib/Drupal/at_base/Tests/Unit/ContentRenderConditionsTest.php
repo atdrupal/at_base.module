@@ -119,15 +119,16 @@ class ContentRenderConditionsTest extends UnitTestCase {
     $this->assertEqual(NULL, $output);
   }
 
+  // Not-and actually.
   public function testNot() {
     $output = $this->_getOutput('not', TRUE, TRUE);
     $this->assertEqual(NULL, $output);
 
     $output = $this->_getOutput('not', TRUE, FALSE);
-    $this->assertEqual(NULL, $output);
+    $this->assertEqual('Hello Andy Truong', $output);
 
     $output = $this->_getOutput('not', FALSE, TRUE);
-    $this->assertEqual(NULL, $output);
+    $this->assertEqual('Hello Andy Truong', $output);
 
     $output = $this->_getOutput('not', FALSE, FALSE);
     $this->assertEqual('Hello Andy Truong', $output);

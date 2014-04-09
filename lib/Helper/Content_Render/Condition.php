@@ -65,17 +65,17 @@ class Condition {
 
     foreach ($callbacks as $callback) {
       if ($condition_type == 'and') {
-        $result = $result and $this->callCallback($callback);
+        $result = $result && $this->callCallback($callback);
       }
       else if ($condition_type == 'or') {
-        $result = $result or $this->callCallback($callback);
+        $result = $result || $this->callCallback($callback);
       }
       else if ($condition_type == 'xor') {
-        $result = $result xor $this->callCallback($callback);
+        $result = $result ^ $this->callCallback($callback);
       }
       else {
         // Not
-        $result = $result and $this->callCallback($callback);
+        $result = $result && $this->callCallback($callback);
       }
     }
 
