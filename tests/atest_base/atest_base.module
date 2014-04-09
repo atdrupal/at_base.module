@@ -44,6 +44,10 @@ function atest_base_hello($name = 'Andy Truong') {
   return "Hello {$name}";
 }
 
+function atest_base_content_render_condition_callback($args = array()) {
+  return empty($args) ? FALSE : TRUE;
+}
+
 /**
  * @see Drupal\at_base\Tests\Unit\ServiceContentRenderTest::testDynamicVariables
  */

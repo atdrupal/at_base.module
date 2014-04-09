@@ -4,6 +4,7 @@ namespace Drupal\at_base\Helper;
 
 use Drupal\at_base\Helper\Content_Render\CacheHandler_Interface;
 use Drupal\at_base\Helper\Content_Render\Process;
+use Drupal\at_base\Helper\Content_Render\Condition;
 
 /**
  * Helper class for rendering data:
@@ -66,6 +67,12 @@ class Content_Render {
       $this->setdata($data);
     }
 
+    // Check condition before rendering.
+    if (!$this->checkConditions()) {
+      // @todo - Renderer will return NULL if conditions do not matches?
+      return;
+    }
+
     return (empty($this->data['cache']) || is_null($this->cache_handler))
       ? $this->build()
       : $this
@@ -73,6 +80,11 @@ class Content_Render {
           ->setOptions($this->data['cache'])
           ->setCallback(array($this, 'build'))
           ->render();
+  }
+
+  public function checkConditions() {
+    $args = $this->getVariables();
+    return at_id(new Condition($this->data, $args))->check();
   }
 
   public function build() {
