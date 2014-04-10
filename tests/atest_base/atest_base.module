@@ -38,6 +38,10 @@ class At_Base_Test_Class {
   public static function staticGetVariables() {
     return atest_variables();
   }
+  
+  public function getBool($val = false) {
+    return $val;
+  }
 }
 
 function atest_base_hello($name = 'Andy Truong') {
@@ -60,4 +64,8 @@ function atest_base_views_api($module, $api) {
   if ($module == 'views' && $api == 'views_default') {
     return array('version' => 2);
   }
+}
+
+function atest_base_bool($val = false) {
+  return $val;
 }

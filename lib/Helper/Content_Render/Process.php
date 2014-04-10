@@ -27,17 +27,19 @@ class Process {
   public function execute() {
     !empty($this->caller) && $this->caller->callBefore();
     
-    if ($this->conditions()){
-      foreach (get_class_methods(get_class($this)) as $method) {
-        if ('process' === substr($method, 0, 7)) {
-          $return = $this->{$method}();
-          if (!is_null($return)) {
-            return $return;
-          }
+    if (!$this->conditions()) {
+      return "";
+    }
+    
+    foreach (get_class_methods(get_class($this)) as $method) {
+      if ('process' === substr($method, 0, 7)) {
+        $return = $this->{$method}();
+        if (!is_null($return)) {
+          return $return;
         }
       }
-      throw new \Exception('Unsupported data structure.');
     }
+    throw new \Exception('Unsupported data structure.');
   }
 
   private function processFunction() {
@@ -133,31 +135,28 @@ class Process {
     $return = true;
     
     $numArgs = count($conditions);
-    if ($numArgs > 0) {
-      switch ($numArgs) {
-        case 1:
-          $func = $conditions[0];
-          if (call_user_func_array($func, array()) === false) {
-              $return = false;
-          }
-          break;
-        case 2:
-          @list($func, $args) = $conditions;
-          if (call_user_func_array($func, $args) === false) {
-              $return = false;
-          }
-          break;
-        case 3:
-          @list($class, $method, $args) = $conditions;
-          if (call_user_func_array(array($class, $method), $args) === false) {
-              $return = false;
-          }
-          break;
-        default:
-          break;
-      }
+    switch ($numArgs) {
+      case 1:
+        $func = $conditions[0];
+        if (call_user_func_array($func, array()) === false) {
+            $return = false;
+        }
+        break;
+      case 2:
+        @list($func, $args) = $conditions;
+        if (call_user_func_array($func, $args) === false) {
+            $return = false;
+        }
+        break;
+      case 3:
+        @list($class, $method, $args) = $conditions;
+        if (call_user_func_array(array($class, $method), $args) === false) {
+            $return = false;
+        }
+        break;
+      default:
+        break;
     }
     return $return;
   }
-  
 }
