@@ -116,7 +116,7 @@ class ServiceContentRenderTest extends UnitTestCase {
     $data['variables']['cache'] = array(
       'id' => 'products:latest:front',
       'ttl' => '+ 30 minutes',
-      'tags' => ['node', 'products', 'home']
+      'tags' => ['node', 'products', 'home'],
     );
     $output = $this->render->render($data);
     $this->assertEqual('hello andy truong', $output);
