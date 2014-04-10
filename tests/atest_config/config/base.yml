@@ -1,8 +1,1 @@
-foo: bar
-structured_data:
-  foo: helllo
-
-routes:
-  hello:
-    @include: base.yml
-
+name: duythien
