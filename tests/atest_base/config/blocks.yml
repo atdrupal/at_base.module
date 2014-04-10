@@ -17,10 +17,3 @@ blocks:
     content:
       template_string: "Hello {{ name }}"
       variables: {name: 'Andy Truong'}
-  hi_viewDrupal:
-    info: 'Hello Template String'
-    subject: 'Hello Template String'
-    content:
-      template_string: "Hello {{ name }}"
-      variables: {name: 'Andy Truong'}
-
