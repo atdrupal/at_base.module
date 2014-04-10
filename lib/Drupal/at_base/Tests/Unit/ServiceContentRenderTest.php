@@ -38,49 +38,40 @@ class ServiceContentRenderTest extends UnitTestCase {
   
   public function testConditionsData1() {
     $data = array(
-      'conditions' => array('atest_variables'),
+      'conditions' => array('atest_base_bool'),
       'content' => 'Hello Andy Truong'
     );
     $output = $this->render->render($data);
-    $this->assertEqual('Hello Andy Truong', $output);
+    $this->assertEqual("", $output);
   }
   
   public function testConditionsData2_1() {
     $data = array(
-      'conditions' => array('is_numeric', array(1)),
+      'conditions' => array('is_numeric', array('x')),
       'template' => '@atest_base/templates/block/hello_template.html.twig',
       'variables' => array('name' => 'Andy Truong')
     );
     $output = $this->render->render($data);
-    $this->assertEqual('Hello Andy Truong', $output);
+    $this->assertEqual("", $output);
   }
   
   public function testConditionsData2_2() {
     $data = array(
-      'conditions' => array('At_Base_Test_Class', 'hello', array('name')),
+      'conditions' => array('At_Base_Test_Class', 'getBool', array(false)),
       'template' => '@atest_base/templates/block/hello_template.html.twig',
       'variables' => array('name' => 'Andy Truong')
     );
     $output = $this->render->render($data);
-    $this->assertEqual('Hello Andy Truong', $output);
+    $this->assertEqual("", $output);
   }
   
   public function testConditionsData3() {
     $data = array(
-      'conditions' => array('atest_variables'),
+      'conditions' => array('atest_base_bool'),
       'function' => 'atest_base_hello'
     );
     $output = $this->render->render($data);
-    $this->assertEqual('Hello Andy Truong', $output);
-  }
-  
-  public function testConditionsFalse() {
-    $data = array(
-      'conditions' => array('is_numeric', array('x')),
-      'content' => 'Hello Andy Truong'
-    );
-    $output = $this->render->render($data);
-    $this->assertEqual(null, $output);
+    $this->assertEqual("", $output);
   }
   
 
