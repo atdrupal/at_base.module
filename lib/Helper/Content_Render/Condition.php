@@ -6,9 +6,11 @@ namespace Drupal\at_base\Helper\Content_Render;
  */
 class Condition {
   private $data;
+  private $args;
 
-  public function __construct($data) {
+  public function __construct($data, $args) {
     $this->data = $data;
+    $this->args = $args ? $args : array();
   }
 
   public function check() {
@@ -85,12 +87,34 @@ class Condition {
   }
 
   private function callCallback($callback) {
-    if (is_array($callback) && !empty($callback) && count($callback) == 2 || is_string($callback)) {
+    if (is_array($callback) && !empty($callback) && count($callback) <= 3 || is_string($callback)) {
       if (is_string($callback)) {
         $callable = $callback;
+        $arguments = array();
       }
       else {
-        list($callable, $arguments) = $callback;
+        // Use system argument flag.
+        if (count($callback) == 3) {
+          list($callable, $arguments, $has_system_arguments) = $callback;
+          if ($has_system_arguments) {
+            // Convert arguments to system arguments.
+            foreach ($arguments as &$argument) {
+              if (isset($this->args['build'][$argument])) {
+                // $argument is '#entity', '#entity_type', '#bundle', '#view_mode', '#language'...
+                // See more at Drupal\at_base\Hook\Entity\View_Alter::build().
+                $argument = $this->args['build'][$argument];
+              }
+            }
+          }
+        }
+        else if (count($callback) == 2) {
+          list($callable, $arguments) = $callback;
+        }
+        else {
+          // Sure, you can pass array with only one element, we can convert it to string.
+          $callable = (string)reset($callback);
+          $arguments = array();
+        }
       }
 
       if (strpos($callable, '@' === 0)) {
