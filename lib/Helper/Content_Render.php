@@ -66,7 +66,7 @@ class Content_Render {
       $this->setdata($data);
     }
 
-    var_dump($this->build());
+    //var_dump($this->build());
 
     return (empty($this->data['cache']) || is_null($this->cache_handler))
       ? $this->build()
