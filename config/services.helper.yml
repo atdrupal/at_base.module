@@ -4,6 +4,7 @@ services:
     class: '\Drupal\at_base\Helper\Controller_Resolver'
 
   helper.content_render:
+    reuse: false
     class: 'Drupal\at_base\Helper\Content_Render'
 
   helper.real_path:

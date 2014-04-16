@@ -45,6 +45,7 @@ class BreadcrumbAPI {
     $cache_arguments = func_get_args();
 
     if ($config = at_cache($cache_options, $cache_callback, $cache_arguments)) {
+      $config['context'] = array('type' => 'entity', 'arguments' => func_get_args());
       $this->set($config);
     }
   }
@@ -54,11 +55,8 @@ class BreadcrumbAPI {
       $config = at_config($module, 'breadcrumb')->get('breadcrumb');
 
       $bundle = at_fn('entity_bundle', $type, $entity);
-
       if (isset($config['entity'][$type][$bundle][$view_mode])) {
-        $return = $config['entity'][$type][$bundle][$view_mode];
-        $return['context'] = array('type' => 'entity', 'arguments' => func_get_args());
-        return $return;
+        return $config['entity'][$type][$bundle][$view_mode];
       }
     }
   }
@@ -138,7 +136,7 @@ class BreadcrumbAPI {
     }
   }
 
-  private function buildBreadcrumbs($bc = array(), $args = array()) {
+  public function buildBreadcrumbs($bc = array(), $args = array()) {
     global $user;
 
     $token_data = array('user' => $user);

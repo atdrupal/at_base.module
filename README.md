@@ -3,7 +3,7 @@ AT Base
 
 Provide some more API for developer to work with Drupal 7.
 
-[![Build Status](https://secure.travis-ci.org/atdrupal/at_base.png?branch=dev-master)](http://travis-ci.org/atdrupal/at_base) [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/atdrupal/at_base/badges/quality-score.png?s=f287f3ed102cedb11091668e5f6cb61b7603348a)](https://scrutinizer-ci.com/g/atdrupal/at_base/) [![Latest Stable Version](https://poser.pugx.org/andytruong/at_base/v/stable.png)](https://packagist.org/packages/andytruong/at_base) [![Latest Unstable Version](https://poser.pugx.org/andytruong/at_base/v/unstable.png)](https://packagist.org/packages/andytruong/at_base)
+[![Build Status](https://secure.travis-ci.org/atdrupal/at_base.png?branch=dev-master)](http://travis-ci.org/atdrupal/at_base) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/atdrupal/at_base/badges/quality-score.png?s=f287f3ed102cedb11091668e5f6cb61b7603348a)](https://scrutinizer-ci.com/g/atdrupal/at_base/) [![Latest Stable Version](https://poser.pugx.org/andytruong/at_base/v/stable.png)](https://packagist.org/packages/andytruong/at_base) [![Latest Unstable Version](https://poser.pugx.org/andytruong/at_base/v/unstable.png)](https://packagist.org/packages/andytruong/at_base)
 
 ### Install
 
@@ -15,7 +15,7 @@ Provide some more API for developer to work with Drupal 7.
   If you do have drush installed on your machine. You can download these libraries
   manually, then at them to ./sites/all/libraries.
 
-  - https://github.com/mustangostang/spyc.git v0.5.1
+  - https://github.com/mustangostang/spyc.git revision b7fd7f7a4ddd70c4d599a023fcda3e2b9a20d4b9
   - https://github.com/fabpot/Pimple.git Version v1.1.0
   - https://github.com/symfony/expression-language v2.4.0
 

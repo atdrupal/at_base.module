@@ -216,23 +216,15 @@ function at_modules($base_module = 'at_base', $config_file = '') {
 }
 
 /**
- * Render font-icon. Browse available icons at http://fortawesome.github.io/Font-Awesome/icons/
- *
- * @todo  http://drupalcode.org/project/fontello.git/blob/refs/heads/7.x-1.x:/fontello.module
- *
- * @param  string $code
- * @param  string $source Supported fontawesome, fontello
- * @return string
+ * Shortcut to render to icon.
  */
-function at_icon($code, $source = 'fontawesome') {
-  static $ran = array();
-
-  if (is_null($ran[$source])) {
-    $ran[$source] = TRUE;
-    drupal_add_css(at_library($source, NULL, FALSE) . '/css/font-awesome.css');
+function at_icon($name, $source = 'icon.fontawesome') {
+  try {
+    return at_container($source)->get($name)->render();
   }
-
-  return '<i class="fa '. $code .'"></i>';
+  catch (Exception $e) {
+    return $e->getMessage();
+  }
 }
 
 /**
@@ -256,4 +248,41 @@ function at_library($name, $version = 'default', $include_drupal_root = TRUE) {
   }
 
   throw new Exception("Missing library: {$name} (version {$version})");
+}
+
+/**
+ * This is wrapper for typped-data, an API to make sure data provided is matched
+ * to its schema.
+ *
+ * Example:
+ *
+ *   $schema = array('type' => 'constant');
+ *   $input = 'MENU_LOCAL_TASK';
+ *   $data = at_data($schema, $input);
+ *   // Validate
+ *   echo $data->validate($error) ? $data->getValue() : $error;
+ *
+ * @see https://github.com/atdrupal/at_base/wiki/7.x-2.x-typed-data
+ */
+function at_data($def, $value = NULL) {
+  if (!is_array($def)) {
+    throw new \Exception('Definition must be an array.');
+  }
+
+  if (!isset($def['type'])) {
+    throw new \Exception('Missing type key');
+  }
+
+  $service = strpos($def['type'], 'type.') === 0 ? $def['type'] : ('type.' . $def['type']);
+
+  // Special type: list<element_type>
+  if (strpos($service, 'type.list<') === 0) {
+    $def['element_type'] = substr($service, 10, -1);
+    $service = 'type.list';
+  }
+
+  return at_container($service)
+    ->setDef($def)
+    ->setValue($value)
+  ;
 }

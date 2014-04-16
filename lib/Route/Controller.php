@@ -1,44 +1,44 @@
 <?php
 
 namespace Drupal\at_base\Route;
+
 use Drupal\at_base\Helper\Content_Render;
 
 class Controller {
 
   /**
    * Content render
-   *
-   * @var Content_Render
+   * @var \Drupal\at_base\Helper\Content_Render
    */
-  protected $render;
+  private $render;
 
   /**
    * Route definition.
    *
    * @var array
    */
-  protected $route;
+  private $route;
 
   /**
    * Menu item for request.
    *
    * @var array
    */
-  protected $menu_item;
+  private $menu_item;
 
   /**
-   * @param Content_Render $content_render
+   * @param \Drupal\at_base\Helper\Content_Render $content_render
    * @param string $request_path Request path — Example: user/login
    */
   public function __construct($content_render, $request_path) {
-    $this->render = $content_render;
-    $this->menu_item = menu_get_item($request_path);
+      $this->render = $content_render;
+      $this->menu_item = menu_get_item($request_path);
   }
 
   /**
    * Page callback for routes.
    *
-   * @see RouteToMenu
+   * @see \Drupal\at_base\Route\RouteToMenu
    */
   public static function pageCallback() {
     $args = func_get_args();
@@ -78,24 +78,33 @@ class Controller {
    * @return Controller
    */
   public function setRoute($route) {
-    foreach (explode('/', $route['pattern']) as $position => $part) {
-      if (strpos($part, '%') !== 0) {
-        continue;
+    $pattern = explode('/', $route['pattern']);
+    foreach ($pattern as $position => $part) {
+      if (strpos($part, '%') === 0) {
+        $part = $part === '%' ? $position : substr($part, 1);
+        $this->prepareRoutePart($route, $part, $position);
       }
-
-      $part = substr($part, 1);
-      $route['variables'][$part] = $this->menu_item['map'][$position];
-
-      !empty($route['page arguments'])
-          && ($route['page arguments'] = $this->repairArguments($route['page arguments'], $position));
-
-      !empty($route['controller'][2])
-          && ($route['controller'][2] = $this->repairArguments($route['controller'][2], $position));
     }
-
     $this->route = $route;
-
     return $this;
+  }
+
+  /**
+   * If pattern of route is /node/%node, we try to make node as key of
+   *     route varibales.
+   * If pattern of route is /hi/%, we try to make position of % (this case
+   *     it is 1) as a key of route variables.
+   */
+  private function prepareRoutePart(&$route, $part, $position) {
+    if (!empty($route['page arguments'])) {
+      $route['page arguments'] = $this->repairArguments($route['page arguments'], $position);
+    }
+    elseif (!empty($route['controller'][2])) {
+      $route['controller'][2] = $this->repairArguments($route['controller'][2], $position);
+    }
+    else {
+      $route['variables'][$part] = $this->menu_item['map'][$position];
+    }
   }
 
   /**
@@ -107,6 +116,7 @@ class Controller {
     $this->prepareCache();
     $this->prepareFunctionCallback();
     $this->prepareContextBlocks();
+    $this->prepareContextBreadcrumbs();
     return $this->render->render($this->route);
   }
 
@@ -135,6 +145,14 @@ class Controller {
     if (!empty($this->route['blocks'][$theme])) {
       at_container('container')->offsetSet('page.blocks', $this->route['blocks'][$theme]);
       unset($this->route['blocks'][$theme]);
+    }
+  }
+
+  private function prepareContextBreadcrumbs() {
+    if (!empty($this->route['breadcrumbs'])) {
+      $bc = $this->route['breadcrumbs'];
+      unset($this->route['breadcrumbs']);
+      at_container('breadcrumb_api')->buildBreadcrumbs($bc);
     }
   }
 

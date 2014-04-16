@@ -15,10 +15,7 @@ use \Drupal\at_base\Hook\Entity\View_Alter as Hook_Entity_View_Alter;
  */
 function at_base_menu() {
   require_once dirname(__FILE__) . '/lib/Hook/Menu.php';
-  require_once dirname(__FILE__) . '/lib/Route/Importer.php';
-
-  return at_id(new HookMenu($importer = new RouteImporter()))
-          ->getMenuItems();
+  return at_id(new HookMenu())->getMenuItems();
 }
 
 /**
@@ -77,6 +74,9 @@ function at_base_entity_view($entity, $type, $view_mode, $langcode) {
 }
 
 if (defined('AT_BASE_ENTITY_TEMPLATE') && constant('AT_BASE_ENTITY_TEMPLATE')) {
+  /**
+   * Implements hook_entity_view_alter()
+   */
   function at_base_entity_view_alter(&$build, $entity_type) {
     at_id(new Hook_Entity_View_Alter($build, $entity_type))->execute();
   }

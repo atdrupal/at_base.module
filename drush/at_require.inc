@@ -47,7 +47,7 @@ if (!function_exists('yaml_parse') && !is_file(DRUPAL_ROOT . '/sites/all/librari
     'download' => array(
       'type' => 'git',
       'url' => 'https://github.com/mustangostang/spyc.git',
-      'branch' => '0.5.1',
+      'revision' => 'b7fd7f7a4ddd70c4d599a023fcda3e2b9a20d4b9',
     ),
   );
 
@@ -65,12 +65,25 @@ if (function_exists('drupal_get_path')) {
   $projects = drupal_get_path('module', 'at_base') . '/config/require.yml';
   $projects = $fn($projects);
   unset($projects['spyc']);
+
+  // Backup global working copy option.
+  $working_copy = drush_get_option('working-copy');
   foreach ($projects['projects'] as $name => $info) {
     try {
       at_library($name);
     }
     catch (\Exception $e) {
+      if (empty($working_copy) && !empty($info['options']['working-copy'])) {
+        // Apply working copy option for each library.
+        drush_set_option('working-copy', TRUE);
+      }
+
       at_id(new DependencyFetcher($name, $info))->fetch();
+
+      // Restore global working copy option.
+      if (empty($working_copy) && !empty($info['options']['working-copy'])) {
+        drush_set_option('working-copy', $working_copy);
+      }
     }
   }
 }
