@@ -112,7 +112,6 @@ class BreadcrumbAPI {
     }
   }
 
-
   /**
    * @see at_base_page_build()
    */
@@ -122,20 +121,17 @@ class BreadcrumbAPI {
     if ($config = $this->get()) {
       $bc = !empty($config['breadcrumbs']) ? $config['breadcrumbs'] : array();
 
+      // User can send direct breadcrumb structure, or use a callback to build it.
       if (empty($bc)) {
         $bc = at_container('helper.content_render')->render($config);
       }
 
-      switch ($config['context']['type']) {
-        case 'entity':
-        case 'path':
-          $args = isset($config['context']['arguments']) ? $config['context']['arguments'] : array();
-          return $this->buildBreadcrumbs($bc, $args);
-      }
+      $args = isset($config['context']['arguments']) ? $config['context']['arguments'] : array();
+      return $this->buildBreadcrumbs($bc, $args);
     }
   }
 
-  public function buildBreadcrumbs($bc = array(), $args = array()) {
+  private function buildBreadcrumbs($bc = array(), $args = array()) {
     global $user;
 
     $token_data = array('user' => $user);
