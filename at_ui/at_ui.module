@@ -1,7 +1,0 @@
-<?php
-
-require_once dirname(__FILE__) . '/at_ui.hooks.inc';
-require_once dirname(__FILE__) . '/at_ui.debug.inc';
-require_once dirname(__FILE__) . '/at_ui.editable-route.inc';
-require_once dirname(__FILE__) . '/at_ui.codemirror.inc';
-require_once dirname(__FILE__) . '/at_ui.codemirror.develphp.inc';
