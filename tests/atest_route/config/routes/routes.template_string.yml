@@ -6,7 +6,7 @@ routes:
     template_string: '- Foo: {{ foo }}<br />- User ID: {{ user.uid }}<br />'
     variables: { foo: 'bar' }
 
-  atest_route/with_assets:
+  'atest_route/with_assets':
     title: Route with attached assets
     access arguments: ['access content']
     template_string: 'Simple string'
