@@ -13,74 +13,91 @@ class Condition {
     $this->args = $args ? $args : array();
   }
 
-  public function check() {
-    // If conditions are not provided, content is always rendered.
+  private function initData() {
     if (empty($this->data['conditions'])) {
+      // If conditions are not provided, content is always rendered.
+      $this->result = TRUE;
       return TRUE;
     }
     $conditions = $this->data['conditions'];
 
     if (empty($conditions['type'])) {
-      $condition_type = 'and';
-      $result = TRUE;
+      $this->conditionType = 'and';
+      $this->result = TRUE;
     }
     else {
       switch ($conditions['type']) {
         case 'or':
-          $condition_type = 'or';
-          $result = FALSE;
+          $this->conditionType = 'or';
+          $this->result = FALSE;
           break;
 
         case 'xor':
-          $condition_type = 'xor';
-          $result = FALSE;
+          $this->conditionType = 'xor';
+          $this->result = FALSE;
           break;
 
         case 'not':
-          $condition_type = 'not';
-          $result = TRUE;
+          $this->conditionType = 'not';
+          $this->result = TRUE;
           break;
 
         default:
-          $condition_type = 'and';
-          $result = TRUE;
+          $this->conditionType = 'and';
+          $this->result = TRUE;
           break;
       }
     }
 
     // Condition callbacks
     if (empty($conditions['callbacks'])) {
-      if ($condition_type == 'not') {
-        // Not of (always TRUE) is FALSE.
-        return FALSE;
+      if ($this->conditionType == 'not') {
+        // Not of 'always TRUE' is FALSE.
+        $this->result = FALSE;
+        return TRUE;
       }
+      $this->result = TRUE;
       return TRUE;
     }
     else {
-      $callbacks = $conditions['callbacks'];
+      $this->callbacks = $conditions['callbacks'];
     }
 
-    foreach ($callbacks as $callback) {
-      if ($condition_type == 'and') {
-        $result = $result && $this->callCallback($callback);
-      }
-      else if ($condition_type == 'or') {
-        $result = $result || $this->callCallback($callback);
-      }
-      else if ($condition_type == 'xor') {
-        $result = $result ^ $this->callCallback($callback);
-      }
-      else {
-        // Not
-        $result = $result && $this->callCallback($callback);
+    return FALSE;
+  }
+
+  public function check() {
+    $hardBreak = $this->initData();
+    if ($hardBreak) {
+      return $this->result;
+    }
+
+    foreach ($this->callbacks as $callback) {
+      switch ($this->conditionType) {
+        case 'and':
+          $this->result = $this->result && $this->callCallback($callback);
+          break;
+
+        case 'or':
+          $this->result = $this->result || $this->callCallback($callback);
+          break;
+
+        case 'xor':
+          $this->result = $this->result ^ $this->callCallback($callback);
+          break;
+
+        default:
+          // Not.
+          $this->result = $this->result && $this->callCallback($callback);
+          break;
       }
     }
 
-    if ($condition_type == 'not') {
-      $result = !$result;
+    if ($this->conditionType == 'not') {
+      $this->result = !$this->result;
     }
 
-    return $result;
+    return $this->result;
   }
 
   private function callCallback($callback) {
