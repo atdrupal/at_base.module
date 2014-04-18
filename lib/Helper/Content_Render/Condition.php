@@ -20,47 +20,44 @@ class Condition {
     }
     $conditions = $this->data['conditions'];
 
-    // Condition type.
-    $condition_type = 'and';
-    if (!empty($conditions['type']) && in_array($conditions['type'], array('and', 'or', 'xor', 'not'))) {
-      $condition_type = $conditions['type'];
+    if (empty($conditions['type'])) {
+      $condition_type = 'and';
+      $result = TRUE;
+    }
+    else {
+      switch ($conditions['type']) {
+        case 'or':
+          $condition_type = 'or';
+          $result = FALSE;
+          break;
+
+        case 'xor':
+          $condition_type = 'xor';
+          $result = FALSE;
+          break;
+
+        case 'not':
+          $condition_type = 'not';
+          $result = TRUE;
+          break;
+
+        default:
+          $condition_type = 'and';
+          $result = TRUE;
+          break;
+      }
     }
 
     // Condition callbacks
-    $callbacks = array();
-    if (!empty($conditions['callbacks'])) {
-      $callbacks = $conditions['callbacks'];
-    }
-
-    if (empty($callbacks)) {
+    if (empty($conditions['callbacks'])) {
       if ($condition_type == 'not') {
         // Not of (always TRUE) is FALSE.
         return FALSE;
       }
       return TRUE;
     }
-
-    // Default return value.
-    switch ($condition_type) {
-      case 'and':
-        $result = TRUE;
-        break;
-
-      case 'or':
-        $result = FALSE;
-        break;
-
-      case 'xor':
-        $result = FALSE;
-        break;
-
-      case 'not':
-        $result = TRUE;
-        break;
-
-      default:
-        // Wont reach here.
-        break;
+    else {
+      $callbacks = $conditions['callbacks'];
     }
 
     foreach ($callbacks as $callback) {
