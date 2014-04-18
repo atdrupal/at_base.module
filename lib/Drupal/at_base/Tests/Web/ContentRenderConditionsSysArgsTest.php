@@ -18,8 +18,6 @@ class ContentRenderConditionsSysArgsTest extends \DrupalWebTestCase {
 
   public function setUp() {
     $this->profile = 'testing';
-    // Make sure you already set this constant in settings.php
-    // define('AT_BASE_ENTITY_TEMPLATE', 1);
     parent::setUp('atest_base');
   }
 

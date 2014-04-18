@@ -52,6 +52,7 @@ before_script:
   # ---------------------
   - drush vset --yes file_temporary_path /tmp
   - drush en -y simpletest at_base atest_base
+  - echo "define('AT_BASE_ENTITY_TEMPLATE', 1);" >> sites/default/settings.php
 
   # ---------------------
   # No cache data
