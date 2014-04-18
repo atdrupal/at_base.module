@@ -1,0 +1,12 @@
+name = ATest Condition
+description = Make sure at_base.module is working
+package = Testing
+core = 7.x
+hidden = TRUE
+
+dependencies[] = at_base
+dependencies[] = views
+
+files[] = atest_base.module
+
+weight = 10

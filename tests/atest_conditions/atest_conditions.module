@@ -1,0 +1,11 @@
+<?php
+class At_Condittions_Class{
+  public function getBool($val = false){
+    return $val;
+  }
+}
+
+function atest_conditions_bool($val = false){
+  return $val;
+}
+?>
