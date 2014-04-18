@@ -19,7 +19,7 @@ class Condition {
     $this->result = TRUE;
     $this->callbacks = array();
 
-    if (empty($this->data['conditions'])) {
+    if (!is_array($this->data) || !isset($this->data['conditions']) || empty($this->data['conditions'])) {
       // If conditions are not provided, content is always rendered.
       $this->hardBreak = TRUE;
     }
@@ -76,7 +76,7 @@ class Condition {
   }
 
   private function initCallbacks($conditions) {
-    if (empty($conditions['callbacks'])) {
+    if (!is_array($conditions) || !isset($conditions['callbacks']) || empty($conditions['callbacks'])) {
       if ($this->conditionType == 'not') {
         // Not of 'always TRUE' is FALSE.
         $this->result = FALSE;
