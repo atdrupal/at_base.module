@@ -96,20 +96,20 @@ class Condition {
     foreach ($this->callbacks as $callback) {
       switch ($this->conditionType) {
         case 'and':
-          $this->result = $this->result && $this->callCallback($callback);
+          $this->result &= $this->callCallback($callback);
           break;
 
         case 'or':
-          $this->result = $this->result || $this->callCallback($callback);
+          $this->result |= $this->callCallback($callback);
           break;
 
         case 'xor':
-          $this->result = $this->result ^ $this->callCallback($callback);
+          $this->result ^= $this->callCallback($callback);
           break;
 
         default:
           // Not.
-          $this->result = $this->result && $this->callCallback($callback);
+          $this->result &= $this->callCallback($callback);
           break;
       }
     }
