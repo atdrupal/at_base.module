@@ -7,25 +7,26 @@ namespace Drupal\at_base\Helper\Content_Render;
 class Condition {
   private $data;
   private $args;
+  private $conditionType;
+  private $result;
+  private $callbacks;
 
   public function __construct($data, $args) {
     $this->data = $data;
     $this->args = $args ? $args : array();
+    $this->conditionType = 'and';
+    $this->result = TRUE;
+    $this->callbacks = array();
   }
 
   private function initData() {
     if (empty($this->data['conditions'])) {
       // If conditions are not provided, content is always rendered.
-      $this->result = TRUE;
       return TRUE;
     }
     $conditions = $this->data['conditions'];
 
-    if (empty($conditions['type'])) {
-      $this->conditionType = 'and';
-      $this->result = TRUE;
-    }
-    else {
+    if (!empty($conditions['type'])) {
       switch ($conditions['type']) {
         case 'or':
           $this->conditionType = 'or';
@@ -43,8 +44,6 @@ class Condition {
           break;
 
         default:
-          $this->conditionType = 'and';
-          $this->result = TRUE;
           break;
       }
     }
@@ -56,7 +55,6 @@ class Condition {
         $this->result = FALSE;
         return TRUE;
       }
-      $this->result = TRUE;
       return TRUE;
     }
     else {
