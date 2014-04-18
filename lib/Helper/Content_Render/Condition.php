@@ -10,6 +10,7 @@ class Condition {
   private $conditionType;
   private $result;
   private $callbacks;
+  private $hardBreak;
 
   public function __construct($data, $args) {
     $this->data = $data;
@@ -17,30 +18,32 @@ class Condition {
     $this->conditionType = 'and';
     $this->result = TRUE;
     $this->callbacks = array();
-  }
 
-  private function initData() {
     if (empty($this->data['conditions'])) {
       // If conditions are not provided, content is always rendered.
-      return TRUE;
+      $this->hardBreak = TRUE;
     }
-    $conditions = $this->data['conditions'];
+    else {
+      $conditions = $this->data['conditions'];
+      $this->hardBreak = $this->initConditionType($conditions) ||
+        $this->initDefaultValue() ||
+        $this->initCallbacks($conditions);
+    }
+  }
 
+  private function initConditionType($conditions) {
     if (!empty($conditions['type'])) {
       switch ($conditions['type']) {
         case 'or':
           $this->conditionType = 'or';
-          $this->result = FALSE;
           break;
 
         case 'xor':
           $this->conditionType = 'xor';
-          $this->result = FALSE;
           break;
 
         case 'not':
           $this->conditionType = 'not';
-          $this->result = TRUE;
           break;
 
         default:
@@ -48,25 +51,45 @@ class Condition {
       }
     }
 
-    // Condition callbacks
-    if (empty($conditions['callbacks'])) {
-      if ($this->conditionType == 'not') {
-        // Not of 'always TRUE' is FALSE.
+    return FALSE;
+  }
+
+  private function initDefaultValue() {
+    switch ($this->conditionType) {
+      case 'or':
         $this->result = FALSE;
-        return TRUE;
-      }
-      return TRUE;
-    }
-    else {
-      $this->callbacks = $conditions['callbacks'];
+        break;
+
+      case 'xor':
+        $this->result = FALSE;
+        break;
+
+      case 'not':
+        $this->result = TRUE;
+        break;
+
+      default:
+        break;
     }
 
     return FALSE;
   }
 
+  private function initCallbacks($conditions) {
+    if (empty($conditions['callbacks'])) {
+      if ($this->conditionType == 'not') {
+        // Not of 'always TRUE' is FALSE.
+        $this->result = FALSE;
+      }
+      return TRUE;
+    }
+
+    $this->callbacks = $conditions['callbacks'];
+    return FALSE;
+  }
+
   public function check() {
-    $hardBreak = $this->initData();
-    if ($hardBreak) {
+    if ($this->hardBreak) {
       return $this->result;
     }
 
