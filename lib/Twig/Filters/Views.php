@@ -9,6 +9,11 @@ namespace Drupal\at_base\Twig\Filters;
  * @todo  Test pager option.
  */
 class Views extends Views_Base {
+  /**
+   * @var \Exception
+   */
+  private $exception;
+
   public function __construct() {
     $args = func_get_args();
 
@@ -17,7 +22,12 @@ class Views extends Views_Base {
       : 'constructFancy'
     ;
 
-    call_user_func_array(array($this, $method), $args);
+    try {
+      call_user_func_array(array($this, $method), $args);
+    }
+    catch (\Exception $e) {
+      $this->exception = $e;
+    }
   }
 
   /**
@@ -36,14 +46,45 @@ class Views extends Views_Base {
     }
   }
 
+  protected function renderEditLink() {
+    $edit_link = '';
+
+    if (user_access('administer views') && module_exists('views_ui')) {
+      $edit_link = 'admin/structure/views/view/' . $this->view->name . '/edit/' . $this->view->current_display;
+
+      $edit_link = array(
+        '#theme' => 'ctools_dropdown',
+        '#title' => 'Manage',
+        '#links' => array(
+          array('title' => t('Edit'), 'href' => $edit_link),
+        ),
+        '#attached' => array(
+          'js' => array(
+            drupal_get_path('module', 'at_base') . '/misc/js/twig-filter.views-links.js'
+          )
+        ),
+      );
+
+      $edit_link = drupal_render($edit_link);
+    }
+
+    return $edit_link;
+  }
+
   public function render() {
+    $edit_link = $this->renderEditLink();
+
+    if (!empty($this->exception)) {
+      return $edit_link . $this->exception->getMessage();
+    }
+
     // No template, use default
     if (!$this->template && (!$this->template = $this->suggestTemplate())) {
       $this->view->pre_execute();
       return $this->view->preview($this->display_id, $this->arguments);
     }
 
-    return $this->renderTemplate();
+    return $edit_link . $this->renderTemplate();
   }
 
   protected function beforeRenderTemplate() {

@@ -34,6 +34,13 @@ class Content_Render {
   private $data;
 
   /**
+   * Attached assets
+   *
+   * @var array
+   */
+  private $attached;
+
+  /**
    * @var CacheHandler_Interface
    */
   private $cache_handler;
@@ -41,8 +48,14 @@ class Content_Render {
   public function setData($data) {
     $this->data = $data;
 
-    if (is_array($this->data) && empty($this->data['variables'])) {
-      $this->data['variables'] = array();
+    if (is_array($this->data)) {
+      if (empty($this->data['variables'])) {
+        $this->data['variables'] = array();
+      }
+
+      if (!empty($this->data['attached'])) {
+        $this->attached = $this->data['attached'];
+      }
     }
 
     return $this;
@@ -143,13 +156,16 @@ class Content_Render {
   }
 
   protected function buildAttached() {
-    foreach (array_keys($this->data['attached']) as $type) {
-      foreach ($this->data['attached'][$type] as $k => $item) {
+    $items = array();
+
+    foreach (array_keys($this->attached) as $type) {
+      foreach ($this->attached[$type] as $k => $item) {
         if (is_string($item)) {
-          $this->data['attached'][$type][$k] = at_container('helper.real_path')->get($item, FALSE);
+          $items[$type][$k] = at_container('helper.real_path')->get($item, FALSE);
         }
       }
     }
-    return $this->data['attached'];
+
+    return $items;
   }
 }
