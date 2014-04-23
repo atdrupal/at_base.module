@@ -37,13 +37,15 @@
        }
     ],
     "require": {
-        "php": ">=5.3.8",
-        "composer/installers": "*",
-        "mustangostang/spyc": "0.5.*",
-        "pimple/pimple": "2.0.*",
-        "twig/twig": "1.15.*",
-        "symfony/expression-language": "2.4.*",
-        "mustangostang/spyc": "0.5.*@dev"
+        "php": ">=5.3.8"
+        , "composer/installers": "*"
+        , "mustangostang/spyc": "0.5.*"
+        , "pimple/pimple": "2.0.*"
+        , "twig/twig": "1.15.*"
+        , "symfony/expression-language": "2.4.*"
+        , "mustangostang/spyc": "0.5.*@dev"
+        , "andytruong/common": "~1.0"
+        , "andytruong/render": "~1.0"
     },
     "autoload": {
         "psr-4": { "Drupal\\at_base\\": "lib" }
