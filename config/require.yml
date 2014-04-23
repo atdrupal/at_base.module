@@ -6,27 +6,6 @@ projects:
       url: 'https://github.com/mustangostang/spyc.git'
       revision: 'b7fd7f7a4ddd70c4d599a023fcda3e2b9a20d4b9'
 
-  pimple:
-    type: library
-    download:
-      type: git
-      url: 'https://github.com/fabpot/Pimple.git'
-      branch: 'v2.0.0'
-
-  twig:
-    type: library
-    download:
-      type: git
-      url: 'https://github.com/fabpot/Twig.git'
-      branch: 'v1.15.1'
-
-  expression_language:
-    type: library
-    download:
-      type: git
-      url: 'https://github.com/symfony/expression-language.git'
-      branch: 'v2.4.1'
-
   fontawesome:
     type: library
     download:
