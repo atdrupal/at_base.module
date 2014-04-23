@@ -38,6 +38,16 @@ class At_Base_Test_Class {
   public static function staticGetVariables() {
     return atest_variables();
   }
+
+  /**
+   * Function test case Render content with class
+   * @param  string $argument 
+   * @return 
+   */
+  public function bar($argument=''){
+    return "Demo render content with class ". $argument;
+
+  }
 }
 
 function atest_base_hello($name = 'Andy Truong') {

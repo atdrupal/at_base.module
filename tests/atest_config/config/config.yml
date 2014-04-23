@@ -1,3 +1,8 @@
 foo: bar
 structured_data:
-  foo: bar
+  foo: helllo
+
+routes:
+  hello:
+    @include: base.yml
+

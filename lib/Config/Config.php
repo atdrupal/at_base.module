@@ -126,4 +126,52 @@ class Config {
   public function write() {
     $this->resolver->writeData($this->config_data);
   }
+
+  /**
+   * Import YAML file.
+   *
+   * @param  string $key container keyword @include.
+   * @return array
+   */
+  public function getConfigExternal($key) {
+    if (!$this->config_data) {
+      $this->fetchData();
+    }
+
+    if (!isset($this->config_data[$key])) {
+      throw new NotFoundException("{$this->module}.{$this->id}#{$key}");
+    }
+
+    $data = $this->config_data[$key];
+
+    foreach ($data as $value_array) {
+      if (array_key_exists('@include', $value_array)) {
+          $filename = $value_array['@include'];
+      }
+
+    }
+    $dir_file = drupal_get_path('module', $this->module).'/config/'.$filename;
+    
+    return $this->read_yaml($dir_file);
+  }
+
+  /**
+   * Read YAML file.
+   *
+   * @param  string $path Path to yaml file.
+   * @return mixed
+   */
+  public function read_yaml($path) {
+    
+    if (!is_file(DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php')) {
+      throw new \RuntimeException('Missing library: spyc');
+    }
+
+    if (!function_exists('spyc_load_file')) {
+      require_once DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php';
+    }
+
+    //return \Spyc::YAMLLoad($path);
+    return spyc_load_file($path);
+  }
 }
