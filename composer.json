@@ -8,8 +8,14 @@
     "minimum-stability": "dev",
     "authors": [
         {
-            "name": "Andy Truong",
-            "email": "thehongtt@gmail.com"
+            "name": "Andy Truong"
+            , "email": "thehongtt@gmail.com"
+            , "role": "Lead Developer"
+        }
+        , {
+            "name": "Tien Vo"
+            , "email": "tien.xuan.vo@gmail.com"
+            , "role": "Contributor"
         }
     ],
     "repositories": [
