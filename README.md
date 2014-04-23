@@ -3,7 +3,7 @@ AT Base
 
 Provide some more API for developer to work with Drupal 7.
 
-[![Build Status](https://secure.travis-ci.org/atdrupal/at_base.png?branch=dev-master)](http://travis-ci.org/atdrupal/at_base) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/atdrupal/at_base/badges/quality-score.png?s=f287f3ed102cedb11091668e5f6cb61b7603348a)](https://scrutinizer-ci.com/g/atdrupal/at_base/) [![Latest Stable Version](https://poser.pugx.org/andytruong/at_base/v/stable.png)](https://packagist.org/packages/andytruong/at_base) [![Latest Unstable Version](https://poser.pugx.org/andytruong/at_base/v/unstable.png)](https://packagist.org/packages/andytruong/at_base)
+[![Build Status](https://secure.travis-ci.org/atdrupal/at_base.png?branch=v7.3)](http://travis-ci.org/atdrupal/at_base) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/atdrupal/at_base/badges/quality-score.png?s=f287f3ed102cedb11091668e5f6cb61b7603348a)](https://scrutinizer-ci.com/g/atdrupal/at_base/) [![Latest Stable Version](https://poser.pugx.org/andytruong/at_base/v/stable.png)](https://packagist.org/packages/andytruong/at_base) [![Latest Unstable Version](https://poser.pugx.org/andytruong/at_base/v/unstable.png)](https://packagist.org/packages/andytruong/at_base)
 
 ### Install
 
