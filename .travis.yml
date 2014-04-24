@@ -40,9 +40,9 @@ before_script:
   # ---------------------
   # Download the codebase
   # ---------------------
-  - wget https://github.com/andytruong/atest_profile/archive/master.zip
-  - unzip -qq master
-  - mv atest_profile-master $DRUPAL
+  - wget https://github.com/atdrupal/atest_profile/archive/v7.3.zip
+  - unzip -qq v7.3.zip
+  - mv atest_profile-7.3 $DRUPAL
   - cd $DRUPAL
   - drush si testing --db-url=mysql://root:@localhost/drupal --yes
   - mv $VENDOR/* sites/all/modules/
