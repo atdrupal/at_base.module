@@ -1,7 +1,7 @@
 <?php
 namespace Drupal\at_base\Twig;
 
-class Environment_Factory {
+class EnvironmentFactory {
   private static $twig;
   private static $loader;
   private $options;

@@ -5,7 +5,7 @@ namespace Drupal\at_base\Twig\Functions;
 /**
  * Handler for drupalEntity Twig filter.
  *
- * @see Drupal\at_base\Twig\Filter_Fetcher::makeContructiveClassBasedFilter()
+ * @see Drupal\at_base\Twig\FilterFetcher::makeContructiveClassBasedFilter()
  */
 class Wrapper {
   public static function __callStatic($name, $arguments) {

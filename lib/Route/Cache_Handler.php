@@ -4,9 +4,9 @@
  */
 namespace Drupal\at_base\Route;
 
-use Drupal\at_base\Helper\Content_Render\CacheHandler_Interface;
+use Drupal\at_base\Helper\ContentRender\CacheHandlerInterface;
 
-class Cache_Handler implements CacheHandler_Interface {
+class Cache_Handler implements CacheHandlerInterface {
   protected $options;
   protected $callback;
 

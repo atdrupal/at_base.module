@@ -7,17 +7,17 @@ namespace Drupal\at_base\Container;
  *
  * Usage 1:
  *     $tokens = ['@service'];
- *     $args = (new Argument_Resolver)->prepareItems($tokens);
+ *     $args = (new ArgumentResolver)->prepareItems($tokens);
  *
  * Usage 2:
  *     $tokens = ['calls' => [
  *         ['method', ['@service']]
  *     ]];
- *     $args = (new Argument_Resolver)->prepareItemsPartial($tokens['calls'], 1);
+ *     $args = (new ArgumentResolver)->prepareItemsPartial($tokens['calls'], 1);
  *
  * @todo  Test me
  */
-class Argument_Resolver
+class ArgumentResolver
 {
 
     public function resolve(&$def) {

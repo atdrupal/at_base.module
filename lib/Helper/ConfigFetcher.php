@@ -12,7 +12,7 @@ namespace Drupal\at_base\Helper;
  * @todo  Remove duplication code — at_modules('at_base', …)
  * @todo  Support expression_language:evaluate() — check \Drupal\at_base\Hook\BlockInfo
  */
-class Config_Fetcher {
+class ConfigFetcher {
   public function getItems($module, $id, $key, $include_base = FALSE, $reset = FALSE) {
     $o = array(
       'ttl' => '+ 1 year',

@@ -31,11 +31,6 @@ abstract class UnitTestCase extends \DrupalUnitTestCase {
     $this->container['wrapper.db'] = function() { return new \Drupal\at_base\Helper\Test\Database(); };
     $this->container['wrapper.cache'] = function() { return new \Drupal\at_base\Helper\Test\Cache(); };
 
-    // Make our autoloader run first — drush_print_r(spl_autoload_functions());
-    spl_autoload_unregister('drupal_autoload_class');
-    spl_autoload_unregister('drupal_autoload_interface');
-    at_id(new Autoloader('Drupal'))->register(FALSE, TRUE);
-
     $this->setUpModules();
 
     parent::setUp('at_base', 'atest_base');

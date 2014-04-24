@@ -9,7 +9,7 @@ namespace Drupal\at_base\Cache\Warming;
  *
  *  at_container('cache.tag_flusher')->flush($tags);
  */
-class Tag_Flusher {
+class TagFlusher {
   protected $db;
   protected $cache;
   protected $tags = array();

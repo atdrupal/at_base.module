@@ -1,7 +1,7 @@
 <?php
 namespace Drupal\at_base\Twig;
 
-class Filter_Fetcher {
+class FilterFetcher {
   protected $config_id  = 'twig_filters';
   protected $config_key = 'twig_filters';
   protected $twig_base  = '\Twig_SimpleFilter';

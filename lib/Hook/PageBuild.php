@@ -8,7 +8,7 @@ use Drupal\at_base\Hook\BlockView;
  *
  * Parse block configuration, build attached-blocks to page structure.
  */
-class Page_Build {
+class PageBuild {
   /**
    * Structure of page.
    *

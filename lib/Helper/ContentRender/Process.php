@@ -1,5 +1,5 @@
 <?php
-namespace Drupal\at_base\Helper\Content_Render;
+namespace Drupal\at_base\Helper\ContentRender;
 
 /**
  * @todo  Doc & Test for $data['before'], $data['after']
