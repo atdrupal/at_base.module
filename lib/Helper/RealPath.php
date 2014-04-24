@@ -40,7 +40,7 @@ class RealPath {
       preg_match('/@([a-z_]+)/i', $path, $matches);
       if (!empty($matches)) {
         $module = $matches[1];
-        if ($module_path = drupal_get_path('module', $module)) {
+        if ($module_path = \at_fn::drupal_get_path('module', $module)) {
           return str_replace("@{$module}/", $module_path . '/', $path);
         }
       }

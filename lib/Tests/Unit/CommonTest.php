@@ -26,15 +26,13 @@ class CommonTest extends UnitTestCase {
   public function testRealPath() {
     $helper = at_container('helper.real_path');
 
-    drush_print_r(
-      drupal_get_path('module', 'at_base') . '/at_base.module'
-    );
-
-    return;
+    \at_fake::drupal_get_path(function($type, $name) {
+      return "sites/all/modules/at_base";
+    });
 
     // @module
     $this->assertEqual(
-      drupal_get_path('module', 'at_base') . '/at_base.module',
+      \at_fn::drupal_get_path('module', 'at_base') . '/at_base.module',
       $helper->get('@at_base/at_base.module')
     );
 
