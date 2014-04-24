@@ -44,9 +44,6 @@ class AT {
     static $engine;
 
     if (!$engine) {
-      at_id(new Autoloader('Symfony\Component\ExpressionLanguage', at_library('expression_language')))
-        ->register();
-
       $engine = new ExpressionLanguage();
     }
 

@@ -8,7 +8,7 @@ services:
     class: 'Drupal\at_base\Helper\ContentRender'
 
   helper.real_path:
-    class: 'Drupal\at_base\Helper\Real_Path'
+    class: 'Drupal\at_base\Helper\RealPath'
 
   helper.timer:
     class: 'Drupal\at_base\Helper\Timer'
