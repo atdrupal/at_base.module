@@ -1,7 +1,7 @@
 <?php
 namespace Drupal\atest_base;
 
-class Service_2 {
+class Service2 {
   private $service_1;
 
   public function __construct($service_1) {

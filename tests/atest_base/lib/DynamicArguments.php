@@ -1,7 +1,7 @@
 <?php
 namespace Drupal\atest_base;
 
-class Dynamic_Arguments {
+class DynamicArguments {
   private $dyn_param;
   private $dyn_service;
 
