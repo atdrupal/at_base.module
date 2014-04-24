@@ -52,9 +52,9 @@ before_script:
   # ---------------------
   - drush vset --yes file_temporary_path /tmp
   - drush en -y composer_manager
-  - drush en -y composer_manager
   - drush composer-manager require andytruong/common=1.0.x-dev
   - drush en -y simpletest at_base atest_base
+  - drush composer-manager update
 
   # ---------------------
   # No cache data
