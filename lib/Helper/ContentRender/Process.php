@@ -9,7 +9,7 @@ class Process {
   private $args;
 
   /**
-   * @var Process_Call
+   * @var ProcessCall
    */
   private $caller;
 
@@ -18,7 +18,7 @@ class Process {
     $this->args = $args ? $args : array();
 
     if (!empty($data['before'])) {
-      $this->caller = new Process_Call(
+      $this->caller = new ProcessCall(
         !empty($data['before']) ? $data['before'] : array()
       );
     }
