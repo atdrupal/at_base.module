@@ -1,7 +1,7 @@
 <?php
 namespace Drupal\at_base\Twig\Filters;
 
-class Cache_Filter {
+class CacheFilter {
   private $callback;
   private $arguments = array();
   private $options;

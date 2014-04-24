@@ -1,27 +1,27 @@
 services:
   atest_base.service_1:
-    class: 'Drupal\atest_base\Service_1'
+    class: 'Drupal\atest_base\Service1'
     tags:
       - { name: atest1 }
       - { name: atest2, weight: 10 }
 
   atest_base.service_2:
-    class: 'Drupal\atest_base\Service_2'
+    class: 'Drupal\atest_base\Service2'
     arguments: ['@atest_base.service_1']
     tags:
       - { name: atest1 }
       - { name: atest2, weight: 0 }
 
   atest_base.service_3:
-    class: 'Drupal\atest_base\Service_3'
-    factory_class: Drupal\atest_base\Service_3_Factory
+    class: 'Drupal\atest_base\Service3'
+    factory_class: Drupal\atest_base\Service3Factory
     factory_method: getService
     tags:
       - { name: atest1 }
       - { name: atest2, weight: -10 }
 
   atest_base.dynamic_arguments:
-    class: 'Drupal\atest_base\Dynamic_Arguments'
+    class: 'Drupal\atest_base\DynamicArguments'
     arguments: ['%atest_base:parameters:dynamic_param_1', '%atest_base:parameters:dynamic_service_1']
 
   atest_base.include_me:

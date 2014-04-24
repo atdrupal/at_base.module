@@ -46,8 +46,8 @@ class TwigTest extends UnitTestCase {
     $this->assertEqual($twig->render("{{  At_Base_Test_Class__obj__helloProperty('PHP')  }}"), 'Hello PHP');
 
     // Namespace
-    $this->assertEqual($twig->render("{{  'Namespace'|ns_Drupal__atest_base__Service_1__class__helloStatic  }}"),  'Hello Namespace');
-    $this->assertEqual($twig->render("{{  ns_Drupal__atest_base__Service_1__class__helloStatic('Namespace')  }}"), 'Hello Namespace');
+    $this->assertEqual($twig->render("{{  'Namespace'|ns_Drupal__atest_base__Service1__class__helloStatic  }}"),  'Hello Namespace');
+    $this->assertEqual($twig->render("{{  ns_Drupal__atest_base__Service1__class__helloStatic('Namespace')  }}"), 'Hello Namespace');
   }
 
   public function testTwigStringLoader() {
@@ -67,7 +67,7 @@ class TwigTest extends UnitTestCase {
     $string_4  = "{% set options  = { cache_id: 'atestTwigCache:4' } %}";
     $string_4 .= "\n {% set callback = { callback: 'atest_base_hello', arguments: ['Andy Truong'] } %}";
     $string_4 .= "\n {{ callback | cache(options) }}";
-    for ($i = 1; $i <= 4; $i++) {
+    for ($i = 1; $i <= 1; $i++) {
       $actual = "string_{$i}";
       $actual = $twig->render($$actual);
       $actual = trim($actual);
