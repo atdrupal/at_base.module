@@ -1,7 +1,6 @@
 <?php
 
 require_once dirname(__FILE__) . '/at_base.module';
-require_once dirname(__FILE__) . '/drush/at_cache.inc';
 require_once dirname(__FILE__) . '/drush/at_fontello.inc';
 
 /**
@@ -57,6 +56,11 @@ function at_base_drush_command() {
  */
 function drush_at_base_pre_cache_clear() {
   cache_clear_all('*', 'cache');
+}
+
+function drush_at_cache_clear() {
+  $tags = func_get_args();
+  at_cache_flush_by_tags($tags);
 }
 
 /**

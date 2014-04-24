@@ -39,31 +39,10 @@ function drush_at_require_pm_enable_pre_validate($module) {
 # Hack to download required depedencies
 # ---------------------
 
-// YAML reader must be available
-if (!function_exists('yaml_parse') && !is_file(DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php')) {
-  $name = 'spyc';
-  $info = array(
-    'type' => 'library',
-    'download' => array(
-      'type' => 'git',
-      'url' => 'https://github.com/mustangostang/spyc.git',
-      'revision' => 'b7fd7f7a4ddd70c4d599a023fcda3e2b9a20d4b9',
-    ),
-  );
-
-  at_id(new DependencyFetcher($name, $info))->fetch();
-}
-
 // Required projects must be available
-$fn = 'yaml_parse';
-if (!function_exists('yaml_parse')) {
-  require_once DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php';
-  $fn = 'spyc_load_file';
-}
-
 if (function_exists('drupal_get_path')) {
   $projects = drupal_get_path('module', 'at_base') . '/config/require.yml';
-  $projects = $fn($projects);
+  $projects = yaml_parse($projects);
   unset($projects['spyc']);
 
   // Backup global working copy option.
