@@ -123,7 +123,7 @@ class Controller {
   protected function prepareCache() {
     // User want cache the page
     if (!empty($this->route['cache'])) {
-      $this->render->setCacheHandler(new Cache_Handler());
+      $this->render->setCacheHandler(new CacheHandler());
 
       // Prepair the cache ID
       if (empty($this->route['cache']['id'])) {
