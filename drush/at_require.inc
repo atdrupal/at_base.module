@@ -40,9 +40,9 @@ function drush_at_require_pm_enable_pre_validate($module) {
 # ---------------------
 
 // Required projects must be available
-if (function_exists('drupal_get_path')) {
+if (function_exists('drupal_get_path') && function_exists('yaml_parse_file')) {
   $projects = drupal_get_path('module', 'at_base') . '/config/require.yml';
-  $projects = yaml_parse($projects);
+  $projects = yaml_parse_file($projects);
   unset($projects['spyc']);
 
   // Backup global working copy option.

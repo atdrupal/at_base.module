@@ -9,6 +9,7 @@ Provide some more API for developer to work with Drupal 7.
 
     drush dl at_base
     drush atr at_base
+    drush composer-manager update
 
 ### Requirements:
 

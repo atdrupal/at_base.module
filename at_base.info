@@ -5,6 +5,7 @@ core = 7.x
 package = Andy Truong
 
 dependencies[] = block
-dependencies[] = entity
-dependencies[] = views
 dependencies[] = composer_manager
+dependencies[] = entity
+dependencies[] = xautoload
+dependencies[] = views

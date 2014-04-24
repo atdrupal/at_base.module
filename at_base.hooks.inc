@@ -25,7 +25,7 @@ function at_base_menu() {
  * @tag autoload
  */
 function at_base_flush_caches() {
-  at_id(new \Drupal\at_base\Hook\Flush_Cache())->execute();
+  at_id(new \Drupal\at_base\Hook\FlushCache())->execute();
 }
 
 /**
@@ -38,7 +38,7 @@ function at_base_modules_enabled($modules) {
   at_modules('at_base', TRUE);
 
   // Rebuild module weight
-  at_id(new Drupal\at_base\Hook\Flush_Cache())->fixModuleWeight();
+  at_id(new Drupal\at_base\Hook\FlushCache())->fixModuleWeight();
 }
 
 /**
