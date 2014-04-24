@@ -7,8 +7,9 @@ Provide some more API for developer to work with Drupal 7.
 
 ### Install
 
-    drush en at_base
-    drush composer-manager update
+    drush en -y composer_manager
+    drush composer-manager require andytruong/common=1.0.x-dev
+    drush en -y at_base
 
 ### Requirements:
 
