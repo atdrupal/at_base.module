@@ -66,7 +66,7 @@ class Real_Path {
    */
   private function replaceLibraryToken($path, $include_drupal_root) {
     if ('%' === substr($path, 0, 1)) {
-      preg_match('/%([a-z_\.]+)/i', $path, $matches);
+      preg_match('/%([a-z0-9_\.]+)/i', $path, $matches);
       
       if (!empty($matches)) {
         $library = $matches[1];
