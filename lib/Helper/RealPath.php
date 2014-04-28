@@ -37,7 +37,7 @@ class RealPath {
    */
   private function replaceModuleToken($path) {
     if ('@' === substr($path, 0, 1)) {
-      preg_match('/@([a-z_]+)/i', $path, $matches);
+      preg_match('/@([a-z0-9_]+)/i', $path, $matches);
       if (!empty($matches)) {
         $module = $matches[1];
         if ($module_path = \at_fn::drupal_get_path('module', $module)) {
