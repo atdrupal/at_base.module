@@ -31,7 +31,7 @@ namespace Drupal\at_base\Hook\Entity;
  * @todo  Test me
  * @todo  Update wiki
  */
-class View_Alter {
+class ViewAlter {
   protected $build;
   protected $entity_type;
   protected $bundle;

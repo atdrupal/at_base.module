@@ -38,7 +38,6 @@
     ],
     "require": {
         "php": ">=5.3.8"
-        , "composer/installers": "*"
         , "pimple/pimple": "2.0.*"
         , "twig/twig": "1.15.*"
         , "symfony/expression-language": "2.4.*"
