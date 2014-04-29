@@ -2,7 +2,7 @@ filter:
     excluded_paths:
         - 'vendor/*'
         - 'tests/*'
-        - 'lib/Drupal/at_base/Tests/*'
+        - 'lib/Drupal/*'
         - 'app/*'
         - 'bin/*'
         - 'library/*'
