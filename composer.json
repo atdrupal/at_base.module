@@ -43,8 +43,5 @@
         , "symfony/expression-language": "2.4.*"
         , "andytruong/common": "~1.0"
         , "andytruong/render": "~1.0"
-    },
-    "autoload": {
-        "psr-4": { "Drupal\\at_base\\": "lib" }
     }
 }
