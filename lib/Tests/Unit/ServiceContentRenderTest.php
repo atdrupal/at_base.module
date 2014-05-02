@@ -4,6 +4,9 @@ namespace Drupal\at_base\Tests\Unit;
 
 use Drupal\at_base\Helper\Test\UnitTestCase;
 
+/**
+ * drush test-run --dirty 'Drupal\at_base\Tests\Unit\ServiceContentRenderTest'
+ */
 class ServiceContentRenderTest extends UnitTestCase {
   public function getInfo() {
     return array('name' => 'AT Unit: Test helper.content_render service') + parent::getInfo();

@@ -1,7 +1,7 @@
 services:
 
   helper.controller.resolver:
-    class: '\Drupal\at_base\Helper\ControllerResolver'
+    class: 'AndyTruong\Common\ControllerResolver'
 
   helper.content_render:
     reuse: false

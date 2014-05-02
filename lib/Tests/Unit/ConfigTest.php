@@ -5,6 +5,9 @@ namespace Drupal\at_base\Tests\Unit;
 use \Drupal\at_base\Helper\Test\UnitTestCase;
 use \Drupal\at_base\Helper\ModulesFetcher;
 
+/**
+ * drush test-run --dirty 'Drupal\at_base\Tests\Unit\ConfigTest'
+ */
 class ConfigTest extends UnitTestCase {
   public function getInfo() {
     return array('name' => 'AT Unit: Config') + parent::getInfo();
