@@ -24,12 +24,13 @@ class ArgumentResolver
         $args = $calls = array();
 
         if (!empty($def['file'])) {
-            require at_container('helper.real_path')->get($def['file']);
+            require atcg('helper.real_path')->get($def['file']);
             unset($def['file']);
         }
 
+        // @todo: Is this still working?
         if (!empty($def['autoload'])) {
-            at_container('autoloader')->register($def['autoload']);
+            atcg('autoloader')->register($def['autoload']);
             unset($def['autoload']);
         }
 
@@ -107,7 +108,7 @@ class ArgumentResolver
      */
     private function detectService($item) {
         if ('@' === substr($item, 0, 1)) {
-            return at_container(substr($item, 1));
+            return atcg(substr($item, 1));
         }
     }
 }

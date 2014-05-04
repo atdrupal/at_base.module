@@ -62,7 +62,7 @@ class EntityWarmer implements WarmerInterface {
     $tag = str_replace($this->getTagFind(), $this->getTagReplace(), $tag);
 
     // Warm relationship entities
-    $relationship_warmers = at_container('container')->find('cache.warmer.entity.relationships', 'service');
+    $relationship_warmers = atc()->find('cache.warmer.entity.relationships', 'service');
     foreach ($relationship_warmers as $relationship_warmer) {
       if ($relationship_warmer->validateTag($tag)) {
         $relationship_warmer->processTag($tag, $this);

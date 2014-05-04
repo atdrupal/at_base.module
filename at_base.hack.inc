@@ -139,5 +139,5 @@ function at_form($form, &$form_state) {
  * Shortcut to expression_language:evaluate.
  */
 function at_eval($expression) {
-  return at_container('expression_language')->evaluate($expression);
+  return atcg('expression_language')->evaluate($expression);
 }

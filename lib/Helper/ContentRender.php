@@ -9,14 +9,14 @@ use Drupal\at_base\Helper\ContentRender\Process;
  * Helper class for rendering data:
  *
  *  $data = array('template_string' => $template_string, 'variables' => $variables, 'attached' => $attached);
- *  return at_container('helper.content_render')
+ *  return atcg('helper.content_render')
  *    ->setData($data)
  *    ->render()
  *  ;
  *
  *
  *  $data = array('controller' => array('\Drupal\atest_base\Controller\Sample', 'renderAction'));
- *  return at_container('helper.content_render')
+ *  return atcg('helper.content_render')
  *    ->setData($data)
  *    ->render()
  *  ;
@@ -135,7 +135,7 @@ class ContentRender {
 
       $dyn = is_string($v);
       $dyn = $dyn || (($k = array_keys($v)) && is_numeric($k[0]));
-      if ($dyn && $callback = at_container('helper.controller.resolver')->get($v)) {
+      if ($dyn && $callback = atcg('helper.controller.resolver')->get($v)) {
         $this->data['variables'] = call_user_func($callback);
         return $this->getStaticVariables();
       }
@@ -146,7 +146,7 @@ class ContentRender {
     foreach (array_keys($this->data['attached']) as $type) {
       foreach ($this->data['attached'][$type] as $k => $item) {
         if (is_string($item)) {
-          $this->data['attached'][$type][$k] = at_container('helper.real_path')->get($item, FALSE);
+          $this->data['attached'][$type][$k] = atcg('helper.real_path')->get($item, FALSE);
         }
       }
     }

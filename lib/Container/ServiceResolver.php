@@ -12,20 +12,18 @@ class ServiceResolver {
    * @param string $id
    */
   public function getDefinition($id) {
-    if (!$def = at_container('helper.config_fetcher')->getItem('at_base', 'services', 'services', $id, TRUE)) {
-      throw new \Exception("Missing service: {$id}");
-    }
+    if ($def = atcg('helper.config_fetcher')->getItem('at_base', 'services', 'services', $id, TRUE)) {
+      $def['arguments'] = !empty($def['arguments']) ? $def['arguments'] : array();
 
-    $def['arguments'] = !empty($def['arguments']) ? $def['arguments'] : array();
-
-    // A service depends on others, this method to resolve them.
-    foreach (array('arguments', 'calls', 'factory_service') as $k) {
-      if (isset($def[$k])) {
-        $this->resolveDependencies($def[$k]);
+      // A service depends on others, this method to resolve them.
+      foreach (array('arguments', 'calls', 'factory_service') as $k) {
+        if (isset($def[$k])) {
+          $this->resolveDependencies($def[$k]);
+        }
       }
-    }
 
-    return $def;
+      return $def;
+    }
   }
 
   /**
@@ -41,7 +39,7 @@ class ServiceResolver {
         $this->resolveDependencies($id);
       }
       elseif (is_string($id) && '@' === substr($id, 0, 1)) {
-        at_container(substr($id, 1));
+        atcg(substr($id, 1));
       }
     }
   }
@@ -56,7 +54,7 @@ class ServiceResolver {
   public function convertDefinitionToService($def, $args = array(), $calls = array()) {
     if (!empty($def['factory_service'])) {
       return call_user_func_array(
-        array(at_container($def['factory_service']), $def['factory_method']), $args
+        array(atcg($def['factory_service']), $def['factory_method']), $args
       );
     }
 
@@ -86,7 +84,7 @@ class ServiceResolver {
   public function fetchDefinitions($tag) {
     $tagged_defs = array();
 
-    $defs = at_container('helper.config_fetcher')->getItems('at_base', 'services', 'services', TRUE);
+    $defs = atcg('helper.config_fetcher')->getItems('at_base', 'services', 'services', TRUE);
     foreach ($defs as $name => $def) {
       if (empty($def['tags'])) {
         continue;

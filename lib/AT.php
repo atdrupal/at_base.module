@@ -24,14 +24,14 @@ class AT {
    * @return \Twig_Environment
    */
   public static function twig() {
-      return at_container('twig');
+      return atcg('twig');
   }
 
   /**
    * @return \Twig_Environment
    */
   public static function twig_string() {
-    return at_container('twig_string');
+    return atcg('twig_string');
   }
 
   /**

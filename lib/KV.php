@@ -21,7 +21,7 @@ class KV extends \Drupal\at_base\KV\StorageBase {
   public function __construct($collection, $table = 'at_kv') {
     $this->collection = $collection;
     $this->table = $table;
-    $this->db = at_container('wrapper.db');
+    $this->db = atcg('wrapper.db');
   }
 
   public function getMultiple($keys) {

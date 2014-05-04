@@ -92,7 +92,7 @@ class Cache {
    * @return  mixed
    */
   public function get() {
-    if (!$this->reset && $cache = at_container('wrapper.cache')->get($this->id, $this->bin)) {
+    if (!$this->reset && $cache = atcg('wrapper.cache')->get($this->id, $this->bin)) {
       if (!empty($cache->data) || $this->allow_empty) {
         return $cache->data;
       }
@@ -122,7 +122,7 @@ class Cache {
    * @param  mixed $data
    */
   protected function write($data) {
-    if (FALSE !== at_container('wrapper.cache')->set($this->id, $data, $this->bin, strtotime($this->ttl))) {
+    if (FALSE !== atcg('wrapper.cache')->set($this->id, $data, $this->bin, strtotime($this->ttl))) {
       if (!empty($this->tags)) {
         $this->removeAllTags();
         foreach ($this->tags as $tag) {
@@ -139,7 +139,7 @@ class Cache {
    * @see   at_base_flush_caches()
    */
   public function addTag($tag) {
-    return at_container('wrapper.db')->insert('at_base_cache_tag')
+    return atcg('wrapper.db')->insert('at_base_cache_tag')
       ->fields(array(
           'bin' => $this->bin,
           'cid' => $this->id,
@@ -150,7 +150,7 @@ class Cache {
   }
 
   public function removeAllTags() {
-    return at_container('wrapper.db')->delete('at_base_cache_tag')
+    return atcg('wrapper.db')->delete('at_base_cache_tag')
       ->condition('bin', $this->bin)
       ->condition('cid', $this->id)
       ->execute()
@@ -163,7 +163,7 @@ class Cache {
    * @param  string $tag
    */
   public function removeTag($tag) {
-    return at_container('wrapper.db')->delete('at_base_cache_tag')
+    return atcg('wrapper.db')->delete('at_base_cache_tag')
       ->condition('bin', $this->bin)
       ->condition('cid', $this->id)
       ->condition('tag', $tag)

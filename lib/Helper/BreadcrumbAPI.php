@@ -93,11 +93,11 @@ class BreadcrumbAPI {
       $old_weight = isset($_config['weight']) ? $_config['weight'] : 0;
       $new_weight = isset($config['weight'])  ? $config['weight']  : 0;
       if ($new_weight <= $old_weight) {
-        at_container('container')->offsetSet('breadcrumb', $config);
+        atc()->offsetSet('breadcrumb', $config);
       }
     }
     else {
-      at_container('container')->offsetSet('breadcrumb', $config);
+      atc()->offsetSet('breadcrumb', $config);
     }
   }
 
@@ -107,8 +107,8 @@ class BreadcrumbAPI {
    * @return array
    */
   public function get() {
-    if (at_container('container')->offsetExists('breadcrumb')) {
-      return at_container('breadcrumb');
+    if (atc()->offsetExists('breadcrumb')) {
+      return atcg('breadcrumb');
     }
   }
 
@@ -123,7 +123,7 @@ class BreadcrumbAPI {
 
       // User can send direct breadcrumb structure, or use a callback to build it.
       if (empty($bc)) {
-        $bc = at_container('helper.content_render')->render($config);
+        $bc = atcg('helper.content_render')->render($config);
       }
 
       $args = isset($config['context']['arguments']) ? $config['context']['arguments'] : array();

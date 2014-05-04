@@ -16,7 +16,7 @@ class CommonTest extends UnitTestCase {
    * Test for at_id() function.
    */
   public function testAtId() {
-    $container = new \Drupal\at_base\Container();
+    $container = atc();
     $this->assertTrue(TRUE, 'No exception raised.');
   }
 
@@ -24,7 +24,7 @@ class CommonTest extends UnitTestCase {
    * Test for \Drupal\at_base\Helper\RealPath class
    */
   public function testRealPath() {
-    $helper = at_container('helper.real_path');
+    $helper = atcg('helper.real_path');
 
     \at_fake::drupal_get_path(function($type, $name) {
       return "sites/all/modules/at_base";
