@@ -87,7 +87,7 @@ class RouteTest extends \DrupalWebTestCase {
       'weight'  => 1000,
     );
 
-    at_container()->set('page.blocks', $blocks);
+    at_context('page.blocks', $blocks);
 
     // Render the page array
     $page = array();

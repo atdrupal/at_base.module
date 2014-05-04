@@ -168,8 +168,8 @@ function at_base_user_logout($account) {
  * @see Drupal\at_base\Route\Controller::prepareContextBlocks()
  */
 function at_base_page_build(&$page) {
-  if (at_container()->has('page.blocks')) {
-    at_id(new Hook_Page_Build($page, at_container('page.blocks')))->execute();
+  if (!\AT::getContext()->offsetExists('page.blocks')) {
+    at_id(new Hook_Page_Build($page, at_context('page.blocks')))->execute();
   }
 
   at_container('breadcrumb_api')->pageBuild();

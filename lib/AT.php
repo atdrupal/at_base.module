@@ -54,4 +54,13 @@ class AT {
   public static function getRender() {
     return at_container('helper.content_render');
   }
+
+  /**
+   * Get context container.
+   * 
+   * @return \Drupal\at_base\Context
+   */
+  public static function getContext() {
+    return at_context();
+  }
 }
