@@ -135,7 +135,7 @@ class ContentRender {
 
       $dyn = is_string($v);
       $dyn = $dyn || (($k = array_keys($v)) && is_numeric($k[0]));
-      if ($dyn && $callback = atcg('helper.controller.resolver')->get($v)) {
+      if ($dyn && $callback = at_container('helper.controller.resolver')->get($v)) {
         $this->data['variables'] = call_user_func($callback);
         return $this->getStaticVariables();
       }
@@ -146,7 +146,7 @@ class ContentRender {
     foreach (array_keys($this->data['attached']) as $type) {
       foreach ($this->data['attached'][$type] as $k => $item) {
         if (is_string($item)) {
-          $this->data['attached'][$type][$k] = atcg('helper.real_path')->get($item, FALSE);
+          $this->data['attached'][$type][$k] = at_container('helper.real_path')->get($item, FALSE);
         }
       }
     }

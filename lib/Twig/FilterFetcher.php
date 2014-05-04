@@ -8,7 +8,7 @@ class FilterFetcher {
   protected $wrapper    = '\Drupal\at_base\Twig\Filters\Wrapper';
 
   protected function fetchDefinitions() {
-    return atcg('helper.config_fetcher')
+    return at_container('helper.config_fetcher')
       ->getItems('at_base', $this->config_id, $this->config_key, TRUE);
   }
 

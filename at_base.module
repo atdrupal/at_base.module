@@ -12,13 +12,50 @@
  * @todo Provide an option to disable BreadcrumbAPI calling.
  */
 
-use \Drupal\at_base\Cache;
-use \Drupal\at_base\Helper\ModulesFetcher;
+use Drupal\at_base\Cache;
+use Drupal\at_base\Helper\ModulesFetcher;
 
 require_once dirname(__FILE__) . '/lib/AT.php';
 require_once dirname(__FILE__) . '/at_base.hooks.inc';
 require_once dirname(__FILE__) . '/at_base.missing.inc';
 require_once dirname(__FILE__) . '/at_base.hack.inc';
+
+/**
+ * Wrapper for (Symfony) service container.
+ *
+ * Examples:
+ *
+ *  # Get container
+ *  $container = at_container();
+ *
+ *  # Get service
+ *  $twig = at_container('twig');
+ *
+ *  # Get service with arguments
+ *  $kv = at_container('kv', $collection = 'my_kv_collection');
+ *
+ * @staticvar \Symfony\Component\DependencyInjection\ContainerBuilder $container
+ * @return \Symfony\Component\DependencyInjection\ContainerBuilder
+ */
+function at_container($id = NULL, $args = array()) {
+  static $container;
+
+  if (is_null($container)) {
+    $container = at_container_factory();
+  }
+
+  if (is_null($id)) {
+    return $container;
+  }
+
+  if (!empty($args)) {
+    foreach ($args as $index => $arg) {
+      $container->getDefinition($id)->replaceArgument($index, $arg);
+    }
+  }
+
+  return $container->get($id);
+}
 
 /**
  * Care about site caching.
@@ -65,7 +102,7 @@ function at_cache($options, $callback = NULL, $arguments = array()) {
  * @param  array  $tags
  */
 function at_cache_flush_by_tags($tags = array()) {
-  atcg('cache.tag_flusher')->flush($tags);
+  at_container('cache.tag_flusher')->flush($tags);
 }
 
 /**
@@ -83,7 +120,9 @@ function at_cache_flush_by_tags($tags = array()) {
  * @return Drupal\at_base\Config\Config
  */
 function at_config($module, $id = 'config', $refresh = FALSE) {
-  return atcg('config')->setModule($module)->setId($id);
+  $resolver = new Drupal\at_base\Config\Resolver();
+  $config = new \Drupal\at_base\Config\Config($resolver);
+  return $config->setModule($module)->setId($id);
 }
 
 /**
@@ -110,7 +149,7 @@ function at_modules($base_module = 'at_base', $config_file = '') {
  */
 function at_icon($name, $source = 'icon.fontawesome') {
   try {
-    return atcg($source)->get($name)->render();
+    return at_container($source)->get($name)->render();
   }
   catch (Exception $e) {
     return $e->getMessage();
@@ -171,7 +210,7 @@ function at_data($def, $value = NULL) {
     $service = 'type.list';
   }
 
-  return atcg($service)
+  return at_container($service)
     ->setDef($def)
     ->setValue($value)
   ;

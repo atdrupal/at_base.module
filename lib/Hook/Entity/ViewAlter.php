@@ -76,14 +76,14 @@ class ViewAlter {
 
       // Attach block if context block is empty
       if (!empty($config['blocks'][$theme])) {
-        if (!atc()->offsetExists('page.blocks')) {
-          atc()->offsetSet('page.blocks', $config['blocks'][$theme]);
+        if (!at_container()->has('page.blocks')) {
+          at_container()->set('page.blocks', $config['blocks'][$theme]);
         }
         unset($config['blocks']);
       }
 
       try {
-        return atcg('helper.content_render')->render($config);
+        return at_container('helper.content_render')->render($config);
       }
       catch (\Exception $e) {
         watchdog_exception(WATCHDOG_CRITICAL, $e);

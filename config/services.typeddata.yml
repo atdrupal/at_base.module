@@ -1,28 +1,28 @@
 services:
   type.any:
     class: Drupal\at_base\TypedData\DataTypes\Any
-    reuse: false
+    scope: prototype
   type.boolean:
     class: Drupal\at_base\TypedData\DataTypes\Boolean
-    reuse: false
+    scope: prototype
   type.integer:
     class: Drupal\at_base\TypedData\DataTypes\Integer
-    reuse: false
+    scope: prototype
   type.string:
     class: Drupal\at_base\TypedData\DataTypes\String
-    reuse: false
+    scope: prototype
   type.callable:
     class: Drupal\at_base\TypedData\DataTypes\Kallable
-    reuse: false
+    scope: prototype
   type.function:
     class: Drupal\at_base\TypedData\DataTypes\Fn
-    reuse: false
+    scope: prototype
   type.constant:
     class: Drupal\at_base\TypedData\DataTypes\Constant
-    reuse: false
+    scope: prototype
   type.list:
     class: Drupal\at_base\TypedData\DataTypes\ItemList
-    reuse: false
+    scope: prototype
   type.mapping:
     class: Drupal\at_base\TypedData\DataTypes\Mapping
-    reuse: false
+    scope: prototype

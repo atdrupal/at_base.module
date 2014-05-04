@@ -7,31 +7,27 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
  * Class for type hint.
  */
 class AT {
-  protected static $container;
-
   /**
    * Factory method to get container.
-   * @return \Drupal\at_base\Container
+   *
+   * @return \Symfony\Component\DependencyInjection\ContainerBuilder
    */
   public static function getContainer() {
-    if (!static::$container) {
-      static::$container = new \Drupal\at_base\Container();
-    }
-    return static::$container;
+    return at_container();
   }
 
   /**
    * @return \Twig_Environment
    */
   public static function twig() {
-      return atcg('twig');
+      return at_container('twig');
   }
 
   /**
    * @return \Twig_Environment
    */
   public static function twig_string() {
-    return atcg('twig_string');
+    return at_container('twig_string');
   }
 
   /**
@@ -48,5 +44,14 @@ class AT {
     }
 
     return $engine;
+  }
+
+  /**
+   * Get content render service.
+   *
+   * @return Drupal\at_base\Helper\ContentRender
+   */
+  public static function getRender() {
+    return at_container('helper.content_render');
   }
 }

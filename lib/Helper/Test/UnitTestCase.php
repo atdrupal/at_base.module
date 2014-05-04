@@ -5,6 +5,8 @@ namespace Drupal\at_base\Helper\Test;
 require_once dirname(__FILE__) . '/Cache.php';
 require_once dirname(__FILE__) . '/Database.php';
 
+define('AT_BASE_TESTING_UNIT', TRUE);
+
 /**
  * cache_get()/cache_set() does not work on unit test cases.
  */
@@ -20,10 +22,22 @@ abstract class UnitTestCase extends \DrupalUnitTestCase {
   }
 
   public function setUp() {
-    $this->container = atc();
+    // Fake DB, cache services
+    \at_fake::at_modules(function($module, $config_file) {
+      if ($module = 'at_base') {
+        switch ($config_file) {
+          case NULL:
+          case '':
+          case 'services':
+          case 'twig_functions': return array('at_base', 'atest_base');
+          case 'twig_filters':   return array('at_base');
+          case 'breadcrumb': return array('atest_base');
+        }
+      }
+    });
 
-    spl_autoload_unregister('drupal_autoload_class');
-    spl_autoload_unregister('drupal_autoload_interface');
+    at_container()->getDefinition('wrapper.db')->setClass('Drupal\at_base\Helper\Test\Database');
+    at_container()->getDefinition('wrapper.cache')->setClass('Drupal\at_base\Helper\Test\Cache');
 
     $this->setUpModules();
 
@@ -31,18 +45,8 @@ abstract class UnitTestCase extends \DrupalUnitTestCase {
   }
 
   protected function setUpModules() {
-    // at_modules() > system_list() > need db, fake it!
-    // 'id' => "ATConfig:{$module}:{$id}:{$key}:" . ($include_at_base ? 1 : 0),
-    $cids_1 = array('atmodules:at_base:', 'atmodules:at_base:services', 'atmodules:at_base:twig_functions');
-    $data_1 = array('at_base', 'atest_base');
-    foreach ($cids_1 as $cid) {
-      atcg('wrapper.cache')->set($cid, $data_1, 'cache_bootstrap');
-    }
-
-    $cids_2 = array('atmodules:at_base:twig_filters');
-    $data_2 = array('at_base');
-    foreach ($cids_2 as $cid) {
-      atcg('wrapper.cache')->set($cid, $data_2, 'cache_bootstrap');
-    }
+    $this->container = at_container();
+    spl_autoload_unregister('drupal_autoload_class');
+    spl_autoload_unregister('drupal_autoload_interface');
   }
 }

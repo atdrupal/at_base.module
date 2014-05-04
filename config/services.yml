@@ -14,3 +14,12 @@ services:
 
   breadcrumb_api:
     class: 'Drupal\at_base\Helper\BreadcrumbAPI'
+
+  wrapper.db:
+    class: 'Drupal\at_base\Helper\Wrapper\Database'
+
+  wrapper.cache:
+    class: 'Drupal\at_base\Helper\Wrapper\Cache'
+
+  helper.config_fetcher:
+    class: 'Drupal\at_base\Helper\ConfigFetcher'

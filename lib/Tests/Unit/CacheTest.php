@@ -21,7 +21,7 @@ class CacheTest extends UnitTestCase {
   public function setUp() {
     parent::setUp();
 
-    $this->cache = atcg('wrapper.cache');
+    $this->cache = at_container('wrapper.cache');
   }
 
   /**
@@ -34,7 +34,7 @@ class CacheTest extends UnitTestCase {
   }
 
   public function testFakeCacheWrapper() {
-    $wrapper = atcg('wrapper.cache');
+    $wrapper = at_container('wrapper.cache');
 
     // Make sure the cache wrapper is faked correctly
     $this->assertEqual(
@@ -116,7 +116,7 @@ class CacheTest extends UnitTestCase {
 
     // Change cached-data to empty string
     if ($ttl = strtotime($options['ttl'])) {
-      atcg('wrapper.cache')->set($options['id'], '', $options['bin'], $ttl);
+      at_container('wrapper.cache')->set($options['id'], '', $options['bin'], $ttl);
     }
 
     // Call at_cache() again
@@ -133,26 +133,26 @@ class CacheTest extends UnitTestCase {
     // ---------------------------------------------------------------
     // Tag must be written when cache with tag(s)
     // ---------------------------------------------------------------
-    atcg('wrapper.db')->resetLog();
+    at_container('wrapper.db')->resetLog();
 
     at_cache($o, function(){ return 'Data #1'; });
 
-    $db_log = atcg('wrapper.db')->getLog();
+    $db_log = at_container('wrapper.db')->getLog();
     $tag1_row = array('bin' => 'cache', 'cid' => $o['id'], 'tag' => $o['tags'][0]);
     $tag2_row = array('bin' => 'cache', 'cid' => $o['id'], 'tag' => $o['tags'][1]);
 
     $this->assertEqual($tag1_row, $db_log['insert']['at_base_cache_tag']['fields'][0][0]);
     $this->assertEqual($tag2_row, $db_log['insert']['at_base_cache_tag']['fields'][1][0]);
 
-    atcg('wrapper.db')->resetLog();
+    at_container('wrapper.db')->resetLog();
 
     // ---------------------
     // Tag must be deleted
     // ---------------------
     // Delete items tagged with 'atest'
-    atcg('cache.tag_flusher')->flush($o['tags']);
+    at_container('cache.tag_flusher')->flush($o['tags']);
 
-    $db_log = atcg('wrapper.db')->getLog('delete', 'at_base_cache_tag');
+    $db_log = at_container('wrapper.db')->getLog('delete', 'at_base_cache_tag');
 
     $con = array('tag', $o['tags']);
     foreach ($db_log['condition'] as $_con) {

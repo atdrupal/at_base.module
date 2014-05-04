@@ -65,7 +65,7 @@ class RouteToMenu {
    * @todo Remove this in flavor it typed-data
    */
   private function parseConstants() {
-    $el = atcg('expression_language');
+    $el = at_container('expression_language');
 
     if (!empty($this->menu_item['context'])) {
       $this->menu_item['context'] = $el->evaluate($this->menu_item['context']);

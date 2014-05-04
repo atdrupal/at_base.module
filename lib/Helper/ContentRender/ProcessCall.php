@@ -15,7 +15,7 @@ class ProcessCall {
   }
 
   private function runCallbacks($calls) {
-    $cr = atcg('helper.controller.resolver');
+    $cr = at_container('helper.controller.resolver');
     foreach ($calls as $call) {
       $call = is_string($call) ? array($call, array()) : $call;
       if ($controller = $cr->get($call[0])) {
@@ -32,7 +32,7 @@ class ProcessCall {
         $this->prepareArguments($arg);
       }
       elseif (is_string($arg) && preg_match('/^[@%].+/', $arg)) {
-        $arg = atcg('helper.real_path')->get($arg);
+        $arg = at_container('helper.real_path')->get($arg);
       }
     }
   }

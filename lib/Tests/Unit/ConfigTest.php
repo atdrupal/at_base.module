@@ -52,7 +52,7 @@ class ConfigTest extends UnitTestCase {
    * Test for service: helper.config_fetcher
    */
   public function testConfigFetcher() {
-    $config_fetcher = atcg('helper.config_fetcher');
+    $config_fetcher = at_container('helper.config_fetcher');
 
     // Get all
     $items = $config_fetcher->getItems('at_base', 'services', 'services', TRUE);
@@ -67,9 +67,9 @@ class ConfigTest extends UnitTestCase {
    * Module weight can be updated correctly
    */
   public function testWeight() {
-    atcg('wrapper.db')->resetLog();
+    at_container('wrapper.db')->resetLog();
     at_id(new \Drupal\at_base\Hook\FlushCache())->resolveModuleWeight('atest_base', 10);
-    $db_log = atcg('wrapper.db')->getLog('update', 'system');
+    $db_log = at_container('wrapper.db')->getLog('update', 'system');
 
     $expected = array(
       'condition' => array('name', 'atest_base'),

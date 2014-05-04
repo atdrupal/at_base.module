@@ -45,7 +45,7 @@ class Controller {
     $route = array_shift($args);
 
     array_shift($route['page arguments']);
-    $render = atcg('helper.content_render');
+    $render = at_container('helper.content_render');
 
     return at_id(new static($render, filter_input(INPUT_GET, 'q', FILTER_SANITIZE_STRING)))
             ->setRoute($route)
@@ -143,7 +143,7 @@ class Controller {
     global $theme;
 
     if (!empty($this->route['blocks'][$theme])) {
-      atc()->offsetSet('page.blocks', $this->route['blocks'][$theme]);
+      at_container()->set('page.blocks', $this->route['blocks'][$theme]);
       unset($this->route['blocks'][$theme]);
     }
   }
@@ -152,7 +152,7 @@ class Controller {
     if (!empty($this->route['breadcrumbs'])) {
       $bc = $this->route['breadcrumbs'];
       unset($this->route['breadcrumbs']);
-      atcg('breadcrumb_api')->buildBreadcrumbs($bc);
+      at_container('breadcrumb_api')->buildBreadcrumbs($bc);
     }
   }
 

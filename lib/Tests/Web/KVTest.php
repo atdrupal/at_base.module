@@ -22,13 +22,13 @@ class KVTest extends \DrupalWebTestCase {
   }
 
   private function getKV($collection = 'atest') {
-    $kv = atcg('kv', $collection);
+    $kv = at_container('kv', $collection);
     $this->assertEqual('Drupal\at_base\KV', get_class($kv));
     return $kv;
   }
 
   private function getKVExpirable($collection = 'atest') {
-    $kv = atcg('kv.expirable', $collection);
+    $kv = at_container('kv.expirable', $collection);
     $this->assertEqual('Drupal\at_base\KV\Expirable', get_class($kv));
     return $kv;
   }

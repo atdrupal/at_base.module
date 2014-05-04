@@ -50,10 +50,11 @@ class BreadcrumbAPI {
   }
 
   public function fetchEntityConfig($entity, $type, $view_mode, $langcode) {
-    foreach (at_modules('at_base', 'breadcrumb') as $module) {
+    foreach (\at_fn::at_modules('at_base', 'breadcrumb') as $module) {
       $config = at_config($module, 'breadcrumb')->get('breadcrumb');
 
-      $bundle = at_fn('entity_bundle', $type, $entity);
+      $bundle = \at_fn::entity_bundle($type, $entity);
+
       if (isset($config['entity'][$type][$bundle][$view_mode])) {
         return $config['entity'][$type][$bundle][$view_mode];
       }
@@ -61,9 +62,9 @@ class BreadcrumbAPI {
   }
 
   public function checkPathConfig() {
-    $path_config = at_cache('atbc:paths', function(){
+    $path_config = at_cache('atbc:paths', function () {
       $items = array();
-      foreach (at_modules('at_base', 'breadcrumb') as $module) {
+      foreach (\at_fn::at_modules('at_base', 'breadcrumb') as $module) {
         $config = at_config($module, 'breadcrumb')->get('breadcrumb');
         if (!empty($config['paths'])) {
           $items = array_merge($items, $config['paths']);
@@ -93,11 +94,11 @@ class BreadcrumbAPI {
       $old_weight = isset($_config['weight']) ? $_config['weight'] : 0;
       $new_weight = isset($config['weight'])  ? $config['weight']  : 0;
       if ($new_weight <= $old_weight) {
-        atc()->offsetSet('breadcrumb', $config);
+        at_context('breadcrumb', $config);
       }
     }
     else {
-      atc()->offsetSet('breadcrumb', $config);
+      at_context('breadcrumb', $config);
     }
   }
 
@@ -107,9 +108,7 @@ class BreadcrumbAPI {
    * @return array
    */
   public function get() {
-    if (atc()->offsetExists('breadcrumb')) {
-      return atcg('breadcrumb');
-    }
+    return at_context('breadcrumb');
   }
 
   /**
@@ -123,7 +122,7 @@ class BreadcrumbAPI {
 
       // User can send direct breadcrumb structure, or use a callback to build it.
       if (empty($bc)) {
-        $bc = atcg('helper.content_render')->render($config);
+        $bc = at_container('helper.content_render')->render($config);
       }
 
       $args = isset($config['context']['arguments']) ? $config['context']['arguments'] : array();

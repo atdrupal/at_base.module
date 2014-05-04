@@ -4,7 +4,7 @@ services:
     class: 'AndyTruong\Common\ControllerResolver'
 
   helper.content_render:
-    reuse: false
+    scope: prototype
     class: 'Drupal\at_base\Helper\ContentRender'
 
   helper.real_path:

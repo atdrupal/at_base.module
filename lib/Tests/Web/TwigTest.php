@@ -20,13 +20,13 @@ class TwigTest extends \DrupalWebTestCase {
   }
 
   public function testTwigFilters() {
-    $output = atcg('twig_string')->render("{{ 'user:1'|drupalEntity }}");
+    $output = at_container('twig_string')->render("{{ 'user:1'|drupalEntity }}");
     $this->assertTrue(strpos($output, 'History'), 'Found text "History"');
     $this->assertTrue(strpos($output, 'Member for'), 'Found text: "Member for"');
 
     $output  = "{% set o = { template: '@atest_base/templates/entity/user.html.twig' } %}";
     $output .= "{{ 'user:1'|drupalEntity(o) }}";
-    $output  = @atcg('twig_string')->render($output);
+    $output  = @at_container('twig_string')->render($output);
     $this->assertTrue(strpos($output, 'History'), 'Found text "History"');
     $this->assertTrue(strpos($output, 'Member for'), 'Found text: "Member for"');
     $this->assertTrue(strpos($output, '@atest_base/templates/entity/user.html.twig'), 'Found text: path to template');
@@ -47,7 +47,7 @@ class TwigTest extends \DrupalWebTestCase {
   }
 
   public function testDrupalView() {
-    $twig = atcg('twig_string');
+    $twig = at_container('twig_string');
 
     $output = $twig->render("{{ 'atest_theming_user'|drupalView('default', 1) }}");
     $this->assertTrue(strpos($output, 'views-field views-field-name') !== FALSE);

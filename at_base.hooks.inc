@@ -93,7 +93,7 @@ function at_base_admin_paths() {
  * Implements hook_entity_view()
  */
 function at_base_entity_view($entity, $type, $view_mode, $langcode) {
-  atcg('breadcrumb_api')->checkEntityConfig($entity, $type, $view_mode, $langcode);
+  at_container('breadcrumb_api')->checkEntityConfig($entity, $type, $view_mode, $langcode);
 }
 
 if (defined('AT_BASE_ENTITY_TEMPLATE') && constant('AT_BASE_ENTITY_TEMPLATE')) {
@@ -109,7 +109,7 @@ if (defined('AT_BASE_ENTITY_TEMPLATE') && constant('AT_BASE_ENTITY_TEMPLATE')) {
  * Implements hook_entity_insert()
  */
 function at_base_entity_update($entity, $type) {
-  atcg('cache.warmer')
+  at_container('cache.warmer')
     ->setEventName('entity_update')
     ->setContext(array('entity_type' => $type, 'entity' => $entity))
     ->warm()
@@ -120,7 +120,7 @@ function at_base_entity_update($entity, $type) {
  * Implements hook_entity_insert()
  */
 function at_base_entity_insert($entity, $type) {
-  atcg('cache.warmer')
+  at_container('cache.warmer')
     ->setEventName('entity_insert')
     ->setContext(array('entity_type' => $type, 'entity' => $entity))
     ->warm()
@@ -131,7 +131,7 @@ function at_base_entity_insert($entity, $type) {
  * Implements hook_entity_insert()
  */
 function at_base_entity_delete($entity, $type) {
-  atcg('cache.warmer')
+  at_container('cache.warmer')
     ->setEventName('entity_delete')
     ->setContext(array('entity_type' => $type, 'entity' => $entity))
     ->warm()
@@ -142,7 +142,7 @@ function at_base_entity_delete($entity, $type) {
  * Implements hook_user_login()
  */
 function at_base_user_login(&$edit, $account) {
-  atcg('cache.warmer')
+  at_container('cache.warmer')
     ->setEventName('user_login')
     ->setContext(array('entity_type' => 'user', 'entity' => $account))
     ->warm()
@@ -153,7 +153,7 @@ function at_base_user_login(&$edit, $account) {
  * Implements hook_user_login()
  */
 function at_base_user_logout($account) {
-  atcg('cache.warmer')
+  at_container('cache.warmer')
     ->setEventName('user_logout')
     ->setContext(array('entity_type' => 'user', 'entity' => $account))
     ->warm()
@@ -168,9 +168,9 @@ function at_base_user_logout($account) {
  * @see Drupal\at_base\Route\Controller::prepareContextBlocks()
  */
 function at_base_page_build(&$page) {
-  if (atc()->offsetExists('page.blocks')) {
-    at_id(new Hook_Page_Build($page, atcg('page.blocks')))->execute();
+  if (at_container()->has('page.blocks')) {
+    at_id(new Hook_Page_Build($page, at_container('page.blocks')))->execute();
   }
 
-  atcg('breadcrumb_api')->pageBuild();
+  at_container('breadcrumb_api')->pageBuild();
 }

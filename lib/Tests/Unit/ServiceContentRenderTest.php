@@ -14,7 +14,7 @@ class ServiceContentRenderTest extends UnitTestCase {
 
   public function setUp() {
     parent::setUp();
-    $this->render = atcg('helper.content_render');
+    $this->render = at_container('helper.content_render');
   }
 
   public function testString() {

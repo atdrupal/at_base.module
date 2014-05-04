@@ -8,12 +8,12 @@ abstract class FontElloBase implements IconSourceInterface {
   }
 
   public function getIconConfig($set_name, $icon_name) {
-    if ($v = atcg('kv', 'aticon.fontello')->get("{$set_name}/{$icon_name}")) {
+    if ($v = at_container('kv', 'aticon.fontello')->get("{$set_name}/{$icon_name}")) {
       return $v;
     }
 
     // Fetch and save config
-    atcg('kv', 'aticon.fontello')
+    at_container('kv', 'aticon.fontello')
       ->set("{$set_name}/{$icon_name}", $config = $this->fetchIconConfig($set_name, $icon_name));
 
     return $config;
@@ -47,12 +47,12 @@ abstract class FontElloBase implements IconSourceInterface {
   }
 
   public function getIconSetConfig($set_name) {
-    if ($v = atcg('kv', 'aticon.fontello.set')->get($set_name)) {
+    if ($v = at_container('kv', 'aticon.fontello.set')->get($set_name)) {
       return $v;
     }
 
     // fetch and save set config
-    atcg('kv', 'aticon.fontello.set')->set($set_name, $config = $this->fetchIconSetConfig($set_name));
+    at_container('kv', 'aticon.fontello.set')->set($set_name, $config = $this->fetchIconSetConfig($set_name));
 
     return $config;
   }
@@ -169,7 +169,7 @@ abstract class FontElloBase implements IconSourceInterface {
       $included[$font_name] = TRUE;
 
       $css[] = array(
-        'data' => atcg('twig')->render('@at_base/templates/fontello.css.twig', array(
+        'data' => at_container('twig')->render('@at_base/templates/fontello.css.twig', array(
           'name' => $font_name,
           'path' => $base_path . $font_path,
         )),

@@ -13,7 +13,7 @@ class FlushCache {
   }
 
   private function flushTaggedCacheData() {
-    atcg('wrapper.db')->delete('at_base_cache_tag')->execute();
+    at_container('wrapper.db')->delete('at_base_cache_tag')->execute();
   }
 
   private function flushAPCData() {
@@ -39,7 +39,7 @@ class FlushCache {
 
   public function resolveModuleWeight($module_name, $weight) {
     if (is_numeric($weight)) {
-      atcg('wrapper.db')
+      at_container('wrapper.db')
         ->update('system')
         ->condition('name', $module_name)
         ->fields(array('weight' => $weight))
