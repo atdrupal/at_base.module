@@ -23,7 +23,7 @@ class ConfigFetcher {
   }
 
   public function fetchItems($module, $id, $key, $include_base) {
-    $modules = at_modules($module, $id);
+    $modules = \at_fn::at_modules($module, $id);
 
     if ($include_base) {
       $modules = array_merge(array($module), $modules);
