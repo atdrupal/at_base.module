@@ -6,7 +6,7 @@ use \Drupal\at_base\Helper\Test\UnitTestCase;
 use \Drupal\at_base\Helper\ModulesFetcher;
 
 class ConfigTest extends UnitTestCase {
-  public function getInfo() {
+  public static function getInfo() {
     return array('name' => 'AT Unit: Config') + parent::getInfo();
   }
 
@@ -109,4 +109,29 @@ class ConfigTest extends UnitTestCase {
     $actual = at_id(new ModulesFetcher('at_base', $config_file = 'un_real_config_file'))->fetch($enabled_modules);
     $this->assertEqual($expected, $actual);
   }
+
+
+
+  /**
+   * Test case for at_config() function.
+   */
+  public function testConfigExternal() {
+
+    // Test simple value getting
+    $routes = at_config('atest_config')->getConfigExternal('routes');
+    $math =  array('name' => 'duythien');
+    $this->assertEqual($routes,$math);
+
+    // Test not found exception
+    try {
+      at_config('atest_config')->get('not_there');
+      $this->assertTrue('No exception thrown');
+    }
+    catch (\Drupal\at_base\Config\NotFoundException $e) {
+      $this->assertTrue('Throw NotFoundException if config item is not configured.');
+    }
+
+ 
+  }
+
 }
