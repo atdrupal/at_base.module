@@ -23,10 +23,6 @@ function at_event_manager_before($name, &$event_manager) {
   }
 
   switch ($name) {
-    case 'at.container':
-      $event_manager->setSharedManager(new SharedEventManager_Container());
-      break;
-
     default:
       module_invoke_all('at_event_manager', $name, $event_manager);
       break;
