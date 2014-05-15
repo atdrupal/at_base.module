@@ -4,7 +4,7 @@ namespace Drupal\at_base\Twig;
 class EnvironmentFactory {
   private static $twig;
   private static $loader;
-  private $options;
+  private static $options;
 
   /**
    * Factory for @twig.core
@@ -17,7 +17,7 @@ class EnvironmentFactory {
       require_once at_library('twig') . '/lib/Twig/Autoloader.php';
       \Twig_Autoloader::register();
 
-      $this->options = array(
+      self::$options = array(
         'debug' => at_debug(),
         'auto_reload' => at_debug(),
         'autoescape' => FALSE,
@@ -25,7 +25,7 @@ class EnvironmentFactory {
       );
 
       // Init the object
-      self::$twig = new \Twig_Environment(NULL, $this->options);
+      self::$twig = new \Twig_Environment(NULL, self::$options);
       self::$twig->addExtension(new \Drupal\at_base\Twig\Extension());
     }
 

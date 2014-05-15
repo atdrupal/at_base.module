@@ -139,8 +139,7 @@ function at_modules($base_module = 'at_base', $config_file = '') {
 
   return at_cache($o, function() use ($base_module, $config_file) {
     $module_enabled = system_list('module_enabled');
-    return at_id(new ModulesFetcher($base_module, $config_file))
-            ->fetch($module_enabled);
+    return at_id(new ModulesFetcher($base_module, $config_file))->fetch($module_enabled);
   });
 }
 
