@@ -4,7 +4,7 @@ namespace Drupal\at_base\Helper;
 /**
  * Usage:
  *
- *  atcg('helper.config_fetcher')
+ *  at_container('helper.config_fetcher')
  *    ->getItems('at_base', 'services', 'services', TRUE)
  *  ;
  *

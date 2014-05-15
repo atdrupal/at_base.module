@@ -10,7 +10,7 @@ namespace Drupal\at_base\Cache\Warming;
  * Usage
  *
  * @code
- *   atcg('cache.warmer')
+ *   at_container('cache.warmer')
  *     ->setEventName('user_login')
  *     ->setContext(array('entity_type' => 'user', 'entity' => $account))
  *     ->warm()

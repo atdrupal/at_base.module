@@ -7,7 +7,7 @@ namespace Drupal\at_base\Cache\Warming;
  *
  * Delete cached data by tags.
  *
- *  atcg('cache.tag_flusher')->flush($tags);
+ *  at_container('cache.tag_flusher')->flush($tags);
  */
 class TagFlusher {
   protected $db;
