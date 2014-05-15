@@ -43,6 +43,9 @@ class ContainerTest extends UnitTestCase {
     // With weight
     $expected = array('cache.warmer.view', 'cache.warmer.entity', 'cache.warmer.simple');
     $actual = at_container()->findTaggedServiceIds('cache.warmer');
-    $this->assertEqual($expected, $actual);
+
+    foreach ($expected as $expected_service_id) {
+        $this->assertTrue(isset($actual[$expected_service_id]));
+    }
   }
 }
