@@ -60,7 +60,7 @@ class EnvironmentFactory {
     return at_cache('atwig:file_loader, + 1 year', function() use ($root) {
       $loader = new \Twig_Loader_Filesystem($root);
 
-      foreach (array('at_base' => 'at_base') + at_modules('at_base') as $module) {
+      foreach (array('at_base' => 'at_base') + \at_fn::at_modules('at_base') as $module) {
         $dir = $root . '/' . drupal_get_path('module', $module);
         if (is_dir($dir)) {
           $loader->addPath($dir, $module);
