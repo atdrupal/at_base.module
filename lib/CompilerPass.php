@@ -13,7 +13,7 @@ class CompilerPass implements CompilerPassInterface {
     // First, load all default services
     $loader->load(drupal_get_path('module', 'at_base') . '/config/services.yml');
 
-    foreach (\at_fn::at_modules('at_base', 'services') as $module) {
+    foreach (\at_fn::at_modules('at_base', 'services', FALSE) as $module) {
       if ($module !== 'at_base') {
         $loader->load(drupal_get_path('module', $module) . '/config/services.yml');
       }

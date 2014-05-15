@@ -132,15 +132,21 @@ function at_config($module, $id = 'config', $refresh = FALSE) {
  * @return array
  * @see system_list()
  */
-function at_modules($base_module = 'at_base', $config_file = '') {
-  $o['ttl'] = '+ 1 year';
-  $o['bin'] = 'cache_bootstrap';
-  $o['id']  = "atmodules:{$base_module}:{$config_file}";
-
-  return at_cache($o, function() use ($base_module, $config_file) {
+function at_modules($base_module = 'at_base', $config_file = '', $cache = TRUE) {
+  $callback = function() use ($base_module, $config_file) {
     $module_enabled = system_list('module_enabled');
     return at_id(new ModulesFetcher($base_module, $config_file))->fetch($module_enabled);
-  });
+  };
+
+  if ($cache) {
+    $o['ttl'] = '+ 1 year';
+    $o['bin'] = 'cache_bootstrap';
+    $o['id']  = "atmodules:{$base_module}:{$config_file}";
+
+    return at_cache($o, $callback);
+  }
+
+  return call_user_func($callback);
 }
 
 /**
