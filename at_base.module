@@ -34,8 +34,8 @@ require_once dirname(__FILE__) . '/at_base.hack.inc';
  *  # Get service with arguments
  *  $kv = at_container('kv', $collection = 'my_kv_collection');
  *
- * @staticvar \Symfony\Component\DependencyInjection\ContainerBuilder $container
- * @return \Symfony\Component\DependencyInjection\ContainerBuilder
+ * @staticvar \Symfony\Component\DependencyInjection\Container $container
+ * @return \Symfony\Component\DependencyInjection\Container
  */
 function at_container($id = NULL, $args = array()) {
   static $container;
