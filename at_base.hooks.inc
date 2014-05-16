@@ -164,7 +164,7 @@ function at_base_user_logout($account) {
  * @see Drupal\at_base\Route\Controller::prepareContextBlocks()
  */
 function at_base_page_build(&$page) {
-  if (!\AT::getContext()->offsetExists('page.blocks')) {
+  if (\AT::getContext()->offsetExists('page.blocks')) {
     at_id(new Hook_Page_Build($page, at_context('page.blocks')))->execute();
   }
 
