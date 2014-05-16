@@ -38,7 +38,6 @@
     ],
     "require": {
         "php": ">=5.3.8"
-        , "pimple/pimple": "2.0.*"
         , "twig/twig": "1.15.*"
         , "symfony/yaml": "v2.4.4"
         , "symfony/config": "v2.4.4"
