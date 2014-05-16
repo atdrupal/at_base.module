@@ -21,31 +21,6 @@ require_once dirname(__FILE__) . '/at_base.missing.inc';
 require_once dirname(__FILE__) . '/at_base.hack.inc';
 
 /**
- * Service container.
- *
- * @staticvar \Drupal\at_base\Container $container
- * @param string $id
- * @return mixed
- *
- * @see https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container
- */
-function at_container($id = 'container') {
-  static $container = NULL;
-
-  if (!$container) {
-    $container = new \Drupal\at_base\Container();
-  }
-
-  $args = func_get_args();
-  if (1 !== count($args)) {
-    array_shift($args);
-    $container["{$id}:arguments"] = $args;
-  }
-
-  return $container[$id];
-}
-
-/**
  * Care about site caching.
  *
  * @param  array|string $options
@@ -90,7 +65,7 @@ function at_cache($options, $callback = NULL, $arguments = array()) {
  * @param  array  $tags
  */
 function at_cache_flush_by_tags($tags = array()) {
-  at_container('cache.tag_flusher')->flush($tags);
+  atcg('cache.tag_flusher')->flush($tags);
 }
 
 /**
@@ -108,7 +83,7 @@ function at_cache_flush_by_tags($tags = array()) {
  * @return Drupal\at_base\Config\Config
  */
 function at_config($module, $id = 'config', $refresh = FALSE) {
-  return at_container('config')->setModule($module)->setId($id);
+  return atcg('config')->setModule($module)->setId($id);
 }
 
 /**
@@ -118,16 +93,21 @@ function at_config($module, $id = 'config', $refresh = FALSE) {
  * @return array
  * @see system_list()
  */
-function at_modules($base_module = 'at_base', $config_file = '') {
-  $o['ttl'] = '+ 1 year';
-  $o['bin'] = 'cache_bootstrap';
-  $o['id']  = "atmodules:{$base_module}:{$config_file}";
-
-  return at_cache($o, function() use ($base_module, $config_file) {
+function at_modules($base_module = 'at_base', $config_file = '', $cache = TRUE) {
+  $callback = function() use ($base_module, $config_file) {
     $module_enabled = system_list('module_enabled');
-    return at_id(new ModulesFetcher($base_module, $config_file))
-            ->fetch($module_enabled);
-  });
+    return at_id(new ModulesFetcher($base_module, $config_file))->fetch($module_enabled);
+  };
+
+  if ($cache) {
+    $o['ttl'] = '+ 1 year';
+    $o['bin'] = 'cache_bootstrap';
+    $o['id']  = "atmodules:{$base_module}:{$config_file}";
+
+    return at_cache($o, $callback);
+  }
+
+  return call_user_func($callback);
 }
 
 /**
@@ -135,7 +115,7 @@ function at_modules($base_module = 'at_base', $config_file = '') {
  */
 function at_icon($name, $source = 'icon.fontawesome') {
   try {
-    return at_container($source)->get($name)->render();
+    return atcg($source)->get($name)->render();
   }
   catch (Exception $e) {
     return $e->getMessage();
@@ -196,7 +176,7 @@ function at_data($def, $value = NULL) {
     $service = 'type.list';
   }
 
-  return at_container($service)
+  return atcg($service)
     ->setDef($def)
     ->setValue($value)
   ;

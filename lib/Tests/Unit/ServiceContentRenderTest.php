@@ -14,7 +14,7 @@ class ServiceContentRenderTest extends UnitTestCase {
 
   public function setUp() {
     parent::setUp();
-    $this->render = at_container('helper.content_render');
+    $this->render = atcg('helper.content_render');
   }
 
   public function testString() {
@@ -53,7 +53,7 @@ class ServiceContentRenderTest extends UnitTestCase {
     $data = array();
 
     $expected = 'Hello Andy Truong';
-    $data['template_string'] = 'Hello {{ name }}';
+    $data['content'] = 'Hello {{ name }}';
 
     // Function
     $data['variables'] = 'atest_variables';

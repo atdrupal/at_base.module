@@ -10,7 +10,7 @@ namespace Drupal\at_base\Cache\Warming;
  * Usage
  *
  * @code
- *   at_container('cache.warmer')
+ *   atcg('cache.warmer')
  *     ->setEventName('user_login')
  *     ->setContext(array('entity_type' => 'user', 'entity' => $account))
  *     ->warm()
@@ -36,7 +36,7 @@ class Warmer {
     $this->tag_discover = $tag_discover;
     $this->tag_flusher = $tag_flusher;
 
-    $this->warmers = at_container('container')->find('cache.warmer', 'service');
+    $this->warmers = atc()->find('cache.warmer', 'service');
   }
 
   public function setEventName($event_name) {

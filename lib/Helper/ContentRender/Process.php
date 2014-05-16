@@ -92,16 +92,16 @@ class Process {
    * @param string $tpl
    */
   private function __templateSingle($tpl) {
-    $tpl = at_container('helper.real_path')->get($tpl);
-    return at_container('twig')->render($tpl, $this->args);
+    $tpl = atcg('helper.real_path')->get($tpl);
+    return atcg('twig')->render($tpl, $this->args);
   }
 
   private function __templateMultiple($tpls) {
     if (is_array($tpls)) {
       foreach ($tpls as $tpl) {
-        $file = at_container('helper.real_path')->get($tpl);
+        $file = atcg('helper.real_path')->get($tpl);
         if (is_file($file)) {
-          return at_container('twig')->render($file, $this->args);
+          return atcg('twig')->render($file, $this->args);
         }
       }
 
@@ -117,7 +117,7 @@ class Process {
 
     if (!empty($k)) {
       $tpl = $this->data[$k];
-      return at_container('twig_string')->render($tpl, $this->args);
+      return atcg('twig_string')->render($tpl, $this->args);
     }
   }
 }

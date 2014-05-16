@@ -13,12 +13,12 @@ class TwigTest extends UnitTestCase {
   }
 
   public function testServiceContainer() {
-    $this->assertEqual('Twig_Environment', get_class(at_container('twig')));
-    $this->assertEqual('Twig_Environment', get_class(at_container('twig_string')));
+    $this->assertEqual('Twig_Environment', get_class(atcg('twig')));
+    $this->assertEqual('Twig_Environment', get_class(atcg('twig_string')));
   }
 
   public function testDefaultFilters() {
-    $twig = at_container('twig');
+    $twig = atcg('twig');
     $filters = $twig->getFilters();
 
     $array = array('render', 't', 'url', '_filter_autop');
@@ -31,7 +31,7 @@ class TwigTest extends UnitTestCase {
   }
 
   public function testLazyFiltersFunctions() {
-    $twig = at_container('twig_string');
+    $twig = atcg('twig_string');
 
     // Use trim() function
     $this->assertEqual($twig->render("{{  '  Drupal 7  '|fn__trim  }}"),  'Drupal 7');
@@ -56,7 +56,7 @@ class TwigTest extends UnitTestCase {
   }
 
   public function testCacheFilter() {
-    $twig = at_container('twig_string');
+    $twig = atcg('twig_string');
 
     $string_1  = "{% set options = { cache_id: 'atestTwigCache:1' } %}";
     $string_1 .= "\n {{ 'atest_base.service_1:hello' | cache(options) }}";
@@ -76,7 +76,7 @@ class TwigTest extends UnitTestCase {
   }
 
   public function testFilters() {
-    $twig = at_container('twig_string');
+    $twig = atcg('twig_string');
 
     $expected = 'Hello Drupal';
 

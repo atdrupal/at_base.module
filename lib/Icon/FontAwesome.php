@@ -35,12 +35,12 @@ class FontAwesome implements IconSourceInterface {
   }
 
   public function getIconList($set_name = 'default') {
-    if ($v = at_container('kv', 'aticon')->get('fontawsome.iconlist')) {
+    if ($v = atcg('kv', 'aticon')->get('fontawsome.iconlist')) {
       return $v;
     }
 
     if ($v = $this->fetchIconList()) {
-      at_container('kv', 'aticon')->set('fontawsome.iconlist', $v);
+      atcg('kv', 'aticon')->set('fontawsome.iconlist', $v);
     }
 
     return $v;

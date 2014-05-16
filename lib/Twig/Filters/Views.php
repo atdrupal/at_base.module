@@ -76,6 +76,6 @@ class Views extends ViewsBase {
 
     $vars = array('view' => $this->view);
     template_preprocess_views_view($vars);
-    return at_container('twig')->render($this->template, $vars);
+    return atcg('twig')->render($this->template, $vars);
   }
 }

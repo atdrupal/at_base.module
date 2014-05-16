@@ -58,8 +58,8 @@ class Entity {
   }
 
   private function renderTemplate() {
-    $path = at_container('helper.real_path')->get($this->options['template']);
-    return at_container('twig')->render(
+    $path = atcg('helper.real_path')->get($this->options['template']);
+    return atcg('twig')->render(
       $path,
       array(
         'entity_type' => $this->entity_type,

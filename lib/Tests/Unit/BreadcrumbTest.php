@@ -5,7 +5,13 @@ namespace Drupal\at_base\Tests\Unit;
 use Drupal\at_base\Helper\Test\UnitTestCase;
 use Drupal\at_base\Helper\Test\Cache;
 
+/**
+ * drush test-run --dirty 'Drupal\at_base\Tests\Unit\BreadcrumbTest'
+ */
 class BreadcrumbTest extends UnitTestCase {
+  /**
+   * @var \Drupal\at_base\Helper\BreadcrumbAPI
+   */
   private $api;
 
   public function getInfo() {
@@ -14,14 +20,14 @@ class BreadcrumbTest extends UnitTestCase {
 
   public function setUp() {
     parent::setUp();
-    $this->api = at_container('breadcrumb_api');
+    $this->api = atcg('breadcrumb_api');
   }
 
   protected function setUpModules() {
     parent::setUpModules();
 
     // Fake at_modules('at_base', 'breadcrumb');
-    at_container('wrapper.cache')->set('atmodules:at_base:breadcrumb', array('atest_base'), 'cache_bootstrap');
+    atcg('wrapper.cache')->set('atmodules:at_base:breadcrumb', array('atest_base'), 'cache_bootstrap');
 
     // Fake entity_bundle(), token_replace(), l() functions
     at_fn_fake('entity_bundle', function($type, $entity) { return $entity->type; });
@@ -41,7 +47,7 @@ class BreadcrumbTest extends UnitTestCase {
     $this->api->pageBuild();
 
     $bc = drupal_set_breadcrumb();
-    $this->assertEqual(at_fn('l', 'Home', 'home'), $bc[0]);
+    $this->assertEqual(\at_fn::l('Home', 'home'), $bc[0]);
   }
 
   public function testPath() {

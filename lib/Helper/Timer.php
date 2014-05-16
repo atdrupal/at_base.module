@@ -7,7 +7,7 @@ namespace Drupal\at_base\Helper;
  * Usage:
  *
  * @code
- *   $timer = at_container('helper.timer');
+ *   $timer = atcg('helper.timer');
  *
  *   // Set the callback — code to be benchmarked
  *   $timer->setCallback(function() { $modules = at_modules('at_base'); });

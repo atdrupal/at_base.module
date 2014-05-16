@@ -4,7 +4,7 @@ namespace Drupal\at_base\Helper;
 /**
  * Usage:
  *
- *  at_container('helper.config_fetcher')
+ *  atcg('helper.config_fetcher')
  *    ->getItems('at_base', 'services', 'services', TRUE)
  *  ;
  *
@@ -19,7 +19,6 @@ class ConfigFetcher {
       'id' => "ATConfig:{$module}:{$id}:{$key}:" . ($include_base ? 1 : 0),
       'reset' => $reset,
     );
-
     return at_cache($o, array($this, 'fetchItems'), array($module, $id, $key, $include_base));
   }
 

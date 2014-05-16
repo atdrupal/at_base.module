@@ -68,7 +68,7 @@ abstract class ViewsBase {
   }
 
   public function setTemplate($template) {
-    $this->template = at_container('helper.real_path')->get($template);
+    $this->template = atcg('helper.real_path')->get($template);
   }
 
   public function setPager($pager) {
