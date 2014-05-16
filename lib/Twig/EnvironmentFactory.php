@@ -11,7 +11,7 @@ class EnvironmentFactory {
    *
    * Return \Twig_Environment
    */
-  public function getObject() {
+  public static function getObject() {
     if (!self::$twig) {
       // Autoloading
       require_once at_library('twig') . '/lib/Twig/Autoloader.php';
@@ -46,12 +46,13 @@ class EnvironmentFactory {
    *
    * Return \Twig_Environment
    */
-  public function getStringService($twig) {
+  public static function getStringService($twig) {
     return clone $twig;
   }
 
   /**
    * Factory method for @twig.file_loader
+   * 
    * @return \Twig_Loader_Filesystem
    */
   public function getFileLoader() {

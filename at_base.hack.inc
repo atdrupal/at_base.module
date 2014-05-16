@@ -209,6 +209,8 @@ function at_container_factory() {
   if ($dump && !empty($dumped_file)) {
     $dumper = new PhpDumper($container);
     file_put_contents($dumped_file, $dumper->dump(array('class' => 'AT_Container')));
+    require_once $dumped_file;
+    return new AT_Container();
   }
 
   return $container;

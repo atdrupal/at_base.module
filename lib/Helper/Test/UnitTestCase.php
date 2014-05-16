@@ -23,7 +23,7 @@ abstract class UnitTestCase extends \DrupalUnitTestCase {
 
   public function setUp() {
     // Fake DB, cache services
-    \at_fake::at_modules(function($module, $config_file) {
+    \at_fake::at_modules(function($module, $config_file = '') {
       if ($module = 'at_base') {
         switch ($config_file) {
           case NULL:
