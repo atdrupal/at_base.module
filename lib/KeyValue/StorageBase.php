@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\at_base\KV;
+namespace Drupal\at_base\KeyValue;
 
 abstract class StorageBase {
   /**

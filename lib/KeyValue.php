@@ -7,7 +7,7 @@ namespace Drupal\at_base;
  *
  * Mostly copied from Drupal\Core\KeyValueStore\DatabaseStorage
  */
-class KV extends \Drupal\at_base\KV\StorageBase {
+class KeyValue extends \Drupal\at_base\KeyValue\StorageBase {
   /**
    * @var string
    */

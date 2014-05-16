@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\at_base\KV;
+namespace Drupal\at_base\KeyValue;
 
 /**
  * Callback for kv.expirable service.
  *
  * Mostly copied from Drupal\Core\KeyValueStore\DatabaseStorageExpirable
  */
-class Expirable extends \Drupal\at_base\KV {
+class Expirable extends \Drupal\at_base\KeyValue {
   public function getMultiple($keys) {
     $values = $this->db
       ->query(
