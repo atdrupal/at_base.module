@@ -54,7 +54,10 @@ before_script:
   - drush en -y composer_manager
   - drush composer-manager require andytruong/common=1.0.x-dev
   - drush composer-manager require symfony/expression-language=2.4.*
-  - drush composer-manager require pimple/pimple=2.0.*
+  - drush composer-json-rebuild
+  - cd $DRUPAL/sites/default/files/composer
+  - composer install --no-dev
+  - cd $DRUPAL
   - drush en -y simpletest at_base atest_base
   - drush composer-manager update
 
