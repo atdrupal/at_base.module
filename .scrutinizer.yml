@@ -1,12 +1,6 @@
 filter:
-    excluded_paths:
-        - 'vendor/*'
-        - 'tests/*'
-        - 'lib/Drupal/*'
-        - 'app/*'
-        - 'bin/*'
-        - 'library/*'
-    paths: {  }
+    paths:
+        - 'lib/Drupal/at_base/*'
 tools:
     php_analyzer:
         enabled: true
