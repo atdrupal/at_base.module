@@ -10,14 +10,8 @@ tools:
             - inc
             - install
         filter:
-            excluded_paths:
-                - 'vendor/*'
-                - 'tests/*' 
-                - 'lib/Drupal/at_base/Tests/*'
-                - 'app/*'
-                - 'bin/*'
-                - 'library/*'
-            paths: {  }
+            paths:
+                - 'lib/Drupal/at_base/*'
         path_configs: {  }
     php_cpd:
         excluded_dirs:
