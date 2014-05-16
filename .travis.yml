@@ -54,7 +54,7 @@ before_script:
   - drush composer-manager require andytruong/render v0.1.0
   - drush en -y atest_base
   - drush composer-json-rebuild
-  - cd $DRUPAL/sites/default/composer/
+  - cd $DRUPAL/sites/default/files/composer/
   - composer --no-dev update
   - cd $DRUPAL
 
