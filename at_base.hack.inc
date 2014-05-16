@@ -10,9 +10,9 @@ use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Drupal\at_base\CompilerPass as AT_CompilerPass;
 
 if (!function_exists('at_id')) {
-    function at_id($x) {
-      return $x;
-    }
+  function at_id($x) {
+    return $x;
+  }
 }
 
 /**
