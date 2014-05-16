@@ -79,7 +79,7 @@ class RouteTest extends \DrupalWebTestCase {
   public function testRouteBlock() {
     $blocks['help'] = array();
     $blocks['help'][] = 'system:powered-by';
-    $blocks['help'][] = array('at_base:atest_base|hi_s', array('title' => 'Hello block!', 'weight' => -100));
+    $blocks['help'][] = array('atest_base:hi_s', array('title' => 'Hello block!', 'weight' => -100));
     $blocks['help'][] = array(
       'delta'   => 'fancy-block',
       'subject' => 'Fancy block',
