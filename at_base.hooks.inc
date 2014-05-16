@@ -52,13 +52,11 @@ function at_base_flush_caches() {
  * @tag autoload
  */
 function at_base_modules_enabled($modules) {
-  if (function_exists('at_id')) {
-    // Refresh the cached-modules
-    at_modules('at_base', TRUE);
+  // Refresh the cached-modules
+  at_modules('at_base', TRUE);
 
-    // Rebuild module weight
-    at_id(new Drupal\at_base\Hook\FlushCache())->fixModuleWeight();
-  }
+  // Rebuild module weight
+  at_id(new Drupal\at_base\Hook\FlushCache())->fixModuleWeight();
 }
 
 /**
