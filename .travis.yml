@@ -46,9 +46,7 @@ before_script:
   # Prepare env for the module
   # ---------------------
   - drush vset --yes file_temporary_path /tmp
-  - find $DRUPAL/sites/all/vendor
   - drush en -y composer_manager
-  - find $DRUPAL/sites/all/vendor
   - drush en -y simpletest at_base atest_base
 
   # ---------------------
