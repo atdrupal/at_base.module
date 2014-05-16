@@ -3,17 +3,18 @@
  * @file ./drush/at_reqruire.inc
  */
 
-use \Drupal\at_base\Drush\Command\AtRequire as AtRequireCommand;
-use \Drupal\at_base\Drush\Command\AtRequireSpyc as AtRequireSpycCommand;
-use \Drupal\at_base\Drush\Command\AtRequire\DependencyFetcher;
+use Drupal\at_base\Drush\Command\AtRequire as AtRequireCommand;
+use Drupal\at_base\Drush\Command\AtRequire\DependencyFetcher;
 
-class DrushMakeProject_AtRequire_Library extends \DrushMakeProject_Library {
-  /**
-   * Override default value of parent.
-   */
-  protected function generatePath($base = TRUE) {
-    return parent::generatePath($base = FALSE);
-  }
+if (class_exists('DrushMakeProject_Library')) {
+    class DrushMakeProject_AtRequire_Library extends DrushMakeProject_Library {
+      /**
+       * Override default value of parent.
+       */
+      protected function generatePath($base = TRUE) {
+        return parent::generatePath($base = FALSE);
+      }
+    }
 }
 
 /**

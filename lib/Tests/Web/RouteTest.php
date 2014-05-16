@@ -79,7 +79,7 @@ class RouteTest extends \DrupalWebTestCase {
   public function testRouteBlock() {
     $blocks['help'] = array();
     $blocks['help'][] = 'system:powered-by';
-    $blocks['help'][] = array('at_base:atest_base|hi_s', array('title' => 'Hello block!', 'weight' => -100));
+    $blocks['help'][] = array('atest_base:hi_s', array('title' => 'Hello block!', 'weight' => -100));
     $blocks['help'][] = array(
       'delta'   => 'fancy-block',
       'subject' => 'Fancy block',
@@ -87,7 +87,7 @@ class RouteTest extends \DrupalWebTestCase {
       'weight'  => 1000,
     );
 
-    at_container('container')->offsetSet('page.blocks', $blocks);
+    \AT::getContext()->offsetSet('page.blocks', $blocks);
 
     // Render the page array
     $page = array();

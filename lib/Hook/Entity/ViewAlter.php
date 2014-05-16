@@ -76,8 +76,8 @@ class ViewAlter {
 
       // Attach block if context block is empty
       if (!empty($config['blocks'][$theme])) {
-        if (!at_container('container')->offsetExists('page.blocks')) {
-          at_container('container')->offsetSet('page.blocks', $config['blocks'][$theme]);
+        if (!\AT::getContext()->offsetExists('page.blocks')) {
+          at_context('page.blocks', $config['blocks'][$theme]);
         }
         unset($config['blocks']);
       }

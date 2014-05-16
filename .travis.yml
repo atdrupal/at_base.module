@@ -5,11 +5,6 @@ php:
   - 5.3
   - 5.4
   - 5.5
-  # - hhvm
-
-# matrix:
-#   allow_failures:
-#     - php: hhvm
 
 mysql:
   database: drupal
@@ -51,12 +46,21 @@ before_script:
   # Prepare env for the module
   # ---------------------
   - drush vset --yes file_temporary_path /tmp
-  - drush en -y composer_manager
-  - drush composer-manager require andytruong/common=1.0.x-dev
-  - drush composer-manager require symfony/expression-language=2.4.*
-  - drush composer-manager require pimple/pimple=2.0.*
-  - drush en -y simpletest at_base atest_base
-  - drush composer-manager update
+  - drush en -y composer_manager simpletest xautoload
+  - drush composer-json-rebuild
+  - cd $DRUPAL/sites/default/files/composer/
+  - composer require symfony/yaml v2.4.4
+  - composer require symfony/config v2.4.4
+  - composer require symfony/expression-language v2.4.4
+  - composer require symfony/dependency-injection v2.4.4
+  - composer require andytruong/render v0.1.0
+  - drush vset -y composer_manager_autobuild_file 0
+  - drush vset -y composer_manager_autobuild_packages 0
+  - drush en -y atest_base
+  - drush composer-json-rebuild
+  - cd $DRUPAL/sites/default/files/composer/
+  - composer --no-dev update
+  - cd $DRUPAL
 
   # ---------------------
   # No cache data

@@ -9,17 +9,11 @@ use Drupal\at_base\Helper\ContentRender\Process;
  * Helper class for rendering data:
  *
  *  $data = array('template_string' => $template_string, 'variables' => $variables, 'attached' => $attached);
- *  return at_container('helper.content_render')
- *    ->setData($data)
- *    ->render()
- *  ;
+ *  return at_container('helper.content_render')->render($data);
  *
  *
  *  $data = array('controller' => array('\Drupal\atest_base\Controller\Sample', 'renderAction'));
- *  return at_container('helper.content_render')
- *    ->setData($data)
- *    ->render()
- *  ;
+ *  return at_container('helper.content_render')->render($data);
  *
  * @see  \Drupal\at_base\Controller\DefaultController
  * @see  \Drupal\at_base\Hook\BlockView

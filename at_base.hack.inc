@@ -5,6 +5,47 @@
  * Mostly hack here, to be improved/removed.
  */
 
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
+use Drupal\at_base\CompilerPass as AT_CompilerPass;
+
+if (!function_exists('at_id')) {
+  function at_id($x) {
+    return $x;
+  }
+}
+
+/**
+ * Implements hook_node_insert()
+ */
+function at_base_node_insert($node) {
+  module_invoke_all('node_save', $node);
+}
+
+/**
+ * Implements hook_node_update()
+ */
+function at_base_node_update($node) {
+  module_invoke_all('node_save', $node);
+}
+
+if (!function_exists('entity_bundle')) {
+  /**
+   * Get bundle value of an entity.
+   *
+   * @param  string   $entity_type
+   * @param  stdClass $entity
+   * @return string
+   */
+  function entity_bundle($entity_type, $entity) {
+    $info = entity_get_info($entity_type);
+    if (!empty($info['entity keys']['bundle'])) {
+      $key = $info['entity keys']['bundle'];
+      return isset($entity->$key) ? $entity->$key : NULL;
+    }
+  }
+}
+
 /**
  * Make function easier to be replaced by an other one.
  *
@@ -140,4 +181,56 @@ function at_form($form, &$form_state) {
  */
 function at_eval($expression) {
   return at_container('expression_language')->evaluate($expression);
+}
+
+/**
+ * Function to build service container object.
+ *
+ * @return \Symfony\Component\DependencyInjection\ContainerBuilder
+ */
+function at_container_factory() {
+  $dump = !defined('AT_BASE_TESTING_UNIT');
+
+  if ($dump) {
+    if ($dumped_file = variable_get('file_temporary_path', FALSE)) {
+      $dumped_file .= '/container.php';
+    }
+
+    if (file_exists($dumped_file)) {
+      require_once $dumped_file;
+      return new AT_Container();
+    }
+  }
+
+  $container = new ContainerBuilder();
+  $container->addCompilerPass(new AT_CompilerPass());
+  $container->compile();
+
+  if ($dump && !empty($dumped_file)) {
+    $dumper = new PhpDumper($container);
+    file_put_contents($dumped_file, $dumper->dump(array('class' => 'AT_Container')));
+    require_once $dumped_file;
+    return new AT_Container();
+  }
+
+  return $container;
+}
+
+/**
+ * Container for request values.
+ *
+ * @param string $id
+ * @param mixed $value
+ * @return \Drupal\at_base\Context|mixed
+ */
+function at_context($id = NULL, $value = NULL) {
+  if (!is_null($id) && is_null($value)) {
+    return at_container('at_context')->offsetGet($id);
+  }
+
+  if (!is_null($id) && !is_null($value)) {
+    return at_container('at_context')->offsetSet($id, $value);
+  }
+
+  return at_container('at_context');
 }

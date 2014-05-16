@@ -38,10 +38,12 @@
     ],
     "require": {
         "php": ">=5.3.8"
-        , "pimple/pimple": "2.0.*"
         , "twig/twig": "1.15.*"
-        , "symfony/expression-language": "2.4.*"
-        , "andytruong/common": "~1.0"
+        , "symfony/yaml": "v2.4.4"
+        , "symfony/config": "v2.4.4"
+        , "symfony/expression-language": "v2.4.4"
+        , "symfony/dependency-injection": "v2.4.4"
+        , "ocramius/proxy-manager": "0.5.*"
         , "andytruong/render": "~1.0"
     }
 }

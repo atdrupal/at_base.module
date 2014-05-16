@@ -7,7 +7,7 @@ namespace Drupal\at_base;
  *
  * Mostly copied from Drupal\Core\KeyValueStore\DatabaseStorage
  */
-class KV extends \Drupal\at_base\KV\StorageBase {
+class KeyValue extends \Drupal\at_base\KeyValue\StorageBase {
   /**
    * @var string
    */
@@ -18,10 +18,30 @@ class KV extends \Drupal\at_base\KV\StorageBase {
    */
   protected $db;
 
-  public function __construct($collection, $table = 'at_kv') {
-    $this->collection = $collection;
-    $this->table = $table;
-    $this->db = at_container('wrapper.db');
+  /**
+   *
+   * @param \Drupal\at_base\Helper\Wrapper\Database $db
+   */
+  public function __construct($db) {
+    $this->db = $db;
+  }
+
+  /**
+   * Setup table name.
+   *
+   * @param string $table
+   */
+  public function setTable($table) {
+      $this->table = $table;
+  }
+
+  /**
+   * Get table name.
+   *
+   * @return string
+   */
+  public function getTable() {
+    return $this->table;
   }
 
   public function getMultiple($keys) {

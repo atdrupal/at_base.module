@@ -66,7 +66,7 @@ function drush_at_cache_clear() {
 /**
  * Drush make is not inluded in version 4, which leading to fatal errors.
  */
-if (class_exists('DrushMakeProject_Library')) {
+if (class_exists('DrushMakeProject_Library') && class_exists('Drupal\at_base\Drush\Command\AtRequire\DependencyFetcher')) {
   require_once dirname(__FILE__) . '/drush/at_require.inc';
 }
 else {
