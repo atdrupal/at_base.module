@@ -37,7 +37,7 @@ require_once dirname(__FILE__) . '/at_base.hack.inc';
  * @staticvar \Symfony\Component\DependencyInjection\Container $container
  * @return \Symfony\Component\DependencyInjection\Container
  */
-function at_container($id = NULL, $args = array()) {
+function at_container($id = NULL) {
   static $container;
 
   if (is_null($container)) {
@@ -48,13 +48,35 @@ function at_container($id = NULL, $args = array()) {
     return $container;
   }
 
-  if (!empty($args)) {
-    foreach ($args as $index => $arg) {
-      $container->getDefinition($id)->replaceArgument($index, $arg);
-    }
-  }
-
   return $container->get($id);
+}
+
+/**
+ * Get Key-Value object
+ *
+ * @param string $collection
+ * @param string $table
+ * @return \Drupal\at_base\KV
+ */
+function at_kv($collection, $table = 'at_kv') {
+    $kv = new \Drupal\at_base\KV(at_container('wrapper.db'));
+    $kv->setCollection($collection);
+    $kv->setTable($table);
+    return $kv;
+}
+
+/**
+ * Get expirable key-value object.
+ *
+ * @param string $collection
+ * @param string $table
+ * @return \Drupal\at_base\KV\Expirable
+ */
+function at_kv_expirable($collection, $table = 'at_kv_expire') {
+    $kv = new \Drupal\at_base\KV\Expirable(at_container('wrapper.db'));
+    $kv->setCollection($collection);
+    $kv->setTable($table);
+    return $kv;
 }
 
 /**

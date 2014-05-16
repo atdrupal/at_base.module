@@ -1,8 +1,0 @@
-services:
-  kv:
-    scope: prototype
-    class: Drupal\at_base\KV
-
-  kv.expirable:
-    scope: prototype
-    class: Drupal\at_base\KV\Expirable

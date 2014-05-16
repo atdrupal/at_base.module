@@ -8,6 +8,24 @@ abstract class StorageBase {
    */
   protected $collection;
 
+  /**
+   * Set collection name.
+   *
+   * @param string $collection
+   */
+  public function setCollection($collection) {
+    $this->collection = $collection;
+  }
+
+  /**
+   * Get collection name.
+   *
+   * @return string
+   */
+  public function getCollection() {
+    return $this->collection;
+  }
+
   public function getCollectionName() {
     return $this->collection;
   }
