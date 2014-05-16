@@ -37,7 +37,7 @@ class EnvironmentFactory {
    *
    * Return \Twig_Environment
    */
-  public function getFileService($twig) {
+  public static function getFileService($twig) {
     return clone $twig;
   }
 
@@ -52,10 +52,10 @@ class EnvironmentFactory {
 
   /**
    * Factory method for @twig.file_loader
-   * 
+   *
    * @return \Twig_Loader_Filesystem
    */
-  public function getFileLoader() {
+  public static function getFileLoader() {
     $root = DRUPAL_ROOT;
 
     return at_cache('atwig:file_loader, + 1 year', function() use ($root) {
