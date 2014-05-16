@@ -46,7 +46,9 @@ before_script:
   # Prepare env for the module
   # ---------------------
   - drush vset --yes file_temporary_path /tmp
+  - rsync -Pav $DRUPAL/sites/all/vendor/ /tmp/vendor/
   - drush en -y composer_manager
+  - rsync -Pav /tmp/vendor/ $DRUPAL/sites/all/vendor/
   - drush en -y simpletest at_base atest_base
 
   # ---------------------

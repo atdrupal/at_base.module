@@ -8,7 +8,6 @@
 use Drupal\at_base\Hook\Menu as HookMenu;
 use Drupal\at_base\Hook\PageBuild as Hook_Page_Build;
 use Drupal\at_base\Hook\Entity\ViewAlter as Hook_Entity_View_Alter;
-use Drupal\at_base\SharedEventManager\Container as SharedEventManager_Container;
 use Zend\EventManager\EventManager;
 
 /**
