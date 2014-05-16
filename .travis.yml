@@ -51,7 +51,8 @@ before_script:
   # Prepare env for the module
   # ---------------------
   - drush vset --yes file_temporary_path /tmp
-  - drush en -y composer_manager simpletest at_base atest_base
+  - drush en -y composer_manager
+  - drush en -y simpletest at_base atest_base
 
   # ---------------------
   # No cache data
