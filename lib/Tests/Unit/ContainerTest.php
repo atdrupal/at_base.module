@@ -15,7 +15,7 @@ class ContainerTest extends UnitTestCase {
   }
 
   /**
-   * Test for at_container().
+   * Test for atc().
    */
   public function testServiceContainer() {
     // Simple service
@@ -39,24 +39,13 @@ class ContainerTest extends UnitTestCase {
     $this->assertEqual('ATest_Base_Include_Me', get_class($service));
   }
 
-  public function testDynamicArguments() {
-    $service = at_container('atest_base.dynamic_arguments');
-    $this->assertEqual('Drupal\atest_base\DynamicArguments', get_class($service));
-    $this->assertEqual('atest_base', $service->getDynParam());
-    $this->assertEqual('Drupal\atest_base\Service1', get_class($service->getDynService()));
-  }
-
   public function testTaggedServices() {
     // With weight
     $expected = array('cache.warmer.view', 'cache.warmer.entity', 'cache.warmer.simple');
-    $actual = at_container('container')->find('cache.warmer');
-    $this->assertEqual(implode(', ', $expected), implode(', ', $actual));
+    $actual = at_container()->findTaggedServiceIds('cache.warmer');
 
-    // Return services instead of services name
-    foreach (at_container('container')->find('cache.warmer', $return = 'service') as $name => $service) {
-      $expected = get_class(at_container($name));
-      $actual = get_class($service);
-      $this->assertEqual($expected, $actual);
+    foreach ($expected as $expected_service_id) {
+        $this->assertTrue(isset($actual[$expected_service_id]));
     }
   }
 }

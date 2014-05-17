@@ -16,7 +16,7 @@ class CommonTest extends UnitTestCase {
    * Test for at_id() function.
    */
   public function testAtId() {
-    $container = new \Drupal\at_base\Container();
+    $container = at_container();
     $this->assertTrue(TRUE, 'No exception raised.');
   }
 
@@ -44,8 +44,8 @@ class CommonTest extends UnitTestCase {
 
     // %library
     $this->assertEqual(
-      at_library('pimple') . '/lib/Pimple.php',
-      $helper->get('%pimple/lib/Pimple.php')
+      at_library('fontawesome') . '/',
+      $helper->get('%fontawesome/')
     );
   }
 

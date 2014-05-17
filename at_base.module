@@ -12,37 +12,70 @@
  * @todo Provide an option to disable BreadcrumbAPI calling.
  */
 
-use \Drupal\at_base\Cache;
-use \Drupal\at_base\Helper\ModulesFetcher;
+use Drupal\at_base\Cache;
+use Drupal\at_base\Helper\ModulesFetcher;
 
 require_once dirname(__FILE__) . '/lib/AT.php';
-require_once dirname(__FILE__) . '/at_base.hooks.inc';
-require_once dirname(__FILE__) . '/at_base.missing.inc';
 require_once dirname(__FILE__) . '/at_base.hack.inc';
+require_once dirname(__FILE__) . '/at_base.hooks.inc';
 
 /**
- * Service container.
+ * Wrapper for (Symfony) service container.
  *
- * @staticvar \Drupal\at_base\Container $container
- * @param string $id
- * @return mixed
+ * Examples:
  *
- * @see https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container
+ *  # Get container
+ *  $container = at_container();
+ *
+ *  # Get service
+ *  $twig = at_container('twig');
+ *
+ *  # Get service with arguments
+ *  $kv = at_container('kv', $collection = 'my_kv_collection');
+ *
+ * @staticvar \Symfony\Component\DependencyInjection\Container $container
+ * @return \Symfony\Component\DependencyInjection\Container
  */
-function at_container($id = 'container') {
-  static $container = NULL;
+function at_container($id = NULL) {
+  static $container;
 
-  if (!$container) {
-    $container = new \Drupal\at_base\Container();
+  if (is_null($container)) {
+    $container = at_container_factory();
   }
 
-  $args = func_get_args();
-  if (1 !== count($args)) {
-    array_shift($args);
-    $container["{$id}:arguments"] = $args;
+  if (is_null($id)) {
+    return $container;
   }
 
-  return $container[$id];
+  return $container->get($id);
+}
+
+/**
+ * Get Key-Value object
+ *
+ * @param string $collection
+ * @param string $table
+ * @return \Drupal\at_base\KV
+ */
+function at_kv($collection, $table = 'at_kv') {
+    $kv = new \Drupal\at_base\KeyValue(at_container('wrapper.db'));
+    $kv->setCollection($collection);
+    $kv->setTable($table);
+    return $kv;
+}
+
+/**
+ * Get expirable key-value object.
+ *
+ * @param string $collection
+ * @param string $table
+ * @return \Drupal\at_base\KV\Expirable
+ */
+function at_kv_expirable($collection, $table = 'at_kv_expire') {
+    $kv = new \Drupal\at_base\KeyValue\Expirable(at_container('wrapper.db'));
+    $kv->setCollection($collection);
+    $kv->setTable($table);
+    return $kv;
 }
 
 /**
@@ -108,7 +141,9 @@ function at_cache_flush_by_tags($tags = array()) {
  * @return Drupal\at_base\Config\Config
  */
 function at_config($module, $id = 'config', $refresh = FALSE) {
-  return at_container('config')->setModule($module)->setId($id);
+  $resolver = new Drupal\at_base\Config\Resolver();
+  $config = new \Drupal\at_base\Config\Config($resolver);
+  return $config->setModule($module)->setId($id);
 }
 
 /**
@@ -118,16 +153,21 @@ function at_config($module, $id = 'config', $refresh = FALSE) {
  * @return array
  * @see system_list()
  */
-function at_modules($base_module = 'at_base', $config_file = '') {
-  $o['ttl'] = '+ 1 year';
-  $o['bin'] = 'cache_bootstrap';
-  $o['id']  = "atmodules:{$base_module}:{$config_file}";
-
-  return at_cache($o, function() use ($base_module, $config_file) {
+function at_modules($base_module = 'at_base', $config_file = '', $cache = TRUE) {
+  $callback = function() use ($base_module, $config_file) {
     $module_enabled = system_list('module_enabled');
-    return at_id(new ModulesFetcher($base_module, $config_file))
-            ->fetch($module_enabled);
-  });
+    return at_id(new ModulesFetcher($base_module, $config_file))->fetch($module_enabled);
+  };
+
+  if ($cache) {
+    $o['ttl'] = '+ 1 year';
+    $o['bin'] = 'cache_bootstrap';
+    $o['id']  = "atmodules:{$base_module}:{$config_file}";
+
+    return at_cache($o, $callback);
+  }
+
+  return call_user_func($callback);
 }
 
 /**

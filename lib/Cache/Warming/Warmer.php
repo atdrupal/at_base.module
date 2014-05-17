@@ -36,7 +36,9 @@ class Warmer {
     $this->tag_discover = $tag_discover;
     $this->tag_flusher = $tag_flusher;
 
-    $this->warmers = at_container('container')->find('cache.warmer', 'service');
+    foreach (at_container()->findTaggedServiceIds('cache.warmer') as $id) {
+      $this->warmers[] = at_container()->get($id);
+    }
   }
 
   public function setEventName($event_name) {
