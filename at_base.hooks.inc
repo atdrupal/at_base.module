@@ -8,6 +8,25 @@
 use Drupal\at_base\Hook\Menu as HookMenu;
 use Drupal\at_base\Hook\PageBuild as Hook_Page_Build;
 use Drupal\at_base\Hook\Entity\ViewAlter as Hook_Entity_View_Alter;
+use Zend\EventManager\EventManager;
+
+/**
+ * Define function to be called at the top of at_event_manager().
+ *
+ * @param string $name
+ * @param Zend\EventManager\EventManager $event_manager
+ */
+function at_event_manager_before($name, &$event_manager) {
+  if (is_null($event_manager)) {
+    $event_manager = new EventManager();
+  }
+
+  switch ($name) {
+    default:
+      module_invoke_all('at_event_manager', $name, $event_manager);
+      break;
+  }
+}
 
 /**
  * Implements hook_menu()
@@ -144,8 +163,8 @@ function at_base_user_logout($account) {
  * @see Drupal\at_base\Route\Controller::prepareContextBlocks()
  */
 function at_base_page_build(&$page) {
-  if (at_container('container')->offsetExists('page.blocks')) {
-    at_id(new Hook_Page_Build($page, at_container('page.blocks')))->execute();
+  if (\AT::getContext()->offsetExists('page.blocks')) {
+    at_id(new Hook_Page_Build($page, at_context('page.blocks')))->execute();
   }
 
   at_container('breadcrumb_api')->pageBuild();

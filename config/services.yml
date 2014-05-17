@@ -1,11 +1,3 @@
-imports:
-  - { resource: services.kv.yml }
-  - { resource: services.cache.yml }
-  - { resource: services.theming.yml }
-  - { resource: services.helper.yml }
-  - { resource: services.typeddata.yml }
-  - { resource: services.icon.yml }
-
 services:
   expression_language:
     class: 'Symfony\Component\ExpressionLanguage\ExpressionLanguage'
@@ -14,3 +6,128 @@ services:
 
   breadcrumb_api:
     class: 'Drupal\at_base\Helper\BreadcrumbAPI'
+
+  wrapper.db:
+    class: 'Drupal\at_base\Helper\Wrapper\Database'
+
+  wrapper.cache:
+    class: 'Drupal\at_base\Helper\Wrapper\Cache'
+
+  helper.config_fetcher:
+    class: 'Drupal\at_base\Helper\ConfigFetcher'
+
+  helper.controller.resolver:
+    class: 'AndyTruong\Common\ControllerResolver'
+
+  helper.content_render:
+    scope: prototype
+    class: 'Drupal\at_base\Helper\ContentRender'
+
+  helper.real_path:
+    class: 'Drupal\at_base\Helper\RealPath'
+
+  helper.timer:
+    class: 'Drupal\at_base\Helper\Timer'
+
+  cache.tag_flusher:
+    class: 'Drupal\at_base\Cache\Warming\TagFlusher'
+    arguments: ['@wrapper.db', '@wrapper.cache']
+
+  cache.tag_discover:
+    class: 'Drupal\at_base\Cache\Warming\TagDiscover'
+
+  # ---------------------
+  # Warmers
+  # ---------------------
+  cache.warmer:
+    class: 'Drupal\at_base\Cache\Warming\Warmer'
+    arguments: ['@cache.tag_discover', '@cache.tag_flusher']
+
+  cache.warmer.simple:
+    class: 'Drupal\at_base\Cache\Warming\Warmer\SimpleWarmer'
+    tags:
+      - { name: 'cache.warmer' }
+
+  cache.warmer.entity:
+    class: 'Drupal\at_base\Cache\Warming\Warmer\EntityWarmer'
+    tags:
+      - { name: 'cache.warmer' }
+
+  cache.warmer.view:
+    class: 'Drupal\at_base\Cache\Warming\Warmer\ViewWarmer'
+    tags:
+      - { name: 'cache.warmer' }
+
+  # ---------------------
+  # Icon render
+  # ---------------------
+  icon.fontawesome:
+    class: Drupal\at_base\Icon\FontAwesome
+    tags: [{ name: 'at.icon', weight: -10 }]
+
+  icon.fontello:
+    class: Drupal\at_base\Icon\FontEllo
+    tags: [{ name: 'at.icon' }]
+
+  # ---------------------
+  # Typed Data
+  # ---------------------
+  type.any:
+    class: Drupal\at_base\TypedData\DataTypes\Any
+    scope: prototype
+  type.boolean:
+    class: Drupal\at_base\TypedData\DataTypes\Boolean
+    scope: prototype
+  type.integer:
+    class: Drupal\at_base\TypedData\DataTypes\Integer
+    scope: prototype
+  type.string:
+    class: Drupal\at_base\TypedData\DataTypes\String
+    scope: prototype
+  type.callable:
+    class: Drupal\at_base\TypedData\DataTypes\Kallable
+    scope: prototype
+  type.function:
+    class: Drupal\at_base\TypedData\DataTypes\Fn
+    scope: prototype
+  type.constant:
+    class: Drupal\at_base\TypedData\DataTypes\Constant
+    scope: prototype
+  type.list:
+    class: Drupal\at_base\TypedData\DataTypes\ItemList
+    scope: prototype
+  type.mapping:
+    class: Drupal\at_base\TypedData\DataTypes\Mapping
+    scope: prototype
+
+  # ---------------------
+  # Theming services
+  # ---------------------
+  twig.core:
+    class: 'Twig_Environment'
+    factory_class: 'Drupal\at_base\Twig\EnvironmentFactory'
+    factory_method: getObject
+
+  twig.file_loader:
+    class: 'Twig_Loader_Filesystem'
+    factory_class: 'Drupal\at_base\Twig\EnvironmentFactory'
+    factory_method: getFileLoader
+
+  twig.string_loader:
+    class: 'Twig_Loader_String'
+
+  twig:
+    class: 'Twig_Environment'
+    factory_class: 'Drupal\at_base\Twig\EnvironmentFactory'
+    factory_method: getFileService
+    arguments: ['@twig.core']
+    calls:
+      - ['setLoader', ['@twig.file_loader']]
+
+  twig_string:
+    class: 'Twig_Environment'
+    factory_class: 'Drupal\at_base\Twig\EnvironmentFactory'
+    factory_method: getStringService
+    arguments: ['@twig.core']
+    calls:
+      - ['setLoader', ['@twig.string_loader']]

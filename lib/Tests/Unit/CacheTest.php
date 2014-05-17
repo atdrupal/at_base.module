@@ -5,6 +5,9 @@ namespace Drupal\at_base\Tests\Unit;
 use Drupal\at_base\Helper\Test\UnitTestCase;
 use Drupal\at_base\Helper\Test\Cache;
 
+/**
+ * drush test-run --dirty 'Drupal\at_base\Tests\Unit\CacheTest'
+ */
 class CacheTest extends UnitTestCase {
   /**
    * @var Cache
@@ -23,6 +26,7 @@ class CacheTest extends UnitTestCase {
 
   /**
    * Helper method for testObjectCallback().
+   *
    * @return int
    */
   public static function time() {
@@ -129,6 +133,8 @@ class CacheTest extends UnitTestCase {
     // ---------------------------------------------------------------
     // Tag must be written when cache with tag(s)
     // ---------------------------------------------------------------
+    at_container('wrapper.db')->resetLog();
+
     at_cache($o, function(){ return 'Data #1'; });
 
     $db_log = at_container('wrapper.db')->getLog();

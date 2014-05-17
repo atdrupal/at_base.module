@@ -143,7 +143,7 @@ class Controller {
     global $theme;
 
     if (!empty($this->route['blocks'][$theme])) {
-      at_container('container')->offsetSet('page.blocks', $this->route['blocks'][$theme]);
+      at_context('page.blocks', $this->route['blocks'][$theme]);
       unset($this->route['blocks'][$theme]);
     }
   }
