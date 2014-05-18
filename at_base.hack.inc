@@ -215,22 +215,3 @@ function at_container_factory() {
 
   return $container;
 }
-
-/**
- * Container for request values.
- *
- * @param string $id
- * @param mixed $value
- * @return \Drupal\at_base\Context|mixed
- */
-function at_context($id = NULL, $value = NULL) {
-  if (!is_null($id) && is_null($value)) {
-    return at_container('at_context')->offsetGet($id);
-  }
-
-  if (!is_null($id) && !is_null($value)) {
-    return at_container('at_context')->offsetSet($id, $value);
-  }
-
-  return at_container('at_context');
-}
