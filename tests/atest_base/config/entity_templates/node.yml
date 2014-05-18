@@ -1,0 +1,9 @@
+entity_templates:
+  node:
+    test:
+      full:
+        conditions:
+          type: 'and'
+          callbacks:
+            - ['atest_base_content_render_condition_sys_arg_callback', ['#node'], 'true']
+        function: 'atest_base_hello_node'

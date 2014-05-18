@@ -44,6 +44,28 @@ function atest_base_hello($name = 'Andy Truong') {
   return "Hello {$name}";
 }
 
+function atest_base_hello_node($args = array()) {
+  if (isset($args['#node'])) {
+    $node = $args['#node'];
+    $title = $node->title;
+    return "Hello {$title}";
+  }
+  else {
+    return "There is no node";
+  }
+}
+
+function atest_base_content_render_condition_callback($value = FALSE) {
+  return !empty($value);
+}
+
+function atest_base_content_render_condition_sys_arg_callback($node) {
+  if (is_object($node) && $node->title == 'Render me') {
+    return TRUE;
+  }
+  return FALSE;
+}
+
 /**
  * @see Drupal\at_base\Tests\Unit\ServiceContentRenderTest::testDynamicVariables
  */
