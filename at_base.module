@@ -172,6 +172,8 @@ function at_modules($base_module = 'at_base', $config_file = '', $cache = TRUE) 
 
 /**
  * Shortcut to render to icon.
+ *
+ * @todo Move this to andytruong/render library.
  */
 function at_icon($name, $source = 'icon.fontawesome') {
   try {
