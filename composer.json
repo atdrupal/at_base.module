@@ -44,6 +44,6 @@
         , "symfony/expression-language": "v2.4.4"
         , "symfony/dependency-injection": "v2.4.4"
         , "ocramius/proxy-manager": "0.5.*"
-        , "andytruong/render": "~1.0"
+        , "andytruong/render": "v0.1.1"
     }
 }

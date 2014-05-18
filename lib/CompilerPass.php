@@ -28,7 +28,5 @@ class CompilerPass implements CompilerPassInterface {
             $definition->setFile($file);
         }
     }
-
-    $container->register('at_context', 'Drupal\at_base\Context');
   }
 }

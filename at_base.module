@@ -172,6 +172,8 @@ function at_modules($base_module = 'at_base', $config_file = '', $cache = TRUE) 
 
 /**
  * Shortcut to render to icon.
+ *
+ * @todo Move this to andytruong/render library.
  */
 function at_icon($name, $source = 'icon.fontawesome') {
   try {
@@ -203,41 +205,4 @@ function at_library($name, $version = 'default', $include_drupal_root = TRUE) {
   }
 
   throw new Exception("Missing library: {$name} (version {$version})");
-}
-
-/**
- * This is wrapper for typped-data, an API to make sure data provided is matched
- * to its schema.
- *
- * Example:
- *
- *   $schema = array('type' => 'constant');
- *   $input = 'MENU_LOCAL_TASK';
- *   $data = at_data($schema, $input);
- *   // Validate
- *   echo $data->validate($error) ? $data->getValue() : $error;
- *
- * @see https://github.com/atdrupal/at_base/wiki/7.x-2.x-typed-data
- */
-function at_data($def, $value = NULL) {
-  if (!is_array($def)) {
-    throw new \Exception('Definition must be an array.');
-  }
-
-  if (!isset($def['type'])) {
-    throw new \Exception('Missing type key');
-  }
-
-  $service = strpos($def['type'], 'type.') === 0 ? $def['type'] : ('type.' . $def['type']);
-
-  // Special type: list<element_type>
-  if (strpos($service, 'type.list<') === 0) {
-    $def['element_type'] = substr($service, 10, -1);
-    $service = 'type.list';
-  }
-
-  return at_container($service)
-    ->setDef($def)
-    ->setValue($value)
-  ;
 }
