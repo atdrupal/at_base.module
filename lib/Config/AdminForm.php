@@ -1,7 +1,7 @@
 <?php
 namespace Drupal\at_base\Config;
 
-class AdminForm {
+class AdminForm implements FormInterface {
   private $config;
 
   /**

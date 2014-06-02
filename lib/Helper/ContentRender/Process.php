@@ -48,7 +48,7 @@ class Process {
 
   private function processForm() {
     if (isset($this->data['form'])) {
-      $args = array('at_form', $this->data['form']);
+      $args = array('Drupal\at_base\Helper\Form::get', $this->data['form']);
       $args[] = isset($this->data['form arguments']) ? $this->data['form arguments'] : array();
       return call_user_func_array('drupal_get_form', $args);
     }
