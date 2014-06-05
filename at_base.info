@@ -1,5 +1,5 @@
 name = AT Base
-version = 7.x-2.0-dev
+version = 7.x-3.0-dev
 description = "Provide helper functions for at_* modules"
 core = 7.x
 package = Andy Truong
