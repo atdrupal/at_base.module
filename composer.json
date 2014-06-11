@@ -1,5 +1,5 @@
 {
-    "name": "andytruong/at_base",
+    "name": "drupal/at_base",
     "type": "drupal-module",
     "description": "Provide some more API for developer to work with Drupal",
     "keywords": ["Drupal", "drush", "dependency injection", "container", "config", "api", "autoloader"],
