@@ -37,6 +37,12 @@ class ServiceContentRenderTest extends UnitTestCase {
     $output = $this->render->render($data);
     $this->assertEqual('Hello Andy Truong', $output);
   }
+  public function testTemplateStringEmptyReturn() {
+    $data = array();
+    $data['template_string'] = '{% if false %}Empty return{% endif %}';
+    $output = $this->render->render($data);
+    $this->assertEqual('', $output);
+  }
 
   public function testTemplate() {
     $data = array();
