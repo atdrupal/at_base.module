@@ -63,7 +63,7 @@ class Content_Render {
 
   public function render($data = NULL) {
     if (!is_null($data)) {
-      $this->setdata($data);
+      $this->setData($data);
     }
 
     return (empty($this->data['cache']) || is_null($this->cache_handler))
