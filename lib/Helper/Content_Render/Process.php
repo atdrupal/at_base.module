@@ -117,7 +117,7 @@ class Process {
 
     if (!empty($k)) {
       $tpl = $this->data[$k];
-      return at_container('twig_string')->render($tpl, $this->args);
+      return trim(at_container('twig_string')->render($tpl, $this->args));
     }
   }
 }

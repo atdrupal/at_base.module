@@ -17,3 +17,10 @@ blocks:
     content:
       template_string: "Hello {{ name }}"
       variables: {name: 'Andy Truong'}
+  hi_tse:
+    info: 'Hello Template String Empty'
+    subject: 'Hello Template String Empty'
+    content:
+      template_string: >
+      {% if false %}
+      {% endif %}
