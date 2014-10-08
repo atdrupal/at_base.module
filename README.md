@@ -1,9 +1,7 @@
-AT Base
+AT Base [![Build Status](https://secure.travis-ci.org/atdrupal/at_base.png?branch=dev-master)](http://travis-ci.org/atdrupal/at_base)
 =======
 
 Provide some more API for developer to work with Drupal 7.
-
-[![Build Status](https://secure.travis-ci.org/atdrupal/at_base.png?branch=dev-master)](http://travis-ci.org/atdrupal/at_base)
 
 ### Install
 
