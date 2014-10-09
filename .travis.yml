@@ -1,15 +1,8 @@
-# Ref:
-#   - https://github.com/sonnym/travis-ci-drupal-module-example/blob/master/.travis.yml
 language: php
 php:
   - 5.3
   - 5.4
   - 5.5
-  # - hhvm
-
-# matrix:
-#   allow_failures:
-#     - php: hhvm
 
 mysql:
   database: drupal
