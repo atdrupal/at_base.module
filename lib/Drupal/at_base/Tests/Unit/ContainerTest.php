@@ -10,6 +10,7 @@ use Drupal\at_base\Helper\Test\UnitTestCase;
  *  drush test-run --dirty 'Drupal\at_base\Tests\Unit\ContainerTest'
  */
 class ContainerTest extends UnitTestCase {
+
   public function getInfo() {
     return array('name' => 'AT Unit: Container') + parent::getInfo();
   }
@@ -41,7 +42,7 @@ class ContainerTest extends UnitTestCase {
 
   public function testDynamicArguments() {
     $service = at_container('atest_base.dynamic_arguments');
-    $this->assertEqual('Drupal\atest_base\Dynamic_Arguments', get_class($service));
+    $this->assertEqual('Drupal\atest_base\DynamicArguments', get_class($service));
     $this->assertEqual('atest_base', $service->getDynParam());
     $this->assertEqual('Drupal\atest_base\Service_1', get_class($service->getDynService()));
   }
@@ -69,4 +70,5 @@ class ContainerTest extends UnitTestCase {
       $this->assertEqual($expected, $actual);
     }
   }
+
 }

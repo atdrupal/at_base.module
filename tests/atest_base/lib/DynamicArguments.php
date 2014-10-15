@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\atest_base;
 
-class Dynamic_Arguments {
+class DynamicArguments {
+
   private $dyn_param;
   private $dyn_service;
 
@@ -17,4 +19,5 @@ class Dynamic_Arguments {
   public function getDynService() {
     return $this->dyn_service;
   }
+
 }
