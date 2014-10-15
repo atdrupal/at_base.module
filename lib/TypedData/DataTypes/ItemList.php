@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\TypedData\DataTypes;
 
 class ItemList extends Base {
+
   /**
    * @var string
    */
@@ -52,4 +54,5 @@ class ItemList extends Base {
 
     return TRUE;
   }
+
 }

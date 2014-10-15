@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\at_base\TypedData\DataTypes;
 
 /**
@@ -10,6 +11,7 @@ namespace Drupal\at_base\TypedData\DataTypes;
  * @param  string $v
  */
 class Constant extends Base {
+
   public function getValue() {
     if ($this->validate()) {
       return constant($this->value);
@@ -34,4 +36,5 @@ class Constant extends Base {
 
     return parent::validateInput($error);
   }
+
 }

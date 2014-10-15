@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\TypedData\DataTypes;
 
 class Kallable extends String {
+
   public function isEmpty() {
     return is_null($this->value) || empty($this->value);
   }
@@ -14,4 +16,5 @@ class Kallable extends String {
 
     return parent::validateInput($error);
   }
+
 }

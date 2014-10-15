@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\at_base\TypedData\DataTypes;
 
 /**
@@ -7,6 +8,7 @@ namespace Drupal\at_base\TypedData\DataTypes;
  * Example schema, check `at_base/config/schema/route.yml`
  */
 class Mapping extends MappingBase {
+
   protected function validateDefinition(&$error) {
     if (!parent::validateDefinition($error)) {
       return FALSE;
@@ -14,7 +16,7 @@ class Mapping extends MappingBase {
 
     if (empty($this->def['skip validate mapping'])) {
       if (!$this->validateDefMapping($error)) {
-       return FALSE;
+        return FALSE;
       }
     }
 
@@ -33,9 +35,9 @@ class Mapping extends MappingBase {
     }
 
     $element_schema = array(
-      'type' => 'mapping',
+      'type'                  => 'mapping',
       'skip validate mapping' => TRUE,
-      'mapping' => array(
+      'mapping'               => array(
         'type'        => array('type' => 'string', 'required' => TRUE),
         'required'    => array('type' => 'boolean'),
         'label'       => array('type' => 'string'),
@@ -81,7 +83,7 @@ class Mapping extends MappingBase {
     if (!$this->allow_extra_properties) {
       foreach (array_keys($this->value) as $k) {
         if (!isset($this->def['mapping'][$k])) {
-          $error = 'Unexpected key found: '. $k .'.';
+          $error = 'Unexpected key found: ' . $k . '.';
           return FALSE;
         }
       }
@@ -138,4 +140,5 @@ class Mapping extends MappingBase {
 
     return $provided;
   }
+
 }

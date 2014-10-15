@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\TypedData\DataTypes;
 
 class Fn extends String {
+
   public function isEmpty() {
     return FALSE;
   }
@@ -19,4 +21,5 @@ class Fn extends String {
 
     return parent::validateInput($error);
   }
+
 }

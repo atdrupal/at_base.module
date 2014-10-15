@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\TypedData\DataTypes;
 
 class String extends Base {
+
   public function isEmpty() {
     if (!is_null($this->value)) {
       return $this->value === '';
@@ -15,4 +17,5 @@ class String extends Base {
     }
     return parent::validateInput($error);
   }
+
 }

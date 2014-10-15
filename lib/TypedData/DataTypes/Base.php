@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\TypedData\DataTypes;
 
 abstract class Base {
+
   protected $def;
   protected $value;
 
@@ -39,9 +41,7 @@ abstract class Base {
   }
 
   public function validate(&$error = NULL) {
-    return $this->validateDefinition($error)
-      && $this->validateInput($error)
-    ;
+    return $this->validateDefinition($error) && $this->validateInput($error);
   }
 
   protected function validateDefinition(&$error) {
@@ -70,4 +70,5 @@ abstract class Base {
 
     return TRUE;
   }
+
 }
