@@ -19,11 +19,11 @@ Provide some more API for developer to work with Drupal 7.
 
 ### Features
 
-- [Autoload](https://github.com/atdrupal/at_base/wiki/7.x-2.x-autoload)
+- [Autoload](https://github.com/atdrupal/at_base/wiki/7.x-2.x-autoload) — PSR-4 autoload loader.
 - [Key-Value storage](https://github.com/atdrupal/at_base/wiki/7.x-2.x-kv)
-- [Config](https://github.com/atdrupal/at_base/wiki/7.x-2.x-config)
+- [Config](https://github.com/atdrupal/at_base/wiki/7.x-2.x-config) — Yaml file configuration for modules.
 - [Service Container](https://github.com/atdrupal/at_base/wiki/7.x-2.x-service-container)
-- [Easy Routing](https://github.com/atdrupal/at_base/wiki/7.x-2.x-easy-routing)
+- [Easy Routing](https://github.com/atdrupal/at_base/wiki/7.x-2.x-easy-routing) — Define route for Drupal in faster way and more flexible.
 - [Easy Breadcrumb](https://github.com/atdrupal/at_base/wiki/7.x-2.x-easy-breadcrumb)
 - [Easy Block](https://github.com/atdrupal/at_base/wiki/7.x-2.x-easy-routing)
 - [Useful functions](https://github.com/atdrupal/at_base/wiki/7.x-2.x-functions)
