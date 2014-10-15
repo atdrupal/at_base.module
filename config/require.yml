@@ -4,7 +4,7 @@ projects:
     download:
       type: git
       url: 'https://github.com/mustangostang/spyc.git'
-      revision: 'b7fd7f7a4ddd70c4d599a023fcda3e2b9a20d4b9'
+      revision: 'eeb9f7c47e1457770d64c7fb1f3d4aabff52de4b'
 
   pimple:
     type: library
@@ -18,26 +18,26 @@ projects:
     download:
       type: git
       url: 'https://github.com/fabpot/Twig.git'
-      branch: 'v1.15.1'
+      branch: 'v1.16.1'
 
   expression_language:
     type: library
     download:
       type: git
       url: 'https://github.com/symfony/expression-language.git'
-      branch: 'v2.4.1'
+      branch: 'v2.4.10'
 
   fontawesome:
     type: library
     download:
       type: file
-      url: 'http://fortawesome.github.io/Font-Awesome/assets/font-awesome-4.0.3.zip'
+      url: 'http://fortawesome.github.io/Font-Awesome/assets/font-awesome-4.2.0.zip'
 
   fontello:
     type: library
     download:
       type: git
       url: https://github.com/fontello/fontello.git
-      branch: '5.1.0'
+      branch: '5.2.0'
     options:
       working-copy: true
