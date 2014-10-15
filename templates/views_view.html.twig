@@ -6,28 +6,28 @@
 
 <div class="{% block classes classes_array|join(' ') %}">
   {% block title title_prefix ~ title ~ title_suffix %}
-  {% block header header %}
-  {% block exposed '<div class="view-filters">' ~ exposed ~ '</div>' %}
-  {% block attachment_before '<div class="attachment attachment-before">' ~ attachment_before ~ '</div>' %}
+    {% block header header %}
+      {% block exposed '<div class="view-filters">' ~ exposed ~ '</div>' %}
+        {% block attachment_before '<div class="attachment attachment-before">' ~ attachment_before ~ '</div>' %}
 
-  {% block rows %}
-    {% if rows %}
-      <div class="view-content">
-        {{ rows }}
-      </div>
-    {% else %}
-      <div class="view-empty">
-        {{ empty }}
-      </div>
-    {% endif %}
-  {% endblock %}
+          {% block rows %}
+            {% if rows %}
+              <div class="view-content">
+                {{ rows }}
+              </div>
+            {% else %}
+              <div class="view-empty">
+                {{ empty }}
+              </div>
+            {% endif %}
+          {% endblock %}
 
-  {% block pager pager %}
-  {% block attachment_after '<div class="attachment attachment-after">' ~ attachment_after ~ '</div>' %}
-  {% block more more %}
-  {% block footer footer %}
-  {% block feed_icon '<div class="feed-icon">' ~ feed_icon ~ '</div>' %}
-</div>
+          {% block pager pager %}
+            {% block attachment_after '<div class="attachment attachment-after">' ~ attachment_after ~ '</div>' %}
+              {% block more more %}
+                {% block footer footer %}
+                  {% block feed_icon '<div class="feed-icon">' ~ feed_icon ~ '</div>' %}
+                  </div>
 
-{# Extends this block to print debug info #}
-{% block debug '' %}
+                  {# Extends this block to print debug info #}
+                  {% block debug '' %}

@@ -1,50 +1,52 @@
 {
-    "name": "andytruong/at_base",
-    "type": "drupal-module",
-    "description": "Provide some more API for developer to work with Drupal",
-    "keywords": ["Drupal", "drush", "dependency injection", "container", "config", "api", "autoloader"],
-    "homepage": "http://v3k.net/",
-    "license": "GPL-2.0",
-    "minimum-stability": "dev",
-    "authors": [
-        {
-            "name": "Andy Truong"
-            , "email": "thehongtt@gmail.com"
-            , "role": "Lead Developer"
-        }
-        , {
-            "name": "Tien Vo"
-            , "email": "tien.xuan.vo@gmail.com"
-            , "role": "Contributor"
-        }
-    ],
-    "repositories": [
-        {
-           "type": "package",
-           "package": {
-               "version": "7.26",
-               "name": "drupal/core",
-               "source": {
-                   "url": "http://git.drupal.org/project/drupal.git",
-                   "type": "git",
-                   "reference": "7.26"
-               },
-               "dist": {
-                   "url": "http://ftp.drupal.org/files/projects/drupal-7.26.zip",
-                   "type": "zip"
-               }
-           }
-       }
-    ],
-    "require": {
-        "php": ">=5.3.8",
-        "composer/installers": "*",
-        "mustangostang/spyc": "0.5.*",
-        "pimple/pimple": "2.0.*",
-        "twig/twig": "1.15.*",
-        "symfony/expression-language": "2.4.*"
-    },
-    "autoload": {
-        "psr-4": { "Drupal\\at_base\\": "lib" }
+  "name": "andytruong/at_base",
+  "type": "drupal-module",
+  "description": "Provide some more API for developer to work with Drupal",
+  "keywords": ["Drupal", "drush", "dependency injection", "container", "config", "api", "autoloader"],
+  "homepage": "http://v3k.net/",
+  "license": "GPL-2.0",
+  "minimum-stability": "dev",
+  "authors": [
+    {
+      "name": "Andy Truong"
+      , "email": "thehongtt@gmail.com"
+      , "role": "Lead Developer"
     }
+    , {
+      "name": "Tien Vo"
+      , "email": "tien.xuan.vo@gmail.com"
+      , "role": "Contributor"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "version": "7.26",
+        "name": "drupal/core",
+        "source": {
+          "url": "http://git.drupal.org/project/drupal.git",
+          "type": "git",
+          "reference": "7.26"
+        },
+        "dist": {
+          "url": "http://ftp.drupal.org/files/projects/drupal-7.26.zip",
+          "type": "zip"
+        }
+      }
+    }
+  ],
+  "require": {
+    "php": ">=5.3.8",
+    "composer/installers": "*",
+    "mustangostang/spyc": "0.5.*",
+    "pimple/pimple": "2.0.*",
+    "twig/twig": "1.15.*",
+    "symfony/expression-language": "2.4.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Drupal\\at_base\\": "lib"
+    }
+  }
 }
