@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\at_base\Hook;
 
 use Drupal\at_base\Hook\BlockView;
@@ -8,7 +9,8 @@ use Drupal\at_base\Hook\BlockView;
  *
  * Parse block configuration, build attached-blocks to page structure.
  */
-class Page_Build {
+class PageBuild {
+
   /**
    * Structure of page.
    *
@@ -85,14 +87,13 @@ class Page_Build {
    */
   private function loadFancyBlock($config) {
     BlockView::setDynamicData(
-      $key = isset($config['delta']) ? $config['delta'] : md5(serialize($config)),
-      $config
+      $key = isset($config['delta']) ? $config['delta'] : md5(serialize($config)), $config
     );
-    return (object)array(
-      'module' => 'at_base',
-      'delta' => "dyn_{$key}",
-      'region' => '',
-      'title' => '',
+    return (object) array(
+        'module' => 'at_base',
+        'delta'  => "dyn_{$key}",
+        'region' => '',
+        'title'  => '',
     );
   }
 
@@ -132,4 +133,5 @@ class Page_Build {
 
     return $block;
   }
+
 }
