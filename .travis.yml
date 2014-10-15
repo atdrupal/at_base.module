@@ -54,3 +54,6 @@ before_script:
 script:
   - drush test-run --dirty --field-labels=0 'AT Unit'
   - drush test-run --dirty --field-labels=0 'AT Web'
+
+notifications:
+  email: false
