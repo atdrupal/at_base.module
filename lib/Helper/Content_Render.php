@@ -25,8 +25,7 @@ use Drupal\at_base\Helper\Content_Render\Process;
  * @see  \Drupal\at_base\Hook\BlockView
  * @see  \At_Twig_TestCase::testContentRender()
  */
-class ContentRender {
-
+class Content_Render {
   /**
    * Data to be rendered.
    *
@@ -67,11 +66,13 @@ class ContentRender {
       $this->setData($data);
     }
 
-    return (empty($this->data['cache']) || is_null($this->cache_handler)) ? $this->build() : $this
-        ->getCacheHandler()
-        ->setOptions($this->data['cache'])
-        ->setCallback(array($this, 'build'))
-        ->render();
+    return (empty($this->data['cache']) || is_null($this->cache_handler))
+      ? $this->build()
+      : $this
+          ->getCacheHandler()
+          ->setOptions($this->data['cache'])
+          ->setCallback(array($this, 'build'))
+          ->render();
   }
 
   public function build() {
@@ -120,7 +121,7 @@ class ContentRender {
 
       $k = array_keys($v);
       if (is_numeric($k[0])) {
-        $msg = 'Expected keyed-array for $variables.';
+        $msg  = 'Expected keyed-array for $variables.';
         throw new \Exception($msg);
       }
 
@@ -151,5 +152,4 @@ class ContentRender {
     }
     return $this->data['attached'];
   }
-
 }

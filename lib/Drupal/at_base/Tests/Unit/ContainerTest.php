@@ -10,7 +10,6 @@ use Drupal\at_base\Helper\Test\UnitTestCase;
  *  drush test-run --dirty 'Drupal\at_base\Tests\Unit\ContainerTest'
  */
 class ContainerTest extends UnitTestCase {
-
   public function getInfo() {
     return array('name' => 'AT Unit: Container') + parent::getInfo();
   }
@@ -21,7 +20,7 @@ class ContainerTest extends UnitTestCase {
   public function testServiceContainer() {
     // Simple service
     $service_1 = at_container('helper.content_render');
-    $this->assertEqual('Drupal\at_base\Helper\ContentRender', get_class($service_1));
+    $this->assertEqual('Drupal\at_base\Helper\Content_Render', get_class($service_1));
 
     // Service with factory
     $service_2 = at_container('twig.core');
@@ -70,5 +69,4 @@ class ContainerTest extends UnitTestCase {
       $this->assertEqual($expected, $actual);
     }
   }
-
 }
