@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file at_base.module
  *
@@ -10,8 +11,10 @@
  *  - Update docs for service container > reuse option.
  */
 
-use \Drupal\at_base\Cache;
-use \Drupal\at_base\Helper\ModulesFetcher;
+use Drupal\at_base\Cache;
+use Drupal\at_base\Config\Config;
+use Drupal\at_base\Container;
+use Drupal\at_base\Helper\ModulesFetcher;
 
 require_once dirname(__FILE__) . '/lib/AT.php';
 require_once dirname(__FILE__) . '/lib/Autoloader.php';
@@ -68,7 +71,7 @@ function at_container($id = 'container') {
   static $container = NULL;
 
   if (!$container) {
-    $container = new \Drupal\at_base\Container();
+    $container = new Container();
   }
 
   $args = func_get_args();
@@ -115,7 +118,7 @@ function at_kv($bin, $options = array(), $engine_name = 'array') {
  */
 function at_fn() {
   $args = func_get_args();
-  $fn   = array_shift($args);
+  $fn = array_shift($args);
   return call_user_func_array(variable_get("atfn:{$fn}", $fn), $args);
 }
 
@@ -125,9 +128,11 @@ function at_fn() {
  *  \at_fn::entity_bundle('node', $node);
  */
 class at_fn {
+
   public static function __callStatic($fn, $args) {
     return call_user_func_array(variable_get("atfn:{$fn}", $fn), $args);
   }
+
 }
 
 /**
@@ -148,7 +153,7 @@ function at_cache($options, $callback = NULL, $arguments = array()) {
     @list($id, $ttl, $bin) = explode(',', $options);
 
     $options = array(
-      'id' => $id,
+      'id'  => $id,
       'ttl' => is_null($ttl) ? NULL : ('~' === $ttl ? NULL : $ttl),
       'bin' => is_null($bin) ? NULL : ('~' === $bin ? NULL : $bin),
     );
@@ -190,7 +195,7 @@ function at_cache_flush_by_tags($tags = array()) {
  * @param  string  $module    Module name
  * @param  string  $id        Config ID
  * @param  boolean $refresh   Build new cache
- * @return Drupal\at_base\Config\Config
+ * @return Config
  */
 function at_config($module, $id = 'config', $refresh = FALSE) {
   return at_container('config')->setModule($module)->setId($id);
@@ -206,12 +211,12 @@ function at_config($module, $id = 'config', $refresh = FALSE) {
 function at_modules($base_module = 'at_base', $config_file = '') {
   $o['ttl'] = '+ 1 year';
   $o['bin'] = 'cache_bootstrap';
-  $o['id']  = "atmodules:{$base_module}:{$config_file}";
+  $o['id'] = "atmodules:{$base_module}:{$config_file}";
 
   return at_cache($o, function() use ($base_module, $config_file) {
     $module_enabled = system_list('module_enabled');
     return at_id(new ModulesFetcher($base_module, $config_file))
-            ->fetch($module_enabled);
+        ->fetch($module_enabled);
   });
 }
 
@@ -266,11 +271,11 @@ function at_library($name, $version = 'default', $include_drupal_root = TRUE) {
  */
 function at_data($def, $value = NULL) {
   if (!is_array($def)) {
-    throw new \Exception('Definition must be an array.');
+    throw new Exception('Definition must be an array.');
   }
 
   if (!isset($def['type'])) {
-    throw new \Exception('Missing type key');
+    throw new Exception('Missing type key');
   }
 
   $service = strpos($def['type'], 'type.') === 0 ? $def['type'] : ('type.' . $def['type']);
@@ -282,7 +287,7 @@ function at_data($def, $value = NULL) {
   }
 
   return at_container($service)
-    ->setDef($def)
-    ->setValue($value)
+      ->setDef($def)
+      ->setValue($value)
   ;
 }
