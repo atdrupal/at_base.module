@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\at_base\Helper\Controller_Resolver;
+namespace Drupal\at_base\Helper\ControllerResolver;
 
 class TwigController {
 
