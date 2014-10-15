@@ -19,8 +19,8 @@ class ContainerTest extends UnitTestCase {
    */
   public function testServiceContainer() {
     // Simple service
-    $service_1 = at_container('helper.content_render');
-    $this->assertEqual('Drupal\at_base\Helper\Content_Render', get_class($service_1));
+    $service_1 = at_container('helper.ContentRender');
+    $this->assertEqual('Drupal\at_base\Helper\ContentRender', get_class($service_1));
 
     // Service with factory
     $service_2 = at_container('twig.core');

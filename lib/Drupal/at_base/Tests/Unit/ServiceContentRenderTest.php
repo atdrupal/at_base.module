@@ -6,12 +6,12 @@ use Drupal\at_base\Helper\Test\UnitTestCase;
 
 class ServiceContentRenderTest extends UnitTestCase {
   public function getInfo() {
-    return array('name' => 'AT Unit: Test helper.content_render service') + parent::getInfo();
+    return array('name' => 'AT Unit: Test helper.ContentRender service') + parent::getInfo();
   }
 
   public function setUp() {
     parent::setUp();
-    $this->render = at_container('helper.content_render');
+    $this->render = at_container('helper.ContentRender');
   }
 
   public function testString() {

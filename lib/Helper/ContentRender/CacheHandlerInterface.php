@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\at_base\Helper\Content_Render;
+namespace Drupal\at_base\Helper\ContentRender;
 
 /**
  * Interface of caching handler for Conent_Render service.
  *
- * @see Drupal\at_base\Helper\Content_Render::render()
+ * @see Drupal\at_base\Helper\ContentRender::render()
  */
 interface CacheHandlerInterface {
 

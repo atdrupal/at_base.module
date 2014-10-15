@@ -6,7 +6,7 @@
 
 namespace Drupal\at_base\Route;
 
-use Drupal\at_base\Helper\Content_Render\CacheHandlerInterface;
+use Drupal\at_base\Helper\ContentRender\CacheHandlerInterface;
 
 class CacheHandler implements CacheHandlerInterface {
 

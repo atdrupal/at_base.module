@@ -2,21 +2,21 @@
 
 namespace Drupal\at_base\Helper;
 
-use Drupal\at_base\Helper\Content_Render\CacheHandlerInterface;
-use Drupal\at_base\Helper\Content_Render\Process;
+use Drupal\at_base\Helper\ContentRender\CacheHandlerInterface;
+use Drupal\at_base\Helper\ContentRender\Process;
 
 /**
  * Helper class for rendering data:
  *
  *  $data = array('template_string' => $template_string, 'variables' => $variables, 'attached' => $attached);
- *  return at_container('helper.content_render')
+ *  return at_container('helper.ContentRender')
  *    ->setData($data)
  *    ->render()
  *  ;
  *
  *
  *  $data = array('controller' => array('\Drupal\atest_base\Controller\Sample', 'renderAction'));
- *  return at_container('helper.content_render')
+ *  return at_container('helper.ContentRender')
  *    ->setData($data)
  *    ->render()
  *  ;
@@ -25,7 +25,8 @@ use Drupal\at_base\Helper\Content_Render\Process;
  * @see  \Drupal\at_base\Hook\BlockView
  * @see  \At_Twig_TestCase::testContentRender()
  */
-class Content_Render {
+class ContentRender {
+
   /**
    * Data to be rendered.
    *
@@ -66,13 +67,11 @@ class Content_Render {
       $this->setData($data);
     }
 
-    return (empty($this->data['cache']) || is_null($this->cache_handler))
-      ? $this->build()
-      : $this
-          ->getCacheHandler()
-          ->setOptions($this->data['cache'])
-          ->setCallback(array($this, 'build'))
-          ->render();
+    return (empty($this->data['cache']) || is_null($this->cache_handler)) ? $this->build() : $this
+        ->getCacheHandler()
+        ->setOptions($this->data['cache'])
+        ->setCallback(array($this, 'build'))
+        ->render();
   }
 
   public function build() {
@@ -121,7 +120,7 @@ class Content_Render {
 
       $k = array_keys($v);
       if (is_numeric($k[0])) {
-        $msg  = 'Expected keyed-array for $variables.';
+        $msg = 'Expected keyed-array for $variables.';
         throw new \Exception($msg);
       }
 
@@ -152,4 +151,5 @@ class Content_Render {
     }
     return $this->data['attached'];
   }
+
 }

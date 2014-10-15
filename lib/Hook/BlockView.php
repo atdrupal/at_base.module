@@ -22,7 +22,7 @@ class BlockView {
 
   public function view () {
     $info = $this->getInfo();
-    $render = at_container('helper.content_render');
+    $render = at_container('helper.ContentRender');
 
     $block = array();
     foreach (array('subject', 'content') as $k) {

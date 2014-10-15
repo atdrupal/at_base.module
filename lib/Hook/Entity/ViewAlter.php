@@ -83,7 +83,7 @@ class ViewAlter {
       }
 
       try {
-        return at_container('helper.content_render')->render($config);
+        return at_container('helper.ContentRender')->render($config);
       }
       catch (\Exception $e) {
         watchdog_exception(WATCHDOG_CRITICAL, $e);

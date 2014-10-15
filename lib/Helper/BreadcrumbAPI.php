@@ -123,7 +123,7 @@ class BreadcrumbAPI {
 
       // User can send direct breadcrumb structure, or use a callback to build it.
       if (empty($bc)) {
-        $bc = at_container('helper.content_render')->render($config);
+        $bc = at_container('helper.ContentRender')->render($config);
       }
 
       $args = isset($config['context']['arguments']) ? $config['context']['arguments'] : array();
