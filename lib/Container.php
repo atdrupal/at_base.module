@@ -1,7 +1,7 @@
 <?php
 namespace Drupal\at_base;
 
-use Drupal\at_base\Container\Service_Resolver;
+use Drupal\at_base\Container\ServiceResolver;
 use Drupal\at_base\Container\ArgumentResolver;
 use Drupal\at_base\Helper\Config_Fetcher;
 use Drupal\at_base\Helper\Wrapper\Database as DB_Wrapper;
@@ -24,7 +24,7 @@ class Container extends \Pimple {
       'wrapper.db' => function() { return new DB_Wrapper(); },
       'wrapper.cache' => function() { return new Cache_Wrapper(); },
       'config' => function() { return new Config(new Config_Resolver()); },
-      'service.resolver' => function() { return new Service_Resolver(); },
+      'service.resolver' => function() { return new ServiceResolver(); },
       'argument.resolver' => function() { return new ArgumentResolver(); },
       'helper.config_fetcher' => function() { return new Config_Fetcher(); },
     ));
