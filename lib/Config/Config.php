@@ -29,7 +29,7 @@ class Config {
    * Fetched data.
    * @var mixed
    */
-  private $config_data;
+  private $configData;
 
   public function __construct(ResolverInterface $resolver) {
     $this->id = 'config';
@@ -42,8 +42,8 @@ class Config {
   }
 
   public function setId($id) {
-    if (!empty($this->config_data)) {
-      $this->config_data = NULL;
+    if (!empty($this->configData)) {
+      $this->configData = NULL;
     }
 
     $this->id = $id;
@@ -56,8 +56,8 @@ class Config {
   }
 
   public function setModule($module) {
-    if (!empty($this->config_data)) {
-      $this->config_data = NULL;
+    if (!empty($this->configData)) {
+      $this->configData = NULL;
     }
 
     if (!module_exists($module) && !drupal_get_path('module', $module)) {
@@ -83,7 +83,7 @@ class Config {
     $options['ttl'] = '+ 1 year';
     $options['tags'] = array('at-config');
 
-    $this->config_data = at_cache($options, function() use ($resolver) {
+    $this->configData = at_cache($options, function() use ($resolver) {
       return $resolver->fetchData();
     });
   }
@@ -95,38 +95,38 @@ class Config {
    * @return mixed
    */
   public function get($key) {
-    if (!$this->config_data) {
+    if (!$this->configData) {
       $this->fetchData();
     }
 
-    if (!isset($this->config_data[$key])) {
+    if (!isset($this->configData[$key])) {
       throw new NotFoundException("{$this->module}.{$this->id}#{$key}");
     }
 
-    return $this->config_data[$key];
+    return $this->configData[$key];
   }
 
   public function set($key, $data) {
-    if (!$this->config_data) {
+    if (!$this->configData) {
       $this->fetchData();
     }
 
-    $this->config_data[$key] = $data;
+    $this->configData[$key] = $data;
   }
 
   public function getAll() {
-    if (!$this->config_data) {
+    if (!$this->configData) {
       $this->fetchData();
     }
-    return $this->config_data;
+    return $this->configData;
   }
 
   public function setAll($data) {
-    $this->config_data = $data;
+    $this->configData = $data;
   }
 
   public function write() {
-    $this->resolver->writeData($this->config_data);
+    $this->resolver->writeData($this->configData);
   }
 
 }
