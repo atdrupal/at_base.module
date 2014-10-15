@@ -1,10 +1,12 @@
 <?php
+
 namespace Drupal\at_base\Hook;
 
 /**
  * Details for at_base_flush_caches().
  */
-class Flush_Cache {
+class FlushCache {
+
   public function execute() {
     $this->flushAPCData();
     $this->flushTaggedCacheData();
@@ -47,4 +49,5 @@ class Flush_Cache {
       ;
     }
   }
+
 }
