@@ -14,7 +14,7 @@ services:
     arguments: ['@cache.tag_discover', '@cache.tag_flusher']
 
   cache.warmer.simple:
-    class: 'Drupal\at_base\Cache\Warming\Warmer\Simple_Warmer'
+    class: 'Drupal\at_base\Cache\Warming\Warmer\SimpleWarmer'
     tags:
       - { name: 'cache.warmer', weight: 100 }
 
