@@ -1,6 +1,6 @@
 services:
   cache.tag_flusher:
-    class: 'Drupal\at_base\Cache\Warming\Tag_Flusher'
+    class: 'Drupal\at_base\Cache\Warming\TagFlusher'
     arguments: ['@wrapper.db', '@wrapper.cache']
 
   cache.tag_discover:
