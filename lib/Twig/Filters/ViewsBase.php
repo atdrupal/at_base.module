@@ -5,7 +5,8 @@ namespace Drupal\at_base\Twig\Filters;
 /**
  * Base class for drupalView twig filter, provide basic get/set methods.
  */
-abstract class Views_Base {
+abstract class ViewsBase {
+
   protected $name;
   protected $display_id;
   protected $view;
@@ -46,7 +47,7 @@ abstract class Views_Base {
     $this->name = $name;
 
     if (!$this->view = views_get_view($name)) {
-      throw new \Exception('<!-- View not found: '. $this->name . ' -->');
+      throw new \Exception('<!-- View not found: ' . $this->name . ' -->');
     }
   }
 
@@ -55,7 +56,7 @@ abstract class Views_Base {
     $this->view->set_display($display_id);
 
     if (!$this->view->access($this->display_id)) {
-      throw new \Exception('<!-- Access denied: '. $this->name .':'. $this->display_id .' -->');
+      throw new \Exception('<!-- Access denied: ' . $this->name . ':' . $this->display_id . ' -->');
     }
   }
 
@@ -78,4 +79,5 @@ abstract class Views_Base {
     unset($this->view->query->pager);
     $this->view->init_pager();
   }
+
 }

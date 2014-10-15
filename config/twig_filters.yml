@@ -70,4 +70,4 @@ twig_filters:
   # ---------------------
   # Example: {{ "%module:%id:%key"|at_config }}
   __at_config: [\Drupal\at_base\Twig\Filters\ATConfig, render]
-  __cache: [\Drupal\at_base\Twig\Filters\Cache_Filter, render]
+  __cache: [\Drupal\at_base\Twig\Filters\CacheFilter, render]

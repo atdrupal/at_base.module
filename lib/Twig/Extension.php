@@ -16,7 +16,7 @@ class Extension extends \Twig_Extension {
 
   function getFilters() {
     $return = at_cache('at:twig:fts', function() {
-      return at_id(new Filter_Fetcher())->fetch();
+      return at_id(new FilterFetcher())->fetch();
     });
 
     return array_merge($return, $this->getMagicItems('Twig_SimpleFilter'));
@@ -24,7 +24,7 @@ class Extension extends \Twig_Extension {
 
   function getFunctions() {
     $return = at_cache('at:twig:fns', function() {
-      return at_id(new Function_Fetcher())->fetch();
+      return at_id(new FunctionFetcher())->fetch();
     });
 
     return array_merge($return, $this->getMagicItems('Twig_SimpleFunction'));

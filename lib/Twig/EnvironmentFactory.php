@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\Twig;
 
-class Environment_Factory {
+class EnvironmentFactory {
+
   private static $twig;
   private static $loader;
   private $options;
@@ -18,10 +20,10 @@ class Environment_Factory {
       \Twig_Autoloader::register();
 
       $this->options = array(
-        'debug' => at_debug(),
+        'debug'       => at_debug(),
         'auto_reload' => at_debug(),
-        'autoescape' => FALSE,
-        'cache' => variable_get('file_temporary_path', FALSE),
+        'autoescape'  => FALSE,
+        'cache'       => variable_get('file_temporary_path', FALSE),
       );
 
       // Init the object
@@ -70,4 +72,5 @@ class Environment_Factory {
       return $loader;
     });
   }
+
 }

@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\Twig\Filters;
 
-class Cache_Filter {
+class CacheFilter {
+
   private $callback;
   private $arguments = array();
   private $options;
@@ -21,4 +23,5 @@ class Cache_Filter {
   public function render() {
     return at_cache($this->options, $this->callback, $this->arguments);
   }
+
 }
