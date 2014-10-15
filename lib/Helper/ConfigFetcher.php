@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\at_base\Helper;
 
 /**
@@ -12,11 +13,12 @@ namespace Drupal\at_base\Helper;
  * @todo  Remove duplication code — at_modules('at_base', …)
  * @todo  Support expression_language:evaluate() — check \Drupal\at_base\Hook\BlockInfo
  */
-class Config_Fetcher {
+class ConfigFetcher {
+
   public function getItems($module, $id, $key, $include_base = FALSE, $reset = FALSE) {
     $o = array(
-      'ttl' => '+ 1 year',
-      'id' => "ATConfig:{$module}:{$id}:{$key}:" . ($include_base ? 1 : 0),
+      'ttl'   => '+ 1 year',
+      'id'    => "ATConfig:{$module}:{$id}:{$key}:" . ($include_base ? 1 : 0),
       'reset' => $reset,
     );
 
@@ -40,8 +42,8 @@ class Config_Fetcher {
 
   public function getItem($module, $id, $key, $item_key, $include_base = FALSE, $reset = FALSE) {
     $o = array(
-      'ttl' => '+ 1 year',
-      'id' => "ATConfig:{$module}:{$id}:{$key}:{$item_key}:" . ($include_base ? 1 : 0),
+      'ttl'   => '+ 1 year',
+      'id'    => "ATConfig:{$module}:{$id}:{$key}:{$item_key}:" . ($include_base ? 1 : 0),
       'reset' => $reset,
     );
 
@@ -55,4 +57,5 @@ class Config_Fetcher {
       }
     }
   }
+
 }
