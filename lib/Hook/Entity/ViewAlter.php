@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\at_base\Hook\Entity;
 
 /**
@@ -31,7 +32,8 @@ namespace Drupal\at_base\Hook\Entity;
  * @todo  Test me
  * @todo  Update wiki
  */
-class View_Alter {
+class ViewAlter {
+
   protected $build;
   protected $entity_type;
   protected $bundle;
@@ -56,9 +58,7 @@ class View_Alter {
     }
 
     return str_replace(
-      array('%entity_type', '%entity_bundle', '%bundle', '%entity_id', '%id', '%mode', '%view_mode'),
-      array($this->entity_type, $this->bundle, $this->bundle, $this->id, $this->id, $this->view_mode, $this->view_mode),
-      $template
+      array('%entity_type', '%entity_bundle', '%bundle', '%entity_id', '%id', '%mode', '%view_mode'), array($this->entity_type, $this->bundle, $this->bundle, $this->id, $this->id, $this->view_mode, $this->view_mode), $template
     );
   }
 
@@ -66,7 +66,7 @@ class View_Alter {
     global $theme;
 
     if ($config = $this->getConfig()) {
-      $config['variables']  = isset($config['variables']) ? $config['variables'] : array();
+      $config['variables'] = isset($config['variables']) ? $config['variables'] : array();
       $config['variables'] += array('build' => $this->build);
 
       // Support token in template
@@ -95,13 +95,13 @@ class View_Alter {
   public function execute() {
     if ($build = $this->build()) {
       $this->build = array(
-        '#entity_type' => $this->entity_type,
-        '#bundle' => $this->bundle,
-        '#view_mode' => $this->view_mode,
-        '#language' => $this->build['#language'],
+        '#entity_type'       => $this->entity_type,
+        '#bundle'            => $this->bundle,
+        '#view_mode'         => $this->view_mode,
+        '#language'          => $this->build['#language'],
         '#contextual_links ' => !empty($this->build['#contextual_links']) ? $this->build['#contextual_links'] : NULL,
-        'at_base' => is_string($build) ? array('#markup' => $build) : $build,
-        '#build' => $this->build,
+        'at_base'            => is_string($build) ? array('#markup' => $build) : $build,
+        '#build'             => $this->build,
       );
     }
   }
@@ -111,7 +111,7 @@ class View_Alter {
    */
   public function getConfig() {
     $o = array(
-      'id' => "at_theming:entity_template:{$this->entity_type}:{$this->bundle}:{$this->view_mode}",
+      'id'  => "at_theming:entity_template:{$this->entity_type}:{$this->bundle}:{$this->view_mode}",
       'ttl' => '+ 1 year',
     );
     return at_cache($o, array($this, 'fetchConfig'));
@@ -132,9 +132,7 @@ class View_Alter {
     $config = at_config($module, 'entity_template')->get('entity_templates');
 
     foreach (array('entity_type', 'bundle', 'view_mode') as $k) {
-      $config = isset($config[$this->{$k}])
-                      ? $config[$this->{$k}]
-                      : (isset($config['all']) ? $config['all'] : NULL);
+      $config = isset($config[$this->{$k}]) ? $config[$this->{$k}] : (isset($config['all']) ? $config['all'] : NULL);
 
       if (is_null($config)) {
         return;
@@ -143,4 +141,5 @@ class View_Alter {
 
     return $config;
   }
+
 }
