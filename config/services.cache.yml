@@ -19,7 +19,7 @@ services:
       - { name: 'cache.warmer', weight: 100 }
 
   cache.warmer.entity:
-    class: 'Drupal\at_base\Cache\Warming\Warmer\Entity_Warmer'
+    class: 'Drupal\at_base\Cache\Warming\Warmer\EntityWarmer'
     tags:
       - { name: 'cache.warmer' }
 
