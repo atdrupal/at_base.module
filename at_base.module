@@ -251,7 +251,11 @@ function at_library($name, $version = 'default', $include_drupal_root = TRUE) {
     }
   }
 
-  throw new Exception("Missing library: {$name} (version {$version})");
+  $msg = "Missing library: {$name} (version {$version})";
+  if (at_debug()) {
+    $msg .= ' You can run `drush atr` to install missing dependencies.';
+  }
+  throw new Exception($msg);
 }
 
 /**
