@@ -24,6 +24,6 @@ services:
       - { name: 'cache.warmer' }
 
   cache.warmer.view:
-    class: 'Drupal\at_base\Cache\Warming\Warmer\View_Warmer'
+    class: 'Drupal\at_base\Cache\Warming\Warmer\ViewWarmer'
     tags:
       - { name: 'cache.warmer' }
