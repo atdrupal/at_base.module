@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\Helper\Content_Render;
 
-class Process_Call {
+class ProcessCall {
+
   private $before;
 
   public function __construct($before) {
@@ -36,4 +38,5 @@ class Process_Call {
       }
     }
   }
+
 }
