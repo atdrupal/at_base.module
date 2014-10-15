@@ -2,5 +2,5 @@ routes:
   atest_route/config:
     title: 'Test form/form arguments callback'
     access arguments: ['access content']
-    form: '\Drupal\at_base\Config\Admin_Form'
+    form: '\Drupal\at_base\Config\AdminForm'
     form arguments: [at_base, services, services]
