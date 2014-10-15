@@ -6,39 +6,28 @@ use Drupal\at_base\Helper\ContentRender;
 
 class Controller {
 
-  /**
-   * Content render
-   * @var \Drupal\at_base\Helper\ContentRender
-   */
+  /** @var ContentRender Content render */
   private $render;
 
-  /**
-   * Route definition.
-   *
-   * @var array
-   */
+  /** @var array Route definition. */
   private $route;
 
-  /**
-   * Menu item for request.
-   *
-   * @var array
-   */
+  /** @var array Menu item for request. */
   private $menu_item;
 
   /**
-   * @param \Drupal\at_base\Helper\ContentRender $ContentRender
+   * @param ContentRender $ContentRender
    * @param string $request_path Request path — Example: user/login
    */
   public function __construct($ContentRender, $request_path) {
-      $this->render = $ContentRender;
-      $this->menu_item = menu_get_item($request_path);
+    $this->render = $ContentRender;
+    $this->menu_item = menu_get_item($request_path);
   }
 
   /**
    * Page callback for routes.
    *
-   * @see \Drupal\at_base\Route\RouteToMenu
+   * @see RouteToMenu
    */
   public static function pageCallback() {
     $args = func_get_args();
@@ -48,8 +37,8 @@ class Controller {
     $render = at_container('helper.ContentRender');
 
     return at_id(new static($render, filter_input(INPUT_GET, 'q', FILTER_SANITIZE_STRING)))
-            ->setRoute($route)
-            ->execute();
+        ->setRoute($route)
+        ->execute();
   }
 
   /**
