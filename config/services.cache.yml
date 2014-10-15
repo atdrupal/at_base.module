@@ -4,7 +4,7 @@ services:
     arguments: ['@wrapper.db', '@wrapper.cache']
 
   cache.tag_discover:
-    class: 'Drupal\at_base\Cache\Warming\Tag_Discover'
+    class: 'Drupal\at_base\Cache\Warming\TagDiscover'
 
   # ---------------------
   # Warmers

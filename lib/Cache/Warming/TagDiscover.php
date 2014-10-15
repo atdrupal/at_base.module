@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\Cache\Warming;
 
-class Tag_Discover {
+class TagDiscover {
+
   private $event_name;
 
   public function setEventName($event_name) {
@@ -19,4 +21,5 @@ class Tag_Discover {
 
     return array();
   }
+
 }
