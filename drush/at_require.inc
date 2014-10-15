@@ -1,19 +1,20 @@
 <?php
+
 /**
  * @file ./drush/at_reqruire.inc
  */
-
-use \Drupal\at_base\Drush\Command\AtRequire as AtRequireCommand;
-use \Drupal\at_base\Drush\Command\AtRequireSpyc as AtRequireSpycCommand;
-use \Drupal\at_base\Drush\Command\AtRequire\DependencyFetcher;
+use Drupal\at_base\Drush\Command\AtRequire as AtRequireCommand;
+use Drupal\at_base\Drush\Command\AtRequire\DependencyFetcher;
 
 class DrushMakeProject_AtRequire_Library extends \DrushMakeProject_Library {
+
   /**
    * Override default value of parent.
    */
   protected function generatePath($base = TRUE) {
     return parent::generatePath($base = FALSE);
   }
+
 }
 
 /**
@@ -38,15 +39,14 @@ function drush_at_require_pm_enable_pre_validate($module) {
 # ---------------------
 # Hack to download required depedencies
 # ---------------------
-
 // YAML reader must be available
 if (!function_exists('yaml_parse') && !is_file(DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php')) {
   $name = 'spyc';
   $info = array(
-    'type' => 'library',
+    'type'     => 'library',
     'download' => array(
-      'type' => 'git',
-      'url' => 'https://github.com/mustangostang/spyc.git',
+      'type'     => 'git',
+      'url'      => 'https://github.com/mustangostang/spyc.git',
       'revision' => 'b7fd7f7a4ddd70c4d599a023fcda3e2b9a20d4b9',
     ),
   );
@@ -72,7 +72,7 @@ if (function_exists('drupal_get_path')) {
     try {
       at_library($name);
     }
-    catch (\Exception $e) {
+    catch (Exception $e) {
       if (empty($working_copy) && !empty($info['options']['working-copy'])) {
         // Apply working copy option for each library.
         drush_set_option('working-copy', TRUE);

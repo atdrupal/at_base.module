@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file at_base.misc.inc
  *
@@ -10,9 +11,13 @@
  */
 function at_valid($key, $get_value = FALSE) {
   $c = strtoupper($key);
-  if (defined($c)) $return = constant($c);
-  else $return = variable_get($key, FALSE);
-  return $get_value ? $return : (boolean)($return);
+  if (defined($c)) {
+    $return = constant($c);
+  }
+  else {
+    $return = variable_get($key, FALSE);
+  }
+  return $get_value ? $return : (boolean) ($return);
 }
 
 /**
@@ -25,6 +30,7 @@ function at_debug() {
 }
 
 if (!function_exists('yaml_parse')) {
+
   /**
    * Read YAML file.
    *
@@ -42,12 +48,15 @@ if (!function_exists('yaml_parse')) {
 
     return spyc_load_file($path);
   }
+
 }
 
 if (!function_exists('yaml_emit')) {
+
   function yaml_emit($data) {
     return spyc_dump($data);
   }
+
 }
 
 /**
@@ -74,9 +83,11 @@ function at_fn_fake($fn, $callback) {
  *  echo at_fn::time(); // same to $time + 3600
  */
 class at_fake {
+
   public static function __callStatic($fn, $args) {
     $GLOBALS['conf']["atfn:{$fn}"] = $args[0];
   }
+
 }
 
 /**
@@ -112,11 +123,11 @@ function at_form_submit($form, &$form_state) {
  */
 function at_form($form, &$form_state) {
   // Get the variables from arguments
-  $args       = func_get_args();
-  $form       = array_shift($args);
+  $args = func_get_args();
+  $form = array_shift($args);
   $form_state = array_shift($args);
-  $class      = array_shift($args);
-  $args       = reset($args);
+  $class = array_shift($args);
+  $args = reset($args);
 
   // Build the form
   $obj = at_newv($class, $args);

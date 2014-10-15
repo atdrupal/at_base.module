@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file at_base.missing.inc
  *
@@ -24,7 +25,7 @@ function at_base_node_update($node) {
  * checking.
  *
  * at_user_access_or('administer content', 'edit any page node', $account);
- * 
+ *
  * @return bool
  */
 function at_user_access_or() {
@@ -56,7 +57,7 @@ function at_user_access_or() {
  * checking.
  *
  * at_user_access_and('view page node', 'edit any page node', $account);
- * 
+ *
  * @return bool
  */
 function at_user_access_and() {
@@ -84,6 +85,7 @@ function at_user_access_and() {
 }
 
 if (!function_exists('entity_bundle')) {
+
   /**
    * Get bundle value of an entity.
    *
@@ -98,4 +100,5 @@ if (!function_exists('entity_bundle')) {
       return isset($entity->$key) ? $entity->$key : NULL;
     }
   }
+
 }

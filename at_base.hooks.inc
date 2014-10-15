@@ -1,14 +1,17 @@
 <?php
+
 /**
  * @file at_base.hooks.inc
  *
  * Drupal hook implementations.
  */
-
-use \Drupal\at_base\Route\Importer as RouteImporter;
-use \Drupal\at_base\Hook\Menu as HookMenu;
-use \Drupal\at_base\Hook\PageBuild as Hook_Page_Build;
-use \Drupal\at_base\Hook\Entity\ViewAlter as Hook_Entity_View_Alter;
+use Drupal\at_base\Hook\BlockInfo;
+use Drupal\at_base\Hook\BlockView;
+use Drupal\at_base\Hook\Entity\ViewAlter as HookEntityViewAlter;
+use Drupal\at_base\Hook\FlushCache;
+use Drupal\at_base\Hook\Menu as HookMenu;
+use Drupal\at_base\Hook\PageBuild as HookPageBuild;
+use Drupal\at_base\Route\Controller;
 
 /**
  * Implements hook_menu()
@@ -25,7 +28,7 @@ function at_base_menu() {
  * @tag autoload
  */
 function at_base_flush_caches() {
-  at_id(new \Drupal\at_base\Hook\FlushCache())->execute();
+  at_id(new FlushCache())->execute();
 }
 
 /**
@@ -38,21 +41,21 @@ function at_base_modules_enabled($modules) {
   at_modules('at_base', TRUE);
 
   // Rebuild module weight
-  at_id(new Drupal\at_base\Hook\FlushCache())->fixModuleWeight();
+  at_id(new FlushCache())->fixModuleWeight();
 }
 
 /**
  * Implements hook_block_info()
  */
 function at_base_block_info() {
-  return at_id(new \Drupal\at_base\Hook\BlockInfo())->import();
+  return at_id(new BlockInfo())->import();
 }
 
 /**
  * Implements hook_block_view
  */
 function at_base_block_view($delta) {
-  return at_id(new \Drupal\at_base\Hook\BlockView($delta))->view();
+  return at_id(new BlockView($delta))->view();
 }
 
 /**
@@ -74,12 +77,14 @@ function at_base_entity_view($entity, $type, $view_mode, $langcode) {
 }
 
 if (defined('AT_BASE_ENTITY_TEMPLATE') && constant('AT_BASE_ENTITY_TEMPLATE')) {
+
   /**
    * Implements hook_entity_view_alter()
    */
   function at_base_entity_view_alter(&$build, $entity_type) {
-    at_id(new Hook_Entity_View_Alter($build, $entity_type))->execute();
+    at_id(new HookEntityViewAlter($build, $entity_type))->execute();
   }
+
 }
 
 /**
@@ -142,11 +147,11 @@ function at_base_user_logout($account) {
  *
  * Renders blocks into their regions.
  *
- * @see Drupal\at_base\Route\Controller::prepareContextBlocks()
+ * @see Controller::prepareContextBlocks()
  */
 function at_base_page_build(&$page) {
   if (at_container('container')->offsetExists('page.blocks')) {
-    at_id(new Hook_Page_Build($page, at_container('page.blocks')))->execute();
+    at_id(new HookPageBuild($page, at_container('page.blocks')))->execute();
   }
 
   at_container('breadcrumb_api')->pageBuild();
