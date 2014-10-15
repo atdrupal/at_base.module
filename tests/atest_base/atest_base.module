@@ -3,6 +3,7 @@
 define('ATEST_AUTHOR', 'Andy Truong');
 
 class At_Base_Test_Class {
+
   private $name = 'Andy Truong';
 
   public function __construct($name = NULL) {
@@ -11,9 +12,13 @@ class At_Base_Test_Class {
     }
   }
 
-  public function __invoke() {}
+  public function __invoke() {
 
-  public function foo() {}
+  }
+
+  public function foo() {
+
+  }
 
   public function hi($name) {
     return $this->hello($name);
@@ -38,6 +43,7 @@ class At_Base_Test_Class {
   public static function staticGetVariables() {
     return atest_variables();
   }
+
 }
 
 function atest_base_hello($name = 'Andy Truong') {
