@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\at_base\Config;
 
 interface ResolverInterface {
@@ -14,5 +15,6 @@ interface ResolverInterface {
    * @return string|false
    */
   public function getPath();
+
   public function fetchData();
 }

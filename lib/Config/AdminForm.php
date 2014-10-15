@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\Config;
 
 class AdminForm {
+
   private $config;
 
   /**
@@ -37,10 +39,10 @@ class AdminForm {
     $form = $this->form;
 
     $form['at_config_item'] = array(
-      '#type' => 'textarea',
+      '#type'          => 'textarea',
       '#default_value' => json_encode($this->config->getAll()),
-      '#prefix' => '<iframe src="'. $iframe .'" style="width: 100%; height: 500px;"></iframe>',
-      '#suffix' => '<noscript>Require javascript enabled</noscript>',
+      '#prefix'        => '<iframe src="' . $iframe . '" style="width: 100%; height: 500px;"></iframe>',
+      '#suffix'        => '<noscript>Require javascript enabled</noscript>',
     );
 
     $form['at_config_submit'] = array('#type' => 'submit', '#value' => t('Save'));
@@ -71,4 +73,5 @@ class AdminForm {
     $this->config->setAll($json);
     $this->config->write();
   }
+
 }

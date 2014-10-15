@@ -5,6 +5,7 @@ namespace Drupal\at_base\Tests\Unit;
 use Drupal\at_base\Helper\Test\UnitTestCase;
 
 class ServiceContentRenderTest extends UnitTestCase {
+
   public function getInfo() {
     return array('name' => 'AT Unit: Test helper.ContentRender service') + parent::getInfo();
   }
@@ -37,6 +38,7 @@ class ServiceContentRenderTest extends UnitTestCase {
     $output = $this->render->render($data);
     $this->assertEqual('Hello Andy Truong', $output);
   }
+
   public function testTemplateStringEmptyReturn() {
     $data = array();
     $data['template_string'] = '{% if false %}Empty return{% endif %}';
@@ -80,4 +82,5 @@ class ServiceContentRenderTest extends UnitTestCase {
     $data['controller'] = array('At_Base_Test_Class', 'hi');
     $this->assertEqual($expected, $this->render->render($data));
   }
+
 }

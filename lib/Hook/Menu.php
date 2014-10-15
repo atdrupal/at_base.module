@@ -1,9 +1,11 @@
 <?php
+
 namespace Drupal\at_base\Hook;
 
 use Drupal\at_base\Route\RouteToMenu;
 
 class Menu {
+
   private $items;
 
   /**
@@ -48,4 +50,5 @@ class Menu {
       drupal_set_message($msg, 'error');
     }
   }
+
 }

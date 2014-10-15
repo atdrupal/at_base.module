@@ -8,6 +8,7 @@ namespace Drupal\at_base\KV;
  * Mostly copied from Drupal\Core\KeyValueStore\DatabaseStorageExpirable
  */
 class Expirable extends \Drupal\at_base\KV {
+
   public function __construct($collection, $table = 'at_kv_expire') {
     parent::__construct($collection, $table);
   }
@@ -69,4 +70,5 @@ class Expirable extends \Drupal\at_base\KV {
       $this->setWithExpire($key, $value, $expire);
     }
   }
+
 }

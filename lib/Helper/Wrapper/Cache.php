@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\Helper\Wrapper;
 
 class Cache {
+
   public function get($cid, $bin = 'cache') {
     return cache_get($cid, $bin);
   }
@@ -13,4 +15,5 @@ class Cache {
   public function clearAll($cid = NULL, $bin = NULL, $wildcard = FALSE) {
     cache_clear_all($cid, $bin, $wildcard);
   }
+
 }

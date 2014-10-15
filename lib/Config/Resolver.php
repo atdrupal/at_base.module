@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\Config;
 
 class Resolver implements ResolverInterface {
+
   /**
    * @var Config
    */
@@ -142,4 +144,5 @@ class Resolver implements ResolverInterface {
     }
     throw new \Exception('Configuration directory is not writable');
   }
+
 }

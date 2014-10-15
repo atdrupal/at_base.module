@@ -7,6 +7,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
  * Class for type hint.
  */
 class AT {
+
   protected static $container;
 
   /**
@@ -24,7 +25,7 @@ class AT {
    * @return \Twig_Environment
    */
   public static function twig() {
-      return at_container('twig');
+    return at_container('twig');
   }
 
   /**
@@ -52,4 +53,5 @@ class AT {
 
     return $engine;
   }
+
 }

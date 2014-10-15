@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\Cache\Warming\Warmer;
 
 class ViewWarmer implements WarmerInterface {
+
   public function __construct() {
     views_include_handlers();
     module_load_include('inc', 'views', 'plugins/views_plugin_cache');
@@ -21,23 +23,32 @@ class ViewWarmer implements WarmerInterface {
       $cache->cache_flush();
     }
   }
+
 }
 
 if (class_exists('views_plugin_cache')) {
+
   class views_plugin_cache extends \views_plugin_cache {
+
     public function __construct($view, $display) {
       $this->view = $view;
       $this->display = $display;
       $this->set_default_options();
     }
+
   }
+
 }
 else {
+
   class views_plugin_cache {
+
     public function __construct($view, $display) {
       $this->view = $view;
       $this->display = $display;
       $this->set_default_options();
     }
+
   }
+
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\at_base\Twig;
 
 use \Drupal\at_base\Twig\Filters as Twig_Filters;
@@ -10,6 +11,7 @@ use \Drupal\at_base\Twig\Functions as Twig_Functions;
  * @todo  Convert this to tagged-service.
  */
 class Extension extends \Twig_Extension {
+
   public function getName() {
     return 'AT Base';
   }
@@ -34,7 +36,7 @@ class Extension extends \Twig_Extension {
     global $user;
 
     return array(
-      'user' => $user,
+      'user'         => $user,
       'request_path' => request_path(),
     );
   }

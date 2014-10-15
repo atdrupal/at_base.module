@@ -18,6 +18,7 @@ namespace Drupal\at_base\Cache\Warming;
  * @code
  */
 class Warmer {
+
   private $tag_discover;
   private $tag_flusher;
   private $warmers;
@@ -73,4 +74,5 @@ class Warmer {
 
     $this->tag_flusher->flush();
   }
+
 }

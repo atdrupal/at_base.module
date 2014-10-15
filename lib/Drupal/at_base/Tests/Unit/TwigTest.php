@@ -8,6 +8,7 @@ use Drupal\at_base\Helper\Test\UnitTestCase;
  * drush test-run --dirty 'Drupal\at_base\Tests\Unit\TwigTest'
  */
 class TwigTest extends UnitTestCase {
+
   public function getInfo() {
     return array('name' => 'AT Unit: Twig') + parent::getInfo();
   }
@@ -84,4 +85,5 @@ class TwigTest extends UnitTestCase {
     $this->assertEqual($expected, $twig->render("{{ atest_2('Drupal') }}"));
     $this->assertEqual($expected, $twig->render("{{ atest_3('Drupal') }}"));
   }
+
 }

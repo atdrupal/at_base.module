@@ -6,6 +6,7 @@ use \Drupal\at_base\Helper\Test\UnitTestCase;
 use \Drupal\at_base\Helper\ModulesFetcher;
 
 class ConfigTest extends UnitTestCase {
+
   public function getInfo() {
     return array('name' => 'AT Unit: Config') + parent::getInfo();
   }
@@ -41,7 +42,7 @@ class ConfigTest extends UnitTestCase {
     $config = at_config('atest_config', '/import_resources');
     $this->assertEqual('imported_data', $config->get('imported_data'));
     $array_data = $config->get('array_data');
-    $this->assertEqual('A',   $array_data['a']);
+    $this->assertEqual('A', $array_data['a']);
     $this->assertEqual('CCC', $array_data['c']);
   }
 
@@ -70,7 +71,7 @@ class ConfigTest extends UnitTestCase {
 
     $expected = array(
       'condition' => array('name', 'atest_base'),
-      'fields' => array('weight' => 10)
+      'fields'    => array('weight' => 10)
     );
 
     $this->assertTrue(in_array($expected['condition'], $db_log['condition']));
@@ -109,4 +110,5 @@ class ConfigTest extends UnitTestCase {
     $actual = at_id(new ModulesFetcher('at_base', $config_file = 'un_real_config_file'))->fetch($enabled_modules);
     $this->assertEqual($expected, $actual);
   }
+
 }

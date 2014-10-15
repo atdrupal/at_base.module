@@ -9,6 +9,7 @@ namespace Drupal\at_base\Twig\Filters;
  * @todo  Test pager option.
  */
 class Views extends ViewsBase {
+
   public function __construct() {
     $args = func_get_args();
 
@@ -78,4 +79,5 @@ class Views extends ViewsBase {
     template_preprocess_views_view($vars);
     return at_container('twig')->render($this->template, $vars);
   }
+
 }

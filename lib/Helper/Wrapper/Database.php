@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\Helper\Wrapper;
 
 class Database {
+
   /**
    * @param  string $table
    */
@@ -43,4 +45,5 @@ class Database {
   public function query($query, array $args = array(), array $options = array()) {
     return db_query($query, $args, $options);
   }
+
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\at_base\Helper;
 
 /**
@@ -8,6 +9,7 @@ namespace Drupal\at_base\Helper;
  * @code
  */
 class SubRequest {
+
   private $path;
   private $original_path;
 
@@ -46,4 +48,5 @@ class SubRequest {
 
     return menu_execute_active_handler($this->path, $deliver = FALSE);
   }
+
 }

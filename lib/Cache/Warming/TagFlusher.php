@@ -10,6 +10,7 @@ namespace Drupal\at_base\Cache\Warming;
  *  at_container('cache.tag_flusher')->flush($tags);
  */
 class TagFlusher {
+
   protected $db;
   protected $cache;
   protected $tags = array();
@@ -52,10 +53,10 @@ class TagFlusher {
    */
   protected function clearCachedItems() {
     $items = $this->db->select('at_base_cache_tag', 'atag')
-              ->fields('atag', array('bin', 'cid'))
-              ->condition('tag', $this->tags)
-              ->execute()
-              ->fetchAll();
+      ->fields('atag', array('bin', 'cid'))
+      ->condition('tag', $this->tags)
+      ->execute()
+      ->fetchAll();
 
     foreach ($items as $item) {
       $this->cache->clearAll($item->cid, $item->bin);
@@ -71,4 +72,5 @@ class TagFlusher {
       ->execute()
     ;
   }
+
 }

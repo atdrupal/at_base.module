@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\Config;
 
 class Config {
+
   /**
    * Module name.
    *
@@ -126,4 +128,5 @@ class Config {
   public function write() {
     $this->resolver->writeData($this->config_data);
   }
+
 }

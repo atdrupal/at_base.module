@@ -6,6 +6,7 @@ namespace Drupal\at_base\Container;
  * Help to find service defintions, convert them to real object.
  */
 class ServiceResolver {
+
   /**
    * Get service definition in configuration files.
    *

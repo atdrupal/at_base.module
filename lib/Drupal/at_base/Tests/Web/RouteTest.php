@@ -8,11 +8,12 @@ namespace Drupal\at_base\Tests\Web;
  * drush test-run --dirty 'Drupal\at_base\Tests\Web\RouteTest'
  */
 class RouteTest extends \DrupalWebTestCase {
+
   public function getInfo() {
     return array(
-      'name' => 'AT Base: Route',
+      'name'        => 'AT Base: Route',
       'description' => 'Make sure the routing feature is working correctly.',
-      'group' => 'AT Web',
+      'group'       => 'AT Web',
     );
   }
 
@@ -100,4 +101,5 @@ class RouteTest extends \DrupalWebTestCase {
     $this->assertTrue(FALSE !== strpos($output, 'Fancy block'));
     $this->assertTrue(FALSE !== strpos($output, 'Hey Andy!'));
   }
+
 }

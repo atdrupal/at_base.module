@@ -6,6 +6,7 @@ namespace Drupal\at_base\Twig\Filters;
  * Callback for drupalBlock filter.
  */
 class Block {
+
   /**
    * Block object.
    *
@@ -81,4 +82,5 @@ class Block {
 
     return array($module, $delta);
   }
+
 }

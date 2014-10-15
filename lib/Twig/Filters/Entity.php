@@ -10,6 +10,7 @@ namespace Drupal\at_base\Twig\Filters;
  *     {{ 'user:1' | drupalEntity }}
  */
 class Entity {
+
   private $entity_type;
   private $entity_id;
   private $view_mode;

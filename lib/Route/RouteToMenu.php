@@ -3,6 +3,7 @@
 namespace Drupal\at_base\Route;
 
 class RouteToMenu {
+
   /**
    * @var string
    */
@@ -29,7 +30,7 @@ class RouteToMenu {
    * @param array $route_data
    */
   public function __construct($module, $route_name, $route_data) {
-    $this->module     = $module;
+    $this->module = $module;
     $this->route_name = $route_name;
     $this->route_data = $route_data;
   }
@@ -39,7 +40,7 @@ class RouteToMenu {
    */
   public function convert(&$error = '') {
     $this->menu_item = $this->route_data + array(
-      'pattern' => $this->route_name,
+      'pattern'   => $this->route_name,
       'file path' => drupal_get_path('module', $this->module)
     );
 
@@ -82,8 +83,8 @@ class RouteToMenu {
 
   private function validate(&$error) {
     return at_data(
-              at_config('at_base', 'schema/route')->getAll(),
-              $this->menu_item)
-            ->validate($error);
+          at_config('at_base', 'schema/route')->getAll(), $this->menu_item)
+        ->validate($error);
   }
+
 }

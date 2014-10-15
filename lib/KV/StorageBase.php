@@ -3,6 +3,7 @@
 namespace Drupal\at_base\KV;
 
 abstract class StorageBase {
+
   /**
    * @var string
    */
@@ -28,4 +29,5 @@ abstract class StorageBase {
   public function delete($key) {
     $this->deleteMultiple(array($key));
   }
+
 }

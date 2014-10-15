@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base;
 
 class Cache {
+
   /**
    * Cache bin
    * @var string
@@ -70,11 +72,11 @@ class Cache {
 
   public function setOptions($options) {
     $defaults = array(
-      'bin' => 'cache',
-      'id' => '',
-      'ttl' => '+ 15 minutes',
+      'bin'   => 'cache',
+      'id'    => '',
+      'ttl'   => '+ 15 minutes',
       'reset' => FALSE,
-      'tags' => array());
+      'tags'  => array());
 
     foreach ($defaults as $k => $v) {
       $this->{$k} = isset($options[$k]) ? $options[$k] : $v;

@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\at_base;
 
 at_id(new Autoloader('Drupal'))->register();
@@ -87,4 +88,5 @@ class Autoloader {
 
     require $fileName;
   }
+
 }

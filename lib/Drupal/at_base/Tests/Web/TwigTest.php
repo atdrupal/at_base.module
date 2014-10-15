@@ -6,11 +6,12 @@ namespace Drupal\at_base\Tests\Web;
  * drush test-run --dirty 'Drupal\at_base\Tests\Web\TwigTest'
  */
 class TwigTest extends \DrupalWebTestCase {
+
   public function getInfo() {
     return array(
-      'name' => 'AT Base: Twig Service',
+      'name'        => 'AT Base: Twig Service',
       'description' => 'Test Twig service',
-      'group' => 'AT Web'
+      'group'       => 'AT Web'
     );
   }
 
@@ -24,9 +25,9 @@ class TwigTest extends \DrupalWebTestCase {
     $this->assertTrue(strpos($output, 'History'), 'Found text "History"');
     $this->assertTrue(strpos($output, 'Member for'), 'Found text: "Member for"');
 
-    $output  = "{% set o = { template: '@atest_base/templates/entity/user.html.twig' } %}";
+    $output = "{% set o = { template: '@atest_base/templates/entity/user.html.twig' } %}";
     $output .= "{{ 'user:1'|drupalEntity(o) }}";
-    $output  = @at_container('twig_string')->render($output);
+    $output = @at_container('twig_string')->render($output);
     $this->assertTrue(strpos($output, 'History'), 'Found text "History"');
     $this->assertTrue(strpos($output, 'Member for'), 'Found text: "Member for"');
     $this->assertTrue(strpos($output, '@atest_base/templates/entity/user.html.twig'), 'Found text: path to template');
@@ -61,6 +62,7 @@ class TwigTest extends \DrupalWebTestCase {
     $output = $twig->render("{{ 'atest_theming_user'|drupalView({arguments: [11111]}) }}");
     $this->assertTrue(strpos($output, 'views-field views-field-name') === FALSE);
   }
+
 }
 
 // class At_Base_Cache_Views_Warmer extends DrupalWebTestCase {

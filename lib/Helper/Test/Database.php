@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\Helper\Test;
 
 class Database {
+
   static $log;
   static $last_method = 'unknown_method';
   static $last_table = 'unknown_table';
@@ -56,4 +58,5 @@ class Database {
   public function resetLog() {
     self::$log = array();
   }
+
 }

@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\Drush\Command\AtRequire;
 
 class DependencyFetcher {
+
   private $name;
   private $info;
   private $contrib_destination;
@@ -73,16 +75,17 @@ class DependencyFetcher {
 
   private function _fetchDependency($contrib_destination = 'sites/all') {
     $this->info += array(
-      'type' => $this->info['type'],
-      'destination' => $this->getDestination(),
-      'name' => $this->name,
-      'build_path' => DRUPAL_ROOT,
-      'make_directory' => DRUPAL_ROOT,
+      'type'                => $this->info['type'],
+      'destination'         => $this->getDestination(),
+      'name'                => $this->name,
+      'build_path'          => DRUPAL_ROOT,
+      'make_directory'      => DRUPAL_ROOT,
       'contrib_destination' => $contrib_destination,
-      'directory_name' => $this->name,
+      'directory_name'      => $this->name,
     );
 
     $class = \DrushMakeProject::getInstance('AtRequire_Library', $this->info);
     $class->make();
   }
+
 }

@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\Cache\Warming\Warmer;
 
 class EntityWarmer implements WarmerInterface {
+
   private $entity_info;
   private $entity_type;
   private $entity;
@@ -10,6 +12,7 @@ class EntityWarmer implements WarmerInterface {
   private $tokens = array('%entity_type', '%type', '%entity_bundle', '%bundle', '%entity_id', '%id');
 
   public function __construct() {
+
   }
 
   public function validateTag($tag) {
@@ -37,11 +40,11 @@ class EntityWarmer implements WarmerInterface {
       throw new \Exception('Missing entity object or entity ID.');
     }
 
-    $this->entity_info   = $info;
-    $this->entity_type   = $context['entity_type'];
-    $this->entity        = $context['entity'];
+    $this->entity_info = $info;
+    $this->entity_type = $context['entity_type'];
+    $this->entity = $context['entity'];
     $this->entity_bundle = !empty($info['entity keys']['bundle']) ? $this->entity->{$info['entity keys']['bundle']} : '';
-    $this->entity_id     = $this->entity->{$info['entity keys']['id']};
+    $this->entity_id = $this->entity->{$info['entity keys']['id']};
   }
 
   private function getTagFind() {
@@ -71,4 +74,5 @@ class EntityWarmer implements WarmerInterface {
 
     return $tag;
   }
+
 }

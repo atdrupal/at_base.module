@@ -1,10 +1,12 @@
 <?php
+
 namespace Drupal\at_base\Twig\Filters;
 
 /**
  * Callback for at_config filter.
  */
 class ATConfig {
+
   private $module;
   private $id;
   private $key;
@@ -16,4 +18,5 @@ class ATConfig {
   public function render() {
     return at_config($this->module, $this->id)->get($this->key);
   }
+
 }

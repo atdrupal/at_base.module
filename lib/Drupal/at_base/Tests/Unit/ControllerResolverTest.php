@@ -8,6 +8,7 @@ use Drupal\at_base\Helper\Test\UnitTestCase;
  * drush test-run --dirty 'Drupal\at_base\Tests\Unit\ControllerResolverTest'
  */
 class ControllerResolverTest extends UnitTestCase {
+
   private $resolver;
 
   public function getInfo() {
@@ -63,4 +64,5 @@ class ControllerResolverTest extends UnitTestCase {
     $actual = $this->resolver->get($definition);
     $this->assertEqual($expected, get_class($actual));
   }
+
 }

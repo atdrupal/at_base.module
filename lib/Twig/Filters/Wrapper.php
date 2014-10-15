@@ -8,8 +8,9 @@ namespace Drupal\at_base\Twig\Filters;
  * @see Drupal\at_base\Twig\FilterFetcher::makeContructiveClassBasedFilter()
  */
 class Wrapper {
+
   public static function __callStatic($name, $arguments) {
-    $def = at_container('helper.config_fetcher')->getItem('at_base', 'twig_filters', 'twig_filters' , "__{$name}", TRUE);
+    $def = at_container('helper.config_fetcher')->getItem('at_base', 'twig_filters', 'twig_filters', "__{$name}", TRUE);
 
     if (!$def) {
       throw new \Exception("Can not find definition for Twig filter: {$name}");
@@ -18,4 +19,5 @@ class Wrapper {
     list($class, $method) = $def;
     return at_newv($class, $arguments)->{$method}();
   }
+
 }

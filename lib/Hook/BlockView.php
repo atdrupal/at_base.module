@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\Hook;
 
 class BlockView {
+
   private $module;
   private $key;
   private $is_dynamic;
@@ -20,7 +22,7 @@ class BlockView {
     }
   }
 
-  public function view () {
+  public function view() {
     $info = $this->getInfo();
     $render = at_container('helper.ContentRender');
 
@@ -30,7 +32,7 @@ class BlockView {
         $block[$k] = $render->render($info[$k]);
       }
       catch (\Exception $e) {
-        $block[$k] = $e->getMessage();;
+        $block[$k] = $e->getMessage();
       }
     }
 
@@ -56,4 +58,5 @@ class BlockView {
   public static function setDynamicData($key, $value) {
     self::$dynamic_data[$key] = $value;
   }
+
 }

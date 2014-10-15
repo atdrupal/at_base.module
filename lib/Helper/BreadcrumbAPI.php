@@ -1,10 +1,12 @@
 <?php
+
 namespace Drupal\at_base\Helper;
 
 /**
  * Callback for breadcrumb_api service.
  */
 class BreadcrumbAPI {
+
   /**
    * Load breadcrumb configuration for a specific entity/view module. If
    *   configuraiton is available, set it to service container.
@@ -39,7 +41,7 @@ class BreadcrumbAPI {
    * @return null
    */
   public function checkEntityConfig($entity, $type, $view_mode, $langcode) {
-    $cache_options = array('id' => "atbc:{$type}:". at_fn('entity_bundle', $type, $entity) .":{$view_mode}");
+    $cache_options = array('id' => "atbc:{$type}:" . at_fn('entity_bundle', $type, $entity) . ":{$view_mode}");
     $cache_callback = array($this, 'fetchEntityConfig');
     $cache_arguments = func_get_args();
 
@@ -61,7 +63,7 @@ class BreadcrumbAPI {
   }
 
   public function checkPathConfig() {
-    $path_config = at_cache('atbc:paths', function(){
+    $path_config = at_cache('atbc:paths', function() {
       $items = array();
       foreach (at_modules('at_base', 'breadcrumb') as $module) {
         $config = at_config($module, 'breadcrumb')->get('breadcrumb');
@@ -91,7 +93,7 @@ class BreadcrumbAPI {
   public function set(array $config) {
     if ($_config = $this->get()) {
       $old_weight = isset($_config['weight']) ? $_config['weight'] : 0;
-      $new_weight = isset($config['weight'])  ? $config['weight']  : 0;
+      $new_weight = isset($config['weight']) ? $config['weight'] : 0;
       if ($new_weight <= $old_weight) {
         at_container('container')->offsetSet('breadcrumb', $config);
       }
@@ -154,4 +156,5 @@ class BreadcrumbAPI {
 
     drupal_set_breadcrumb($bc);
   }
+
 }

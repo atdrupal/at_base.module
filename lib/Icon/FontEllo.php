@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\Icon;
 
 class FontEllo extends FontElloBase {
+
   /**
    * Get Icon instance with information to generate icon tag.
    *
@@ -39,9 +41,7 @@ class FontEllo extends FontElloBase {
     }
 
     return new Icon(
-      $class = 'icon-' . $font_name . '-' . $name,
-      $tag   = 'i',
-      $text  = '');
+      $class = 'icon-' . $font_name . '-' . $name, $tag = 'i', $text = '');
   }
 
   private function includeCSS($included_css) {
@@ -64,4 +64,5 @@ class FontEllo extends FontElloBase {
       return '\\' . dechex($icon_config['code']);
     }
   }
+
 }

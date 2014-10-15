@@ -3,6 +3,7 @@
 namespace Drupal\at_base\Icon;
 
 abstract class FontElloBase implements IconSourceInterface {
+
   public function getName() {
     return 'Fontello';
   }
@@ -119,7 +120,7 @@ abstract class FontElloBase implements IconSourceInterface {
       $included[$name] = TRUE;
 
       $css[] = array(
-        'data' => ".icon-$font_name-$name:before { content: '$unicode_char'; }",
+        'data'    => ".icon-$font_name-$name:before { content: '$unicode_char'; }",
         'options' => array('type' => 'inline')
       );
     }
@@ -142,7 +143,7 @@ abstract class FontElloBase implements IconSourceInterface {
       $fontello_library_path = at_library('fontello', NULL, FALSE);
       $css[] = $fontello_library_path . 'assets/icons/src/css/animation.css';
       $css[] = array(
-        'data' => $fontello_library_path . 'assets/icons/src/css/icons-ie7.css',
+        'data'    => $fontello_library_path . 'assets/icons/src/css/icons-ie7.css',
         'options' => array('browsers' => array('IE' => 'IE 7', '!IE' => FALSE))
       );
       $included = TRUE;
@@ -169,7 +170,7 @@ abstract class FontElloBase implements IconSourceInterface {
       $included[$font_name] = TRUE;
 
       $css[] = array(
-        'data' => at_container('twig')->render('@at_base/templates/fontello.css.twig', array(
+        'data'    => at_container('twig')->render('@at_base/templates/fontello.css.twig', array(
           'name' => $font_name,
           'path' => $base_path . $font_path,
         )),
@@ -179,4 +180,5 @@ abstract class FontElloBase implements IconSourceInterface {
 
     return $css;
   }
+
 }

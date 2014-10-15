@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\Helper\Test;
 
 class Cache {
+
   static $data;
 
   /**
@@ -16,12 +18,12 @@ class Cache {
   }
 
   public function set($cid, $data, $bin = 'cache', $expire = \CACHE_PERMANENT) {
-    self::$data[$bin][$cid] = (object)array(
-      'cid' => $cid,
-      'data' => $data,
-      'created' => time(),
-      'expire' => $expire,
-      'serialized' => !is_string($data) && !is_numeric($data),
+    self::$data[$bin][$cid] = (object) array(
+        'cid'        => $cid,
+        'data'       => $data,
+        'created'    => time(),
+        'expire'     => $expire,
+        'serialized' => !is_string($data) && !is_numeric($data),
     );
   }
 
@@ -33,4 +35,5 @@ class Cache {
       unset(self::$data[$bin][$cid]);
     }
   }
+
 }

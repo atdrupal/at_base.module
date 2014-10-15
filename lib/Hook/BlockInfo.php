@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\Hook;
 
 class BlockInfo {
+
   public function import() {
     $info = array();
     foreach (at_modules('at_base', 'blocks') as $module) {
@@ -19,10 +21,11 @@ class BlockInfo {
       }
 
       $info["{$module}|{$k}"] = array(
-        'info' => empty($block['info']) ? $k : $block['info'],
+        'info'  => empty($block['info']) ? $k : $block['info'],
         'cache' => $cache,
       );
     }
     return $info;
   }
+
 }

@@ -8,6 +8,7 @@ use Drupal\at_base\Helper\Test\UnitTestCase;
  * drush test-run --dirty 'Drupal\at_base\Tests\Unit\TypedDataTest'
  */
 class TypedDataTest extends UnitTestCase {
+
   public function getInfo() {
     return array('name' => 'AT Unit: TypedData') + parent::getInfo();
   }
@@ -263,4 +264,5 @@ class TypedDataTest extends UnitTestCase {
     $data = at_data($schema, 1);
     $this->assertTrue($data->validate());
   }
+
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\at_base\Helper;
 
 /**
@@ -26,6 +27,7 @@ namespace Drupal\at_base\Helper;
  * @code
  */
 class Timer {
+
   private $callback;
   private $times = 1;
   private $memory = TRUE;
@@ -121,4 +123,5 @@ class Timer {
       'xhpref' => "{$config['domain']}/index.php?run={$run_id}&source=AndyTruong",
     );
   }
+
 }

@@ -1,10 +1,12 @@
 <?php
+
 namespace Drupal\at_base\Helper;
 
 /**
  * @see at_modules()
  */
 class ModulesFetcher {
+
   private $base_module;
   private $config_file;
 
@@ -44,8 +46,9 @@ class ModulesFetcher {
     }
 
     // Config file is available
-    $file = DRUPAL_ROOT . '/' . drupal_get_path('module', $name) . '/config/'. $this->config_file .'.yml';
+    $file = DRUPAL_ROOT . '/' . drupal_get_path('module', $name) . '/config/' . $this->config_file . '.yml';
 
     return is_file($file);
   }
+
 }

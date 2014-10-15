@@ -8,6 +8,7 @@ use Drupal\at_base\Helper\Test\UnitTestCase;
  *  drush test-run --dirty 'Drupal\at_base\Tests\Unit\CommonTest'
  */
 class CommonTest extends UnitTestCase {
+
   public function getInfo() {
     return array('name' => 'AT Unit: Basic features') + parent::getInfo();
   }
@@ -36,20 +37,17 @@ class CommonTest extends UnitTestCase {
 
     // @module
     $this->assertEqual(
-      drupal_get_path('module', 'at_base') . '/at_base.module',
-      $helper->get('@at_base/at_base.module')
+      drupal_get_path('module', 'at_base') . '/at_base.module', $helper->get('@at_base/at_base.module')
     );
 
     // %theme
     $this->assertEqual(
-      path_to_theme() . '/templates/page.home.html.twig',
-      $helper->get('%theme/templates/page.home.html.twig')
+      path_to_theme() . '/templates/page.home.html.twig', $helper->get('%theme/templates/page.home.html.twig')
     );
 
     // %library
     $this->assertEqual(
-      at_library('pimple') . '/lib/Pimple.php',
-      $helper->get('%pimple/lib/Pimple.php')
+      at_library('pimple') . '/lib/Pimple.php', $helper->get('%pimple/lib/Pimple.php')
     );
   }
 
@@ -73,9 +71,12 @@ class CommonTest extends UnitTestCase {
    */
   public function testAtFn() {
     // Fake the function
-    $GLOBALS['conf']['atfn:entity_bundle'] = function($type, $entity) { return $entity->type; };
+    $GLOBALS['conf']['atfn:entity_bundle'] = function($type, $entity) {
+      return $entity->type;
+    };
 
     // Make sure the fake function is executed
-    $this->assertEqual('page', at_fn('entity_bundle', 'node', (object)array('type' => 'page')));
+    $this->assertEqual('page', at_fn('entity_bundle', 'node', (object) array('type' => 'page')));
   }
+
 }

@@ -5,6 +5,7 @@ namespace Drupal\at_base\Drush\Command;
 use \Drupal\at_base\Drush\Command\AtRequire\DependencyFetcher;
 
 class AtRequire {
+
   private $module;
 
   public function __construct($module = 'all') {
@@ -30,4 +31,5 @@ class AtRequire {
       at_id(new DependencyFetcher($name, $info))->fetch();
     }
   }
+
 }

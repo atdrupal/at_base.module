@@ -11,13 +11,14 @@ require_once dirname(__FILE__) . '/Database.php';
  * cache_get()/cache_set() does not work on unit test cases.
  */
 abstract class UnitTestCase extends \DrupalUnitTestCase {
+
   protected $container;
 
   public function getInfo() {
     return array(
-      'name' => 'AT Unit',
+      'name'        => 'AT Unit',
       'description' => 'Make sure the at_cache() is working correctly.',
-      'group' => 'AT Unit'
+      'group'       => 'AT Unit'
     );
   }
 
@@ -56,4 +57,5 @@ abstract class UnitTestCase extends \DrupalUnitTestCase {
       at_container('wrapper.cache')->set($cid, $data_2, 'cache_bootstrap');
     }
   }
+
 }
