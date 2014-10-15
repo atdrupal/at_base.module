@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\at_base\Helper;
 
 /**
@@ -12,7 +13,7 @@ namespace Drupal\at_base\Helper;
  *
  * @see \At_Base_TestCase::testRealPath()
  */
-class Real_Path {
+class RealPath {
 
   /**
    * @param  string $path
@@ -67,7 +68,7 @@ class Real_Path {
   private function replaceLibraryToken($path, $include_drupal_root) {
     if ('%' === substr($path, 0, 1)) {
       preg_match('/%([a-z0-9_\.]+)/i', $path, $matches);
-      
+
       if (!empty($matches)) {
         $library = $matches[1];
         if ($library_path = at_library($library, NULL, $include_drupal_root)) {
@@ -76,4 +77,5 @@ class Real_Path {
       }
     }
   }
+
 }
