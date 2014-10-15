@@ -1,7 +1,7 @@
 <?php
 namespace Drupal\at_base\Cache\Warming\Warmer;
 
-class EntityWarmer implements Warmer_Interface {
+class EntityWarmer implements WarmerInterface {
   private $entity_info;
   private $entity_type;
   private $entity;

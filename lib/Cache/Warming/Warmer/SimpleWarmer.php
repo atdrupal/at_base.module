@@ -1,7 +1,7 @@
 <?php
 namespace Drupal\at_base\Cache\Warming\Warmer;
 
-class SimpleWarmer implements Warmer_Interface {
+class SimpleWarmer implements WarmerInterface {
   public function validateTag($tag) {
     return TRUE;
   }
