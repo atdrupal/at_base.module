@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\Helper\Controller_Resolver;
 
-class Twig_Controller {
+class TwigController {
+
   private $template = '';
   private $arguments = array();
   private $twig;
@@ -20,6 +22,7 @@ class Twig_Controller {
 
   public function render() {
     return $this->twig
-      ->render($this->template, $this->arguments);
+        ->render($this->template, $this->arguments);
   }
+
 }

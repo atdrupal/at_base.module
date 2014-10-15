@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\at_base\Helper;
 
 /**
@@ -15,6 +16,7 @@ namespace Drupal\at_base\Helper;
  * @see Drupal\at_base\Tests\CommonTest::testControllerRevoler()
  */
 class Controller_Resolver {
+
   private $def;
 
   public function get($def) {
@@ -87,4 +89,5 @@ class Controller_Resolver {
       return $this->def;
     }
   }
+
 }
