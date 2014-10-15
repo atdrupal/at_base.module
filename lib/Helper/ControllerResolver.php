@@ -15,7 +15,7 @@ namespace Drupal\at_base\Helper;
  *
  * @see Drupal\at_base\Tests\CommonTest::testControllerRevoler()
  */
-class Controller_Resolver {
+class ControllerResolver {
 
   private $def;
 
