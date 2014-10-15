@@ -2,7 +2,7 @@
 
 namespace Drupal\at_base\Helper;
 
-use Drupal\at_base\Helper\Content_Render\CacheHandler_Interface;
+use Drupal\at_base\Helper\Content_Render\CacheHandlerInterface;
 use Drupal\at_base\Helper\Content_Render\Process;
 
 /**
@@ -34,7 +34,7 @@ class Content_Render {
   private $data;
 
   /**
-   * @var CacheHandler_Interface
+   * @var CacheHandlerInterface
    */
   private $cache_handler;
 
@@ -52,7 +52,7 @@ class Content_Render {
     return $this->data;
   }
 
-  public function setCacheHandler(CacheHandler_Interface $cache_handler) {
+  public function setCacheHandler(CacheHandlerInterface $cache_handler) {
     $this->cache_handler = $cache_handler;
     return $this;
   }

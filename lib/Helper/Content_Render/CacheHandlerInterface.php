@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\at_base\Helper\Content_Render;
 
 /**
@@ -6,18 +7,19 @@ namespace Drupal\at_base\Helper\Content_Render;
  *
  * @see Drupal\at_base\Helper\Content_Render::render()
  */
-interface CacheHandler_Interface {
+interface CacheHandlerInterface {
+
   /**
    * Cache options
    *
    * @see  at_cache()
-   * @return CacheHandler_Interface
+   * @return CacheHandlerInterface
    */
   public function setOptions($options);
 
   /**
    * @param callable $callback
-   * @return CacheHandler_Interface
+   * @return CacheHandlerInterface
    */
   public function setCallback($callback);
 
