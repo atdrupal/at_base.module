@@ -1,12 +1,15 @@
 <?php
+
 /**
  * Cache handler for route.
  */
+
 namespace Drupal\at_base\Route;
 
 use Drupal\at_base\Helper\Content_Render\CacheHandlerInterface;
 
-class Cache_Handler implements CacheHandlerInterface {
+class CacheHandler implements CacheHandlerInterface {
+
   protected $options;
   protected $callback;
 
@@ -30,7 +33,7 @@ class Cache_Handler implements CacheHandlerInterface {
   }
 
   protected function getCacheId() {
-    $o       = &$this->options;
+    $o = &$this->options;
     $o['id'] = isset($o['id']) ? $o['id'] : '';
 
     $cid_parts = array($o['id']);
@@ -62,4 +65,5 @@ class Cache_Handler implements CacheHandlerInterface {
 
     return at_cache($o, $this->callback);
   }
+
 }
