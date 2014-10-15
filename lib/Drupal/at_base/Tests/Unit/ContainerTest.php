@@ -44,7 +44,7 @@ class ContainerTest extends UnitTestCase {
     $service = at_container('atest_base.dynamic_arguments');
     $this->assertEqual('Drupal\atest_base\DynamicArguments', get_class($service));
     $this->assertEqual('atest_base', $service->getDynParam());
-    $this->assertEqual('Drupal\atest_base\Service_1', get_class($service->getDynService()));
+    $this->assertEqual('Drupal\atest_base\Service1', get_class($service->getDynService()));
   }
 
   public function testAutoloadPSR0() {
