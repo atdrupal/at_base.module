@@ -6,7 +6,7 @@ namespace Drupal\at_base\TypedData\DataTypes;
  *
  * Example schema, check `at_base/config/schema/route.yml`
  */
-class Mapping extends Mapping_Base {
+class Mapping extends MappingBase {
   protected function validateDefinition(&$error) {
     if (!parent::validateDefinition($error)) {
       return FALSE;

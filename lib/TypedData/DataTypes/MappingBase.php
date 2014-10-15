@@ -1,7 +1,9 @@
 <?php
+
 namespace Drupal\at_base\TypedData\DataTypes;
 
-abstract class Mapping_Base extends Base {
+abstract class MappingBase extends Base {
+
   protected $allow_extra_properties = TRUE;
 
   public function setDef($def) {
@@ -37,4 +39,5 @@ abstract class Mapping_Base extends Base {
 
     return $return;
   }
+
 }
