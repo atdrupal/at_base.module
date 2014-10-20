@@ -76,8 +76,10 @@ abstract class ViewsBase {
     $this->view->display[$this->display_id]->display_options['pager'] = $pager;
     $this->view->display_handler->set_option('pager', $pager);
 
-    unset($this->view->query->pager);
-    $this->view->init_pager();
+    // Just init the pager plugin if it's init before
+    if (!empty($this->view->query->pager)) {
+      $this->view->init_pager();
+    }
   }
 
 }
