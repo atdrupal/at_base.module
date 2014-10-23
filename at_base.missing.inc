@@ -102,3 +102,16 @@ if (!function_exists('entity_bundle')) {
   }
 
 }
+
+/**
+ * Append items to breadcrumb.
+ *
+ * at_breadcrumb_append($item_1 [, $item_N])
+ */
+function at_breadcrumb_append() {
+  $bc = drupal_get_breadcrumb();
+  foreach (func_get_args() as $item) {
+    $bc[] = $item;
+  }
+  drupal_set_breadcrumb($bc);
+}
