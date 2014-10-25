@@ -1,3 +1,4 @@
-tests/           export-ignore
-.travis.yml      export-ignore
-phpunit.xml.dist export-ignore
+tests/                   export-ignore
+.travis.yml              export-ignore
+phpunit.xml.dist         export-ignore
+lib/Drupal/at_base/Tests export-ignore
