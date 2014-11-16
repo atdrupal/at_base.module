@@ -3,6 +3,7 @@
 namespace Drupal\at_base;
 
 use Drupal\at_base\API\API;
+use Drupal\at_base\Helper\Helper;
 use Drupal\at_base\Helper\ModuleFetcher;
 use Drupal\at_base\HookImplementation\Implementation;
 
@@ -14,6 +15,9 @@ class AT
 
     /** @var API */
     private $api;
+
+    /** @var Helper */
+    private $helper;
 
     /**
      * @return Implementation
@@ -34,9 +38,12 @@ class AT
         return $this->api;
     }
 
-    public function getModuleFetcher($baseModule, $configFile = '')
+    public function getHelper()
     {
-        return new ModuleFetcher($baseModule, $configFile);
+        if (NULL === $this->helper) {
+            $this->helper = new Helper();
+        }
+        return $this->helper;
     }
 
     public function setHookImplementation($hookImplementation)
@@ -48,6 +55,12 @@ class AT
     public function setApi($api)
     {
         $this->api = $api;
+        return $this;
+    }
+
+    public function setHelper(Helper $helper)
+    {
+        $this->helper = $helper;
         return $this;
     }
 

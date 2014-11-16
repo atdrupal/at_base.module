@@ -108,13 +108,22 @@ class ConfigTest extends UnitTestCase
         }
 
         // Case 1: Do not need other modules has any config file.
-        $this->assertEqual(['atest_base'], at()->getModuleFetcher('at_base')->fetch($modules));
+        $this->assertEqual(['atest_base'], at()
+                ->getHelper()
+                ->getModuleFetcher('at_base')
+                ->fetch($modules));
 
         // Case 2: The modules have to have a specific config file
-        $this->assertEqual(['atest_base'], at()->getModuleFetcher('at_base', 'services')->fetch($modules));
+        $this->assertEqual(['atest_base'], at()
+                ->getHelper()
+                ->getModuleFetcher('at_base', 'services')
+                ->fetch($modules));
 
         // Case 3: Bad config file
-        $this->assertEqual([], at()->getModuleFetcher('at_base', 'bad_config')->fetch($modules));
+        $this->assertEqual([], at()
+                ->getHelper()
+                ->getModuleFetcher('at_base', 'bad_config')
+                ->fetch($modules));
     }
 
 }
