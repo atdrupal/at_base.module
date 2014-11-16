@@ -27,9 +27,12 @@ require_once dirname(__FILE__) . '/at_base.hack.inc';
  *
  * Can:
  *    at_id(new Thing())->doStuff();
+ *
+ * @return static
  */
-function at_id($x) {
-  return $x;
+function at_id($x)
+{
+    return $x;
 }
 
 /**
@@ -49,12 +52,13 @@ function at_id($x) {
  * @return obj     A new object of the specified class, constructed by passing
  *                  the argument vector to its constructor.
  */
-function at_newv($class_name, $argv = array()) {
-  $reflector = new ReflectionClass($class_name);
-  if ($argv) {
-    return $reflector->newInstanceArgs($argv);
-  }
-  return $reflector->newInstance();
+function at_newv($class_name, $argv = array())
+{
+    $reflector = new ReflectionClass($class_name);
+    if ($argv) {
+        return $reflector->newInstanceArgs($argv);
+    }
+    return $reflector->newInstance();
 }
 
 /**
@@ -66,20 +70,21 @@ function at_newv($class_name, $argv = array()) {
  *
  * @see https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container
  */
-function at_container($id = 'container') {
-  static $container = NULL;
+function at_container($id = 'container')
+{
+    static $container = NULL;
 
-  if (!$container) {
-    $container = new Container();
-  }
+    if (!$container) {
+        $container = new Container();
+    }
 
-  $args = func_get_args();
-  if (1 !== count($args)) {
-    array_shift($args);
-    $container["{$id}:arguments"] = $args;
-  }
+    $args = func_get_args();
+    if (1 !== count($args)) {
+        array_shift($args);
+        $container["{$id}:arguments"] = $args;
+    }
 
-  return $container[$id];
+    return $container[$id];
 }
 
 /**
@@ -88,17 +93,18 @@ function at_container($id = 'container') {
  * @param  string $bin
  * @param  array  $options
  */
-function at_kv($bin, $options = array(), $engine_name = 'array') {
-  global $at;
+function at_kv($bin, $options = array(), $engine_name = 'array')
+{
+    global $at;
 
-  if (isset($at['kv'][$bin]['engine'])) {
-    $engine_name = $at['kv'][$bin]['engine'];
-  }
+    if (isset($at['kv'][$bin]['engine'])) {
+        $engine_name = $at['kv'][$bin]['engine'];
+    }
 
-  $engine = at_container("kv.engine.{$engine_name}");
-  $engine->setOptions($options);
+    $engine = at_container("kv.engine.{$engine_name}");
+    $engine->setOptions($options);
 
-  return $engine;
+    return $engine;
 }
 
 /**
@@ -115,10 +121,11 @@ function at_kv($bin, $options = array(), $engine_name = 'array') {
  *  @see  at_fn_fake()
  *  @todo Use at_fn class, remove in next release.
  */
-function at_fn() {
-  $args = func_get_args();
-  $fn = array_shift($args);
-  return call_user_func_array(variable_get("atfn:{$fn}", $fn), $args);
+function at_fn()
+{
+    $args = func_get_args();
+    $fn = array_shift($args);
+    return call_user_func_array(variable_get("atfn:{$fn}", $fn), $args);
 }
 
 /**
@@ -126,11 +133,13 @@ function at_fn() {
  *
  *  \at_fn::entity_bundle('node', $node);
  */
-class at_fn {
+class at_fn
+{
 
-  public static function __callStatic($fn, $args) {
-    return call_user_func_array(variable_get("atfn:{$fn}", $fn), $args);
-  }
+    public static function __callStatic($fn, $args)
+    {
+        return call_user_func_array(variable_get("atfn:{$fn}", $fn), $args);
+    }
 
 }
 
@@ -145,31 +154,32 @@ class at_fn {
  * @see    https://github.com/andytruong/at_base/wiki/7.x-2.x-cache-warming
  * @see    https://github.com/andytruong/at_base/wiki/7.x-2.x-Function:-at_cache
  */
-function at_cache($options, $callback = NULL, $arguments = array()) {
-  // User prefer string as cache options
-  // Style: $id OR $id,$ttl OR $id,~,$bin OR $id,~,~ OR $id,$ttl,$bin
-  if (is_string($options)) {
-    @list($id, $ttl, $bin) = explode(',', $options);
+function at_cache($options, $callback = NULL, $arguments = array())
+{
+    // User prefer string as cache options
+    // Style: $id OR $id,$ttl OR $id,~,$bin OR $id,~,~ OR $id,$ttl,$bin
+    if (is_string($options)) {
+        @list($id, $ttl, $bin) = explode(',', $options);
 
-    $options = array(
-      'id'  => $id,
-      'ttl' => is_null($ttl) ? NULL : ('~' === $ttl ? NULL : $ttl),
-      'bin' => is_null($bin) ? NULL : ('~' === $bin ? NULL : $bin),
-    );
-  }
-
-  if (isset($options['cache_id'])) {
-    $options['id'] = $options['cache_id'];
-    unset($options['cache_id']);
-  }
-
-  foreach (array('callback', 'options') as $k) {
-    if (!empty($kk) && isset($options[$k])) {
-      $kk = $options[$k];
+        $options = array(
+            'id'  => $id,
+            'ttl' => is_null($ttl) ? NULL : ('~' === $ttl ? NULL : $ttl),
+            'bin' => is_null($bin) ? NULL : ('~' === $bin ? NULL : $bin),
+        );
     }
-  }
 
-  return at_id(new Cache($options, $callback, $arguments))->get();
+    if (isset($options['cache_id'])) {
+        $options['id'] = $options['cache_id'];
+        unset($options['cache_id']);
+    }
+
+    foreach (array('callback', 'options') as $k) {
+        if (!empty($kk) && isset($options[$k])) {
+            $kk = $options[$k];
+        }
+    }
+
+    return at_id(new Cache($options, $callback, $arguments))->get();
 }
 
 /**
@@ -178,8 +188,9 @@ function at_cache($options, $callback = NULL, $arguments = array()) {
  * @see at_cache()
  * @param  array  $tags
  */
-function at_cache_flush_by_tags($tags = array()) {
-  at_container('cache.tag_flusher')->flush($tags);
+function at_cache_flush_by_tags($tags = array())
+{
+    at_container('cache.tag_flusher')->flush($tags);
 }
 
 /**
@@ -196,8 +207,9 @@ function at_cache_flush_by_tags($tags = array()) {
  * @param  boolean $refresh   Build new cache
  * @return Config
  */
-function at_config($module, $id = 'config', $refresh = FALSE) {
-  return at_container('config')->setModule($module)->setId($id);
+function at_config($module, $id = 'config', $refresh = FALSE)
+{
+    return at_container('config')->setModule($module)->setId($id);
 }
 
 /**
@@ -207,28 +219,30 @@ function at_config($module, $id = 'config', $refresh = FALSE) {
  * @return array
  * @see system_list()
  */
-function at_modules($base_module = 'at_base', $config_file = '') {
-  $o['ttl'] = '+ 1 year';
-  $o['bin'] = 'cache_bootstrap';
-  $o['id'] = "atmodules:{$base_module}:{$config_file}";
+function at_modules($base_module = 'at_base', $config_file = '')
+{
+    $o['ttl'] = '+ 1 year';
+    $o['bin'] = 'cache_bootstrap';
+    $o['id'] = "atmodules:{$base_module}:{$config_file}";
 
-  return at_cache($o, function() use ($base_module, $config_file) {
-    $module_enabled = system_list('module_enabled');
-    return at_id(new ModulesFetcher($base_module, $config_file))
-        ->fetch($module_enabled);
-  });
+    return at_cache($o, function() use ($base_module, $config_file) {
+        $module_enabled = system_list('module_enabled');
+        return at_id(new ModulesFetcher($base_module, $config_file))
+                ->fetch($module_enabled);
+    });
 }
 
 /**
  * Shortcut to render to icon.
  */
-function at_icon($name, $source = 'icon.fontawesome') {
-  try {
-    return at_container($source)->get($name)->render();
-  }
-  catch (Exception $e) {
-    return $e->getMessage();
-  }
+function at_icon($name, $source = 'icon.fontawesome')
+{
+    try {
+        return at_container($source)->get($name)->render();
+    }
+    catch (Exception $e) {
+        return $e->getMessage();
+    }
 }
 
 /**
@@ -238,24 +252,26 @@ function at_icon($name, $source = 'icon.fontawesome') {
  * @param  string $version
  * @return string
  */
-function at_library($name, $version = 'default', $include_drupal_root = TRUE) {
-  $paths = array(conf_path(), 'sites/all');
-  foreach ($paths as $path) {
-    $return = DRUPAL_ROOT . "/{$path}/libraries/{$name}";
-    if ('default' !== $version) {
-      $return .= "/{$version}";
+function at_library($name, $version = 'default', $include_drupal_root = TRUE)
+{
+    $paths = array(conf_path(), 'sites/all');
+    foreach ($paths as $path) {
+        $return = DRUPAL_ROOT . "/{$path}/libraries/{$name}";
+        if ('default' !== $version) {
+            $return .= "/{$version}";
+        }
+
+        if (FALSE !== @fileowner($return)) {
+            return $include_drupal_root ? rtrim($return, '/') : substr($return, strlen(DRUPAL_ROOT) + 1);
+        }
     }
 
-    if (FALSE !== @fileowner($return)) {
-      return $include_drupal_root ? rtrim($return, '/') : substr($return, strlen(DRUPAL_ROOT) + 1);
+    $msg = "Missing library: {$name} (version {$version})";
+    if (at_debug()) {
+        $msg .= ' You can run `drush atr` to install missing dependencies.';
     }
-  }
 
-  $msg = "Missing library: {$name} (version {$version})";
-  if (at_debug()) {
-    $msg .= ' You can run `drush atr` to install missing dependencies.';
-  }
-  throw new Exception($msg);
+    throw new \RuntimeException($msg);
 }
 
 /**
@@ -272,25 +288,26 @@ function at_library($name, $version = 'default', $include_drupal_root = TRUE) {
  *
  * @see https://github.com/atdrupal/at_base/wiki/7.x-2.x-typed-data
  */
-function at_data($def, $value = NULL) {
-  if (!is_array($def)) {
-    throw new Exception('Definition must be an array.');
-  }
+function at_data($def, $value = NULL)
+{
+    if (!is_array($def)) {
+        throw new Exception('Definition must be an array.');
+    }
 
-  if (!isset($def['type'])) {
-    throw new Exception('Missing type key');
-  }
+    if (!isset($def['type'])) {
+        throw new Exception('Missing type key');
+    }
 
-  $service = strpos($def['type'], 'type.') === 0 ? $def['type'] : ('type.' . $def['type']);
+    $service = strpos($def['type'], 'type.') === 0 ? $def['type'] : ('type.' . $def['type']);
 
-  // Special type: list<element_type>
-  if (strpos($service, 'type.list<') === 0) {
-    $def['element_type'] = substr($service, 10, -1);
-    $service = 'type.list';
-  }
+    // Special type: list<element_type>
+    if (strpos($service, 'type.list<') === 0) {
+        $def['element_type'] = substr($service, 10, -1);
+        $service = 'type.list';
+    }
 
-  return at_container($service)
-      ->setDef($def)
-      ->setValue($value)
-  ;
+    return at_container($service)
+            ->setDef($def)
+            ->setValue($value)
+    ;
 }
