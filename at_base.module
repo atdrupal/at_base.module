@@ -19,6 +19,21 @@ require_once dirname(__FILE__) . '/includes/at_base.hooks.php';
 require_once dirname(__FILE__) . '/includes/at_base.missing.php';
 require_once dirname(__FILE__) . '/includes/at_base.hack.php';
 
+define('AT_CLASS', 'Drupal\at_base\AT');
+
+/**
+ * Wrapper to helper classes.
+ *
+ * @return \Drupal\at_base\AT
+ */
+function at($class_name = 'Drupal\at_base\AT')
+{
+    if (!$obj = &drupal_static(__FUNCTION__)) {
+        $obj = new $class_name;
+    }
+    return $obj;
+}
+
 /**
  * Can not:
  *    new Thing()->doStuff();

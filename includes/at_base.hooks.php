@@ -5,21 +5,14 @@
  *
  * Drupal hook implementations.
  */
-use Drupal\at_base\Hook\BlockInfo;
-use Drupal\at_base\Hook\BlockView;
 use Drupal\at_base\Hook\Entity\ViewAlter as HookEntityViewAlter;
-use Drupal\at_base\Hook\FlushCache;
-use Drupal\at_base\Hook\Menu as HookMenu;
-use Drupal\at_base\Hook\PageBuild as HookPageBuild;
-use Drupal\at_base\Route\Controller;
 
 /**
  * Implements hook_menu()
  */
 function at_base_menu()
 {
-    require_once dirname(__FILE__) . '/lib/Hook/Menu.php';
-    return at_id(new HookMenu())->getMenuItems();
+    return at()->getHookImplementation()->getHookMenu()->execute();
 }
 
 /**
@@ -29,7 +22,7 @@ function at_base_menu()
  */
 function at_base_flush_caches()
 {
-    at_id(new FlushCache())->execute();
+    return at()->getHookImplementation()->getHookFlushCache()->execute();
 }
 
 /**
@@ -49,7 +42,7 @@ function at_base_modules_enabled($modules)
  */
 function at_base_block_info()
 {
-    return at_id(new BlockInfo())->import();
+    return at()->getHookImplementation()->getHookBlockInfo()->execute();
 }
 
 /**
@@ -57,7 +50,7 @@ function at_base_block_info()
  */
 function at_base_block_view($delta)
 {
-    return at_id(new BlockView($delta))->view();
+    return at()->getHookImplementation()->getHookBlockView($delta)->execute();
 }
 
 /**
@@ -68,16 +61,12 @@ function at_base_admin_paths()
     return array('at/twig' => TRUE);
 }
 
-###############################################################
-# Cache warming
-###############################################################
-
 /**
  * Implements hook_entity_view()
  */
 function at_base_entity_view($entity, $type, $view_mode, $langcode)
 {
-    at_container('breadcrumb_api')->checkEntityConfig($entity, $type, $view_mode, $langcode);
+    at()->getApi()->getBreadcrumbAPI()->checkEntityConfig($entity, $type, $view_mode, $langcode);
 }
 
 if (defined('AT_BASE_ENTITY_TEMPLATE') && constant('AT_BASE_ENTITY_TEMPLATE')) {
@@ -87,7 +76,10 @@ if (defined('AT_BASE_ENTITY_TEMPLATE') && constant('AT_BASE_ENTITY_TEMPLATE')) {
      */
     function at_base_entity_view_alter(&$build, $entity_type)
     {
-        at_id(new HookEntityViewAlter($build, $entity_type))->execute();
+        at()
+            ->getHookImplementation()
+            ->getHookEntityViewAlter($build, $entity_type)
+            ->execute();
     }
 
 }
@@ -162,8 +154,10 @@ function at_base_user_logout($account)
 function at_base_page_build(&$page)
 {
     if (at_container('container')->offsetExists('page.blocks')) {
-        at_id(new HookPageBuild($page, at_container('page.blocks')))->execute();
+        at()
+            ->getHookImplementation()
+            ->getHookPageBuild($page, at_container('page.blocks'))
+            ->execute();
     }
-
-    at_container('breadcrumb_api')->pageBuild();
+    at()->getApi()->getBreadcrumbAPI()->pageBuild();
 }

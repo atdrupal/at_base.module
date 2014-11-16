@@ -1,20 +1,20 @@
 <?php
 
-namespace Drupal\at_base\Hook;
+namespace Drupal\at_base\HookImplementation;
 
-class BlockView
+class HookBlockView
 {
 
     private $module;
     private $key;
-    private $is_dynamic;
-    private static $dynamic_data = array();
+    private $isDynamic;
+    private static $dynamicData = array();
 
     public function __construct($delta)
     {
-        $this->is_dynamic = strpos($delta, 'dyn_') === 0;
+        $this->isDynamic = strpos($delta, 'dyn_') === 0;
 
-        if ($this->is_dynamic) {
+        if ($this->isDynamic) {
             $this->key = substr($delta, 4);
         }
         else {
@@ -24,7 +24,7 @@ class BlockView
         }
     }
 
-    public function view()
+    public function execute()
     {
         $info = $this->getInfo();
         $render = at_container('helper.ContentRender');
@@ -44,7 +44,7 @@ class BlockView
 
     private function getInfo()
     {
-        if ($this->is_dynamic) {
+        if ($this->isDynamic) {
             return $this->getDynamicInfo();
         }
 
@@ -57,12 +57,12 @@ class BlockView
 
     private function getDynamicInfo()
     {
-        return isset(self::$dynamic_data[$this->key]) ? self::$dynamic_data[$this->key] : array();
+        return isset(self::$dynamicData[$this->key]) ? self::$dynamicData[$this->key] : array();
     }
 
     public static function setDynamicData($key, $value)
     {
-        self::$dynamic_data[$key] = $value;
+        self::$dynamicData[$key] = $value;
     }
 
 }
