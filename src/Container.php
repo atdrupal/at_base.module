@@ -2,13 +2,11 @@
 
 namespace Drupal\at_base;
 
-use Drupal\at_base\Container\ServiceResolver;
-use Drupal\at_base\Container\ArgumentResolver;
-use Drupal\at_base\Helper\ConfigFetcher;
-use Drupal\at_base\Helper\Wrapper\Database as DB_Wrapper;
-use Drupal\at_base\Helper\Wrapper\Cache as Cache_Wrapper;
-use Drupal\at_base\Config\Resolver as Config_Resolver;
 use Drupal\at_base\Config\Config;
+use Drupal\at_base\Config\Resolver as Config_Resolver;
+use Drupal\at_base\Container\ArgumentResolver;
+use Drupal\at_base\Container\ServiceResolver;
+use Drupal\at_base\Helper\ConfigFetcher;
 
 require_once at_library('pimple') . '/lib/Pimple.php';
 
@@ -26,10 +24,10 @@ class Container extends \Pimple
             'container'  => $this,
             // Dependencies for Container itself
             'wrapper.db' => function() {
-                return new DB_Wrapper();
+                return at()->getApi()->getDrupalDatabaseAPI();
             },
             'wrapper.cache' => function() {
-                return new Cache_Wrapper();
+                return at()->getApi()->getDrupalCacheAPI();
             },
             'config' => function() {
                 return new Config(new Config_Resolver());

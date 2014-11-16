@@ -14,7 +14,7 @@ class KV extends \Drupal\at_base\KV\StorageBase {
   protected $table;
 
   /**
-   * @var \Drupal\at_base\Helper\Wrapper\Database
+   * @var \Drupal\at_base\Helper\Wrapper\DatabaseAPI
    */
   protected $db;
 
