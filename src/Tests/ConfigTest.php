@@ -71,7 +71,12 @@ class ConfigTest extends UnitTestCase
     public function testWeight()
     {
         at_container('wrapper.db')->resetLog();
-        at_id(new \Drupal\at_base\Hook\FlushCache())->resolveModuleWeight('atest_base', 10);
+
+        at()
+            ->getHookImplementation()
+            ->getHookFlushCache()
+            ->resolveModuleWeight('atest_base', 10);
+
         $db_log = at_container('wrapper.db')->getLog('update', 'system');
 
         $expected = array(
@@ -88,33 +93,28 @@ class ConfigTest extends UnitTestCase
      */
     public function testAtModules()
     {
-        $enabled_modules = array();
+        $modules = array();
 
         // Just check with two modules
-        foreach (array('at_base', 'atest_base') as $module_name) {
-            $enabled_modules[$module_name] = drupal_get_path('module', $module_name) . '/' . $module_name . '.info';
-            $enabled_modules[$module_name] = file_get_contents($enabled_modules[$module_name]);
-            $enabled_modules[$module_name] = drupal_parse_info_format($enabled_modules[$module_name]);
-            $enabled_modules[$module_name] = (object) array(
-                    'name'   => $module_name,
+        foreach (array('at_base', 'atest_base') as $name) {
+            $modules[$name] = drupal_get_path('module', $name) . '/' . $name . '.info';
+            $modules[$name] = file_get_contents($modules[$name]);
+            $modules[$name] = drupal_parse_info_format($modules[$name]);
+            $modules[$name] = (object) array(
+                    'name'   => $name,
                     'stauts' => 1,
-                    'info'   => $enabled_modules[$module_name],
+                    'info'   => $modules[$name],
             );
         }
 
         // Case 1: Do not need other modules has any config file.
-        $expected = array('atest_base');
-        $actual = at_id(new ModuleFetcher('at_base', $config_file = ''))->fetch($enabled_modules);
-        $this->assertEqual($expected, $actual);
+        $this->assertEqual(['atest_base'], at()->getModuleFetcher('at_base')->fetch($modules));
 
         // Case 2: The modules have to have a specific config file
-        $expected = array('atest_base');
-        $actual = at_id(new ModuleFetcher('at_base', $config_file = 'services'))->fetch($enabled_modules);
-        $this->assertEqual($expected, $actual);
+        $this->assertEqual(['atest_base'], at()->getModuleFetcher('at_base', 'services')->fetch($modules));
 
-        $expected = array();
-        $actual = at_id(new ModuleFetcher('at_base', $config_file = 'un_real_config_file'))->fetch($enabled_modules);
-        $this->assertEqual($expected, $actual);
+        // Case 3: Bad config file
+        $this->assertEqual([], at()->getModuleFetcher('at_base', 'bad_config')->fetch($modules));
     }
 
 }

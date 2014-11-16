@@ -27,13 +27,11 @@ class ModuleFetcher
     public function fetch($enabledModules)
     {
         $modules = array();
-
         foreach ($enabledModules as $name => $info) {
             if ($this->validateModule($name, $info->info)) {
                 $modules[] = $name;
             }
         }
-
         return $modules;
     }
 

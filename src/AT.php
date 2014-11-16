@@ -3,6 +3,7 @@
 namespace Drupal\at_base;
 
 use Drupal\at_base\API\API;
+use Drupal\at_base\Helper\ModuleFetcher;
 use Drupal\at_base\HookImplementation\Implementation;
 
 class AT
@@ -31,6 +32,11 @@ class AT
             $this->api = new API();
         }
         return $this->api;
+    }
+
+    public function getModuleFetcher($baseModule, $configFile = '')
+    {
+        return new ModuleFetcher($baseModule, $configFile);
     }
 
     public function setHookImplementation($hookImplementation)
