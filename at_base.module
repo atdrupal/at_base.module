@@ -14,6 +14,7 @@ use Drupal\at_base\Cache;
 use Drupal\at_base\Config\Config;
 use Drupal\at_base\Helper\ModuleFetcher;
 
+require_once dirname(__FILE__) . '/includes/at_base.api.php';
 require_once dirname(__FILE__) . '/includes/at_base.hooks.php';
 require_once dirname(__FILE__) . '/includes/at_base.missing.php';
 require_once dirname(__FILE__) . '/includes/at_base.hack.php';
