@@ -42,7 +42,7 @@ class BlockView
         return $block;
     }
 
-    private static function getInfo()
+    private function getInfo()
     {
         if ($this->is_dynamic) {
             return $this->getDynamicInfo();
