@@ -141,7 +141,7 @@ class Controller {
     if (!empty($this->route['breadcrumbs'])) {
       $bc = $this->route['breadcrumbs'];
       unset($this->route['breadcrumbs']);
-      at_container('breadcrumb_api')->buildBreadcrumbs($bc);
+      at()->getApi()->getBreadcrumbAPI()->buildBreadcrumbs($bc);
     }
   }
 

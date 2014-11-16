@@ -18,7 +18,7 @@ class BreadcrumbTest extends UnitTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->api = at_container('breadcrumb_api');
+        $this->api = at()->getApi()->getBreadcrumbAPI();
     }
 
     protected function setUpModules()

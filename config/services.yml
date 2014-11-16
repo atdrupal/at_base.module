@@ -9,6 +9,3 @@ imports:
 services:
   expression_language:
     class: 'Symfony\Component\ExpressionLanguage\ExpressionLanguage'
-
-  breadcrumb_api:
-    class: 'Drupal\at_base\Helper\BreadcrumbAPI'
