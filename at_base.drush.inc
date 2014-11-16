@@ -3,6 +3,7 @@
 require_once dirname(__FILE__) . '/at_base.module';
 require_once dirname(__FILE__) . '/includes/drush/at_cache.php';
 require_once dirname(__FILE__) . '/includes/drush/at_fontello.php';
+require_once dirname(__FILE__) . '/includes/drush/at_require.inc';
 
 /**
  * Implements hook_drush_command()
@@ -59,20 +60,4 @@ function at_base_drush_command()
 function drush_at_base_pre_cache_clear()
 {
     cache_clear_all('*', 'cache');
-}
-
-/**
- * Drush make is not inluded in version 4, which leading to fatal errors.
- */
-if (class_exists('DrushMakeProject_Library')) {
-    require_once dirname(__FILE__) . '/drush/at_require.inc';
-}
-else {
-
-    function drush_at_require()
-    {
-        $msg = 'at_require depends on make feature of Drush, which introduced in 5.x';
-        drush_print_r($msg);
-    }
-
 }
