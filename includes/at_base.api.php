@@ -14,7 +14,7 @@ function at_container($id = 'container')
     static $container = NULL;
 
     if (!$container) {
-        $container = new Container();
+        $container = new \Drupal\at_base\Container();
     }
 
     $args = func_get_args();
