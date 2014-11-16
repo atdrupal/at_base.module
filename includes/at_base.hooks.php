@@ -34,7 +34,7 @@ function at_base_modules_enabled($modules)
     at_modules('at_base', TRUE);
 
     // Rebuild module weight
-    at_id(new FlushCache())->fixModuleWeight();
+    (new FlushCache())->fixModuleWeight();
 }
 
 /**

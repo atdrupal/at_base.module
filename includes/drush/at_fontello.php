@@ -10,5 +10,5 @@ use Drupal\at_base\Drush\Command\FontEllo as FontElloCommand;
  */
 function drush_fontello()
 {
-    at_id(new FontElloCommand())->execute();
+    (new FontElloCommand())->execute();
 }

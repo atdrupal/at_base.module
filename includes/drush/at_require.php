@@ -24,7 +24,7 @@ class DrushMakeProject_AtRequire_Library extends \DrushMakeProject_Library
  */
 function drush_at_require($module = 'all')
 {
-    at_id(new AtRequireCommand($module))->execute();
+    (new AtRequireCommand($module))->execute();
 }
 
 /**
@@ -55,7 +55,7 @@ if (!function_exists('yaml_parse') && !is_file(DRUPAL_ROOT . '/sites/all/librari
         ),
     );
 
-    at_id(new DependencyFetcher($name, $info))->fetch();
+    (new DependencyFetcher($name, $info))->fetch();
 }
 
 // Required projects must be available
@@ -82,7 +82,7 @@ if (function_exists('drupal_get_path')) {
                 drush_set_option('working-copy', TRUE);
             }
 
-            at_id(new DependencyFetcher($name, $info))->fetch();
+            (new DependencyFetcher($name, $info))->fetch();
 
             // Restore global working copy option.
             if (empty($working_copy) && !empty($info['options']['working-copy'])) {

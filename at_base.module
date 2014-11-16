@@ -1,19 +1,5 @@
 <?php
 
-/**
- * @file at_base.module
- *
- * Include custom functions.
- *
- * @todo  Next release:
- *
- *  - Remove at_fn(), at_fn_fake()
- *  - Update docs for service container > reuse option.
- */
-use Drupal\at_base\Cache;
-use Drupal\at_base\Config\Config;
-use Drupal\at_base\Helper\ModuleFetcher;
-
 require_once dirname(__FILE__) . '/includes/at_base.api.php';
 require_once dirname(__FILE__) . '/includes/at_base.hooks.php';
 require_once dirname(__FILE__) . '/includes/at_base.missing.php';
@@ -93,19 +79,6 @@ function at_modules($base_module = 'at_base', $config_file = '')
                 ->getModuleFetcher($base_module, $config_file)
                 ->fetch(system_list('module_enabled'));
     });
-}
-
-/**
- * Shortcut to render to icon.
- */
-function at_icon($name, $source = 'icon.fontawesome')
-{
-    try {
-        return at_container($source)->get($name)->render();
-    }
-    catch (Exception $e) {
-        return $e->getMessage();
-    }
 }
 
 /**

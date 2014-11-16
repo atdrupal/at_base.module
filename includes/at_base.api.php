@@ -82,7 +82,7 @@ function at_cache($options, $callback = NULL, $arguments = array())
         }
     }
 
-    return at_id(new Cache($options, $callback, $arguments))->get();
+    return (new Cache($options, $callback, $arguments))->get();
 }
 
 /**
@@ -102,4 +102,17 @@ function at_cache($options, $callback = NULL, $arguments = array())
 function at_config($module, $id = 'config', $refresh = FALSE)
 {
     return at_container('config')->setModule($module)->setId($id);
+}
+
+/**
+ * Shortcut to render to icon.
+ */
+function at_icon($name, $source = 'icon.fontawesome')
+{
+    try {
+        return at_container($source)->get($name)->render();
+    }
+    catch (Exception $e) {
+        return $e->getMessage();
+    }
 }

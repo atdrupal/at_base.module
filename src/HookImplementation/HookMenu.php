@@ -25,7 +25,7 @@ class HookMenu
 
         $data = at_config($module, 'routes', $refresh = TRUE)->get('routes');
         foreach ($data as $route_name => $route_data) {
-            if ($item = at_id(new RouteToMenu($module, $route_name, $route_data))->convert($error)) {
+            if ($item = (new RouteToMenu($module, $route_name, $route_data))->convert($error)) {
                 $items[$route_name] = $item;
             }
             else {
