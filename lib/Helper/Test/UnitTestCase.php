@@ -2,7 +2,7 @@
 
 namespace Drupal\at_base\Helper\Test;
 
-use Drupal\at_base\Autoloader;
+use DrupalUnitTestCase;
 
 require_once dirname(__FILE__) . '/Cache.php';
 require_once dirname(__FILE__) . '/Database.php';
@@ -10,7 +10,7 @@ require_once dirname(__FILE__) . '/Database.php';
 /**
  * cache_get()/cache_set() does not work on unit test cases.
  */
-abstract class UnitTestCase extends \DrupalUnitTestCase
+abstract class UnitTestCase extends DrupalUnitTestCase
 {
 
     protected $container;
@@ -33,19 +33,13 @@ abstract class UnitTestCase extends \DrupalUnitTestCase
         unset($this->container['wrapper.cache']);
 
         $this->container['wrapper.db'] = function() {
-            return new \Drupal\at_base\Helper\Test\Database();
+            return new Database();
         };
         $this->container['wrapper.cache'] = function() {
-            return new \Drupal\at_base\Helper\Test\Cache();
+            return new Cache();
         };
 
-        // Make our autoloader run first — drush_print_r(spl_autoload_functions());
-        spl_autoload_unregister('drupal_autoload_class');
-        spl_autoload_unregister('drupal_autoload_interface');
-        at_id(new Autoloader('Drupal'))->register(FALSE, TRUE);
-
         $this->setUpModules();
-
         parent::setUp('at_base', 'atest_base');
     }
 

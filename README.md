@@ -19,7 +19,6 @@ Provide some more API for developer to work with Drupal 7.
 
 ### Features
 
-1. [Autoload](https://github.com/atdrupal/at_base/wiki/7.x-2.x-autoload) — PSR-4 autoload loader.
 1. [Key-Value storage](https://github.com/atdrupal/at_base/wiki/7.x-2.x-kv)
 1. [Config](https://github.com/atdrupal/at_base/wiki/7.x-2.x-config) — Yaml file configuration for modules.
 1. [Service Container](https://github.com/atdrupal/at_base/wiki/7.x-2.x-service-container)

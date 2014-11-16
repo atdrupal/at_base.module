@@ -7,13 +7,6 @@ imports:
   - { resource: services.icon.yml }
 
 services:
-  autoloader:
-    class: 'Drupal\at_base\Container\Autoloader'
-
-  autoloader.psr0:
-    class: 'Doctrine\Common\ClassLoader'
-    file: '%doctrine_common/lib/Doctrine/Common/ClassLoader.php'
-
   expression_language:
     class: 'Symfony\Component\ExpressionLanguage\ExpressionLanguage'
     factory_class: 'AT'
