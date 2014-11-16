@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @file at_base.misc.inc
+ * @file at_base.misc.php
  *
  * Mostly hack here, to be improved/removed.
  */

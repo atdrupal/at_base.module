@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @file at_base.hooks.inc
+ * @file at_base.hooks.php
  *
  * Drupal hook implementations.
  */
