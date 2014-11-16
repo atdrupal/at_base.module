@@ -157,7 +157,7 @@ class CacheTest extends UnitTestCase
         // Tag must be deleted
         // ---------------------
         // Delete items tagged with 'atest'
-        at_container('cache.tag_flusher')->flush($o['tags']);
+        at()->getApi()->getCacheAPI()->getTagFlusher()->flush($o['tags']);
 
         $db_log = at_container('wrapper.db')->getLog('delete', 'at_base_cache_tag');
 

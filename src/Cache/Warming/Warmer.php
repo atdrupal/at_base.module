@@ -17,62 +17,68 @@ namespace Drupal\at_base\Cache\Warming;
  *   ;
  * @code
  */
-class Warmer {
+class Warmer
+{
 
-  private $tag_discover;
-  private $tag_flusher;
-  private $warmers;
-  private $context;
-  private $event_name;
+    private $tagDiscover;
+    private $tagFlusher;
+    private $warmers;
+    private $context;
+    private $eventName;
 
-  /**
-   * A process can start sub-process. This flag will avoid infinitive master
-   * processes.
-   *
-   * @var boolean
-   */
-  private $is_sub_process = FALSE;
+    /**
+     * A process can start sub-process. This flag will avoid infinitive master
+     * processes.
+     *
+     * @var boolean
+     */
+    private $is_sub_process = FALSE;
 
-  public function __construct($tag_discover, $tag_flusher) {
-    $this->tag_discover = $tag_discover;
-    $this->tag_flusher = $tag_flusher;
+    public function __construct($tag_discover, $tag_flusher)
+    {
+        $this->tagDiscover = $tag_discover;
+        $this->tagFlusher = $tag_flusher;
 
-    $this->warmers = at_container('container')->find('cache.warmer', 'service');
-  }
-
-  public function setEventName($event_name) {
-    $this->event_name = $event_name;
-    $this->tag_discover->setEventName($event_name);
-    return $this;
-  }
-
-  public function setIsSubProcess($is_sub_process = FALSE) {
-    $this->is_sub_process = $is_sub_process;
-    return $this;
-  }
-
-  public function setContext($context) {
-    $this->context = $context;
-    return $this;
-  }
-
-  /**
-   * Wrapper function to warm cached-tags & views.
-   */
-  public function warm() {
-    $this->tag_flusher->resetTags();
-
-    foreach ($this->tag_discover->tags() as $tag) {
-      foreach ($this->warmers as $warmer) {
-        if (TRUE === $warmer->validateTag($tag)) {
-          if ($tag = $warmer->processTag($tag, $this->context)) {
-            $this->tag_flusher->addTag($tag);
-          }
-        }
-      }
+        $this->warmers = at_container('container')->find('cache.warmer', 'service');
     }
 
-    $this->tag_flusher->flush();
-  }
+    public function setEventName($event_name)
+    {
+        $this->eventName = $event_name;
+        $this->tagDiscover->setEventName($event_name);
+        return $this;
+    }
+
+    public function setIsSubProcess($is_sub_process = FALSE)
+    {
+        $this->is_sub_process = $is_sub_process;
+        return $this;
+    }
+
+    public function setContext($context)
+    {
+        $this->context = $context;
+        return $this;
+    }
+
+    /**
+     * Wrapper function to warm cached-tags & views.
+     */
+    public function warm()
+    {
+        $this->tagFlusher->resetTags();
+
+        foreach ($this->tagDiscover->tags() as $tag) {
+            foreach ($this->warmers as $warmer) {
+                if (TRUE === $warmer->validateTag($tag)) {
+                    if ($tag = $warmer->processTag($tag, $this->context)) {
+                        $this->tagFlusher->addTag($tag);
+                    }
+                }
+            }
+        }
+
+        $this->tagFlusher->flush();
+    }
 
 }

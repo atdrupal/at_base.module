@@ -120,7 +120,7 @@ function at_cache($options, $callback = NULL, $arguments = array())
  */
 function at_cache_flush_by_tags($tags = array())
 {
-    at_container('cache.tag_flusher')->flush($tags);
+    return at()->getApi()->getCacheAPI()->getTagFlusher()->flush($tags);
 }
 
 /**
