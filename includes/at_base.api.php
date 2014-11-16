@@ -84,3 +84,22 @@ function at_cache($options, $callback = NULL, $arguments = array())
 
     return at_id(new Cache($options, $callback, $arguments))->get();
 }
+
+/**
+ * Usage
+ *
+ * // Lookup at /path/to/my_module/config/config.yml > webmaster
+ * $webmaster_email = at_config('my_module')->get('webmaster');
+ *
+ * // Lookup at /path/to/my_module/config/templates.yml > email.notify
+ * $mail_notify_template = at_config('my_module', 'templates')->get('email.notify');
+ *
+ * @param  string  $module    Module name
+ * @param  string  $id        Config ID
+ * @param  boolean $refresh   Build new cache
+ * @return Config
+ */
+function at_config($module, $id = 'config', $refresh = FALSE)
+{
+    return at_container('config')->setModule($module)->setId($id);
+}
