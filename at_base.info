@@ -7,3 +7,4 @@ package = Andy Truong
 dependencies[] = block
 dependencies[] = entity
 dependencies[] = views
+dependencies[] = xautoload
