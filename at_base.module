@@ -13,7 +13,7 @@
 
 use Drupal\at_base\Cache;
 use Drupal\at_base\Config\Config;
-use Drupal\at_base\Helper\ModulesFetcher;
+use Drupal\at_base\Helper\ModuleFetcher;
 
 require_once dirname(__FILE__) . '/includes/at_base.hooks.php';
 require_once dirname(__FILE__) . '/includes/at_base.missing.php';
@@ -194,7 +194,7 @@ function at_modules($base_module = 'at_base', $config_file = '')
 
     return at_cache($o, function() use ($base_module, $config_file) {
         $module_enabled = system_list('module_enabled');
-        return at_id(new ModulesFetcher($base_module, $config_file))
+        return at_id(new ModuleFetcher($base_module, $config_file))
                 ->fetch($module_enabled);
     });
 }

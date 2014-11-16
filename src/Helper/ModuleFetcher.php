@@ -5,7 +5,7 @@ namespace Drupal\at_base\Helper;
 /**
  * @see at_modules()
  */
-class ModulesFetcher
+class ModuleFetcher
 {
 
     /** @var string */

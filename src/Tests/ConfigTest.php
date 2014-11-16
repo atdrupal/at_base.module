@@ -3,7 +3,7 @@
 namespace Drupal\at_base\Tests\Unit;
 
 use \Drupal\at_base\Helper\Test\UnitTestCase;
-use \Drupal\at_base\Helper\ModulesFetcher;
+use \Drupal\at_base\Helper\ModuleFetcher;
 
 class ConfigTest extends UnitTestCase
 {
@@ -104,16 +104,16 @@ class ConfigTest extends UnitTestCase
 
         // Case 1: Do not need other modules has any config file.
         $expected = array('atest_base');
-        $actual = at_id(new ModulesFetcher('at_base', $config_file = ''))->fetch($enabled_modules);
+        $actual = at_id(new ModuleFetcher('at_base', $config_file = ''))->fetch($enabled_modules);
         $this->assertEqual($expected, $actual);
 
         // Case 2: The modules have to have a specific config file
         $expected = array('atest_base');
-        $actual = at_id(new ModulesFetcher('at_base', $config_file = 'services'))->fetch($enabled_modules);
+        $actual = at_id(new ModuleFetcher('at_base', $config_file = 'services'))->fetch($enabled_modules);
         $this->assertEqual($expected, $actual);
 
         $expected = array();
-        $actual = at_id(new ModulesFetcher('at_base', $config_file = 'un_real_config_file'))->fetch($enabled_modules);
+        $actual = at_id(new ModuleFetcher('at_base', $config_file = 'un_real_config_file'))->fetch($enabled_modules);
         $this->assertEqual($expected, $actual);
     }
 
