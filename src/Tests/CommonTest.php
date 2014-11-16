@@ -61,15 +61,9 @@ class CommonTest extends UnitTestCase
      */
     public function testExpressionLanguage()
     {
-        $engine = \AT::getExpressionLanguage();
-
-        $expected = 'Symfony\Component\ExpressionLanguage\ExpressionLanguage';
-        $actual = get_class($engine);
-        $this->assertEqual($expected, $actual);
-
-        $expected = 3;
-        $actual = $engine->evaluate("constant('MENU_CONTEXT_PAGE') | constant('MENU_CONTEXT_INLINE')");
-        $this->assertEqual($expected, $actual);
+        $engine = at_container('expression_language');
+        $this->assertEqual('Symfony\Component\ExpressionLanguage\ExpressionLanguage', get_class($engine));
+        $this->assertEqual(3, $engine->evaluate("constant('MENU_CONTEXT_PAGE') | constant('MENU_CONTEXT_INLINE')"));
     }
 
     /**

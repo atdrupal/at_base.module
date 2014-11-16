@@ -58,7 +58,7 @@ class TwigTest extends UnitTestCase
 
     public function testTwigStringLoader()
     {
-        $output = \AT::twig_string()->render('Hello {{ name }}', array('name' => 'Andy Truong'));
+        $output = at_container('twig_string')->render('Hello {{ name }}', array('name' => 'Andy Truong'));
         $this->assertEqual('Hello Andy Truong', $output, 'Template string is rendered correctly.');
     }
 
