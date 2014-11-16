@@ -17,84 +17,103 @@ require_once at_library('pimple') . '/lib/Pimple.php';
  *
  * @see  https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container
  */
-class Container extends \Pimple {
-  public function __construct() {
-    parent::__construct(array(
-      'container' => $this,
-      // Dependencies for Container itself
-      'wrapper.db' => function() { return new DB_Wrapper(); },
-      'wrapper.cache' => function() { return new Cache_Wrapper(); },
-      'config' => function() { return new Config(new Config_Resolver()); },
-      'service.resolver' => function() { return new ServiceResolver(); },
-      'argument.resolver' => function() { return new ArgumentResolver(); },
-      'helper.config_fetcher' => function() { return new ConfigFetcher(); },
-    ));
-  }
+class Container extends \Pimple
+{
 
-  private function getServiceCallback($id, $def) {
-    return function($c) use ($id, $def) {
-      if (isset($c["{$id}:arguments"])) {
-        $def['arguments'] = $c["{$id}:arguments"];
-      }
-
-      list($args, $calls) = $c['argument.resolver']->resolve($def);
-
-      return $c['service.resolver']->convertDefinitionToService($def, $args, $calls);
-    };
-  }
-
-  /**
-   * @param  int $id
-   * @param  array $def
-   */
-  public function initService($id, $def) {
-    $callback = $this->getServiceCallback($id, $def);
-
-    if (isset($def['reuse']) && !$def['reuse']) {
-      $this[$id] = $this->factory($callback);
-    }
-    else {
-      $this->offsetSet($id, $callback);
-    }
-  }
-
-  /**
-   * Get service by ID.
-   *
-   * @param  string $id Service ID.
-   */
-  public function offsetGet($id) {
-    if (!$this->offsetExists($id)) {
-      if ($def = $this['service.resolver']->getDefinition($id)) {
-        $this->initService($id, $def);
-      }
+    public function __construct()
+    {
+        parent::__construct(array(
+            'container'  => $this,
+            // Dependencies for Container itself
+            'wrapper.db' => function() {
+                return new DB_Wrapper();
+            },
+            'wrapper.cache' => function() {
+                return new Cache_Wrapper();
+            },
+            'config' => function() {
+                return new Config(new Config_Resolver());
+            },
+            'service.resolver' => function() {
+                return new ServiceResolver();
+            },
+            'argument.resolver' => function() {
+                return new ArgumentResolver();
+            },
+            'helper.config_fetcher' => function() {
+                return new ConfigFetcher();
+            },
+        ));
     }
 
-    return parent::offsetGet($id);
-  }
+    private function getServiceCallback($id, $def)
+    {
+        return function($c) use ($id, $def) {
+            if (isset($c["{$id}:arguments"])) {
+                $def['arguments'] = $c["{$id}:arguments"];
+            }
 
-  /**
-   * Find services by tag
-   *
-   * @param  string  $tag
-   * @param  string  $return Type of returned services,
-   * @return array
-   */
-  public function find($tag, $return = 'service_name') {
-    $defs = at_cache("atc:tag:{$tag}, + 1 year", array($this['service.resolver'], 'fetchDefinitions'), array($tag));
+            list($args, $calls) = $c['argument.resolver']->resolve($def);
 
-    if ($return === 'service_name') {
-      return $defs;
+            return $c['service.resolver']->convertDefinitionToService($def, $args, $calls);
+        };
     }
 
-    if ($return === 'service') {
-      foreach ($defs as $k => $name) {
-        unset($defs[$k]);
-        $defs[$name] = $this[$name];
-      }
+    /**
+     * @param  int $id
+     * @param  array $def
+     */
+    public function initService($id, $def)
+    {
+        $callback = $this->getServiceCallback($id, $def);
+
+        if (isset($def['reuse']) && !$def['reuse']) {
+            $this[$id] = $this->factory($callback);
+        }
+        else {
+            $this->offsetSet($id, $callback);
+        }
     }
 
-    return $defs;
-  }
+    /**
+     * Get service by ID.
+     *
+     * @param  string $id Service ID.
+     */
+    public function offsetGet($id)
+    {
+        if (!$this->offsetExists($id)) {
+            if ($def = $this['service.resolver']->getDefinition($id)) {
+                $this->initService($id, $def);
+            }
+        }
+
+        return parent::offsetGet($id);
+    }
+
+    /**
+     * Find services by tag
+     *
+     * @param  string  $tag
+     * @param  string  $return Type of returned services,
+     * @return array
+     */
+    public function find($tag, $return = 'service_name')
+    {
+        $defs = at_cache("atc:tag:{$tag}, + 1 year", array($this['service.resolver'], 'fetchDefinitions'), array($tag));
+
+        if ($return === 'service_name') {
+            return $defs;
+        }
+
+        if ($return === 'service') {
+            foreach ($defs as $k => $name) {
+                unset($defs[$k]);
+                $defs[$name] = $this[$name];
+            }
+        }
+
+        return $defs;
+    }
 
 }
