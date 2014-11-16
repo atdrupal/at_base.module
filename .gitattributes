@@ -1,4 +1,5 @@
 .travis.yml              export-ignore
+lib/                     export-ignore
 phpunit.xml.dist         export-ignore
 src/Tests                export-ignore
 tests/                   export-ignore
