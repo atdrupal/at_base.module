@@ -9,15 +9,16 @@
 /**
  * Return if key|upercase/variable is not FALSE|NULL|0.
  */
-function at_valid($key, $get_value = FALSE) {
-  $c = strtoupper($key);
-  if (defined($c)) {
-    $return = constant($c);
-  }
-  else {
-    $return = variable_get($key, FALSE);
-  }
-  return $get_value ? $return : (boolean) ($return);
+function at_valid($key, $get_value = FALSE)
+{
+    $c = strtoupper($key);
+    if (defined($c)) {
+        $return = constant($c);
+    }
+    else {
+        $return = variable_get($key, FALSE);
+    }
+    return $get_value ? $return : (boolean) ($return);
 }
 
 /**
@@ -25,37 +26,40 @@ function at_valid($key, $get_value = FALSE) {
  *
  * @return boolean
  */
-function at_debug() {
-  return defined('AT_DEBUG');
+function at_debug()
+{
+    return defined('AT_DEBUG');
 }
 
 if (!function_exists('yaml_parse')) {
 
-  /**
-   * Read YAML file.
-   *
-   * @param  string $path Path to yaml file.
-   * @return mixed
-   */
-  function yaml_parse_file($path) {
-    if (!is_file(DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php')) {
-      throw new \RuntimeException('Missing library: spyc');
-    }
+    /**
+     * Read YAML file.
+     *
+     * @param  string $path Path to yaml file.
+     * @return mixed
+     */
+    function yaml_parse_file($path)
+    {
+        if (!is_file(DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php')) {
+            throw new \RuntimeException('Missing library: spyc');
+        }
 
-    if (!function_exists('spyc_load_file')) {
-      require_once DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php';
-    }
+        if (!function_exists('spyc_load_file')) {
+            require_once DRUPAL_ROOT . '/sites/all/libraries/spyc/Spyc.php';
+        }
 
-    return spyc_load_file($path);
-  }
+        return spyc_load_file($path);
+    }
 
 }
 
 if (!function_exists('yaml_emit')) {
 
-  function yaml_emit($data) {
-    return spyc_dump($data);
-  }
+    function yaml_emit($data)
+    {
+        return spyc_dump($data);
+    }
 
 }
 
@@ -66,9 +70,10 @@ if (!function_exists('yaml_emit')) {
  * @param  string   $fn
  * @param  callable $callback
  */
-function at_fn_fake($fn, $callback) {
-  global $conf;
-  $conf["atfn:{$fn}"] = $callback;
+function at_fn_fake($fn, $callback)
+{
+    global $conf;
+    $conf["atfn:{$fn}"] = $callback;
 }
 
 /**
@@ -82,38 +87,42 @@ function at_fn_fake($fn, $callback) {
  *  at_fake::time(function() use ($time) { return $time + 3600; });
  *  echo at_fn::time(); // same to $time + 3600
  */
-class at_fake {
+class at_fake
+{
 
-  public static function __callStatic($fn, $args) {
-    $GLOBALS['conf']["atfn:{$fn}"] = $args[0];
-  }
+    public static function __callStatic($fn, $args)
+    {
+        $GLOBALS['conf']["atfn:{$fn}"] = $args[0];
+    }
 
 }
 
 /**
  * Wrapper for class based forms.
  */
-function at_form_validate($form, &$form_state) {
-  // Build the form
-  list($class, $args) = $form['#at_form'];
+function at_form_validate($form, &$form_state)
+{
+    // Build the form
+    list($class, $args) = $form['#at_form'];
 
-  $obj = at_newv($class, $args);
-  $obj->setForm($form);
-  $obj->setFormState($form_state);
-  $obj->validate();
+    $obj = at_newv($class, $args);
+    $obj->setForm($form);
+    $obj->setFormState($form_state);
+    $obj->validate();
 }
 
 /**
  * Wrapper for class based forms.
  */
-function at_form_submit($form, &$form_state) {
-  // Build the form
-  list($class, $args) = $form['#at_form'];
+function at_form_submit($form, &$form_state)
+{
+    // Build the form
+    list($class, $args) = $form['#at_form'];
 
-  $obj = at_newv($class, $args);
-  $obj->setForm($form);
-  $obj->setFormState($form_state);
-  $obj->submit();
+    $obj = at_newv($class, $args);
+    $obj->setForm($form);
+    $obj->setFormState($form_state);
+    $obj->submit();
 }
 
 /**
@@ -121,28 +130,66 @@ function at_form_submit($form, &$form_state) {
  *
  * @todo  Test me.
  */
-function at_form($form, &$form_state) {
-  // Get the variables from arguments
-  $args = func_get_args();
-  $form = array_shift($args);
-  $form_state = array_shift($args);
-  $class = array_shift($args);
-  $args = reset($args);
+function at_form($form, &$form_state)
+{
+    // Get the variables from arguments
+    $args = func_get_args();
+    $form = array_shift($args);
+    $form_state = array_shift($args);
+    $class = array_shift($args);
+    $args = reset($args);
 
-  // Build the form
-  $obj = at_newv($class, $args);
-  $obj->setForm($form);
-  $obj->setFormState($form_state);
+    // Build the form
+    $obj = at_newv($class, $args);
+    $obj->setForm($form);
+    $obj->setFormState($form_state);
 
-  $form = $obj->get();
-  $form['#at_form'] = array($class, $args);
+    $form = $obj->get();
+    $form['#at_form'] = array($class, $args);
 
-  return $form;
+    return $form;
 }
 
 /**
  * Shortcut to expression_language:evaluate.
  */
-function at_eval($expression) {
-  return at_container('expression_language')->evaluate($expression);
+function at_eval($expression)
+{
+    return at_container('expression_language')->evaluate($expression);
+}
+
+/**
+ * Make function easier to be replaced by an other one.
+ *
+ * For example:
+ *
+ *  // Override entity_bundle function
+ *  $GLOBALS['conf']['atfn:entity_bundle'] = function($type, $entity) { return $entity->type; };
+ *
+ *  Call replacable entity_bundle function:
+ *    at_fn('entity_bundle', 'node', $node);
+ *
+ *  @see  at_fn_fake()
+ *  @todo Use at_fn class, remove in next release.
+ */
+function at_fn()
+{
+    $args = func_get_args();
+    $fn = array_shift($args);
+    return call_user_func_array(variable_get("atfn:{$fn}", $fn), $args);
+}
+
+/**
+ * Similar to at_fn(). Usage:
+ *
+ *  at_fn::entity_bundle('node', $node);
+ */
+class at_fn
+{
+
+    public static function __callStatic($fn, $args)
+    {
+        return call_user_func_array(variable_get("atfn:{$fn}", $fn), $args);
+    }
+
 }

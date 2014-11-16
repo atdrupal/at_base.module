@@ -74,42 +74,6 @@ function at_newv($class_name, $argv = array())
 }
 
 /**
- * Make function easier to be replaced by an other one.
- *
- * For example:
- *
- *  // Override entity_bundle function
- *  $GLOBALS['conf']['atfn:entity_bundle'] = function($type, $entity) { return $entity->type; };
- *
- *  Call replacable entity_bundle function:
- *    at_fn('entity_bundle', 'node', $node);
- *
- *  @see  at_fn_fake()
- *  @todo Use at_fn class, remove in next release.
- */
-function at_fn()
-{
-    $args = func_get_args();
-    $fn = array_shift($args);
-    return call_user_func_array(variable_get("atfn:{$fn}", $fn), $args);
-}
-
-/**
- * Similar to at_fn(). Usage:
- *
- *  \at_fn::entity_bundle('node', $node);
- */
-class at_fn
-{
-
-    public static function __callStatic($fn, $args)
-    {
-        return call_user_func_array(variable_get("atfn:{$fn}", $fn), $args);
-    }
-
-}
-
-/**
  * Care about site caching.
  *
  * @param  array|string $options
