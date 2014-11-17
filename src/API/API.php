@@ -59,7 +59,7 @@ class API
 
     public function setDrupalDatabaseAPI($api)
     {
-        $this->drupalDatabaseAPI = $$api;
+        $this->drupalDatabaseAPI = $api;
         return $this;
     }
 

@@ -54,7 +54,6 @@ class BreadcrumbAPI
     {
         foreach (at_modules('at_base', 'breadcrumb') as $module) {
             $config = at_config($module, 'breadcrumb')->get('breadcrumb');
-
             $bundle = at_fn('entity_bundle', $type, $entity);
             if (isset($config['entity'][$type][$bundle][$view_mode])) {
                 return $config['entity'][$type][$bundle][$view_mode];
@@ -77,7 +76,6 @@ class BreadcrumbAPI
 
         // Convert the Drupal path to lowercase
         $current_path = drupal_strtolower(at_fn('drupal_get_path_alias', at_fn('request_path')));
-
         foreach ($path_config as $path => $config) {
             if (drupal_match_path($current_path, $path)) {
                 $config['context'] = array('type' => 'path');
