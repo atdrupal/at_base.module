@@ -62,6 +62,7 @@ function at_newv($class_name, $argv = array())
 
 /**
  * Get modules that depends on a specific module.
+ * 
  * @param string $base_module
  * @param string $config_file
  * @return array
