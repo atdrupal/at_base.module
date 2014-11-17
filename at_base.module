@@ -69,16 +69,10 @@ function at_newv($class_name, $argv = array())
  */
 function at_modules($base_module = 'at_base', $config_file = '')
 {
-    $o['ttl'] = '+ 1 year';
-    $o['bin'] = 'cache_bootstrap';
-    $o['id'] = "atmodules:{$base_module}:{$config_file}";
-
-    return at_cache($o, function() use ($base_module, $config_file) {
-        return at()
-                ->getHelper()
-                ->getModuleFetcher($base_module, $config_file)
-                ->fetch(system_list('module_enabled'));
-    });
+    return at()
+            ->getHelper()
+            ->getModuleFetcher($base_module, $config_file)
+            ->fetch(system_list('module_enabled'));
 }
 
 /**
