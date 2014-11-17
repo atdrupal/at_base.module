@@ -1,11 +1,11 @@
 services:
 
   helper.controller.resolver:
-    class: '\Drupal\at_base\Helper\ControllerResolver'
+    class: Drupal\at_base\Helper\ControllerResolver
 
   helper.ContentRender:
     reuse: false
-    class: 'Drupal\at_base\Helper\ContentRender'
+    class: Drupal\at_base\Helper\ContentRender
 
   helper.real_path:
     class: 'Drupal\at_base\Helper\RealPath'

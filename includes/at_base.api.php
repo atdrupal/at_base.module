@@ -1,29 +1,24 @@
 <?php
 
+use Drupal\at_base\Cache;
+use Drupal\at_base\Config\Config;
+
 /**
  * Service container.
  *
- * @staticvar \Drupal\at_base\Container $container
- * @param string $id
- * @return mixed
- *
- * @see https://github.com/andytruong/at_base/wiki/7.x-2.x-service-container
+ * @return \Drupal\at_base\Container
  */
-function at_container($id = 'container')
+function at_container()
 {
-    static $container = NULL;
-
-    if (!$container) {
-        $container = new \Drupal\at_base\Container();
+    if (!$container = &drupal_static(__FUNCTION__)) {
+        $fileName = variable_get('file_private_path', '') . '/at_container.php';
+        if (file_exists($fileName)) {
+            require_once $fileName;
+            return $container = new AT_Container();
+        }
+        return $container = at()->getHelper()->getContainerCreator($fileName)->create();
     }
-
-    $args = func_get_args();
-    if (1 !== count($args)) {
-        array_shift($args);
-        $container["{$id}:arguments"] = $args;
-    }
-
-    return $container[$id];
+    return $container;
 }
 
 /**

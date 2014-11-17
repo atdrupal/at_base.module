@@ -63,4 +63,10 @@ class AT
         return $this;
     }
 
+    public function setContainer(Container $container)
+    {
+        $this->container = $container;
+        return $this;
+    }
+
 }

@@ -103,7 +103,6 @@ class Cache
                 return $cache->data;
             }
         }
-
         return $this->fetch();
     }
 
