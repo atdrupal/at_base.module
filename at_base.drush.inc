@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/at_base.module';
 require_once dirname(__FILE__) . '/includes/drush/at_cache.php';
 require_once dirname(__FILE__) . '/includes/drush/at_fontello.php';
-require_once dirname(__FILE__) . '/includes/drush/at_require.inc';
+require_once dirname(__FILE__) . '/includes/drush/at_require.php';
 
 /**
  * Implements hook_drush_command()
