@@ -6,7 +6,7 @@ use Drupal\at_base\Config\Config;
 /**
  * Service container.
  *
- * @return \Drupal\at_base\Container
+ * @return AT_Container
  */
 function at_container()
 {

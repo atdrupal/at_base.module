@@ -70,14 +70,14 @@ class ConfigTest extends UnitTestCase
      */
     public function testWeight()
     {
-        at_container('wrapper.db')->resetLog();
+        at()->getApi()->getDrupalDatabaseAPI()->resetLog();
 
         at()
             ->getHookImplementation()
             ->getHookFlushCache()
             ->resolveModuleWeight('atest_base', 10);
 
-        $db_log = at_container('wrapper.db')->getLog('update', 'system');
+        $db_log = at()->getApi()->getDrupalDatabaseAPI()->getLog('update', 'system');
 
         $expected = array(
             'condition' => array('name', 'atest_base'),

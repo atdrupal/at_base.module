@@ -18,7 +18,7 @@ class HookFlushCache
 
     private function flushTaggedCacheData()
     {
-        at_container('wrapper.db')->delete('at_base_cache_tag')->execute();
+        at()->getApi()->getDrupalDatabaseAPI()->delete('at_base_cache_tag')->execute();
     }
 
     private function flushAPCData()
@@ -48,7 +48,9 @@ class HookFlushCache
     public function resolveModuleWeight($module_name, $weight)
     {
         if (is_numeric($weight)) {
-            at_container('wrapper.db')
+            at()
+                ->getApi()
+                ->getDrupalDatabaseAPI()
                 ->update('system')
                 ->condition('name', $module_name)
                 ->fields(array('weight' => $weight))

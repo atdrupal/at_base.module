@@ -22,7 +22,7 @@ class CacheTest extends UnitTestCase
     {
         parent::setUp();
 
-        $this->cache = at_container('wrapper.cache');
+        $this->cache = at()->getApi()->getDrupalCacheAPI();
     }
 
     /**
@@ -36,7 +36,7 @@ class CacheTest extends UnitTestCase
 
     public function testFakeCacheWrapper()
     {
-        $wrapper = at_container('wrapper.cache');
+        $wrapper = at()->getApi()->getDrupalCacheAPI();
 
         // Make sure the cache wrapper is faked correctly
         $this->assertEqual(
@@ -122,7 +122,7 @@ class CacheTest extends UnitTestCase
 
         // Change cached-data to empty string
         if ($ttl = strtotime($options['ttl'])) {
-            at_container('wrapper.cache')->set($options['id'], '', $options['bin'], $ttl);
+            at()->getApi()->getDrupalCacheAPI()->set($options['id'], '', $options['bin'], $ttl);
         }
 
         // Call at_cache() again
@@ -144,14 +144,14 @@ class CacheTest extends UnitTestCase
             return 'Data #1';
         });
 
-        $db_log = at_container('wrapper.db')->getLog();
+        $db_log = at()->getApi()->getDrupalDatabaseAPI()->getLog();
         $tag1_row = array('bin' => 'cache', 'cid' => $o['id'], 'tag' => $o['tags'][0]);
         $tag2_row = array('bin' => 'cache', 'cid' => $o['id'], 'tag' => $o['tags'][1]);
 
         $this->assertEqual($tag1_row, $db_log['insert']['at_base_cache_tag']['fields'][0][0]);
         $this->assertEqual($tag2_row, $db_log['insert']['at_base_cache_tag']['fields'][1][0]);
 
-        at_container('wrapper.db')->resetLog();
+        at()->getApi()->getDrupalDatabaseAPI()->resetLog();
 
         // ---------------------
         // Tag must be deleted
@@ -159,7 +159,7 @@ class CacheTest extends UnitTestCase
         // Delete items tagged with 'atest'
         at()->getApi()->getCacheAPI()->getTagFlusher()->flush($o['tags']);
 
-        $db_log = at_container('wrapper.db')->getLog('delete', 'at_base_cache_tag');
+        $db_log = at()->getApi()->getDrupalDatabaseAPI()->getLog('delete', 'at_base_cache_tag');
 
         $con = array('tag', $o['tags']);
         foreach ($db_log['condition'] as $_con) {

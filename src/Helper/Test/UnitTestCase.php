@@ -26,18 +26,11 @@ abstract class UnitTestCase extends DrupalUnitTestCase
 
     public function setUp()
     {
-        $this->container = at_container('container');
+        $this->container = at_container();
 
         // Mock db, cache
-        unset($this->container['wrapper.db']);
-        unset($this->container['wrapper.cache']);
-
-        $this->container['wrapper.db'] = function() {
-            return new Database();
-        };
-        $this->container['wrapper.cache'] = function() {
-            return new Cache();
-        };
+        at()->getApi()->setDrupalDatabaseAPI(new Database());
+        at()->getApi()->setDrupalCacheAPI(new Cache());
 
         $this->setUpModules();
         parent::setUp('at_base', 'atest_base');
@@ -50,13 +43,13 @@ abstract class UnitTestCase extends DrupalUnitTestCase
         $cids_1 = array('atmodules:at_base:', 'atmodules:at_base:services', 'atmodules:at_base:twig_functions');
         $data_1 = array('at_base', 'atest_base');
         foreach ($cids_1 as $cid) {
-            at_container('wrapper.cache')->set($cid, $data_1, 'cache_bootstrap');
+            at()->getApi()->getDrupalCacheAPI()->set($cid, $data_1, 'cache_bootstrap');
         }
 
         $cids_2 = array('atmodules:at_base:twig_filters');
         $data_2 = array('at_base');
         foreach ($cids_2 as $cid) {
-            at_container('wrapper.cache')->set($cid, $data_2, 'cache_bootstrap');
+            at()->getApi()->getDrupalCacheAPI()->set($cid, $data_2, 'cache_bootstrap');
         }
     }
 

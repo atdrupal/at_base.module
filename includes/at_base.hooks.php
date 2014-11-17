@@ -153,11 +153,42 @@ function at_base_user_logout($account)
  */
 function at_base_page_build(&$page)
 {
-    if (at_container('container')->offsetExists('page.blocks')) {
-        at()
-            ->getHookImplementation()
-            ->getHookPageBuild($page, at_container('page.blocks'))
-            ->execute();
-    }
-    at()->getApi()->getBreadcrumbAPI()->pageBuild();
+//    if (at_container()->hasParameter('page.blocks')) {
+//        at()
+//            ->getHookImplementation()
+//            ->getHookPageBuild($page, at_container()->getParameter('page.blocks'))
+//            ->execute();
+//    }
+//    at()->getApi()->getBreadcrumbAPI()->pageBuild();
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Add 'Rebuild service container' and 'Flush compiled Twig templates' buttons
+ * to /admin/config/development/performance form.
+ */
+function at_base_form_system_performance_settings_alter(&$form, $form_state)
+{
+    $form['clear_cache']['at_container'] = [
+        '#type'   => 'submit',
+        '#value'  => t('Rebuild service container'),
+        '#submit' => [function() {
+                $fileName = variable_get('file_private_path', '') . '/at_container.php';
+                if (file_exists($fileName)) {
+                    unlink($fileName);
+                }
+            }],
+    ];
+
+    $form['clear_cache']['at_twig_templates'] = [
+        '#type'   => 'submit',
+        '#value'  => t('Flush compiled Twig templates'),
+        '#submit' => [function() {
+                $files = file_scan_directory(drupal_realpath(variable_get('file_temporary_path')) . '/', '/\.php$/');
+                foreach ($files as $file) {
+                    unlink($file->uri);
+                }
+            }],
+    ];
 }

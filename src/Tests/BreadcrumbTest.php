@@ -26,7 +26,7 @@ class BreadcrumbTest extends UnitTestCase
         parent::setUpModules();
 
         // Fake at_modules('at_base', 'breadcrumb');
-        at_container('wrapper.cache')->set('atmodules:at_base:breadcrumb', array('atest_base'), 'cache_bootstrap');
+        at()->getApi()->getDrupalCacheAPI()->set('atmodules:at_base:breadcrumb', array('atest_base'), 'cache_bootstrap');
 
         // Fake entity_bundle(), token_replace(), l() functions
         at_fn_fake('entity_bundle', function($type, $entity) {
