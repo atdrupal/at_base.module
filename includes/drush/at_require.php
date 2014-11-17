@@ -4,7 +4,6 @@
  * @file ./drush/at_reqruire.php
  */
 use Drupal\at_base\Drush\Command\AtRequire as AtRequireCommand;
-use Drupal\at_base\Drush\Command\AtRequire\DependencyFetcher;
 
 class DrushMakeProject_AtRequire_Library extends \DrushMakeProject_Library
 {

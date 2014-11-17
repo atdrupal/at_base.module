@@ -8,3 +8,8 @@ imports:
 services:
   expression_language:
     class: 'Symfony\Component\ExpressionLanguage\ExpressionLanguage'
+
+# 'wrapper.db' => return at()->getApi()->getDrupalDatabaseAPI() ,
+# 'wrapper.cache' => return at()->getApi()->getDrupalCacheAPI();
+# 'config' => return new Config(new Config_Resolver());
+# 'helper.config_fetcher' => return new ConfigFetcher();
