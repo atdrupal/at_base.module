@@ -14,7 +14,6 @@ Provide some more API for developer to work with Drupal 7.
   manually, add them to `./sites/all/libraries`.
 
   - [spyc](https://github.com/mustangostang/spyc.git) revision [b7fd7f7](https://github.com/mustangostang/spyc/archive/eeb9f7c47e1457770d64c7fb1f3d4aabff52de4b.zip)
-  - [Pimple](https://github.com/fabpot/Pimple) Version [v2.0.0](https://github.com/fabpot/Pimple/archive/v2.0.0.zip)
   - [Expression Language](https://github.com/symfony/expression-language) [v2.4.10](https://github.com/symfony/expression-language/archive/v2.4.10.zip)
 
 ### Features
