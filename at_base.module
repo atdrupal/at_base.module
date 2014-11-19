@@ -62,18 +62,29 @@ function at_newv($class_name, $argv = array())
 
 /**
  * Get modules that depends on a specific module.
- * 
+ *
  * @param string $base_module
  * @param string $config_file
  * @return array
  * @see system_list()
  */
-function at_modules($base_module = 'at_base', $config_file = '')
+function at_modules($base_module = 'at_base', $config_file = '', $modules = array())
 {
-    return at()
-            ->getHelper()
-            ->getModuleFetcher($base_module, $config_file)
-            ->fetch(system_list('module_enabled'));
+    static $cache = array();
+
+    if (!isset($cache[$base_module][$config_file])) {
+        if (!empty($modules)) {
+            $cache[$base_module][$config_file] = $modules;
+        }
+        else {
+            $cache[$base_module][$config_file] = at()
+                ->getHelper()
+                ->getModuleFetcher($base_module, $config_file)
+                ->fetch(system_list('module_enabled'));
+        }
+    }
+
+    return $cache[$base_module][$config_file];
 }
 
 /**
