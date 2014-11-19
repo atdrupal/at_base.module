@@ -2,10 +2,7 @@
 
 /**
  * @file at_base.hooks.php
- *
- * Drupal hook implementations.
  */
-use Drupal\at_base\Hook\Entity\ViewAlter as HookEntityViewAlter;
 
 /**
  * Implements hook_menu()
