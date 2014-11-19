@@ -2,131 +2,144 @@
 
 namespace Drupal\at_base\Config;
 
-class Config {
+class Config
+{
 
-  /**
-   * Module name.
-   *
-   * @var string
-   */
-  private $module;
+    /**
+     * Module name.
+     *
+     * @var string
+     */
+    private $module;
 
-  /**
-   * Config ID.
-   *
-   * @var string
-   */
-  private $id;
+    /**
+     * Config ID.
+     *
+     * @var string
+     */
+    private $id;
 
-  /**
-   * Resolver.
-   *
-   * @var Resolver
-   */
-  private $resolver;
+    /**
+     * Resolver.
+     *
+     * @var Resolver
+     */
+    private $resolver;
 
-  /**
-   * Fetched data.
-   * @var mixed
-   */
-  private $configData;
+    /**
+     * Fetched data.
+     * @var mixed
+     */
+    private $configData;
 
-  public function __construct(ResolverInterface $resolver) {
-    $this->id = 'config';
-    $resolver->setConfig($this);
-    $this->resolver = $resolver;
-  }
-
-  public function getId() {
-    return $this->id;
-  }
-
-  public function setId($id) {
-    if (!empty($this->configData)) {
-      $this->configData = NULL;
+    public function __construct(ResolverInterface $resolver)
+    {
+        $this->id = 'config';
+        $resolver->setConfig($this);
+        $this->resolver = $resolver;
     }
 
-    $this->id = $id;
-
-    return $this;
-  }
-
-  public function getModule() {
-    return $this->module;
-  }
-
-  public function setModule($module) {
-    if (!empty($this->configData)) {
-      $this->configData = NULL;
+    public function getId()
+    {
+        return $this->id;
     }
 
-    if (!module_exists($module) && !drupal_get_path('module', $module)) {
-      throw new \Exception("Invalid module: {$module}");
+    public function setId($id)
+    {
+        if (!empty($this->configData)) {
+            $this->configData = NULL;
+        }
+
+        $this->id = $id;
+
+        return $this;
     }
 
-    $this->module = $module;
-
-    return $this;
-  }
-
-  public function getPath() {
-    return $this->resolver->getPath();
-  }
-
-  /**
-   * Fetch configuration data.
-   */
-  private function fetchData() {
-    $resolver = $this->resolver;
-
-    $options = array('id' => "ATConfig:{$this->module}:{$this->id}");
-    $options['ttl'] = '+ 1 year';
-    $options['tags'] = array('at-config');
-
-    $this->configData = at_cache($options, function() use ($resolver) {
-      return $resolver->fetchData();
-    });
-  }
-
-  /**
-   * Get configured value by key.
-   *
-   * @param  string $key Config key.
-   * @return mixed
-   */
-  public function get($key) {
-    if (!$this->configData) {
-      $this->fetchData();
+    public function getModule()
+    {
+        return $this->module;
     }
 
-    if (!isset($this->configData[$key])) {
-      throw new NotFoundException("{$this->module}.{$this->id}#{$key}");
+    public function setModule($module)
+    {
+        if (!empty($this->configData)) {
+            $this->configData = NULL;
+        }
+
+        if (!module_exists($module) && !drupal_get_path('module', $module)) {
+            throw new \Exception("Invalid module: {$module}");
+        }
+
+        $this->module = $module;
+
+        return $this;
     }
 
-    return $this->configData[$key];
-  }
-
-  public function set($key, $data) {
-    if (!$this->configData) {
-      $this->fetchData();
+    public function getPath()
+    {
+        return $this->resolver->getPath();
     }
 
-    $this->configData[$key] = $data;
-  }
+    /**
+     * Fetch configuration data.
+     */
+    private function fetchData()
+    {
+        $resolver = $this->resolver;
 
-  public function getAll() {
-    if (!$this->configData) {
-      $this->fetchData();
+        $options = array('id' => "ATConfig:{$this->module}:{$this->id}");
+        $options['ttl'] = '+ 1 year';
+        $options['tags'] = array('at-config');
+
+        $this->configData = at_cache($options, function() use ($resolver) {
+            return $resolver->fetchData();
+        });
     }
-    return $this->configData;
-  }
 
-  public function setAll($data) {
-    $this->configData = $data;
-  }
+    /**
+     * Get configured value by key.
+     *
+     * @param  string $key Config key.
+     * @return mixed
+     */
+    public function get($key)
+    {
+        if (!$this->configData) {
+            $this->fetchData();
+        }
 
-  public function write() {
-    $this->resolver->writeData($this->configData);
-  }
+        if (!isset($this->configData[$key])) {
+            throw new NotFoundException("{$this->module}.{$this->id}#{$key}");
+        }
+
+        return $this->configData[$key];
+    }
+
+    public function set($key, $data)
+    {
+        if (!$this->configData) {
+            $this->fetchData();
+        }
+
+        $this->configData[$key] = $data;
+    }
+
+    public function getAll()
+    {
+        if (!$this->configData) {
+            $this->fetchData();
+        }
+        return $this->configData;
+    }
+
+    public function setAll($data)
+    {
+        $this->configData = $data;
+    }
+
+    public function write()
+    {
+        $this->resolver->writeData($this->configData);
+    }
 
 }

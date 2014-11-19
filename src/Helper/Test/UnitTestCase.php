@@ -26,14 +26,25 @@ abstract class UnitTestCase extends DrupalUnitTestCase
 
     public function setUp()
     {
-        $this->container = at_container();
+        /* @var $autoloader \Composer\Autoload\ClassLoader */
+        $autoloaders = spl_autoload_functions();
+        if (isset($autoloaders[0][0]) && get_class($autoloaders[0][0]) === 'Composer\Autoload\ClassLoader') {
+            $autoloader = $autoloaders[0][0];
+        }
+        else {
+            $GLOBALS['conf']['composer_manager_vendor_dir'] = conf_path() . '/vendor/';
+            $autoloader = composer_manager_register_autoloader();
+        }
+        $autoloader->addPsr4('Drupal\\at_base\\', __DIR__ . '/../../');
+
+        // Setup composer
+        parent::setUp('at_base', 'atest_base');
 
         // Mock db, cache
         at()->getApi()->setDrupalDatabaseAPI(new Database());
         at()->getApi()->setDrupalCacheAPI(new Cache());
-
         $this->setUpModules();
-        parent::setUp('at_base', 'atest_base');
+        $this->container = at_container();
     }
 
     protected function setUpModules()
